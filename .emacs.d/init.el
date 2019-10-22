@@ -103,7 +103,7 @@
   :custom
   (dap-mode 1)
   (dap-ui-mode 1)
-  :bind (("C-<f8>" . dap-breakpoint-toggle)
+  :bind (("S-<f8>" . dap-breakpoint-toggle)
 	 ("<f5>" . dap-debug)
 	 ("<f9>" . dap-continue)
 	 ("<f8>" . dap-next))
