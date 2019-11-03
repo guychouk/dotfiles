@@ -1,15 +1,22 @@
-
 """""""""""""""""""""""""
-"         Plug          "
+"       Vim-Plug        "
 """""""""""""""""""""""""
 
-"call plug#begin(split(&rtp, ',')[0] . '/plugins')
-"call plug#end()
+# Install vim-plug if it does not exist
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
 
+call plug#begin(split(&rtp, ',')[0] . '/plugins')
+Plug 'ctrlpvim/ctrlp.vim'
+call plug#end()
 
 """""""""""""""""""""""""
 "        Options        "
 """""""""""""""""""""""""
+
 filetype plugin indent on  " Sets on filetype (Also from plugins)
 syntax on                  " Sets on syntax highlighting
 set tabstop=4              " Sets tab to 4 instead of vim's crazy 8
@@ -33,6 +40,7 @@ set nocompatible           " Required for ViM to be iMproved, turn off for vi-li
 """""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
+
 let mapleader = " "
 let maplocalleader = " "
 
@@ -40,6 +48,7 @@ let maplocalleader = " "
 """""""""""""""""""""""""
 "        Remaps         "
 """""""""""""""""""""""""
+
 imap jj <Esc>
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -57,26 +66,6 @@ nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>1 :vsp $DRIVE_ETC/.vimrc<CR>:Explore<CR>
 nnoremap <Leader>c :%s!"!!g<CR>:%s! = !=!g<CR>:%s!\n!\&!g<CR>
 nnoremap <Leader><Leader> :ZoomToggle<CR>
-
-
-"""""""""""""""""""""""""
-"       Functions       "
-"""""""""""""""""""""""""
-
-" Zoom / Restore window.
-function! s:ZoomToggle() abort
-    if exists('t:zoomed') && t:zoomed
-        execute t:zoom_winrestcmd
-        let t:zoomed = 0
-    else
-        let t:zoom_winrestcmd = winrestcmd()
-        resize
-        vertical resize
-        let t:zoomed = 1
-    endif
-endfunction
-command! ZoomToggle call s:ZoomToggle()
-
 
 """""""""""""""""""""""""
 "        Plugins        "
