@@ -100,8 +100,9 @@ source $ZSH/oh-my-zsh.sh
 
 alias em='emacsclient -n'
 alias dc='docker-compose -f ~/Projects/box/docker-compose.yml'
-alias users_groups='http-prompt --env ~/Projects/sellers.json/groups.req'
-alias users_publishers='http-prompt --env ~/Projects/sellers.json/publisher.req'
+alias init_dev='dc up -d campaign-api sdk users interaction editor console strip-pwa player'
+alias users_groups='http-prompt --env ~/Projects/iab-sellers/groups.req'
+alias users_publishers='http-prompt --env ~/Projects/iab-sellers/publisher.req'
 
 # Setup NVM
 export NVM_DIR="$HOME/.nvm"
@@ -110,3 +111,11 @@ export NVM_DIR="$HOME/.nvm"
 
 # Set Emacs as default terminal editor
 export EDITOR="emacs -nw"
+
+# Setup Google cloud SDK completions
+source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+
+# Fix for GPG
+GPG_TTY=$(tty)
+export GPG_TTY

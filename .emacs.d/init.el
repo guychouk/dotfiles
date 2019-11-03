@@ -34,6 +34,9 @@
 (setq-default truncate-lines t)
 (setq-default global-visual-line-mode t)
 
+;; Use only spaces (no tabs)
+(setq-default indent-tabs-mode nil)
+
 ;; Set line numbers
 (global-display-line-numbers-mode)
 
@@ -47,7 +50,6 @@
 ;; Remove annoying bell
 (setq ring-bell-function 'ignore)
 
-
 ;; Set custom `custom-file` location
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
@@ -60,6 +62,14 @@
 ;; Enable server for command line support
 (if (display-graphic-p)
     (server-start))
+
+;; Enable Desktop mode
+;; (Saves all buffers and frame configurations)
+(desktop-save-mode 1)
+
+;; Enable Winner mode
+;; (Enabled undo redo for window configurations)
+(winner-mode 1)
 
 					;  GUI & Theme  ;
 					; ;;;;;;;;;;;;; ;
@@ -99,6 +109,17 @@
 
 					;  Packages Config  ;
 					; ;;;;;;;;;;;;;;;;; ;
+
+;; Add a :use-package-ensure-system symbol which enables
+;; installation of *system* packages before installing a package.
+(use-package use-package-ensure-system-package)
+
+;; Only add this MacOS to fix the $PATH environment variable
+(use-package exec-path-from-shell
+  :if (memq window-system '(mac ns))
+  :config
+  (exec-path-from-shell-initialize))
+
 (use-package dap-mode
   :custom
   (dap-mode 1)
@@ -117,35 +138,14 @@
 	  :remoteRoot "/app/src"
 	  :localRoot "/Users/guyvalariola/Projects/box/projects/users/src")))
 
-;; Add a :use-package-ensure-system symbol which enables
-;; installation of *system* packages before an emacs package is installed
-(use-package use-package-ensure-system-package)
-
-;; Only add this MacOS to fix the $PATH environment variable
-(use-package exec-path-from-shell
-  :if (memq window-system '(mac ns))
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package neotree
   :defer t
-  :hook (neotree-mode . (lambda ()
-                (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-                (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
-                (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-                (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-                (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
-                (define-key evil-normal-state-local-map (kbd "j") 'neotree-next-line)
-                (define-key evil-normal-state-local-map (kbd "k") 'neotree-previous-line)
-                (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
-                (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
   :bind ("M-1" . neotree-toggle)
   :custom
   (neo-window-position 'right)
   (neo-window-width 45))
 
-(use-package magit
-  :defer t)
+(use-package magit)
 
 (use-package diff-hl
   :init
@@ -181,15 +181,37 @@
   (spaceline-helm-mode))
 
 (use-package company
+  :diminish
   :custom
-  (company-idle-delay 0.3)
+  (company-idle-delay 0.2)
   :config
   (global-company-mode 1)
   (global-set-key (kbd "C-SPC") 'company-complete))
 
+(defun my-js2-mode-setup nil
+    "My js2-mode setup."
+  (flycheck-mode t)
+  (setq js-indent-level 2)
+  (when (executable-find "eslint")
+    (flycheck-select-checker 'javascript-eslint)))
+
+(use-package wakatime-mode
+  :ensure-system-package (wakatime . "pip install wakatime")
+  :config
+  (global-wakatime-mode))
+
+(use-package flycheck
+  :diminish
+  :init (global-flycheck-mode)
+  :ensure-system-package (eslint . "npm i -g eslint")
+  :config
+  (setq js2-include-node-externs t)
+  (setq-default flycheck-disabled-checkers
+		(append flycheck-disabled-checkers
+			'(javascript-jshint)))
+  (add-hook 'js2-mode-hook 'my-js2-mode-setup))
+
 (use-package evil
-  :ensure t
-  :diminish undo-tree-mode
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -231,7 +253,7 @@
 (use-package evil-escape
   :config
   (setq-default evil-escape-delay 0.2)
-  (setq-default evil-escape-key-sequence "jj")
+  (setq-default evil-escape-key-sequence "jk")
   (progn
     (evil-escape-mode)
     (global-set-key (kbd "<escape>") 'evil-escape))
@@ -250,6 +272,7 @@
   (global-evil-surround-mode 1))
 
 (use-package evil-commentary
+  :diminish
   :config
   (evil-commentary-mode))
 
@@ -279,12 +302,22 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(use-package evil-vimish-fold
+  :config
+  (evil-vimish-fold-mode 1))
+
 (use-package projectile
   :diminish
   :custom
   (projectile-switch-project-action 'neotree-projectile-action)
   (projectile-enable-caching nil)
   (projectile-indexing-method 'alien))
+
+(use-package shackle
+  :config
+  (setq helm-display-function #'pop-to-buffer)
+  (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.46)))
+  (shackle-mode))
 
 (use-package helm
   :diminish
@@ -299,8 +332,18 @@
   :custom
   (projectile-completion-system 'helm)
   :config
-  (projectile-global-mode)
+  (projectile-mode)
   (helm-projectile-on))
+
+(use-package helm-ag
+  :after (helm projectile)
+  :ensure-system-package (ag . "brew install ag")
+  :bind (("C-S-f" . helm-projectile-ag)
+	 :map evil-normal-state-map
+         ("C-f" . helm-ag-this-file))
+  :custom
+  (helm-ag-fuzzy-match t))
+
 
 ;; Setup language modes
 (use-package powershell :mode "\\.ps1\\'")
@@ -317,8 +360,8 @@
   :hook (web-mode . emmet-mode)
   :hook (css-mode . emmet-mode))
 (use-package web-mode
-  :mode ("\\.js\\'" . web-mode)
-  :mode ("\\.jsx\\'" . js-jsx-mode)
+  :mode ("\\.js\\'" . js2-mode)
+  :mode ("\\.jsx\\'" . js2-mode)
   :mode ("\\.css\\'" . css-mode)
   :mode ("\\.scss\\'" . scss-mode)
   :mode ("\\.html\\'" . web-mode)
@@ -348,7 +391,6 @@
     "J" 'evil-window-split
     "L" 'evil-window-vsplit
     "ff" 'helm-find-files
-    "fg" 'helm-projectile-grep
     "pi" 'package-install
     "pd" 'package-delete
     "e" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))))

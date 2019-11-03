@@ -8,7 +8,7 @@
     ("585942bb24cab2d4b2f74977ac3ba6ddbd888e3776b9d2f993c5704aa8bb4739" default)))
  '(package-selected-packages
    (quote
-    (evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell helm-projectile helm projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package))))
+    (wakatime-mode shackle helm-ag evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell helm-projectile helm projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
