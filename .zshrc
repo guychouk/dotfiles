@@ -116,6 +116,9 @@ export EDITOR="emacs -nw"
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 
+# Fix weird locale issue
+export LC_ALL=en_US.UTF-8
+
 # Fix for GPG
 GPG_TTY=$(tty)
 export GPG_TTY

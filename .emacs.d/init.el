@@ -32,7 +32,6 @@
 
 ;; Disable word-wrap
 (setq-default truncate-lines t)
-(setq-default global-visual-line-mode t)
 
 ;; Use only spaces (no tabs)
 (setq-default indent-tabs-mode nil)
@@ -62,10 +61,6 @@
 ;; Enable server for command line support
 (if (display-graphic-p)
     (server-start))
-
-;; Enable Desktop mode
-;; (Saves all buffers and frame configurations)
-(desktop-save-mode 1)
 
 ;; Enable Winner mode
 ;; (Enabled undo redo for window configurations)
@@ -120,23 +115,37 @@
   :config
   (exec-path-from-shell-initialize))
 
-(use-package dap-mode
-  :custom
-  (dap-mode 1)
-  (dap-ui-mode 1)
-  :bind (("S-<f8>" . dap-breakpoint-toggle)
-	 ("<f5>" . dap-debug)
-	 ("<f9>" . dap-continue)
-	 ("<f8>" . dap-next))
-  :config
-  (require 'dap-node)
-  (dap-register-debug-template "Users API"
-    (list :type "node"
-	  :program ""
-  	  :port "30001"
-          :request "attach"
-	  :remoteRoot "/app/src"
-	  :localRoot "/Users/guyvalariola/Projects/box/projects/users/src")))
+;; Using indium for the meantime, here for legacy purposes
+;;
+;; (use-package dap-mode
+;;   :custom
+;;   (dap-mode 1)
+;;   (dap-ui-mode 1)
+;;   :bind (("S-<f8>" . dap-breakpoint-toggle)
+;;          ("<f5>" . dap-debug)
+;;          ("<f7>" . dap-step-in)
+;;          ("<f6>" . dap-step-out)
+;;          ("<f9>" . dap-continue)
+;;          ("<f8>" . dap-next))
+;;   :config
+;;   (require 'dap-node)
+;;   (dap-register-debug-template "Users API"
+;;                                (list :type "node"
+;;                                      :program ""
+;;                                      :port "30001"
+;;                                      :request "attach"
+;;                                      :remoteRoot "/app/src"
+;;                                      :localRoot "/Users/guyvalariola/Projects/box/projects/users/src"))
+;;   (require 'dap-chrome)
+;;   (dap-register-debug-template "SDK"
+;;                                (list
+;;                                 :name "SDK"
+;;                                 :type "chrome"
+;;                                 :cwd nil
+;;                                 :mode "url"
+;;                                 :request "launch"
+;;                                 :url "https://sdk.apester.local.com/"
+;;                                 :webRoot "/Users/guyvalariola/Projects/box/projects/sdk/src")))
 
 (use-package neotree
   :defer t
@@ -185,8 +194,13 @@
   :custom
   (company-idle-delay 0.2)
   :config
-  (global-company-mode 1)
-  (global-set-key (kbd "C-SPC") 'company-complete))
+  (global-company-mode 1))
+
+(use-package wakatime-mode
+  :diminish
+  :ensure-system-package (wakatime . "pip install wakatime")
+  :config
+  (global-wakatime-mode))
 
 (defun my-js2-mode-setup nil
     "My js2-mode setup."
@@ -194,11 +208,6 @@
   (setq js-indent-level 2)
   (when (executable-find "eslint")
     (flycheck-select-checker 'javascript-eslint)))
-
-(use-package wakatime-mode
-  :ensure-system-package (wakatime . "pip install wakatime")
-  :config
-  (global-wakatime-mode))
 
 (use-package flycheck
   :diminish
@@ -220,6 +229,7 @@
   (define-key evil-insert-state-map
     (read-kbd-macro evil-toggle-key) 'evil-emacs-state)
   (setq evil-default-state 'normal)
+  ;; Add after you've decided to use it org-mode natively
   ;; (evil-set-initial-state 'org-mode 'emacs)
   (evil-set-initial-state 'git-commit-mode 'emacs)
   (evil-set-initial-state 'with-editor-mode 'emacs)
@@ -231,15 +241,22 @@
   (evil-set-initial-state 'magit-blame-mode 'emacs)
   (evil-set-initial-state 'git-blame-mode 'emacs)
   (evil-set-initial-state 'indium-repl-mode 'emacs)
+  (evil-set-initial-state 'dap-ui-breakpoints-ui-list-mode 'emacs)
   (add-hook 'git-commit-mode-hook 'evil-emacs-state)
   (evil-set-initial-state 'magit-log-edit-mode 'insert)
   (evil-mode 1))
 
+;; Best JS development plugin for Emacs
+(use-package indium)
+
 ;; Collection of evil keybindings for the parts of Emacs that Evil does not cover properly
 (use-package evil-collection
-  :after evil
-  :custom (evil-collection-setup-minibuffer t)
-  :init (evil-collection-init))
+  :after (evil indium)
+  :custom
+  (evil-collection-setup-minibuffer t)
+  (evil-collection-setup-debugger-keys t)
+  :config
+  (evil-collection-init))
 
 ;; Port for Vim's anzu to show search status in status bar
 (use-package evil-anzu
@@ -266,25 +283,28 @@
     (define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
     (define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)))
 
+;; Emulate vim-surround package
 (use-package evil-surround
   :after evil
   :config
   (global-evil-surround-mode 1))
 
+;; Enable commenting of lines using <s-/>
 (use-package evil-commentary
   :diminish
   :config
   (evil-commentary-mode))
 
+;; Show various types of evil actions *visually*
 (use-package evil-goggles
+  :diminish
   :config
   (evil-goggles-mode)
   ;; optionally use diff-mode's faces; as a result, deleted text
   ;; will be highlighed with `diff-removed` face which is typically
   ;; some red color (as defined by the color theme)
   ;; other faces such as `diff-added` will be used for other actions
-  (evil-goggles-use-diff-faces)
-  :diminish (evil-goggles-mode))
+  (evil-goggles-use-diff-faces))
 
 ;; Setup evil multi-cursor
 (use-package evil-mc
@@ -302,10 +322,13 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+;; Enable folding using zf
 (use-package evil-vimish-fold
+  :diminish
   :config
   (evil-vimish-fold-mode 1))
 
+;; Index and search projects using standard means
 (use-package projectile
   :diminish
   :custom
@@ -313,17 +336,21 @@
   (projectile-enable-caching nil)
   (projectile-indexing-method 'alien))
 
+;; Sets a constant location and size for the helm split buffer
 (use-package shackle
   :config
   (setq helm-display-function #'pop-to-buffer)
   (setq shackle-rules '(("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.46)))
   (shackle-mode))
 
+;; Helm <3
 (use-package helm
   :diminish
   :config
   (helm-mode t))
 
+;; Manage projectile projects using Helm
+;; (similar behaviour to how VSCode uses <C-p> for traversing files in project)
 (use-package helm-projectile
   :after (helm projectile)
   :bind (("C-S-P" . helm-projectile-switch-project)
@@ -335,6 +362,7 @@
   (projectile-mode)
   (helm-projectile-on))
 
+;; Enable nice fuzzy-search for strings in project using the silver searcher
 (use-package helm-ag
   :after (helm projectile)
   :ensure-system-package (ag . "brew install ag")
@@ -346,10 +374,9 @@
 
 
 ;; Setup language modes
-(use-package powershell :mode "\\.ps1\\'")
-(use-package php-mode :mode "\\.php\\'")
+(use-package js2-mode)
+(use-package php-mode)
 (use-package yaml-mode :mode "\\.yml\\'")
-(use-package json-mode :mode "\\.json\\'")
 (use-package tern
   :hook (web-mode . tern-mode)
   :ensure-system-package (tern . "npm i -g tern"))
@@ -358,16 +385,19 @@
   :ensure-system-package (prettier . "npm i -g prettier"))
 (use-package emmet-mode
   :hook (web-mode . emmet-mode)
-  :hook (css-mode . emmet-mode))
+  :hook (css-mode . emmet-mode)
+  :hook (js2-mode . emmet-mode))
 (use-package web-mode
+  :after js2-mode
   :mode ("\\.js\\'" . js2-mode)
   :mode ("\\.jsx\\'" . js2-mode)
+  :mode ("\\.php\\'" . php-mode)
   :mode ("\\.css\\'" . css-mode)
   :mode ("\\.scss\\'" . scss-mode)
   :mode ("\\.html\\'" . web-mode)
-  :mode ("\\.json\\'" . json-mode))
+  :mode ("\\.json\\'" . web-mode))
 
-;; Setup keybindings using general.el
+;; Setup keybindings comfortably
 (use-package general
   :requires evil
   :config
@@ -383,6 +413,7 @@
   (leader-def 'normal 'override
     "w" 'save-buffer
     "b" 'helm-buffers-list
+    "m" 'helm-bookmarks
     "q" 'evil-window-delete
     "j" 'evil-window-down
     "h" 'evil-window-left

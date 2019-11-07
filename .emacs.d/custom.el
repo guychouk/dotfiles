@@ -3,12 +3,29 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-idle-delay 0.2)
  '(custom-safe-themes
    (quote
-    ("585942bb24cab2d4b2f74977ac3ba6ddbd888e3776b9d2f993c5704aa8bb4739" default)))
+    ("1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" "585942bb24cab2d4b2f74977ac3ba6ddbd888e3776b9d2f993c5704aa8bb4739" default)))
+ '(dap-mode 1 nil (dap-mode))
+ '(dap-ui-mode 1 nil (dap-ui))
+ '(evil-collection-setup-minibuffer t)
+ '(helm-ag-fuzzy-match t)
+ '(helm-completion-style (quote emacs))
+ '(neo-window-position (quote right))
+ '(neo-window-width 45)
  '(package-selected-packages
    (quote
-    (wakatime-mode shackle helm-ag evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell helm-projectile helm projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package))))
+    (indium buffer-move wakatime-mode shackle helm-ag evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell helm-projectile helm projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package)))
+ '(powerline-default-separator (quote arrow-fade))
+ '(powerline-height 20)
+ '(projectile-completion-system (quote helm))
+ '(projectile-enable-caching nil)
+ '(projectile-indexing-method (quote alien))
+ '(projectile-switch-project-action (quote neotree-projectile-action))
+ '(spaceline-highlight-face-func (quote spaceline-highlight-face-evil-state) t)
+ '(wakatime-cli-path "/usr/local/bin/wakatime")
+ '(wakatime-python-bin nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
