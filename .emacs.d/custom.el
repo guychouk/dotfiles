@@ -12,13 +12,13 @@
  '(evil-collection-setup-debugger-keys t)
  '(evil-collection-setup-minibuffer t)
  '(exec-path-from-shell-check-startup-files nil)
- '(helm-ag-fuzzy-match t t)
+ '(helm-ag-fuzzy-match t)
  '(helm-completion-style (quote emacs))
- '(neo-window-position (quote right) t)
+ '(neo-window-position (quote left) t)
  '(neo-window-width 45 t)
  '(package-selected-packages
    (quote
-    (company-lsp git-gutter night-owl-theme gist paredit password-store indium buffer-move wakatime-mode shackle helm-ag evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell helm-projectile helm projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package)))
+    (org-mode hydra prodigy docker multi-term company-lsp git-gutter night-owl-theme gist paredit password-store indium buffer-move wakatime-mode shackle helm-ag evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell helm-projectile helm projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package)))
  '(powerline-default-separator (quote arrow-fade))
  '(powerline-height 20)
  '(projectile-completion-system (quote helm))
