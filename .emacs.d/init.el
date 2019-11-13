@@ -11,17 +11,21 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-(defvar use-package-always-ensure t) ; Implicit :ensure for all packages
+;; Implicit :ensure for all packages
+(defvar use-package-always-ensure t)
+;; Provides performance boost once compiled (according to the docs)
 (eval-and-compile
     (require 'use-package))
-(require 'diminish) ; Helps suppress minor modes indications in mode line.
-(require 'bind-key) ; Adds option of binding keys to packages.
+;; Helps suppress minor modes indications in mode line.
+(require 'diminish)
+;; Adds option of binding keys to packages.
+(require 'bind-key)
 
 ;; Add a :use-package-ensure-system symbol which enables
 ;; installation of *system* packages before installing a package.
 (use-package use-package-ensure-system-package)
 
-;; Only add this MacOS to fix the $PATH environment variable
+;; Only use this if OS is Mac OSX to fix the $PATH environment variable
 (use-package exec-path-from-shell
   :if (memq window-system '(mac ns))
   :custom
@@ -57,7 +61,7 @@
 ;; Remove annoying bell
 (setq ring-bell-function 'ignore)
 
-;; Set custom `custom-file` location
+;; Set `custom-file` location
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
 
@@ -70,10 +74,10 @@
 (if (display-graphic-p)
     (server-start))
 
-;; Enable Winner mode (undo/redo for window configurations)
+;; Enable Winner mode (undo/redo for window layout)
 (winner-mode 1)
 
-;; Setup Org
+;; Setup Org Agenda to watch work.org file
 (setq org-agenda-files '("~/Drive/etc/work.org"))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GUI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -145,6 +149,24 @@
         (clipboard-kill-region (point-min) (point-max)))
       (message filename))))
 
+(defun my/dap-eval-to-clipboard (expression)
+  "Eval and print EXPRESSION."
+  (interactive "sEval: ")
+  (let ((debug-session (dap--cur-active-session-or-die)))
+    (if-let ((active-frame-id (-some->> debug-session
+                                        dap--debug-session-active-frame
+                                        (gethash "id"))))
+        (dap--send-message
+         (dap--make-request "evaluate"
+                            (list :expression (concat "JSON.stringify(" expression ",null,2)")
+                                  :frameId active-frame-id))
+         (-lambda ((&hash "success" "message" "body"))
+           (with-temp-buffer
+             (insert (gethash "result" body))
+             (clipboard-kill-region (point-min) (point-max))))
+         debug-session)
+      (error "There is no stopped debug session"))))
+
 (defun my/window-visible (b-name)
   "Return whether B-NAME is visible."
   (-> (-compose 'buffer-name 'window-buffer)
@@ -153,7 +175,7 @@
 
 (defun my/show-debug-windows (session)
   "Show debug windows."
-  (dap-hydra)
+  (hydra-dap/body)
   (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
     (save-excursion
       ;; display locals
@@ -171,22 +193,101 @@
     (and (get-buffer dap-ui--locals-buffer)
          (kill-buffer dap-ui--locals-buffer))))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HYDRAS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package hydra
+  :after evil
+  :config
+  (defhydra hydra-search (evil-normal-state-map "C-s" :exit t)
+    "Search"
+    ("q" nil "Quit")
+    ("f" helm-ag-this-file "Search in File")
+    ("p" helm-projectile-ag "Search in Project"))
+
+  (defhydra hydra-project (evil-normal-state-map "C-p" :exit t)
+    "Project management"
+    ("q" nil "Quit")
+    ("p" helm-projectile "Search for files in project")
+    ("s" helm-projectile-switch-project "Switch Project"))
+
+  (defhydra hydra-files (evil-normal-state-map "C-f" :exit t)
+    "File management"
+    ("q" nil "Quit")
+    ("f" helm-find-files "Search for File")
+    ("n" neotree-toggle "Browse Current Directory")
+    ("cp" my/put-file-name-on-clipboard "Copy Filename")
+    ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
+    ("e" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
+    ("org" (lambda() (interactive)(find-file "~/Drive/etc/work.org")) "Work Org")
+    ("osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File"))
+  
+  (defhydra hydra-window (evil-normal-state-map "SPC" :exit t)
+    "Window management"
+    ("q" nil "Quit")
+    ("w" save-buffer "Save")
+    ("k" evil-window-up "Up")
+    ("j" evil-window-down "Down")
+    ("h" evil-window-left "Left")
+    ("l" evil-window-right "Right")
+    ("p" winner-undo "Winner: Undo")
+    ("n" winner-redo "Winner: Redo")
+    ("b" helm-buffers-list "Buffers")
+    ("Q" evil-window-delete "Quit Buffer")
+    ("L" evil-window-vsplit "Vertical Split")
+    ("J" evil-window-split "Horizontal Split")
+    ("rj" jump-to-register "Jump to save Window Layout")
+    ("ff" delete-other-windows "Delete all other windows")
+    ("swc" window-configuration-to-register "Save Window Layout"))
+
+  (defhydra hydra-dap (:color pink :hint nil :foreign-keys run)
+    "
+^Stepping^          ^Switch^                 ^Breakpoints^           ^Eval
+^^^^^^^^-----------------------------------------------------------------------------------------
+_n_: Next           _ss_: Session            _bt_: Toggle            _ee_: Eval
+^ ^                 ^ ^                      ^ ^                     _ec_: Eval to Clipboard
+_i_: Step in        _st_: Thread             _bd_: Delete            _er_: Eval region
+_o_: Step out       _sf_: Stack frame        _ba_: Add               _es_: Eval thing at point
+_c_: Continue       _sl_: List locals        _bc_: Set condition     _eii_: Inspect
+_r_: Restart frame  _sb_: List breakpoints   _bh_: Set hit count     _eir_: Inspect region
+_Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Inspect thing at point
+"
+    ("n" dap-next)
+    ("i" dap-step-in)
+    ("o" dap-step-out)
+    ("c" dap-continue)
+    ("r" dap-restart-frame)
+    ("ss" dap-switch-session)
+    ("st" dap-switch-thread)
+    ("sf" dap-switch-stack-frame)
+    ("sl" dap-ui-locals)
+    ("sb" dap-ui-breakpoints)
+    ("sS" dap-ui-sessions)
+    ("bt" dap-breakpoint-toggle)
+    ("ba" dap-breakpoint-add)
+    ("bd" dap-breakpoint-delete)
+    ("bc" dap-breakpoint-condition)
+    ("bh" dap-breakpoint-hit-condition)
+    ("bl" dap-breakpoint-log-message)
+    ("ee" dap-eval)
+    ("ec" my/dap-eval-to-clipboard)
+    ("er" dap-eval-region)
+    ("es" dap-eval-thing-at-point)
+    ("eii" dap-ui-inspect)
+    ("eir" dap-ui-inspect-region)
+    ("eis" dap-ui-inspect-thing-at-point)
+    ("q" nil "quit" :color blue)
+    ("Q" dap-disconnect :color red)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package hydra)
-
-(use-package multi-term
-  :custom
-  (multi-term-program "/bin/zsh")
-  (term-buffer-maximum-size 10000))
+(use-package magit)
 
 (use-package neotree
   :custom
   (neo-window-position 'left)
   (neo-window-width 45))
-
-(use-package magit)
 
 (use-package git-gutter
   :diminish
@@ -214,6 +315,94 @@
                 (append flycheck-disabled-checkers
                         '(javascript-jshint)))
   (add-hook 'js2-mode-hook 'my/js2-mode-setup))
+
+;; Index and search projects using standard means
+(use-package projectile
+  :diminish
+  :custom
+  (projectile-enable-caching nil)
+  (projectile-indexing-method 'alien))
+
+;; Enables management of predefined services
+(use-package prodigy
+  :config
+  (prodigy-define-service
+    :name "SDK"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk")
+    :stop-signal 'sigterm
+    :tags '(work sdk))
+  (prodigy-define-service
+    :name "Editor"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "editor")
+    :stop-signal 'sigterm
+    :tags '(work sdk))
+  (prodigy-define-service
+    :name "Campaign"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "campaign")
+    :stop-signal 'sigterm
+    :tags '(work sdk))
+  (prodigy-define-service
+    :name "Display"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "display")
+    :stop-signal 'sigterm
+    :tags '(work sdk))
+  (prodigy-define-service
+    :name "Campaign-API"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "campaign-api")
+    :stop-signal 'sigterm
+    :tags '(work sdk))
+  (prodigy-define-service
+    :name "Player"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "player")
+    :stop-signal 'sigterm
+    :tags '(work sdk)))
+  
+;; Auto complete engine for Emacs
+(use-package company
+  :diminish
+  :bind (:map evil-insert-state-map
+              ("C-n" . company-select-next)
+              ("C-p" . company-select-previous)
+              ("C-j" . company-complete-selection)) 
+  :config
+  (global-company-mode 1))
+
+;; LSP backend for Company
+(use-package company-lsp
+  :requires company
+  :config
+  (push 'company-lsp company-backends))
+
+;; Helm
+(use-package helm
+  :diminish
+  :bind (("M-x" . helm-M-x)) 
+  :custom
+  (helm-split-window-inside-p t)
+  :config
+  (helm-mode t))
+
+;; Manage projectile projects using Helm
+(use-package helm-projectile
+  :after (helm projectile)
+  :custom
+  (projectile-completion-system 'helm)
+  :config
+  (projectile-mode)
+  (helm-projectile-on))
+
+;; Enable nice fuzzy-search for strings in project using the silver searcher
+(use-package helm-ag
+  :after (helm projectile)
+  :ensure-system-package (ag . "brew install ag")
+  :custom
+  (helm-ag-fuzzy-match t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EVIL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -252,10 +441,15 @@
   (evil-collection-init))
 
 ;; Enable increment / decrement of numbers with C-= and C-- similar to Vim
-(use-package evil-numbers)
+(use-package evil-numbers
+  :after evil
+  :bind (:map evil-normal-state-map
+              ("C-=" . evil-numbers/inc-at-pt)
+              ("C--" . evil-numbers/dec-at-pt)))
 
 ;; Escape from many modes
 (use-package evil-escape
+  :after evil
   :diminish evil-escape-mode
   :config
   (setq-default evil-escape-delay 0.2)
@@ -265,7 +459,9 @@
 
 ;; Match more than parentheses
 (use-package evil-matchit
-  :after evil)
+  :after evil
+  :config
+  (global-evil-matchit-mode 1))
 
 ;; Emulate vim-surround package
 (use-package evil-surround
@@ -275,12 +471,14 @@
 
 ;; Enable commenting of lines using <s-/>
 (use-package evil-commentary
+  :after evil
   :diminish
   :config
   (evil-commentary-mode))
 
 ;; Show various types of evil actions *visually*
 (use-package evil-goggles
+  :after evil
   :diminish
   :config
   (evil-goggles-mode)
@@ -292,108 +490,25 @@
 
 ;; Setup Evil with Org mode
 (use-package evil-org
-  :after org
+  :after (evil org)
   :config
   (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme)))
+  (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
 ;; Enable folding using zf
 (use-package evil-vimish-fold
+  :after evil
   :diminish
   :config
   (evil-vimish-fold-mode 1))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; ESSENTIALS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-;; Index and search projects using standard means
-(use-package projectile
-  :diminish
-  :custom
-  (projectile-enable-caching nil)
-  (projectile-indexing-method 'alien))
-
-;; Enables management of predefined services
-(use-package prodigy
-  :config
-  (prodigy-define-service
-    :name "SDK"
-    :command "docker-compose"
-    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk")
-    :stop-signal 'sigterm
-    :tags '(work sdk))
-  (prodigy-define-service
-    :name "Editor"
-    :command "docker-compose"
-    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "editor")
-    :stop-signal 'sigterm
-    :tags '(work sdk))
-  (prodigy-define-service
-    :name "Campaign"
-    :command "docker-compose"
-    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "campaign")
-    :stop-signal 'sigterm
-    :tags '(work sdk))
-  (prodigy-define-service
-    :name "Campaign-API"
-    :command "docker-compose"
-    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "campaign-api")
-    :stop-signal 'sigterm
-    :tags '(work sdk))
-  (prodigy-define-service
-    :name "Player"
-    :command "docker-compose"
-    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "player")
-    :stop-signal 'sigterm
-    :tags '(work sdk)))
-  
-
-;; Auto complete engine for Emacs
-(use-package company
-  :diminish
-  :config
-  (global-company-mode 1))
-
-;; LSP backend for Company
-(use-package company-lsp
-  :requires company
-  :config
-  (push 'company-lsp company-backends))
-
-;; Helm
-(use-package helm
-  :diminish
-  :custom
-  (helm-split-window-inside-p t)
-  :config
-  (helm-mode t))
-
-;; Manage projectile projects using Helm
-;; (similar behaviour to how VSCode uses <C-p> for traversing files in project)
-(use-package helm-projectile
-  :after (helm projectile)
-  :custom
-  (projectile-completion-system 'helm)
-  :config
-  (projectile-mode)
-  (helm-projectile-on))
-
-;; Enable nice fuzzy-search for strings in project using the silver searcher
-(use-package helm-ag
-  :after (helm projectile)
-  :ensure-system-package (ag . "brew install ag")
-  :custom
-  (helm-ag-fuzzy-match t))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MODES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(use-package php-mode)
 (use-package js2-mode)
+(use-package php-mode)
 (use-package yaml-mode)
 (use-package emmet-mode)
 (use-package web-mode
@@ -436,55 +551,3 @@
                                       :request "launch"
                                       :url "https://sdk.apester.local.com/"
                                       :webRoot "/Users/guyvalariola/Projects/box/projects/sdk/src")))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; KEYBINDINGS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-  (use-package general
-    :requires evil
-    :config
-    (general-evil-setup t)
-    (general-define-key "M-x" 'helm-M-x)
-    ;; Set Space as leader key and set <SPC> keybindings
-    (general-create-definer leader-def :prefix "SPC")
-    (general-imap
-      "C-n" #'company-select-next
-      "C-p" #'company-select-previous
-      "C-j" #'company-complete-selection)
-    (general-nmap
-      "S-<f8>" #'dap-breakpoint-toggle
-      "<f5>" #'dap-debug
-      "<f7>" #'dap-step-in
-      "<f6>" #'dap-step-out
-      "<f9>" #'dap-continue
-      "<f8>" #'dap-next
-      "M-1" #'neotree-toggle
-      "C-p" #'helm-projectile
-      "C-=" #'evil-numbers/inc-at-pt
-      "C--" #'evil-numbers/dec-at-pt
-      "C-S-P" #' helm-projectile-switch-project)
-    (leader-def 'normal 'override
-      "w" 'save-buffer
-      "b" 'helm-buffers-list
-      "m" 'helm-bookmarks
-      "q" 'evil-window-delete
-      "j" 'evil-window-down
-      "h" 'evil-window-left
-      "k" 'evil-window-up
-      "l" 'evil-window-right
-      "J" 'evil-window-split
-      "L" 'evil-window-vsplit
-      "f" 'helm-find-files
-      "sf" 'helm-ag-this-file
-      "sp" 'helm-projectile-ag
-      "pi" 'package-install
-      "pd" 'package-delete
-      "pr" 'prodigy
-      "rj" 'jump-to-register
-      "cp" 'my/put-file-name-on-clipboard
-      "swc" 'window-configuration-to-register
-      "z" (lambda() (interactive)(find-file "~/.zshrc"))
-      "osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh"))
-      "org" (lambda() (interactive)(find-file "~/Drive/etc/work.org"))
-      "e" (lambda() (interactive)(find-file "~/.emacs.d/init.el"))))
-
