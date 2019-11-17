@@ -9,13 +9,14 @@
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
+  (package-install 'diminish)
   (package-install 'use-package))
 
-;; Implicit :ensure for all packages
-(defvar use-package-always-ensure t)
 ;; Provides performance boost once compiled (according to the docs)
-(eval-and-compile
-    (require 'use-package))
+(eval-and-compile (require 'use-package))
+;; Implicit :ensure for all packages
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
 ;; Helps suppress minor modes indications in mode line.
 (require 'diminish)
 ;; Adds option of binding keys to packages.
@@ -39,8 +40,17 @@
 ;; Quiet Startup
 (setq inhibit-startup-screen t)
 (setq inhibit-startup-message t)
-(setq inhibit-startup-echo-area-message t)
 (setq initial-scratch-message nil)
+(setq inhibit-startup-echo-area-message t)
+
+;; Revert these files without asking.
+(setq revert-without-query '(".*"))
+
+;; Don’t add new lines past end of file
+(setq next-line-add-newlines nil)
+
+;; Replace yes or no prompt with y or n prompt.
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Disable word-wrap
 (setq-default truncate-lines t)
@@ -50,6 +60,9 @@
 
 ;; Set line numbers
 (global-display-line-numbers-mode)
+
+;; Remove trailing whitespace
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 
 ;; Set file encoding to UTF-8
 (set-language-environment "UTF-8")
@@ -112,9 +125,7 @@
 ;; Sets a constant position and size for buffers based on a set of rules
 (use-package shackle
   :config
-  (setq helm-display-function #'pop-to-buffer)
-  (setq shackle-rules '(("work.org" :popup t :align above :select t :ratio 0.25)
-                        ("\\`\\*helm.*?\\*\\'" :regexp t :align t :ratio 0.45)))
+  (setq shackle-rules '(("work.org" :popup t :align above :select t :ratio 0.25)))
   (shackle-mode))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; FUNCTIONS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -193,96 +204,37 @@
     (and (get-buffer dap-ui--locals-buffer)
          (kill-buffer dap-ui--locals-buffer))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HYDRAS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-(use-package hydra
-  :after evil
-  :config
-  (defhydra hydra-search (evil-normal-state-map "C-s" :exit t)
-    "Search"
-    ("q" nil "Quit")
-    ("f" helm-ag-this-file "Search in File")
-    ("p" helm-projectile-ag "Search in Project"))
-
-  (defhydra hydra-project (evil-normal-state-map "C-p" :exit t)
-    "Project management"
-    ("q" nil "Quit")
-    ("p" helm-projectile "Search for files in project")
-    ("s" helm-projectile-switch-project "Switch Project"))
-
-  (defhydra hydra-files (evil-normal-state-map "C-f" :exit t)
-    "File management"
-    ("q" nil "Quit")
-    ("f" helm-find-files "Search for File")
-    ("n" neotree-toggle "Browse Current Directory")
-    ("cp" my/put-file-name-on-clipboard "Copy Filename")
-    ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
-    ("e" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
-    ("org" (lambda() (interactive)(find-file "~/Drive/etc/work.org")) "Work Org")
-    ("osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File"))
-  
-  (defhydra hydra-window (evil-normal-state-map "SPC" :exit t)
-    "Window management"
-    ("q" nil "Quit")
-    ("w" save-buffer "Save")
-    ("k" evil-window-up "Up")
-    ("j" evil-window-down "Down")
-    ("h" evil-window-left "Left")
-    ("l" evil-window-right "Right")
-    ("p" winner-undo "Winner: Undo")
-    ("n" winner-redo "Winner: Redo")
-    ("b" helm-buffers-list "Buffers")
-    ("Q" evil-window-delete "Quit Buffer")
-    ("L" evil-window-vsplit "Vertical Split")
-    ("J" evil-window-split "Horizontal Split")
-    ("rj" jump-to-register "Jump to save Window Layout")
-    ("ff" delete-other-windows "Delete all other windows")
-    ("swc" window-configuration-to-register "Save Window Layout"))
-
-  (defhydra hydra-dap (:color pink :hint nil :foreign-keys run)
-    "
-^Stepping^          ^Switch^                 ^Breakpoints^           ^Eval
-^^^^^^^^-----------------------------------------------------------------------------------------
-_n_: Next           _ss_: Session            _bt_: Toggle            _ee_: Eval
-^ ^                 ^ ^                      ^ ^                     _ec_: Eval to Clipboard
-_i_: Step in        _st_: Thread             _bd_: Delete            _er_: Eval region
-_o_: Step out       _sf_: Stack frame        _ba_: Add               _es_: Eval thing at point
-_c_: Continue       _sl_: List locals        _bc_: Set condition     _eii_: Inspect
-_r_: Restart frame  _sb_: List breakpoints   _bh_: Set hit count     _eir_: Inspect region
-_Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Inspect thing at point
-"
-    ("n" dap-next)
-    ("i" dap-step-in)
-    ("o" dap-step-out)
-    ("c" dap-continue)
-    ("r" dap-restart-frame)
-    ("ss" dap-switch-session)
-    ("st" dap-switch-thread)
-    ("sf" dap-switch-stack-frame)
-    ("sl" dap-ui-locals)
-    ("sb" dap-ui-breakpoints)
-    ("sS" dap-ui-sessions)
-    ("bt" dap-breakpoint-toggle)
-    ("ba" dap-breakpoint-add)
-    ("bd" dap-breakpoint-delete)
-    ("bc" dap-breakpoint-condition)
-    ("bh" dap-breakpoint-hit-condition)
-    ("bl" dap-breakpoint-log-message)
-    ("ee" dap-eval)
-    ("ec" my/dap-eval-to-clipboard)
-    ("er" dap-eval-region)
-    ("es" dap-eval-thing-at-point)
-    ("eii" dap-ui-inspect)
-    ("eir" dap-ui-inspect-region)
-    ("eis" dap-ui-inspect-thing-at-point)
-    ("q" nil "quit" :color blue)
-    ("Q" dap-disconnect :color red)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+(use-package paredit
+  :hook (elisp-mode . paredit-mode))
+
+(use-package counsel)
+
+(use-package counsel-projectile
+  :requires (counsel projectile))
+
+(use-package swiper
+  :after evil
+  :bind (:map evil-normal-state-map
+         ("/" . swiper)))
+
+(use-package ivy :ensure t
+  :diminish (ivy-mode . "")             ; does not display ivy in the modeline
+  :init
+  (ivy-mode 1)                          ; enable ivy globally at startup
+  :config
+  (setq ivy-use-virtual-buffers t)       ; extend searching to bookmarks and
+  (setq ivy-height 20)                   ; set height of the ivy window
+  (setq ivy-count-format "(%d/%d) ")     ; count format, from the ivy help page
+  (setq ivy-display-style 'fancy))
+
 (use-package magit)
+
+(use-package gist)
+
+(use-package yasnippet)
 
 (use-package neotree
   :custom
@@ -308,6 +260,7 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
   (org-src-mode . disable-fylcheck-in-org-src-block)
   (emacs-lisp-mode . disable-fylcheck-in-org-src-block)
   :custom
+  (flycheck-check-syntax-automatically '(save mode-enable))
   (flycheck-indication-mode nil)
   :config
   (setq js2-include-node-externs t)
@@ -318,9 +271,14 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
 
 ;; Index and search projects using standard means
 (use-package projectile
+  :after ivy
   :diminish
+  :ensure-system-package (ag . "brew install the_silver_searcher")
+  :config
+  (projectile-mode +1)
   :custom
   (projectile-enable-caching nil)
+  (projectile-completion-system 'ivy)
   (projectile-indexing-method 'alien))
 
 ;; Enables management of predefined services
@@ -362,14 +320,14 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
     :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "player")
     :stop-signal 'sigterm
     :tags '(work sdk)))
-  
+
 ;; Auto complete engine for Emacs
 (use-package company
   :diminish
   :bind (:map evil-insert-state-map
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
-              ("C-j" . company-complete-selection)) 
+              ("C-j" . company-complete-selection))
   :config
   (global-company-mode 1))
 
@@ -379,30 +337,6 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
   :config
   (push 'company-lsp company-backends))
 
-;; Helm
-(use-package helm
-  :diminish
-  :bind (("M-x" . helm-M-x)) 
-  :custom
-  (helm-split-window-inside-p t)
-  :config
-  (helm-mode t))
-
-;; Manage projectile projects using Helm
-(use-package helm-projectile
-  :after (helm projectile)
-  :custom
-  (projectile-completion-system 'helm)
-  :config
-  (projectile-mode)
-  (helm-projectile-on))
-
-;; Enable nice fuzzy-search for strings in project using the silver searcher
-(use-package helm-ag
-  :after (helm projectile)
-  :ensure-system-package (ag . "brew install ag")
-  :custom
-  (helm-ag-fuzzy-match t))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EVIL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -450,12 +384,12 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
 ;; Escape from many modes
 (use-package evil-escape
   :after evil
-  :diminish evil-escape-mode
+  :diminish
   :config
   (setq-default evil-escape-delay 0.2)
   (setq-default evil-escape-key-sequence "jk")
-  (evil-escape-mode)
-  (global-set-key (kbd "<escape>") 'evil-escape))
+  (global-set-key (kbd "<escape>") 'evil-escape)
+  (evil-escape-mode))
 
 ;; Match more than parentheses
 (use-package evil-matchit
@@ -508,19 +442,13 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (use-package js2-mode)
-(use-package php-mode)
-(use-package yaml-mode)
 (use-package emmet-mode)
+(use-package php-mode :mode ("\\.php\\'" . php-mode))
+(use-package yaml-mode :mode ("\\.yml\\'" . yaml-mode))
 (use-package web-mode
-  :after (js2-mode php-mode yaml-mode)
+  :after js2-mode
   :mode ("\\.js\\'" . js2-mode)
-  :mode ("\\.jsx\\'" . js2-mode)
-  :mode ("\\.php\\'" . php-mode)
-  :mode ("\\.css\\'" . css-mode)
-  :mode ("\\.html\\'" . web-mode)
-  :mode ("\\.json\\'" . web-mode)
-  :mode ("\\.scss\\'" . scss-mode)
-  :mode ("\\.yml\\'" . yaml-mode))
+  :mode ("\\.jsx\\'" . js2-mode))
 
 (use-package lsp-mode
   :hook (js2-mode . lsp)
@@ -551,3 +479,90 @@ _Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Insp
                                       :request "launch"
                                       :url "https://sdk.apester.local.com/"
                                       :webRoot "/Users/guyvalariola/Projects/box/projects/sdk/src")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HYDRAS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(use-package hydra
+  :config
+  ;; Taken from http://doc.rix.si/org/fsem.html
+  (defhydra hydra-zoom (global-map "C-c z")
+    "zoom"
+    ("g" text-scale-increase "in")
+    ("l" text-scale-decrease "out"))
+
+  (defhydra hydra-search (evil-normal-state-map "C-s" :exit t)
+    "Search"
+    ("q" nil "Quit")
+    ("s" swiper "Search in File")
+    ("p" counsel-projectile-ag "Search in Project"))
+
+  (defhydra hydra-project (evil-normal-state-map "C-p" :exit t)
+    "Project management"
+    ("q" nil "Quit")
+    ("p" counsel-projectile-find-file "Search for files in project")
+    ("s" counsel-projectile-switch-project "Switch Project"))
+
+  (defhydra hydra-leader (evil-normal-state-map "SPC" :exit t)
+    "Window management"
+    ("q" nil "Quit")
+    ("w" save-buffer "Save")
+    ("k" evil-window-up "Up")
+    ("j" evil-window-down "Down")
+    ("h" evil-window-left "Left")
+    ("l" evil-window-right "Right")
+    ("p" winner-undo "Winner: Undo")
+    ("n" winner-redo "Winner: Redo")
+    ("b" ivy-switch-buffer "Buffers")
+    ("Q" evil-window-delete "Quit Buffer")
+    ("L" evil-window-vsplit "Vertical Split")
+    ("J" evil-window-split "Horizontal Split")
+    ("rj" jump-to-register "Jump to save Window Layout")
+    ("ff" delete-other-windows "Delete all other windows")
+    ("swc" window-configuration-to-register "Save Window Layout")
+    ("f" counsel-find-file "Search for File")
+    ("n" neotree-toggle "Browse Current Directory")
+    ("cp" my/put-file-name-on-clipboard "Copy Filename")
+    ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
+    ("e" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
+    ("org" (lambda() (interactive)(find-file "~/Drive/etc/work.org")) "Work Org")
+    ("osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File"))
+
+  (defhydra hydra-dap (:color pink :hint nil :foreign-keys run)
+    "
+^Stepping^          ^Switch^                 ^Breakpoints^           ^Eval
+^^^^^^^^-----------------------------------------------------------------------------------------
+_n_: Next           _ss_: Session            _bt_: Toggle            _ee_: Eval
+^ ^                 ^ ^                      ^ ^                     _ec_: Eval to Clipboard
+_i_: Step in        _st_: Thread             _bd_: Delete            _er_: Eval region
+_o_: Step out       _sf_: Stack frame        _ba_: Add               _es_: Eval thing at point
+_c_: Continue       _sl_: List locals        _bc_: Set condition     _eii_: Inspect
+_r_: Restart frame  _sb_: List breakpoints   _bh_: Set hit count     _eir_: Inspect region
+_Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Inspect thing at point
+"
+    ("n" dap-next)
+    ("i" dap-step-in)
+    ("o" dap-step-out)
+    ("c" dap-continue)
+    ("r" dap-restart-frame)
+    ("ss" dap-switch-session)
+    ("st" dap-switch-thread)
+    ("sf" dap-switch-stack-frame)
+    ("sl" dap-ui-locals)
+    ("sb" dap-ui-breakpoints)
+    ("sS" dap-ui-sessions)
+    ("bt" dap-breakpoint-toggle)
+    ("ba" dap-breakpoint-add)
+    ("bd" dap-breakpoint-delete)
+    ("bc" dap-breakpoint-condition)
+    ("bh" dap-breakpoint-hit-condition)
+    ("bl" dap-breakpoint-log-message)
+    ("ee" dap-eval)
+    ("ec" my/dap-eval-to-clipboard)
+    ("er" dap-eval-region)
+    ("es" dap-eval-thing-at-point)
+    ("eii" dap-ui-inspect)
+    ("eir" dap-ui-inspect-region)
+    ("eis" dap-ui-inspect-thing-at-point)
+    ("q" nil "quit" :color blue)
+    ("Q" dap-disconnect :color red)))
