@@ -1,26 +1,20 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; SETUP ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; package --- Summary
+;;; Commentary:
+;; init.el --- Emacs configuration
 
-;; Initialize package manager
+;;                 Setup
+;; --------------------------------------
+
 (require 'package)
-(package-initialize)
-(add-to-list 'package-archives '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
 (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'diminish)
-  (package-install 'use-package))
-
-;; Provides performance boost once compiled (according to the docs)
-(eval-and-compile (require 'use-package))
-;; Implicit :ensure for all packages
-(require 'use-package-ensure)
-(setq use-package-always-ensure t)
-;; Helps suppress minor modes indications in mode line.
-(require 'diminish)
-;; Adds option of binding keys to packages.
-(require 'bind-key)
+(package-initialize)
+(when (not package-archive-contents)
+  (package-refresh-contents))
+(package-install 'use-package)
+(use-package use-package-ensure
+  :config  (setq use-package-always-ensure t))
+(use-package quelpa-use-package)
 
 ;; Add a :use-package-ensure-system symbol which enables
 ;; installation of *system* packages before installing a package.
@@ -34,29 +28,48 @@
   :config
   (exec-path-from-shell-initialize))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GENERAL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;               General
+;; --------------------------------------
 
-;; Quiet Startup
-(setq inhibit-startup-screen t)
-(setq inhibit-startup-message t)
-(setq initial-scratch-message nil)
-(setq inhibit-startup-echo-area-message t)
-
-;; Revert these files without asking.
-(setq revert-without-query '(".*"))
-
-;; Don’t add new lines past end of file
-(setq next-line-add-newlines nil)
-
-;; Replace yes or no prompt with y or n prompt.
-(fset 'yes-or-no-p 'y-or-n-p)
-
-;; Disable word-wrap
-(setq-default truncate-lines t)
+(use-package moody
+  :config
+  (setq x-underline-at-descent-line t)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode))
 
 ;; Use only spaces (no tabs)
 (setq-default indent-tabs-mode nil)
+(setq
+ inhibit-startup-screen t
+ inhibit-startup-message t
+ initial-scratch-message nil
+ inhibit-startup-echo-area-message t
+ ;; Setup Org Agenda to watch work.org file
+ org-agenda-files '("~/Drive/etc/work.org")
+ create-lockfiles nil
+ auto-save-default nil
+ ;; Disable backup, auto-save and lockfiles
+ make-backup-files nil
+ ;; Set `custom-file` location
+ custom-file "~/.emacs.d/custom.el"
+ ;; Remove annoying bell
+ ring-bell-function 'ignore
+ tab-stop-list (number-sequence 4 200 4)
+ ;; Set tab width to 4 spaces
+ tab-width 4
+ ;; Disable word-wrap
+ truncate-lines t
+ ;; Don’t add new lines past end of file
+ next-line-add-newlines nil
+ ;; Revert files without asking.
+ revert-without-query '(".*")
+ )
+
+;; Start initial frame maximized
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
+;; Replace yes or no prompt with y or n prompt.
+(fset 'yes-or-no-p 'y-or-n-p)
 
 ;; Set line numbers
 (global-display-line-numbers-mode)
@@ -67,21 +80,7 @@
 ;; Set file encoding to UTF-8
 (set-language-environment "UTF-8")
 
-;; Set tab width to 4 spaces
-(setq tab-width 4)
-(setq tab-stop-list (number-sequence 4 200 4))
-
-;; Remove annoying bell
-(setq ring-bell-function 'ignore)
-
-;; Set `custom-file` location
-(setq custom-file "~/.emacs.d/custom.el")
 (load custom-file 'noerror)
-
-;; Disable backup, auto-save and lockfiles
-(setq make-backup-files nil)
-(setq auto-save-default nil)
-(setq create-lockfiles nil)
 
 ;; Enable server for command line support
 (if (display-graphic-p)
@@ -90,11 +89,26 @@
 ;; Enable Winner mode (undo/redo for window layout)
 (winner-mode 1)
 
-;; Setup Org Agenda to watch work.org file
-(setq org-agenda-files '("~/Drive/etc/work.org"))
+;; Auto-update changed files
+(global-auto-revert-mode t)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; GUI ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Kill terminal buffer on exit
+(defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
+  (if (memq (process-status proc) '(signal exit))
+      (let ((buffer (process-buffer proc)))
+	ad-do-it
+	(kill-buffer buffer))
+    ad-do-it))
+(ad-activate 'term-sentinel)
+
+;; Set default ansi-term shell
+(defvar my-term-shell "/bin/zsh")
+(defadvice ansi-term (before force-bash)
+  (interactive (list my-term-shell)))
+(ad-activate 'ansi-term)
+
+;;             GUI Settings
+;; --------------------------------------
 
 ;; Remove menu-bar
 (menu-bar-mode -1)
@@ -114,27 +128,48 @@
  ((string-equal system-type "darwin")
   (progn
     (add-to-list 'default-frame-alist
-                 '(font . "Iosevka 14")))))
+                 '(font . "Iosevka 15")))))
 
-;; Set theme
-(use-package night-owl-theme
-  :if (display-graphic-p)
-  :init
-  (load-theme 'night-owl))
+;; Remove ARev indicator from modeline
+(diminish 'auto-revert-mode)
+
+;; Remove Undo-Tree indicator from modeline
+(diminish 'undo-tree-mode)
+
+;; Remove ElDoc indicator from modeline
+(diminish 'eldoc-mode)
+
+;; Themes
+(use-package doom-themes
+  :config
+  (doom-themes-org-config)
+  (load-theme 'doom-one t))
 
 ;; Sets a constant position and size for buffers based on a set of rules
 (use-package shackle
   :config
-  (setq shackle-rules '(("work.org" :popup t :align above :select t :ratio 0.25)))
+  (setq shackle-rules '(("*dap-ui-repl*" :popup t :align below :ratio 0.25)
+                        ("work.org" :popup t :align above :select t :ratio 0.25)))
   (shackle-mode))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; FUNCTIONS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                Functions
+;; --------------------------------------
+
+(defun my/change-of-perspective ()
+  "Load main state from Drive"
+  (interactive)
+  (persp-state-load "~/Drive/etc/main.persp"))
+
+(defun my/perspective-save ()
+  "Save project state to Drive"
+  (interactive)
+  (persp-state-save "~/Drive/etc/main.persp"))
 
 (defun my/js2-mode-setup nil
   "My js2-mode setup."
   (flycheck-mode t)
   (setq js-indent-level 2)
+  (setq js2-indent-switch-body t)
   (when (executable-find "eslint")
     (flycheck-select-checker 'javascript-eslint)))
 
@@ -161,7 +196,7 @@
       (message filename))))
 
 (defun my/dap-eval-to-clipboard (expression)
-  "Eval and print EXPRESSION."
+  "Eval EXPRESSION and save result to clipboard."
   (interactive "sEval: ")
   (let ((debug-session (dap--cur-active-session-or-die)))
     (if-let ((active-frame-id (-some->> debug-session
@@ -186,26 +221,61 @@
 
 (defun my/show-debug-windows (session)
   "Show debug windows."
-  (hydra-dap/body)
   (let ((lsp--cur-workspace (dap--debug-session-workspace session)))
     (save-excursion
       ;; display locals
       (unless (my/window-visible dap-ui--locals-buffer)
         (dap-ui-locals))
-      ;; display sessions
-      (unless (my/window-visible dap-ui--sessions-buffer)
-        (dap-ui-sessions)))))
+      (unless (my/window-visible "*dap-ui-repl*")
+        (dap-ui-repl)))))
 
 (defun my/hide-debug-windows (session)
   "Hide debug windows when all debug sessions are dead."
   (unless (-filter 'dap--session-running (dap--get-sessions))
-    (and (get-buffer dap-ui--sessions-buffer)
-         (kill-buffer dap-ui--sessions-buffer))
     (and (get-buffer dap-ui--locals-buffer)
-         (kill-buffer dap-ui--locals-buffer))))
+         (kill-buffer dap-ui--locals-buffer))
+    (and (get-buffer "*dap-ui-repl*")
+         (kill-buffer "*dap-ui-repl*"))
+    (mapcar (function kill-buffer) (remove-if-not (apply-partially #'string-match-p "\*SDK.*") (mapcar (function buffer-name) (buffer-list))))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; PACKAGES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                Packages
+;; --------------------------------------
+
+;; Org-mode + Contrib
+(use-package gnuplot)
+(use-package org
+  :pin org
+  :ensure org-plus-contrib
+  :hook (org-babel-after-execute . org-redisplay-inline-images)
+  :custom
+  (org-pretty-entities t)
+  (org-confirm-babel-evaluate nil)
+  (org-startup-with-inline-images t)
+  :config
+  (require 'ob-js)
+  (add-to-list 'org-babel-tangle-lang-exts '("js" . "js"))
+  (org-babel-do-load-languages 'org-babel-load-languages
+			       '((shell . t)
+				 (gnuplot . t)
+				 (js . t))))
+(use-package org-bullets
+  :requires org
+  :config
+  (org-bullets-mode 1))
+
+;; Amazing buffer & project management tool.
+;; Screw Drew Adams and bookmark+.
+(use-package perspective
+  :bind (
+         ("C-x x x" . my/perspective-save)
+         ("C-x x l" . my/change-of-perspective))
+  :config
+  (persp-mode))
+
+(use-package nov
+  :mode (("\\.epub\\'" . nov-mode))
+  :custom
+  (nov-text-width 60))
 
 (use-package paredit
   :hook (elisp-mode . paredit-mode))
@@ -215,36 +285,48 @@
 (use-package counsel-projectile
   :requires (counsel projectile))
 
+(use-package avy
+  :custom
+  (avy-timeout-seconds 0.25))
+
 (use-package swiper
   :after evil
   :bind (:map evil-normal-state-map
          ("/" . swiper)))
 
-(use-package ivy :ensure t
-  :diminish (ivy-mode . "")             ; does not display ivy in the modeline
+(use-package ivy
+  :diminish ivy-mode
   :init
-  (ivy-mode 1)                          ; enable ivy globally at startup
+  (ivy-mode 1)
   :config
-  (setq ivy-use-virtual-buffers t)       ; extend searching to bookmarks and
-  (setq ivy-height 20)                   ; set height of the ivy window
-  (setq ivy-count-format "(%d/%d) ")     ; count format, from the ivy help page
+  (setq ivy-height 20)
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
   (setq ivy-display-style 'fancy))
 
 (use-package magit)
 
 (use-package gist)
 
-(use-package yasnippet)
+(use-package yasnippet
+  :diminish yas-minor-mode
+  :config
+  (yas-global-mode 1))
+
+(use-package yasnippet-snippets
+  :requires yasnippet)
 
 (use-package neotree
   :custom
   (neo-window-position 'left)
   (neo-window-width 45))
 
-(use-package git-gutter
+(use-package diff-hl
   :diminish
   :config
-  (global-git-gutter-mode +1))
+  (global-diff-hl-mode 1)
+  :hook
+  (magit-post-refresh . diff-hl-magit-post-refresh))
 
 (use-package wakatime-mode
   :diminish
@@ -285,9 +367,36 @@
 (use-package prodigy
   :config
   (prodigy-define-service
+    :name "NPM Watch"
+    :command "npm"
+    :args '("run" "watch")
+    :cwd "/Users/guyvalariola/Projects/loans/"
+    :stop-signal 'sigterm
+    :tags '(personal))
+  (prodigy-define-service
+    :name "NPM Hot"
+    :command "npm"
+    :args '("run" "hot")
+    :cwd "/Users/guyvalariola/Projects/loans/"
+    :stop-signal 'sigterm
+    :tags '(personal))
+  (prodigy-define-service
+    :name "NPM Start"
+    :command "npm"
+    :args '("start")
+    :cwd "/Users/guyvalariola/Projects/loans/"
+    :stop-signal 'sigterm
+    :tags '(personal))
+  (prodigy-define-service
     :name "SDK"
     :command "docker-compose"
     :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk")
+    :stop-signal 'sigterm
+    :tags '(work sdk))
+  (prodigy-define-service
+    :name "SDK (Tests)"
+    :command "docker-compose"
+    :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk-tests")
     :stop-signal 'sigterm
     :tags '(work sdk))
   (prodigy-define-service
@@ -328,6 +437,8 @@
               ("C-n" . company-select-next)
               ("C-p" . company-select-previous)
               ("C-j" . company-complete-selection))
+  :custom
+  (company-dabbrev-downcase nil)
   :config
   (global-company-mode 1))
 
@@ -337,9 +448,8 @@
   :config
   (push 'company-lsp company-backends))
 
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; EVIL ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                   EVIL
+;; --------------------------------------
 
 (use-package evil
   :init
@@ -431,6 +541,12 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
+(use-package org-bullets
+	:ensure t
+	:config
+	)
+
+
 ;; Enable folding using zf
 (use-package evil-vimish-fold
   :after evil
@@ -438,32 +554,63 @@
   :config
   (evil-vimish-fold-mode 1))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; MODES ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                  MODES
+;; --------------------------------------
 
 (use-package js2-mode)
 (use-package emmet-mode)
 (use-package php-mode :mode ("\\.php\\'" . php-mode))
 (use-package yaml-mode :mode ("\\.yml\\'" . yaml-mode))
+(use-package toml-mode
+  :mode (("\\.tscn\\'" . toml-mode)))
 (use-package web-mode
   :after js2-mode
-  :mode ("\\.js\\'" . js2-mode)
-  :mode ("\\.jsx\\'" . js2-mode))
+  :mode (("\\.js\\'" . js2-mode)
+         ("\\.html\\'" . web-mode)
+         ("\\.jsx\\'" . js2-mode)))
 
 (use-package lsp-mode
+  :diminish
   :hook (js2-mode . lsp)
   :ensure-system-package ((tsserver . "npm i -g typescript")
                           (typescript-language-server . "npm i -g typescript-language-server")))
 
 (use-package dap-mode
+  :bind (("<f5>" . dap-debug)
+         ("<f6>" . dap-step-out)
+         ("<f7>" . dap-step-in)
+         ("<f8>" . dap-next)
+         ("<f9>" . dap-continue)
+         ("S-<f8>" . dap-breakpoint-toggle))
   :hook ((dap-stopped . my/show-debug-windows)
-         (dap-terninated . my/hide-debug-windows))
+         (dap-terminated . my/hide-debug-windows))
   :custom
   (dap-mode 1)
   (dap-ui-mode 1)
   :config
   (require 'dap-node)
-  (dap-register-debug-template "Users API"
+  (dap-register-debug-template "Display"
+                               (list :type "node"
+                                     :program ""
+                                     :port "30004"
+                                     :request "attach"
+                                     :remoteRoot "/app"
+                                     :localRoot "/Users/guyvalariola/Projects/box/projects/display"))
+  (dap-register-debug-template "Match"
+                               (list :type "node"
+                                     :program ""
+                                     :port "30010"
+                                     :request "attach"
+                                     :remoteRoot "/app"
+                                     :localRoot "/Users/guyvalariola/Projects/box/projects/match"))
+  (dap-register-debug-template "Campaign-API"
+                               (list :type "node"
+                                     :program ""
+                                     :port "30008"
+                                     :request "attach"
+                                     :remoteRoot "/app"
+                                     :localRoot "/Users/guyvalariola/Projects/box/projects/campaign-api"))
+  (dap-register-debug-template "Users"
                                (list :type "node"
                                      :program ""
                                      :port "30001"
@@ -476,20 +623,26 @@
                                       :type "chrome"
                                       :cwd nil
                                       :mode "url"
-                                      :request "launch"
-                                      :url "https://sdk.apester.local.com/"
+                                      :request "attach"
+                                      :port 9222
+                                      :url "https://sdk.apester.local.com/*"
                                       :webRoot "/Users/guyvalariola/Projects/box/projects/sdk/src")))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; HYDRAS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;                 HYDRAS
+;; --------------------------------------
 
 (use-package hydra
   :config
-  ;; Taken from http://doc.rix.si/org/fsem.html
+
   (defhydra hydra-zoom (global-map "C-c z")
-    "zoom"
-    ("g" text-scale-increase "in")
-    ("l" text-scale-decrease "out"))
+    "window resizing and zoom"
+    ("q" nil "Quit")
+    ("j" enlarge-window "Make Taller")
+    ("k" shrink-window "Make Taller")
+    ("h" enlarge-window-horizontally "Enlarge Horizontally")
+    ("l" shrink-window-horizontally "Shrink Horizontally")
+    ("=" text-scale-increase "in")
+    ("-" text-scale-decrease "out"))
 
   (defhydra hydra-search (evil-normal-state-map "C-s" :exit t)
     "Search"
@@ -505,64 +658,29 @@
 
   (defhydra hydra-leader (evil-normal-state-map "SPC" :exit t)
     "Window management"
-    ("q" nil "Quit")
     ("w" save-buffer "Save")
     ("k" evil-window-up "Up")
     ("j" evil-window-down "Down")
     ("h" evil-window-left "Left")
     ("l" evil-window-right "Right")
-    ("p" winner-undo "Winner: Undo")
-    ("n" winner-redo "Winner: Redo")
+    ("q" evil-window-delete "Quit")
+    ("p" prodigy "Prodigy")
     ("b" ivy-switch-buffer "Buffers")
-    ("Q" evil-window-delete "Quit Buffer")
+    ("g" magit-status "Magit Dashboard")
+    ("f" counsel-find-file "Search for File")
+    ("y" counsel-yank-pop "Search kill ring")
+    ("n" neotree-toggle "Browse Current Directory")
     ("L" evil-window-vsplit "Vertical Split")
     ("J" evil-window-split "Horizontal Split")
-    ("rj" jump-to-register "Jump to save Window Layout")
-    ("ff" delete-other-windows "Delete all other windows")
-    ("swc" window-configuration-to-register "Save Window Layout")
-    ("f" counsel-find-file "Search for File")
-    ("n" neotree-toggle "Browse Current Directory")
     ("cp" my/put-file-name-on-clipboard "Copy Filename")
+    ("rj" jump-to-register "Jump to save Window Layout")
+    ("dir" dired-jump "Open Dired in Current Directory")
+    ("swc" window-configuration-to-register "Save Window Layout")
+    ("term" eshell "EShell")
     ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
     ("e" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
-    ("org" (lambda() (interactive)(find-file "~/Drive/etc/work.org")) "Work Org")
-    ("osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File"))
+    ("org" (lambda() (interactive)(find-file "~/Drive/docs/orgs/work.org")) "Work Org")
+    ("stem" (lambda() (interactive)(find-file "~/Drive/docs/orgs/stem.org")) "STEM Org")
+    ("osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File")))
 
-  (defhydra hydra-dap (:color pink :hint nil :foreign-keys run)
-    "
-^Stepping^          ^Switch^                 ^Breakpoints^           ^Eval
-^^^^^^^^-----------------------------------------------------------------------------------------
-_n_: Next           _ss_: Session            _bt_: Toggle            _ee_: Eval
-^ ^                 ^ ^                      ^ ^                     _ec_: Eval to Clipboard
-_i_: Step in        _st_: Thread             _bd_: Delete            _er_: Eval region
-_o_: Step out       _sf_: Stack frame        _ba_: Add               _es_: Eval thing at point
-_c_: Continue       _sl_: List locals        _bc_: Set condition     _eii_: Inspect
-_r_: Restart frame  _sb_: List breakpoints   _bh_: Set hit count     _eir_: Inspect region
-_Q_: Disconnect     _sS_: List sessions      _bl_: Set log message   _eis_: Inspect thing at point
-"
-    ("n" dap-next)
-    ("i" dap-step-in)
-    ("o" dap-step-out)
-    ("c" dap-continue)
-    ("r" dap-restart-frame)
-    ("ss" dap-switch-session)
-    ("st" dap-switch-thread)
-    ("sf" dap-switch-stack-frame)
-    ("sl" dap-ui-locals)
-    ("sb" dap-ui-breakpoints)
-    ("sS" dap-ui-sessions)
-    ("bt" dap-breakpoint-toggle)
-    ("ba" dap-breakpoint-add)
-    ("bd" dap-breakpoint-delete)
-    ("bc" dap-breakpoint-condition)
-    ("bh" dap-breakpoint-hit-condition)
-    ("bl" dap-breakpoint-log-message)
-    ("ee" dap-eval)
-    ("ec" my/dap-eval-to-clipboard)
-    ("er" dap-eval-region)
-    ("es" dap-eval-thing-at-point)
-    ("eii" dap-ui-inspect)
-    ("eir" dap-ui-inspect-region)
-    ("eis" dap-ui-inspect-thing-at-point)
-    ("q" nil "quit" :color blue)
-    ("Q" dap-disconnect :color red)))
+;;; init.el ends here
