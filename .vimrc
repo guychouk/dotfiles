@@ -20,10 +20,10 @@ call plug#end()
 filetype plugin indent on  " Sets on filetype (Also from plugins)
 syntax on                  " Sets on syntax highlighting
 set tabstop=4              " Sets tab to 4 instead of vim's crazy 8
-set backspace=2 	       " Fix <BS> key
+set backspace=2 	   " Fix <BS> key
 set laststatus=2           " Set statusbar to always appear (for Lightline)
 set shiftwidth=4           " Assits with code formatting
-set encoding=utf-8	       " Encoding for files
+set encoding=utf-8	   " Encoding for files
 set clipboard=unnamed      " Mainly for better compatibility with Windows
 set foldmethod=syntax      " Set foldmethod for programming
 set nowrap                 " Disable line wrapping
