@@ -650,12 +650,6 @@
     ("s" swiper "Search in File")
     ("p" counsel-projectile-ag "Search in Project"))
 
-  (defhydra hydra-project (evil-normal-state-map "C-p" :exit t)
-    "Project management"
-    ("q" nil "Quit")
-    ("p" counsel-projectile-find-file "Search for files in project")
-    ("s" counsel-projectile-switch-project "Switch Project"))
-
   (defhydra hydra-leader (evil-normal-state-map "SPC" :exit t)
     "Window management"
     ("w" save-buffer "Save")
@@ -664,7 +658,6 @@
     ("h" evil-window-left "Left")
     ("l" evil-window-right "Right")
     ("q" evil-window-delete "Quit")
-    ("p" prodigy "Prodigy")
     ("b" ivy-switch-buffer "Buffers")
     ("g" magit-status "Magit Dashboard")
     ("f" counsel-find-file "Search for File")
@@ -672,10 +665,12 @@
     ("n" neotree-toggle "Browse Current Directory")
     ("L" evil-window-vsplit "Vertical Split")
     ("J" evil-window-split "Horizontal Split")
+    ("ps" prodigy "Prodigy")
+    ("pp" counsel-projectile-find-file "Search for files in project")
+    ("po" counsel-projectile-switch-project "Switch Project")
     ("cp" my/put-file-name-on-clipboard "Copy Filename")
     ("rj" jump-to-register "Jump to save Window Layout")
     ("dir" dired-jump "Open Dired in Current Directory")
-    ("swc" window-configuration-to-register "Save Window Layout")
     ("term" eshell "EShell")
     ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
     ("e" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
