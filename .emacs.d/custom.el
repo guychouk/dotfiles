@@ -11,6 +11,9 @@
     ("bd6ced8badda12f95e16e641d76d861de096c691720ede6388a226914e97cf23" "2a3ffb7775b2fe3643b179f2046493891b0d1153e57ec74bbe69580b951699ca" "2d392972cbe692ee4ac61dc79907af65051450caf690a8c4d36eb40c1857ba7d" "67798cfaf7b064072bf519ed1ade02a8f4412df89c560e35f25d1936cf35b8ce" "1728dfd9560bff76a7dc6c3f61e9f4d3e6ef9d017a83a841c117bd9bebe18613" "f589e634c9ff738341823a5a58fc200341b440611aaa8e0189df85b44533692b" "f30aded97e67a487d30f38a1ac48eddb49fdb06ac01ebeaff39439997cbdd869" "a2286409934b11f2f3b7d89b1eaebb965fd63bc1e0be1c159c02e396afb893c8" "f357d72451c46d51219c3afd21bb397a33cb059e21db1f4adeffe5b8a9093537" "1436d643b98844555d56c59c74004eb158dc85fc55d2e7205f8d9b8c860e177f" "a22f40b63f9bc0a69ebc8ba4fbc6b452a4e3f84b80590ba0a92b4ff599e53ad0" "585942bb24cab2d4b2f74977ac3ba6ddbd888e3776b9d2f993c5704aa8bb4739" default)))
  '(dap-mode 1 nil (dap-mode))
  '(dap-ui-mode 1 nil (dap-ui))
+ '(doom-modeline-buffer-file-name-style (quote relative-from-project))
+ '(doom-modeline-height 20)
+ '(doom-modeline-vcs-max-length 24)
  '(evil-collection-setup-debugger-keys t)
  '(evil-collection-setup-minibuffer t)
  '(exec-path-from-shell-check-startup-files nil)
@@ -40,7 +43,7 @@
  '(org-startup-with-inline-images t t)
  '(package-selected-packages
    (quote
-    (multiple-cursors moody org-bullets ace-jump-mode nov gnuplot gnuplot-mode quelpa godot-gdscript quelpa-use-package toml-mode perspective bookmark-plus bookmark+ doom-themes yasnippet-snippets writeroom-mode counsel-projectile counsel org-mode hydra prodigy multi-term company-lsp gist paredit indium buffer-move wakatime-mode shackle evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package)))
+    (eyebrowse use-package-ensure multiple-cursors moody org-bullets ace-jump-mode nov gnuplot gnuplot-mode quelpa godot-gdscript quelpa-use-package toml-mode perspective bookmark-plus bookmark+ doom-themes yasnippet-snippets writeroom-mode counsel-projectile counsel org-mode hydra prodigy multi-term company-lsp gist paredit indium buffer-move wakatime-mode shackle evil-vimish-fold flycheck evil-org evil-goggles evil-commentary evil-escape evil-matchit evil-anzu evil-collection org-plus-contrib dap-node dap-mode tern prettier-js spaceline general web-beautify web-mode emmet-mode json-mode yaml-mode php-mode powershell projectile evil-numbers evil-surround evil-mc evil company undo-tree diff-hl magit neotree exec-path-from-shell use-package-ensure-system-package gruvbox-theme diminish use-package)))
  '(pos-tip-background-color "#FFF9DC")
  '(pos-tip-foreground-color "#011627")
  '(powerline-default-separator (quote arrow-fade))

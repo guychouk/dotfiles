@@ -2,8 +2,8 @@
 ;;; Commentary:
 ;; init.el --- Emacs configuration
 
-;;                 Setup
 ;; --------------------------------------
+;;                 Setup
 
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
@@ -28,14 +28,19 @@
   :config
   (exec-path-from-shell-initialize))
 
-;;               General
 ;; --------------------------------------
+;;               General
 
-(use-package moody
+(setq-default line-spacing 3)
+
+(use-package all-the-icons)
+
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-mode)
   :config
-  (setq x-underline-at-descent-line t)
-  (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode))
+  (setq doom-modeline-height 1)
+  (setq doom-modeline-buffer-file-name-style 'truncate-with-project)
+  (setq doom-modeline-vcs-max-length 60))
 
 ;; Use only spaces (no tabs)
 (setq-default indent-tabs-mode nil)
@@ -128,7 +133,7 @@
  ((string-equal system-type "darwin")
   (progn
     (add-to-list 'default-frame-alist
-                 '(font . "Iosevka 15")))))
+                 '(font . "Hack 14")))))
 
 ;; Remove ARev indicator from modeline
 (diminish 'auto-revert-mode)
@@ -148,26 +153,16 @@
 ;; Sets a constant position and size for buffers based on a set of rules
 (use-package shackle
   :config
-  (setq shackle-rules '(("*dap-ui-repl*" :popup t :align below :ratio 0.25)
-                        ("work.org" :popup t :align above :select t :ratio 0.25)))
+  (setq shackle-rules '(("work.org" :popup t :align above :select t :ratio 0.25)))
   (shackle-mode))
 
-;;                Functions
 ;; --------------------------------------
-
-(defun my/change-of-perspective ()
-  "Load main state from Drive"
-  (interactive)
-  (persp-state-load "~/Drive/etc/main.persp"))
-
-(defun my/perspective-save ()
-  "Save project state to Drive"
-  (interactive)
-  (persp-state-save "~/Drive/etc/main.persp"))
+;;                Functions
 
 (defun my/js2-mode-setup nil
   "My js2-mode setup."
   (flycheck-mode t)
+  (global-eldoc-mode -1)
   (setq js-indent-level 2)
   (setq js2-indent-switch-body t)
   (when (executable-find "eslint")
@@ -175,25 +170,6 @@
 
 (defun disable-fylcheck-in-org-src-block ()
   (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
-
-(defun my/kill-thing-at-point (thing)
-  "Kill the `thing-at-point' for the specified kind of THING."
-  (let ((bounds (bounds-of-thing-at-point thing)))
-    (if bounds
-        (kill-region (car bounds) (cdr bounds))
-      (error "No %s at point" thing))))
-
-(defun my/put-file-name-on-clipboard ()
-  "Put the current file name on the clipboard"
-  (interactive)
-  (let ((filename (if (equal major-mode 'dired-mode)
-                      default-directory
-                    (buffer-file-name))))
-    (when filename
-      (with-temp-buffer
-        (insert filename)
-        (clipboard-kill-region (point-min) (point-max)))
-      (message filename))))
 
 (defun my/dap-eval-to-clipboard (expression)
   "Eval EXPRESSION and save result to clipboard."
@@ -238,8 +214,8 @@
          (kill-buffer "*dap-ui-repl*"))
     (mapcar (function kill-buffer) (remove-if-not (apply-partially #'string-match-p "\*SDK.*") (mapcar (function buffer-name) (buffer-list))))))
 
-;;                Packages
 ;; --------------------------------------
+;;                Packages
 
 ;; Org-mode + Contrib
 (use-package gnuplot)
@@ -263,15 +239,6 @@
   :config
   (org-bullets-mode 1))
 
-;; Amazing buffer & project management tool.
-;; Screw Drew Adams and bookmark+.
-(use-package perspective
-  :bind (
-         ("C-x x x" . my/perspective-save)
-         ("C-x x l" . my/change-of-perspective))
-  :config
-  (persp-mode))
-
 (use-package nov
   :mode (("\\.epub\\'" . nov-mode))
   :custom
@@ -284,10 +251,6 @@
 
 (use-package counsel-projectile
   :requires (counsel projectile))
-
-(use-package avy
-  :custom
-  (avy-timeout-seconds 0.25))
 
 (use-package swiper
   :after evil
@@ -305,6 +268,10 @@
   (setq ivy-display-style 'fancy))
 
 (use-package magit)
+
+(use-package eyebrowse
+  :init
+  (eyebrowse-mode t))
 
 (use-package gist)
 
@@ -433,10 +400,6 @@
 ;; Auto complete engine for Emacs
 (use-package company
   :diminish
-  :bind (:map evil-insert-state-map
-              ("C-n" . company-select-next)
-              ("C-p" . company-select-previous)
-              ("C-j" . company-complete-selection))
   :custom
   (company-dabbrev-downcase nil)
   :config
@@ -448,8 +411,8 @@
   :config
   (push 'company-lsp company-backends))
 
-;;                   EVIL
 ;; --------------------------------------
+;;                   EVIL
 
 (use-package evil
   :init
@@ -541,12 +504,6 @@
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
-(use-package org-bullets
-	:ensure t
-	:config
-	)
-
-
 ;; Enable folding using zf
 (use-package evil-vimish-fold
   :after evil
@@ -554,8 +511,8 @@
   :config
   (evil-vimish-fold-mode 1))
 
-;;                  MODES
 ;; --------------------------------------
+;;                  MODES
 
 (use-package js2-mode)
 (use-package emmet-mode)
@@ -572,8 +529,11 @@
 (use-package lsp-mode
   :diminish
   :hook (js2-mode . lsp)
+  :hook (typescript-mode . lsp)
   :ensure-system-package ((tsserver . "npm i -g typescript")
-                          (typescript-language-server . "npm i -g typescript-language-server")))
+                          (typescript-language-server . "npm i -g typescript-language-server"))
+  :custom
+  (lsp-prefer-flymake nil))
 
 (use-package dap-mode
   :bind (("<f5>" . dap-debug)
@@ -628,54 +588,56 @@
                                       :url "https://sdk.apester.local.com/*"
                                       :webRoot "/Users/guyvalariola/Projects/box/projects/sdk/src")))
 
-;;                 HYDRAS
 ;; --------------------------------------
+;;                 HYDRAS
 
 (use-package hydra
   :config
 
-  (defhydra hydra-zoom (global-map "C-c z")
-    "window resizing and zoom"
-    ("q" nil "Quit")
-    ("j" enlarge-window "Make Taller")
-    ("k" shrink-window "Make Taller")
-    ("h" enlarge-window-horizontally "Enlarge Horizontally")
-    ("l" shrink-window-horizontally "Shrink Horizontally")
-    ("=" text-scale-increase "in")
-    ("-" text-scale-decrease "out"))
-
-  (defhydra hydra-search (evil-normal-state-map "C-s" :exit t)
-    "Search"
-    ("q" nil "Quit")
-    ("s" swiper "Search in File")
-    ("p" counsel-projectile-ag "Search in Project"))
-
   (defhydra hydra-leader (evil-normal-state-map "SPC" :exit t)
-    "Window management"
+    "Leader key definitions"
     ("w" save-buffer "Save")
     ("k" evil-window-up "Up")
     ("j" evil-window-down "Down")
     ("h" evil-window-left "Left")
     ("l" evil-window-right "Right")
     ("q" evil-window-delete "Quit")
+    ("L" evil-window-vsplit "Vertical Split")
+    ("J" evil-window-split "Horizontal Split")
     ("b" ivy-switch-buffer "Buffers")
     ("g" magit-status "Magit Dashboard")
     ("f" counsel-find-file "Search for File")
     ("y" counsel-yank-pop "Search kill ring")
     ("n" neotree-toggle "Browse Current Directory")
-    ("L" evil-window-vsplit "Vertical Split")
-    ("J" evil-window-split "Horizontal Split")
+    ("sp" counsel-projectile-ag "Search in Project")
     ("ps" prodigy "Prodigy")
     ("pp" counsel-projectile-find-file "Search for files in project")
     ("po" counsel-projectile-switch-project "Switch Project")
-    ("cp" my/put-file-name-on-clipboard "Copy Filename")
-    ("rj" jump-to-register "Jump to save Window Layout")
+    ("term" ansi-term "Terminal")
     ("dir" dired-jump "Open Dired in Current Directory")
-    ("term" eshell "EShell")
-    ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
-    ("e" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
-    ("org" (lambda() (interactive)(find-file "~/Drive/docs/orgs/work.org")) "Work Org")
-    ("stem" (lambda() (interactive)(find-file "~/Drive/docs/orgs/stem.org")) "STEM Org")
-    ("osx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File")))
+    ("1" eyebrowse-switch-to-window-config-1 "Eyebrowse: Window Config 1")
+    ("2" eyebrowse-switch-to-window-config-2 "Eyebrowse: Window Config 2")
+    ("3" eyebrowse-switch-to-window-config-3 "Eyebrowse: Window Config 3")
+    ("4" eyebrowse-switch-to-window-config-4 "Eyebrowse: Window Config 4")
+    ("5" eyebrowse-switch-to-window-config-5 "Eyebrowse: Window Config 5")
+    ("6" eyebrowse-switch-to-window-config-6 "Eyebrowse: Window Config 6")
+    ("7" eyebrowse-switch-to-window-config-7 "Eyebrowse: Window Config 7")
+    ("8" eyebrowse-switch-to-window-config-8 "Eyebrowse: Window Config 8")
+    ("9" eyebrowse-switch-to-window-config-9 "Eyebrowse: Window Config 9")
+    ("ez" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
+    ("ei" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
+    ("eow" (lambda() (interactive)(find-file "~/Drive/docs/orgs/work.org")) "Work Org")
+    ("eos" (lambda() (interactive)(find-file "~/Drive/docs/orgs/stem.org")) "STEM Org")
+    ("esx" (lambda() (interactive)(find-file "~/Drive/etc/mac-setup.sh")) "OSX Setup File"))
+
+  (defhydra hydra-zoom (global-map "C-c z")
+    "Window resizing and text scaling"
+    ("q" nil "Quit")
+    ("k" shrink-window "Make Smaller")
+    ("j" enlarge-window "Make Taller")
+    ("l" shrink-window-horizontally "Shrink Horizontally")
+    ("h" enlarge-window-horizontally "Enlarge Horizontally")
+    ("=" text-scale-increase "in")
+    ("-" text-scale-decrease "out")))
 
 ;;; init.el ends here
