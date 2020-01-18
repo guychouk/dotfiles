@@ -5,7 +5,7 @@ PS1="%B%{$fg[red]%}[ %{$fg[yellow]%}%n%{$fg[green]%} %{$fg[magenta]%}%~%{$fg[red
 # History in cache directory:
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE=~/.cache/zsh/history
+HISTFILE=~/.cache/.zsh_history
 
 # Basic auto/tab complete:
 autoload -U compinit
@@ -24,10 +24,12 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
+bindkey '^R' history-incremental-search-backward
 
 setopt auto_cd # CD to path without using `cd`
 setopt hist_reduce_blanks # remove superfluous blanks from history items
 setopt hist_ignore_all_dups # remove older duplicate entries from history
+setopt appendhistory #Append history to the history file (no overwriting)
 setopt inc_append_history # save history entries as soon as they are entered
 setopt share_history # share history between different instances of the shell
 unsetopt PROMPT_SP # Fix percent sign on initialization
@@ -54,3 +56,5 @@ source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.in
 
 # Load zsh-syntax-highlighting; should be last.
 source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
