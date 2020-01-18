@@ -12,37 +12,45 @@
     (add-to-list 'auto-mode-alist
                  (cons file mode))))
 
-(package-install 'rust-mode)
-(defvar rust-format-on-save t)
+; JS: "npm i -g typescript" + "npm i -g typescript-language-server"
+; RUST: "rustup component add rls rust-analysis rust-src"
+(package-install 'lsp-mode)
+(defvar lsp-prefer-flymake nil)
+
 (package-install 'cargo)
+(package-install 'rust-mode)
 (package-install 'flycheck-rust)
-(add-to-list 'auto-mode-alist '("\\.rs$" . rust-mode))
+(defvar rust-format-on-save t)
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+(add-to-mode 'rust-mode (list "\\.rs$"))
+(add-hook 'rust-mode-hook 'lsp)
+(add-hook 'rust-mode-hook 'cargo-minor-mode)
 
 (package-install 'js2-mode)
+(add-hook 'js2-mode-hook 'lsp)
 (add-to-mode 'js2-mode (list "\\.js$" "\\.jsx$"))
+
 (package-install 'typescript-mode)
-(add-to-list 'auto-mode-alist '("\\.tsx$" . typescript-mode))
+(add-hook 'typescript-mode-hook 'lsp)
+(add-to-mode 'typescript-mode (list "\\.ts$" "\\.tsx$"))
+
 (package-install 'rjsx-mode)
-(add-to-list 'auto-mode-alist '("components\\/.*\\.js$" . rjsx-minor-mode))
+(add-to-mode 'rjsx-minor-mode (list "components\\/.*\\.js$" "\\.jsx$" "\\.tsx$"))
 
 (package-install 'emmet-mode)
 
 (package-install 'json-mode)
-(add-to-list 'auto-mode-alist '("\\.json$" . json-mode))
+(add-to-mode 'json-mode (list "\\.json$"))
 
 (package-install 'php-mode)
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
+(add-to-mode 'php-mode (list "\\.php$"))
 
 (package-install 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
+(add-to-mode 'yaml-mode (list "\\.yml$"))
 
 (package-install 'web-mode)
-(add-to-list 'auto-mode-alist '("\\.html$" . yaml-mode))
+(add-to-mode 'web-mode (list "\\.html$"))
 
-; "npm i -g typescript" + "npm i -g typescript-language-server"
-(package-install 'lsp-mode)
-(add-hook 'js2-mode-hook 'lsp)
-(add-hook 'typescript-mode-hook 'lsp)
-(defvar lsp-prefer-flymake nil)
 
 ;;; modes.el ends here

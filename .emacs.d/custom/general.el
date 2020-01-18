@@ -51,6 +51,8 @@
  truncate-lines t
  ;; Don’t add new lines past end of file
  next-line-add-newlines nil
+ ;; See https://github.com/lewang/flx for origin of this GC value
+ gc-cons-threshold 20000000
  ;; Revert files without asking.
  revert-without-query '(".*"))
 
