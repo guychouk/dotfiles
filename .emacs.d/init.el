@@ -32,7 +32,7 @@
 (load-custom-file "helpers.el")
 (load-custom-file "packages.el")
 (load-custom-file "hydras.el")
-(load-custom-file "debug.el")
+(load-custom-file "dap.el")
 (load-custom-file "services.el")
 (load-custom-file "modes.el")
 
