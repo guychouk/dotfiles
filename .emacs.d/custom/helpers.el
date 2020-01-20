@@ -5,6 +5,12 @@
 
 ;;; Code:
 
+(defun my/window-visible (b-name)
+  "Return whether B-NAME is visible."
+  (-> (-compose 'buffer-name 'window-buffer)
+      (-map (window-list))
+      (-contains? b-name)))
+
 (defun sort-lines-by-length (reverse beg end)
   "Sort REVERSE by length from BEG to END."
   (interactive "P\nr")
