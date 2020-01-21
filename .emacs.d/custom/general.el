@@ -8,7 +8,7 @@
 (defvar my-term-shell "/bin/zsh" "Default terminal shell.")
 
 (defadvice term-sentinel (around my-advice-term-sentinel (proc msg))
-  "Kill terminal buffer on exit."
+  "Advice to kill terminal buffer on exit."
   (if (memq (process-status proc) '(signal exit))
       (let ((buffer (process-buffer proc)))
 	ad-do-it
@@ -16,7 +16,7 @@
     ad-do-it))
 
 (defadvice ansi-term (before force-bash)
-  "Force my-term-shell when calling 'ansi-term'."
+  "Advice to force my-term-shell when calling 'ansi-term'."
   (interactive (list my-term-shell)))
 
 (ad-activate 'ansi-term)
