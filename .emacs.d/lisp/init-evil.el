@@ -1,11 +1,12 @@
-;;; evil.el --- Evil Setup
+;;; init-evil.el --- Evil Setup
 
 ;;; Commentary:
 ;; This file is responsible for setting up Evil.
 
 ;;; Code:
 
-(package-install 'evil)
+;; -*- coding: utf-8; lexical-binding: t; -*-
+
 (require 'evil)
 
 (setq evil-default-state 'normal)
@@ -15,6 +16,7 @@
 (evil-set-initial-state 'term-mode 'emacs)
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'neotree-mode 'emacs)
+(evil-set-initial-state 'prodigy-mode 'emacs)
 (evil-set-initial-state 'dashboard-mode 'emacs)
 (evil-set-initial-state 'git-blame-mode 'emacs)
 (evil-set-initial-state 'git-commit-mode 'emacs)
@@ -26,44 +28,38 @@
 
 (evil-mode 1)
 
-;; Enable increment / decrement of numbers with C-= and C-- similar to Vim
-(package-install 'evil-numbers)
+;; evil-numbers: Enable increment / decrement of numbers with C-= and C-- similar to Vim
 (define-key evil-normal-state-map (kbd "C-=") 'evil-numbers/inc-at-pt)
 (define-key evil-normal-state-map (kbd "C--") 'evil-numbers/dec-at-pt)
 
-;; Escape from many modes
-(package-install 'evil-escape)
+;; evil-escape: Escape from many modes
 (setq-default evil-escape-delay 0.2)
 (setq-default evil-escape-key-sequence "jk")
 (global-set-key (kbd "<escape>") 'evil-escape)
 (evil-escape-mode)
 
-;; Match more than parentheses
-(package-install 'evil-matchit)
+;; evil-matchit: Match more than parentheses
 (global-evil-matchit-mode 1)
 
-;; Emulate vim-surround package
-(package-install 'evil-surround)
+;; evil-surround: Emulate vim-surround package
 (global-evil-surround-mode 1)
 
-;; Enable commenting of lines using <s-/>
-(package-install 'evil-commentary)
+;; evil-commentary: Enable commenting of lines using <s-/>
 (evil-commentary-mode)
 
-;; Show various types of evil actions *visually*
-(package-install 'evil-goggles)
+;; evil-goggles: Show various types of evil actions *visually*
 (evil-goggles-mode)
 (evil-goggles-use-diff-faces)
 
-;; Setup Evil with Org mode
-(package-install 'evil-org)
+;; evil-org: Setup Evil with Org mode
 (add-hook 'org-mode-hook 'evil-org-mode)
 (add-hook 'evil-org-mode-hook (lambda () (evil-org-set-key-theme)))
 (require 'evil-org-agenda)
 (evil-org-agenda-set-keys)
 
-;; Enable folding using zf
-(package-install 'evil-vimish-fold)
+;; evil-vimish-fold: Enable folding using zf
 (evil-vimish-fold-mode 1)
 
-;;; evil.el ends here
+(provide 'init-evil)
+
+;;; init-evil.el ends here

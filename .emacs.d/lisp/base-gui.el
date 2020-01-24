@@ -1,8 +1,10 @@
-;;; gui.el --- GUI Setup
+;;; base-gui.el --- GUI Setup
 ;;; Commentary:
 ;;
 
 ;;; Code:
+
+;; -*- coding: utf-8; lexical-binding: t; -*-
 
 ;; Remove menu-bar
 (menu-bar-mode -1)
@@ -25,17 +27,16 @@
                  '(font . "Hack 13")))))
 
 ;; Themes
-(package-install 'all-the-icons)
-(package-install 'doom-themes)
 (doom-themes-org-config)
 (load-theme 'doom-one t)
 
 ;; Setup modeline
-(package-install 'doom-modeline)
 (require 'doom-modeline)
 (add-hook 'after-init-hook 'doom-modeline-mode)
 (setq doom-modeline-height 1
       doom-modeline-buffer-file-name-style 'truncate-with-project
       doom-modeline-vcs-max-length 60)
 
-;;; gui.el ends here
+(provide 'base-gui)
+
+;;; base-gui.el ends here

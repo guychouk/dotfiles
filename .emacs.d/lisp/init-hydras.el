@@ -1,10 +1,11 @@
-;;; hydras.el --- My Hydras file.
+;;; init-hydras.el --- My Hydras init file.
 ;;; Commentary:
 ;; A single file for all of my Hydra definitions.
 
 ;;; Code:
 
-(package-install 'hydra)
+;; -*- coding: utf-8; lexical-binding: t; -*-
+
 (require 'hydra)
 
 (defhydra hydra-leader (evil-normal-state-map "SPC" :exit t)
@@ -55,4 +56,6 @@
   ("=" text-scale-increase "in")
   ("-" text-scale-decrease "out"))
 
-;;; hydras.el ends here
+(provide 'init-hydras)
+
+;;; init-hydras.el ends here

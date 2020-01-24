@@ -1,66 +1,56 @@
-;;; packages.el --- My Packages file.
+;;; init-packages.el --- My Packages Setup file.
 ;;; Commentary:
 ;;
 
 ;;; Code:
 
-(package-install 'gist)
+;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(package-install 'magit)
 
-(package-install 'counsel)
-
-(package-install 'eyebrowse)
+; eyebrowse
 (eyebrowse-mode t)
 
-(package-install 'nov)
+; nov
 (defvar nov-text-width 60)
 (add-to-list 'auto-mode-alist '("\\.epub$" . nov-mode))
 
-(package-install 'company)
+; company
 (require 'company)
 (setq company-dabbrev-downcase nil)
 (add-hook 'after-init-hook 'global-company-mode)
 
-(package-install 'company-lsp)
+; company-lsp
 (require 'company-lsp)
 (push 'company-lsp company-backends)
 
 ;; Index and search projects using standard means
 ;; "brew install the_silver_searcher"
-(package-install 'projectile)
 (projectile-mode +1)
 (setq projectile-enable-caching nil)
 (setq projectile-completion-system 'ivy)
 (setq projectile-indexing-method 'alien)
 
-(package-install 'counsel-projectile)
-
-(package-install 'swiper)
+; swiper
 (define-key evil-normal-state-map (kbd "/") 'swiper)
 
-(package-install 'ivy)
+; ivy
 (ivy-mode 1)
 (setq ivy-height 20)
 (setq ivy-use-virtual-buffers t)
 (setq ivy-count-format "(%d/%d) ")
 (setq ivy-display-style 'fancy)
 
-(package-install 'yasnippet)
+; yasnippet
 (yas-global-mode 1)
 
-(package-install 'yasnippet-snippets)
-
-(package-install 'diff-hl)
+; diff-hl
 (global-diff-hl-mode 1)
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
-; "pip install wakatime"
-(package-install 'wakatime-mode)
+; wakatime-mode + "pip install wakatime"
 (global-wakatime-mode)
 
-; "npm i -g eslint"
-(package-install 'flycheck)
+; flycheck + "npm i -g eslint"
 (global-flycheck-mode)
 (setq flycheck-check-syntax-automatically '(save mode-enable))
 (setq flycheck-indication-mode nil)
@@ -69,3 +59,7 @@
               (append flycheck-disabled-checkers
                       '(javascript-jshint)))
 (add-hook 'js2-mode-hook 'my/js2-mode-setup)
+
+(provide 'init-packages)
+
+;;; init-packages.el ends here

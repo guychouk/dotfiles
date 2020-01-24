@@ -1,9 +1,11 @@
-;;; general.el --- General setup
+;;; base.el --- Basic Setup
 
 ;;; Commentary:
 ;; General settings and variable declerations
 
 ;;; Code:
+
+;; -*- coding: utf-8; lexical-binding: t; -*-
 
 (defvar my-term-shell "/bin/zsh" "Default terminal shell.")
 
@@ -84,4 +86,6 @@
 ;; Auto-update changed files
 (global-auto-revert-mode t)
 
-; general.el ends here
+(provide 'base)
+
+;;; base.el ends here

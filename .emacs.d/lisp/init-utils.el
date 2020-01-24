@@ -1,15 +1,45 @@
-;;; helpers.el --- Various helper methods
+;;; init-utils.el --- Various utility functions
 
 ;;; Commentary:
-;; Generic helper utilities file.
+;; Generic helpers & utilities.
 
 ;;; Code:
+
+;; -*- coding: utf-8; lexical-binding: t; -*-
+
+(defun local-require (pkg)
+  "Require local PKG in site-lisp directory."
+  (unless (featurep pkg)
+    (load (expand-file-name
+           (cond
+            ((eq pkg 'go-mode-load)
+             (format "~/.emacs.d/site-lisp/go-mode/%s" pkg))
+            (t
+             (format "~/.emacs.d/site-lisp/%s/%s" pkg pkg))))
+          t t)))
 
 (defun my/window-visible (b-name)
   "Return whether B-NAME is visible."
   (-> (-compose 'buffer-name 'window-buffer)
       (-map (window-list))
       (-contains? b-name)))
+
+(defun org-insert-clipboard-image ()
+  "Save image from clipboard as with timestamp to /orgs/img directory and paste in org file."
+  (interactive)
+  (let ((file (concat
+               default-directory
+               "img/"
+                (concat "screenshot" "_" (format-time-string "%Y%m%d_%H%M%S_") ".png"))))
+    (shell-command (concat "pngpaste " file))
+    (insert (concat "[[" file "]]")))
+  (org-display-inline-images))
+
+(defun my-org-hook ()
+  "My Org mode hook."
+  (local-set-key (kbd "C-c C-p i") 'org-insert-clipboard-image))
+
+(add-hook 'org-mode-hook 'my-org-hook)
 
 (defun sort-lines-by-length (reverse beg end)
   "Sort REVERSE by length from BEG to END."
@@ -50,4 +80,6 @@
 (defun disable-fylcheck-in-org-src-block ()
   (setq-local flycheck-disabled-checkers '(emacs-lisp-checkdoc)))
 
-;;; helpers.el ends here
+(provide 'init-utils)
+
+;;; init-utils.el ends here

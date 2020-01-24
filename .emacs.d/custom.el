@@ -7,7 +7,7 @@
  '(exec-path-from-shell-check-startup-files nil)
  '(package-selected-packages
    (quote
-    (toml-mode company-restclient restclient neotree paredit org-bullets org-plus-contrib gnuplot shackle diminish json-mode lsp-mode web-mode yaml-mode php-mode emmet-mode rjsx-mode typescript-mode js2-mode flycheck-rust cargo rust-mode dap-mode evil yasnippet ivy swiper projectile company-lsp all-the-icons counsel use-package yasnippet-snippets wakatime-mode use-package-ensure-system-package quelpa-use-package prodigy nov markdown-mode magit hydra gist flycheck eyebrowse exec-path-from-shell evil-vimish-fold evil-surround evil-org evil-numbers evil-matchit evil-goggles evil-escape evil-commentary evil-collection doom-themes doom-modeline diff-hl counsel-projectile company))))
+    (all-the-icons cargo company company-lsp company-restclient counsel counsel-projectile dap-mode diff-hl diminish doom-modeline doom-themes emmet-mode evil evil-collection evil-commentary evil-escape evil-goggles evil-matchit evil-numbers evil-org evil-surround evil-vimish-fold exec-path-from-shell eyebrowse flycheck flycheck-rust gist gnuplot hydra ivy js2-mode json-mode lsp-mode magit markdown-mode neotree nov org-bullets org-plus-contrib paredit php-mode prodigy projectile quelpa-use-package restclient rjsx-mode rust-mode shackle swiper toml-mode typescript-mode use-package use-package-ensure-system-package wakatime-mode web-mode yaml-mode yasnippet yasnippet-snippets))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

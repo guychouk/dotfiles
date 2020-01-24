@@ -1,5 +1,11 @@
-;; Enables management of predefined services
-(package-install 'prodigy)
+;;; init-services.el --- My Prodigy Services
+;;; Commentary:
+;;
+
+;;; Code:
+
+;; -*- coding: utf-8; lexical-binding: t; -*-
+
 (require 'prodigy)
 (prodigy-define-service
   :name "SDK"
@@ -74,3 +80,7 @@
   :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "player")
   :stop-signal 'sigterm
   :tags '(work sdk))
+
+(provide 'init-services)
+
+;;; init-services.el ends here
