@@ -6,7 +6,6 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-
 ; eyebrowse
 (eyebrowse-mode t)
 
@@ -18,6 +17,8 @@
 (require 'company)
 (setq company-dabbrev-downcase nil)
 (add-hook 'after-init-hook 'global-company-mode)
+(define-key company-active-map (kbd "<tab>") 'company-select-next)
+(define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
 ; company-lsp
 (require 'company-lsp)
