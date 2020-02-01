@@ -34,6 +34,8 @@
   "Load PKG by giving the `load` function an absolute path (faster)."
   (load (file-truename (format "~/.emacs.d/lisp/%s" pkg))))
 
+(add-to-list 'load-path "~/.emacs.d/emacs-libvterm")
+(require 'vterm)
 
 (require-init 'base)
 (require-init 'init-package)

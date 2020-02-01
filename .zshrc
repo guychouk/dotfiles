@@ -41,6 +41,7 @@ alias init_dev='dc up -d campaign-api sdk users interaction editor console strip
 alias users_groups='http-prompt --env ~/Projects/iab-sellers/groups.req'
 alias users_publishers='http-prompt --env ~/Projects/iab-sellers/publisher.req'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias ffc='ffmpeg -i "`ls -t1 |  head -n 1`" ../output.gif'
 
 # Setup NVM
 export NVM_DIR="$HOME/.nvm"
@@ -58,3 +59,8 @@ source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.in
 source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+
+# Some Locale configuration
+export LANGUAGE=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8

@@ -9,7 +9,7 @@
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
 (defun add-to-mode (mode lst)
-  "Add LST of file extensions to MODE."
+  "Add LST of file extensions to major MODE."
   (dolist (file lst)
     (add-to-list 'auto-mode-alist
                  (cons file mode))))
@@ -22,25 +22,24 @@
 (defvar rust-format-on-save t)
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
-(add-to-mode 'rust-mode (list "\\.rs$"))
-(add-hook 'rust-mode-hook 'lsp)
-(add-hook 'rust-mode-hook 'cargo-minor-mode)
+(add-to-mode 'rust-mode (list "\\.rs\\'"))
+(add-hook 'rust-mode-hook #'lsp)
+(add-hook 'rust-mode-hook #'cargo-minor-mode)
 
-(add-hook 'js2-mode-hook 'lsp)
-(add-to-mode 'js2-mode (list "\\.js$" "\\.jsx$"))
+(add-to-mode 'js2-mode (list "\\.js\\'"))
+(add-hook 'js2-mode-hook #'lsp)
 
-(add-hook 'typescript-mode-hook 'lsp)
-(add-to-mode 'typescript-mode (list "\\.ts$" "\\.tsx$"))
+(add-to-mode 'typescript-mode (list "\\.ts\\'" "\\.d\\.ts\\'"))
+(add-hook 'typescript-mode-hook #'lsp)
 
-(add-to-mode 'rjsx-minor-mode (list "components\\/.*\\.js$" "\\.jsx$" "\\.tsx$"))
+(add-to-mode 'json-mode (list "\\.json\\'"))
 
-(add-to-mode 'json-mode (list "\\.json$"))
+(add-to-mode 'php-mode (list "\\.php\\'"))
 
-(add-to-mode 'php-mode (list "\\.php$"))
+(add-to-mode 'yaml-mode (list "\\.yml\\'"))
 
-(add-to-mode 'yaml-mode (list "\\.yml$"))
-
-(add-to-mode 'web-mode (list "\\.html$"))
+(add-to-mode 'web-mode (list "\\.html\\'" "\\.tsx\\'" "\\.jsx\\'" "\\.svelte\\'"))
+(add-hook 'web-mode-hook #'lsp)
 
 (provide 'init-modes)
 

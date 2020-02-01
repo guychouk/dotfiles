@@ -27,7 +27,7 @@
   ("ps" prodigy "Prodigy")
   ("pp" counsel-projectile-find-file "Search for files in project")
   ("po" counsel-projectile-switch-project "Switch Project")
-  ("term" ansi-term "Terminal")
+  ("term" vterm "Terminal")
   ("dir" dired-jump "Open Dired in Current Directory")
   ("1" eyebrowse-switch-to-window-config-1 "Eyebrowse: Window Config 1")
   ("2" eyebrowse-switch-to-window-config-2 "Eyebrowse: Window Config 2")

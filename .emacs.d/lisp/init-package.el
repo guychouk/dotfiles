@@ -52,7 +52,6 @@
                                   php-mode
                                   prodigy
                                   projectile
-                                  rjsx-mode
                                   rust-mode
                                   swiper
                                   typescript-mode
@@ -76,7 +75,8 @@
   (package-install 'exec-path-from-shell)
   (defvar exec-path-from-shell-check-startup-files nil)
   (require 'exec-path-from-shell)
-  (exec-path-from-shell-initialize))
+  (exec-path-from-shell-initialize)
+  (exec-path-from-shell-copy-envs '("LANG" "LC_ALL" "LC_CTYPES")))
 
 (provide 'init-package)
 
