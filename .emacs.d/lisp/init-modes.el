@@ -39,6 +39,7 @@
 (add-to-mode 'yaml-mode (list "\\.yml\\'"))
 
 (add-to-mode 'web-mode (list "\\.html\\'" "\\.tsx\\'" "\\.jsx\\'" "\\.svelte\\'"))
+(add-to-list 'lsp-disabled-clients '(web-mode . angular-ls))
 (add-hook 'web-mode-hook #'lsp)
 
 (provide 'init-modes)
