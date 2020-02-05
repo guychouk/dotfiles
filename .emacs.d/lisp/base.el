@@ -10,7 +10,9 @@
 (defvar my-term-shell "/bin/zsh" "Default terminal shell.")
 
 (add-hook 'vterm-exit-functions #'(lambda (buf e)
-                                      (when buf (kill-buffer buf))))
+                                    (when buf
+                                      (kill-buffer buf)
+                                      (call-interactively 'evil-window-delete))))
 
 (setq-default
  ;; Line spacing
