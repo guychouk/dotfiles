@@ -33,12 +33,6 @@
   :stop-signal 'sigterm
   :tags '(work sdk))
 (prodigy-define-service
-  :name "SDK (Tests)"
-  :command "docker-compose"
-  :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk-tests")
-  :stop-signal 'sigterm
-  :tags '(tests sdk))
-(prodigy-define-service
   :name "Editor"
   :command "docker-compose"
   :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "editor")
@@ -51,6 +45,12 @@
   :stop-signal 'sigterm
   :tags '(work sdk))
 (prodigy-define-service
+  :name "Campaign-API"
+  :command "docker-compose"
+  :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "campaign-api")
+  :stop-signal 'sigterm
+  :tags '(work sdk))
+(prodigy-define-service
   :name "Display"
   :command "docker-compose"
   :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "display")
@@ -60,12 +60,6 @@
   :name "Plans-API"
   :command "docker-compose"
   :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "plans-api")
-  :stop-signal 'sigterm
-  :tags '(work sdk))
-(prodigy-define-service
-  :name "Campaign-API"
-  :command "docker-compose"
-  :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "campaign-api")
   :stop-signal 'sigterm
   :tags '(work sdk))
 (prodigy-define-service

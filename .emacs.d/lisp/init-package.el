@@ -72,7 +72,8 @@
 
 ;; Only use this if OS is Mac OSX to fix the $PATH environment variable
 (when *is-a-mac*
-  (package-install 'exec-path-from-shell)
+  (when (not (package-installed-p 'exec-path-from-shell))
+              (package-install 'exec-path-from-shell))
   (defvar exec-path-from-shell-check-startup-files nil)
   (require 'exec-path-from-shell)
   (exec-path-from-shell-initialize)

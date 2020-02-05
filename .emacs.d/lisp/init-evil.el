@@ -14,6 +14,7 @@
 
 (evil-set-initial-state 'eww-mode 'emacs)
 (evil-set-initial-state 'term-mode 'emacs)
+(evil-set-initial-state 'vterm-mode 'emacs)
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'neotree-mode 'emacs)
 (evil-set-initial-state 'prodigy-mode 'emacs)
