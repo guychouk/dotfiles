@@ -39,8 +39,10 @@
                                   flycheck-rust
                                   gist
                                   gnuplot
+                                  go-mode
                                   hydra
                                   ivy
+                                  ivy-posframe
                                   js2-mode
                                   json-mode
                                   lsp-mode

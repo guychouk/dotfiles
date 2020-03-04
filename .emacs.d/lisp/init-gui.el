@@ -33,9 +33,11 @@
 ;; Setup modeline
 (require 'doom-modeline)
 (add-hook 'after-init-hook 'doom-modeline-mode)
-(setq doom-modeline-height 1
-      doom-modeline-buffer-file-name-style 'truncate-with-project
+(setq doom-modeline-height 25
+      doom-modeline-buffer-file-name-style 'relative-from-project
       doom-modeline-vcs-max-length 60)
+(set-face-attribute 'mode-line nil :family "Hack" :height 120)
+(set-face-attribute 'mode-line-inactive nil :family "Hack" :height 120)
 
 (provide 'init-gui)
 

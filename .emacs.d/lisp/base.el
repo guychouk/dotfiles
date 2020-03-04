@@ -40,7 +40,7 @@
  ;; Set tab width to 4 spaces
  tab-width 4
  ;; Disable word-wrap
- truncate-lines t
+ truncate-lines nil
  ;; Don’t add new lines past end of file
  next-line-add-newlines nil
  ;; See https://github.com/lewang/flx for origin of this GC value

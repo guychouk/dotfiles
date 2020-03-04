@@ -24,7 +24,7 @@
   ("y" counsel-yank-pop "Search kill ring")
   ("sp" counsel-projectile-ag "Search in Project")
   ("ps" prodigy "Prodigy")
-  ("pp" counsel-projectile-find-file "Search for files in project")
+  ("." counsel-projectile-find-file "Search for files in project")
   ("po" counsel-projectile-switch-project "Switch Project")
   ("term" vterm "Terminal")
   ("dir" dired-jump "Open Dired in Current Directory")

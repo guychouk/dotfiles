@@ -47,6 +47,15 @@
  ivy-count-format "(%d/%d) "
  ivy-display-style 'fancy)
 
+(require 'ivy-posframe)
+(setq ivy-posframe-display-functions-alist
+      '((swiper . nil)
+        (t . ivy-posframe-display-at-point)))
+(setq ivy-posframe-parameters
+      '((left-fringe . 3)
+        (right-fringe . 3)))
+(ivy-posframe-mode 1)
+
 ; yasnippet
 (yas-global-mode 1)
 

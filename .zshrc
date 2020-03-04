@@ -45,6 +45,9 @@ alias users_groups='http-prompt --env ~/Projects/iab-sellers/groups.req'
 alias users_publishers='http-prompt --env ~/Projects/iab-sellers/publisher.req'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias ffc='ffmpeg -i "`ls -t1 |  head -n 1`" ../output.gif'
+alias pip=pip3
+alias python=python3
+alias req='http --verify=no'
 
 # Some Locale configuration
 export LANG=en_US.UTF-8
@@ -52,8 +55,12 @@ export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 # Set Emacs as default terminal editor
 export EDITOR="emacs -nw"
-# Add yarn & npm bin directories to path
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$PATH"
+# Add yarn, npm & go bin directories to path
+export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH"
+# Local Display URL
+export LOCAL_DISPLAY="https://display.apester.local.com/interactions/5dbaf93afcb26f005fc37529/display"
+# Local Match URL
+export LOCAL_MATCH="http://match.apester.local.com/interactions/5dbaf93afcb26f005fc37529/campaigns"
 
 # Setup Google cloud SDK completions
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
