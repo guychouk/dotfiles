@@ -8,6 +8,8 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
+(setenv "TSSERVER_LOG_FILE" "/tmp/tsserver.log")
+
 (defun add-to-mode (mode lst)
   "Add LST of file extensions to major MODE."
   (dolist (file lst)
