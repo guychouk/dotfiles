@@ -35,6 +35,7 @@ setopt hist_ignore_all_dups # remove older duplicate entries from history
 setopt appendhistory #Append history to the history file (no overwriting)
 setopt inc_append_history # save history entries as soon as they are entered
 setopt share_history # share history between different instances of the shell
+setopt interactivecomments # Turn on comments interactive comments
 unsetopt PROMPT_SP # Fix percent sign on initialization
 
 # Aliases
