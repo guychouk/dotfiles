@@ -41,14 +41,11 @@ unsetopt PROMPT_SP # Fix percent sign on initialization
 # Aliases
 alias em='emacsclient -n'
 alias dc='docker-compose -f ~/Projects/box/docker-compose.yml'
-alias init_dev='dc up -d campaign-api sdk users interaction editor console strip-pwa player'
-alias users_groups='http-prompt --env ~/Projects/iab-sellers/groups.req'
-alias users_publishers='http-prompt --env ~/Projects/iab-sellers/publisher.req'
+alias pip=pip3
+alias req='http --verify=no'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias ffc='ffmpeg -i "`ls -t1 |  head -n 1`" ../output.gif'
-alias pip=pip3
 alias python=python3
-alias req='http --verify=no'
 
 # Some Locale configuration
 export LANG=en_US.UTF-8
