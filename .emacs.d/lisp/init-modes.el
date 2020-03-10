@@ -8,7 +8,7 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(setenv "TSSERVER_LOG_FILE" "/tmp/tsserver.log")
+(setenv "TSSERVER_LOG_FILE" "C:/temp/tsserver.log")
 
 (defun add-to-mode (mode lst)
   "Add LST of file extensions to major MODE."
@@ -16,9 +16,6 @@
     (add-to-list 'auto-mode-alist
                  (cons file mode))))
 
-; lsp-mode
-; JS: "npm i -g typescript" + "npm i -g typescript-language-server"
-; RUST: "rustup component add rls rust-analysis rust-src"
 (defvar lsp-prefer-flymake nil)
 
 (defvar rust-format-on-save t)

@@ -29,7 +29,6 @@
 (push 'company-lsp company-backends)
 
 ;; Index and search projects using standard means
-;; "brew install the_silver_searcher"
 (projectile-mode +1)
 (setq
  projectile-enable-caching nil
@@ -63,10 +62,9 @@
 (global-diff-hl-mode 1)
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
-; wakatime-mode + "pip install wakatime"
+; Disabled wakatime for the time being
 ; (global-wakatime-mode)
 
-; flycheck + "npm i -g eslint"
 (global-flycheck-mode)
 (setq
  flycheck-check-syntax-automatically '(save mode-enable)

@@ -7,14 +7,9 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(defvar my-term-shell "/bin/zsh" "Default terminal shell.")
-
-(add-hook 'vterm-exit-functions #'(lambda (buf e)
-                                    (when buf
-                                      (kill-buffer buf)
-                                      (call-interactively 'evil-window-delete))))
-
 (setq-default
+ ;; Disable truncate lines
+ truncate-lines t
  ;; Line spacing
  line-spacing 3
  ;; Use only spaces (no tabs)
@@ -25,11 +20,11 @@
  inhibit-startup-message t
  initial-scratch-message nil
  inhibit-startup-echo-area-message t
- ;; Setup Org Agenda to watch work.org file
- org-agenda-files '("~/Drive/etc/work.org")
+ ;; Disable lockfiles
  create-lockfiles nil
+ ;; Disable auto-save
  auto-save-default nil
- ;; Disable backup, auto-save and lockfiles
+ ;; Disable backup files
  make-backup-files nil
  ;; Set `custom-file` location
  custom-file "~/.emacs.d/custom.el"
@@ -39,12 +34,8 @@
  tab-stop-list (number-sequence 4 200 4)
  ;; Set tab width to 4 spaces
  tab-width 4
- ;; Disable word-wrap
- truncate-lines nil
  ;; Don’t add new lines past end of file
  next-line-add-newlines nil
- ;; See https://github.com/lewang/flx for origin of this GC value
- gc-cons-threshold 20000000
  ;; Revert files without asking.
  revert-without-query '(".*"))
 

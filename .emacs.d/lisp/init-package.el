@@ -8,9 +8,6 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-
-(defvar *is-a-mac* (eq system-type 'darwin) "MacOS check.")
-
 (setq package-selected-packages '(all-the-icons
                                   cargo
                                   company
@@ -71,15 +68,6 @@
 (unless package-archive-contents
   (package-refresh-contents))
 (package-install-selected-packages)
-
-;; Only use this if OS is Mac OSX to fix the $PATH environment variable
-(when *is-a-mac*
-  (when (not (package-installed-p 'exec-path-from-shell))
-              (package-install 'exec-path-from-shell))
-  (defvar exec-path-from-shell-check-startup-files nil)
-  (require 'exec-path-from-shell)
-  (exec-path-from-shell-initialize)
-  (exec-path-from-shell-copy-envs '("LANG" "LC_ALL" "LC_CTYPES")))
 
 (provide 'init-package)
 

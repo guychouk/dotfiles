@@ -6,8 +6,7 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(push (expand-file-name "~/.emacs.d/lisp") load-path)
-
+(defvar *is-a-mac* (eq system-type 'darwin) "MacOS check.")
 (defvar best-gc-cons-threshold 16777216 "Recomended GC threshold taken from DOOM Emacs (16mb).")
 (defvar backup--file-name-handler-alist file-name-handler-alist "Backup 'file-name-handler-alist'.")
 
@@ -34,11 +33,7 @@
   "Load PKG by giving the `load` function an absolute path (faster)."
   (load (file-truename (format "~/.emacs.d/lisp/%s" pkg))))
 
-(cond
- ((string-equal system-type "darwin")
-  (progn
-    (add-to-list 'load-path "~/.emacs.d/emacs-libvterm")
-    (require 'vterm))))
+(push (expand-file-name "~/.emacs.d/lisp") load-path)
 
 (require-init 'base)
 (require-init 'init-package)
@@ -50,6 +45,10 @@
 (require-init 'init-dap)
 (require-init 'init-services)
 (require-init 'init-modes)
+
+;; Load MacOS settings
+(when *is-a-mac*
+  (require-init 'init-macos))
 
 (add-hook 'emacs-startup-hook
           (lambda ()
