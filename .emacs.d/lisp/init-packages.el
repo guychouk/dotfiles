@@ -64,7 +64,7 @@
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
 ; wakatime-mode + "pip install wakatime"
-(global-wakatime-mode)
+; (global-wakatime-mode)
 
 ; flycheck + "npm i -g eslint"
 (global-flycheck-mode)
