@@ -13,3 +13,5 @@ setup:
 	$(INSTALLER) install the_silver_searcher
 	@echo "Installing Wakatime..."
 	pip install wakatime
+	@echo "Symlinking Espanso config dir..."
+	ln -s ~/Drive/etc/.espanso ~/Library/Preferences/espanso
