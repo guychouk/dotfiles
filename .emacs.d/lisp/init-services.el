@@ -15,6 +15,18 @@
   :stop-signal 'sigterm
   :tags '(work k300))
 (prodigy-define-service
+  :name "SDK-5.0"
+  :command "docker-compose"
+  :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk-5")
+  :stop-signal 'sigterm
+  :tags '(work sdk))
+(prodigy-define-service
+  :name "SDK-CI"
+  :command "docker-compose"
+  :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk-ci")
+  :stop-signal 'sigterm
+  :tags '(work sdk))
+(prodigy-define-service
   :name "SDK"
   :command "docker-compose"
   :args '("-f" "/Users/guyvalariola/Projects/box/docker-compose.yml" "up" "sdk")
