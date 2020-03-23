@@ -30,11 +30,11 @@
       (-contains? b-name)))
 
 (defun org-insert-clipboard-image ()
-  "Save image from clipboard as with timestamp to /orgs/img directory and paste in org file."
+  "Save image from clipboard with timestamp to /orgs/.imgs directory and paste in org file."
   (interactive)
   (let ((file (concat
                default-directory
-               "img/"
+               ".imgs/"
                 (concat "screenshot" "_" (format-time-string "%Y%m%d_%H%M%S_") ".png"))))
     (shell-command (concat "pngpaste " file))
     (insert (concat "[[" file "]]")))
