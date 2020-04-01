@@ -29,6 +29,7 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -v '^?' backward-delete-char
 bindkey '^R' history-incremental-search-backward
 
+# Options
 setopt auto_cd # CD to path without using `cd`
 setopt hist_reduce_blanks # remove superfluous blanks from history items
 setopt hist_ignore_all_dups # remove older duplicate entries from history
@@ -44,7 +45,7 @@ alias dc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias pip=pip3
 alias req='http --verify=no'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias ffc='ffmpeg -i "`ls -t1 |  head -n 1`" ../output.gif'
+alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias python=python3
 
 # Some Locale configuration
@@ -55,19 +56,12 @@ export LANGUAGE=en_US.UTF-8
 export EDITOR="emacs -nw"
 # Add yarn, npm & go bin directories to path
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH"
-# Local Display URL
-export LOCAL_DISPLAY="https://display.apester.local.com/interactions/5dbaf93afcb26f005fc37529/display"
-# Local Match URL
-export LOCAL_MATCH="http://match.apester.local.com/interactions/5dbaf93afcb26f005fc37529/campaigns"
-
 # Setup Google cloud SDK completions
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
 source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-
 # Setup NVM
 export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
-
 # Load zsh-syntax-highlighting; should be last.
 source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null

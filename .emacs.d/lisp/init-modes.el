@@ -45,6 +45,8 @@
 (add-to-list 'lsp-disabled-clients '(web-mode . angular-ls))
 (add-hook 'web-mode-hook #'lsp)
 
+(setq-default typescript-indent-level 2)
+
 (provide 'init-modes)
 
 ;;; init-modes.el ends here
