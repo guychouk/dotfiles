@@ -6,17 +6,17 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-; eyebrowse
+;; eyebrowse
 (eyebrowse-mode t)
 
-; nov
+;; nov
 (defvar nov-text-width 60)
 (add-to-list 'auto-mode-alist '("\\.epub$" . nov-mode))
 
-; company
+;; company
 (require 'company)
 (setq
- company-idle-delay .2
+ company-idle-delay .15
  company-minimum-prefix-length 2
  company-dabbrev-downcase nil)
 (add-hook 'after-init-hook 'global-company-mode)
@@ -24,21 +24,23 @@
 (define-key company-active-map (kbd "<tab>") 'company-select-next)
 (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
-; company-lsp
+;; company-lsp
 (require 'company-lsp)
 (push 'company-lsp company-backends)
 
-;; Index and search projects using standard means
+;; projectile: Index and search projects using standard means
+(require 'projectile)
 (projectile-mode +1)
 (setq
  projectile-enable-caching nil
  projectile-completion-system 'ivy
  projectile-indexing-method 'alien)
 
-; swiper
-(define-key evil-normal-state-map (kbd "/") 'swiper)
+;; swiper
+(define-key global-map (kbd "C-s") 'swiper)
 
-; ivy
+;; ivy
+(require 'ivy)
 (ivy-mode 1)
 (setq
  ivy-height 20
@@ -55,16 +57,15 @@
         (right-fringe . 3)))
 (ivy-posframe-mode 1)
 
-; yasnippet
+;; yasnippet
 (yas-global-mode 1)
 
-; diff-hl
+;; diff-hl
 (global-diff-hl-mode 1)
 (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)
 
-; Disabled wakatime for the time being
-; (global-wakatime-mode)
-
+;; flycheck
+(require 'flycheck)
 (global-flycheck-mode)
 (setq
  flycheck-check-syntax-automatically '(save mode-enable)

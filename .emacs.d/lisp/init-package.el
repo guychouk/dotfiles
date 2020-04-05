@@ -21,13 +21,8 @@
                                   doom-themes
                                   emmet-mode
                                   evil
-                                  ;; evil-collection
                                   evil-commentary
-                                  evil-escape
-                                  evil-goggles
                                   evil-matchit
-                                  evil-numbers
-                                  evil-org
                                   evil-surround
                                   evil-vimish-fold
                                   exec-path-from-shell
