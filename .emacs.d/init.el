@@ -41,7 +41,7 @@
 (require-init 'init-evil)
 (require-init 'init-packages)
 (require-init 'init-utils)
-(require-init 'init-hydras)
+(require-init 'init-keybindings)
 (require-init 'init-dap)
 (require-init 'init-services)
 (require-init 'init-modes)

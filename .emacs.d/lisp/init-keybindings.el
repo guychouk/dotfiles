@@ -1,4 +1,4 @@
-;;; init-hydras.el --- My Hydras init file.
+;;; init-keybindings.el --- My Keybindings init file.
 ;;; Commentary:
 ;; A single file for all of my Hydra definitions.
 
@@ -8,6 +8,13 @@
 
 ;; Remap C-[ in insert mode to "escape"
 (define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
+
+;; Set ace-window shortcut
+(global-set-key (kbd "M-o") 'ace-window)
+
+;; scroll one line at a time
+(global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+(global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
 
 (require 'hydra)
 
@@ -24,7 +31,7 @@
   ("J" evil-window-split "Horizontal Split")
   ("g" magit-status "Magit Dashboard")
   ("y" counsel-yank-pop "Search kill ring")
-  ("d" dired-at-point "Open Dired in Current Directory")
+  ("d" dired "Open Dired in Current Directory")
   ("en" (lambda() (interactive)(turn-on-evil-mode)) "Toggle Evil On")
   ("ef" (lambda() (interactive)(turn-off-evil-mode)) "Toggle Evil Off")
   ("ps" prodigy "Prodigy")
@@ -61,6 +68,6 @@
   ("=" text-scale-increase "in")
   ("-" text-scale-decrease "out"))
 
-(provide 'init-hydras)
+(provide 'init-keybindings)
 
-;;; init-hydras.el ends here
+;;; init-keybindings.el ends here
