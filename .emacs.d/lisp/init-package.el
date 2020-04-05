@@ -8,7 +8,9 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(setq package-selected-packages '(all-the-icons
+(setq package-selected-packages '(
+                                  ace-window
+                                  all-the-icons
                                   cargo
                                   company
                                   company-lsp
