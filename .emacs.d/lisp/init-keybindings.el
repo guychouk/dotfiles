@@ -6,40 +6,34 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-;; Remap C-[ in insert mode to "escape"
-(define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
-
-;; Set ace-window shortcut
-(global-set-key (kbd "M-o") 'ace-window)
-
-;; scroll one line at a time
-(global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
-(global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
-
 (require 'hydra)
 
-(defhydra hydra-leader (global-map "C-," :exit t)
-  "Leader key definitions"
-  ("t" vterm "Terminal")
-  ("w" save-buffer "Save")
-  ("k" evil-window-up "Up")
-  ("j" evil-window-down "Down")
-  ("h" evil-window-left "Left")
-  ("l" evil-window-right "Right")
-  ("q" evil-window-delete "Quit")
-  ("L" evil-window-vsplit "Vertical Split")
-  ("J" evil-window-split "Horizontal Split")
+(defhydra hydra-project (global-map "C-c p" :color blue)
+  "Project related"
   ("g" magit-status "Magit Dashboard")
   ("y" counsel-yank-pop "Search kill ring")
-  ("d" dired "Open Dired in Current Directory")
-  ("en" (lambda() (interactive)(turn-on-evil-mode)) "Toggle Evil On")
-  ("ef" (lambda() (interactive)(turn-off-evil-mode)) "Toggle Evil Off")
-  ("ps" prodigy "Prodigy")
-  ("ag" counsel-projectile-ag "Search in Project")
-  ("pf" counsel-projectile-find-file "Search for files in project")
-  ("po" counsel-projectile-switch-project "Switch Project")
-  ("cp" my/put-file-name-on-clipboard "Copy Full Path to Clipboard")
-  ("oh" (lambda() (interactive)(my-hermes-task)) "Generate Hermes JIRA Link in Org-mode")
+  ("s" counsel-projectile-ag "Search in Project")
+  ("f" counsel-projectile-find-file "Search for files in project")
+  ("o" counsel-projectile-switch-project "Switch Project"))
+
+(defhydra hydra-apropos (:color blue :hint nil)
+  "
+_a_propos        _c_ommand
+_d_ocumentation  _l_ibrary
+_v_ariable       _u_ser-option
+^ ^          valu_e_"
+  ("a" apropos)
+  ("d" apropos-documentation)
+  ("v" apropos-variable)
+  ("c" apropos-command)
+  ("l" apropos-library)
+  ("u" apropos-user-option)
+  ("e" apropos-value))
+
+(defhydra hydra-windows (global-map "C-c w" :color blue)
+  "Switch eyebrowse window config"
+  ("h" winner-undo "Undo Winner")
+  ("l" winner-redo "Redo Winner")
   ("1" eyebrowse-switch-to-window-config-1 "Eyebrowse: Window Config 1")
   ("2" eyebrowse-switch-to-window-config-2 "Eyebrowse: Window Config 2")
   ("3" eyebrowse-switch-to-window-config-3 "Eyebrowse: Window Config 3")
@@ -52,11 +46,12 @@
 
 (defhydra hydra-jumps (global-map "C-c j" :exit t)
   "File jumps"
-  ("ez" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
-  ("ei" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
-  ("esp" (lambda() (interactive)(find-file "~/Drive/etc/.espanso/default.yml")) "Espanso File")
-  ("eow" (lambda() (interactive)(find-file "~/Drive/docs/orgs/work.org")) "Work Org")
-  ("eos" (lambda() (interactive)(find-file "~/Drive/docs/orgs/stem.org")) "STEM Org"))
+  ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
+  ("i" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
+  ("e" (lambda() (interactive)(find-file "~/Drive/etc/.espanso/default.yml")) "Espanso File")
+  ("k" (lambda() (interactive)(find-file "~/.emacs.d/lisp/init-keybindings.el")) "Keybindings")
+  ("ow" (lambda() (interactive)(find-file "~/Drive/docs/orgs/work.org")) "Work Org")
+  ("os" (lambda() (interactive)(find-file "~/Drive/docs/orgs/stem.org")) "STEM Org"))
 
 (defhydra hydra-zoom (global-map "C-c z")
   "Window resizing and text scaling"
@@ -67,6 +62,19 @@
   ("h" enlarge-window-horizontally "Enlarge Horizontally")
   ("=" text-scale-increase "in")
   ("-" text-scale-decrease "out"))
+
+;; Remap C-[ in insert mode to "escape"
+(define-key evil-insert-state-map (kbd "C-[") 'evil-normal-state)
+
+;; Set ace-window shortcut
+(global-set-key (kbd "M-o") 'ace-window)
+
+;; scroll one line at a time
+(global-set-key (kbd "M-n") (kbd "C-u 1 C-v"))
+(global-set-key (kbd "M-p") (kbd "C-u 1 M-v"))
+
+;; hydra help helper
+(global-set-key (kbd "C-c h") 'hydra-apropos/body)
 
 (provide 'init-keybindings)
 
