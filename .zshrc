@@ -17,8 +17,6 @@ compinit
 # Include hidden files.
 _comp_options+=(globdots)
 
-# vi mode
-bindkey -v
 export KEYTIMEOUT=1
 
 # Use vim keys in tab complete menu:
@@ -65,3 +63,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"  # This loads nvm bash_completion
 # Load zsh-syntax-highlighting; should be last.
 source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+
+# Emacs bindings
+bindkey -e
