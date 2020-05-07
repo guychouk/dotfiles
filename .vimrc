@@ -2,7 +2,6 @@
 "       vim-plug        "
 """""""""""""""""""""""""
 
-" Install vim-plug if it does not exist
 if empty(glob('~/.vim/autoload/plug.vim'))
 	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
 				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -17,6 +16,7 @@ call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'morhetz/gruvbox'
 Plug 'godlygeek/tabular'
 Plug 'sheerun/vim-polyglot'
+Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'airblade/vim-rooter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -60,6 +60,8 @@ set noswapfile             " Disables swp files creation
 let mapleader = " "
 let maplocalleader = " "
 
+let g:gitgutter_map_keys = 0
+let g:gitgutter_set_sign_backgrounds = 1
 let g:rooter_change_directory_for_non_project_files = 'current'
 
 """""""""""""""""""""""""
