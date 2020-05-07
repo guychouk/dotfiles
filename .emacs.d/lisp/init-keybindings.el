@@ -76,6 +76,9 @@ _v_ariable       _u_ser-option
 ;; hydra help helper
 (global-set-key (kbd "C-c h") 'hydra-apropos/body)
 
+;; emmet expand
+(global-set-key (kbd "C-c e") 'emmet-expand-yas)
+
 (provide 'init-keybindings)
 
 ;;; init-keybindings.el ends here
