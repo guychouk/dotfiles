@@ -24,3 +24,8 @@ elif [ "$SSH_AUTH_SOCK" ] && [ $agent_run_state = 1 ]; then
 fi
 
 unset env
+
+if [[ "$OSTYPE" == "linux-gnu"* ]] && type zsh &> /dev/null; then
+	export SHELL=$(which zsh)
+	exec zsh
+fi
