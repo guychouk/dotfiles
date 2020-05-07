@@ -1,46 +1,53 @@
 """""""""""""""""""""""""
-"       Vim-Plug        "
+"       vim-plug        "
 """""""""""""""""""""""""
 
 " Install vim-plug if it does not exist
 if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
+	silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
 if has('win32') || has('win64')
-        let &shell='cmd.exe'
+	let &shell='cmd.exe'
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
+Plug 'morhetz/gruvbox'
+Plug 'godlygeek/tabular'
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 """""""""""""""""""""""""
-"        Options        "
+"        General        "
 """""""""""""""""""""""""
 
-filetype plugin indent on  " Sets on filetype (Also from plugins)
-syntax on                  " Sets on syntax highlighting
+syntax on                  " Syntax highlighting
+colorscheme gruvbox 	   " Gruvbox theme
+filetype plugin indent on  " Turn on filetype detections
+highlight clear SignColumn " Remove sign column background color
+
 set tabstop=4              " Sets tab to 4 instead of vim's crazy 8
-set backspace=2 	   " Fix <BS> key
+set backspace=2            " Fix <BS> key
 set laststatus=2           " Set statusbar to always appear (for Lightline)
 set shiftwidth=4           " Assits with code formatting
-set encoding=utf-8	   " Encoding for files
+set encoding=utf-8         " Encoding for files
 set clipboard=unnamed      " Mainly for better compatibility with Windows
 set foldmethod=syntax      " Set foldmethod for programming
+
+set number                 " Show line numbers
+set termguicolors 		   " Emit true (24-bit) colours in the terminal
+set nobackup               " No backup files
+set nowritebackup          " No backup files
 set nowrap                 " Disable line wrapping
 set smarttab               " Improves tabbing
 set incsearch              " Sets incremental search
-set noshowmode             " Disable showing of current VIM mode (for Lightline)
 set autoindent             " New lines will be indented as well
 set smartcase              " No ignore case when pattern has uppercase
 set nohlsearch             " Disable search highlight
 set noswapfile             " Disables swp files creation
-set nocompatible           " Required for ViM to be iMproved, turn off for vi-like usage
-
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -49,9 +56,8 @@ set nocompatible           " Required for ViM to be iMproved, turn off for vi-li
 let mapleader = " "
 let maplocalleader = " "
 
-
 """""""""""""""""""""""""
-"        Remaps         "
+"      Remappings       "
 """""""""""""""""""""""""
 
 imap jj <Esc>
@@ -62,21 +68,18 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>d "_d
-nnoremap <Leader>ec :vsp $DRIVE_ETC/.vimrc<CR>
-nnoremap <Leader>ba :vsp ~/.bash_aliases<CR>
-nnoremap <Leader>ps :vsp $DRIVE_ETC/profile.ps1<CR>
-nnoremap <Leader>so :so ~/_vimrc<CR>
-nnoremap <Leader>pi :PlugInstall<CR>
+nnoremap <Leader>b :CtrlPBuffer<CR>
+nnoremap <Leader>ec :e ~/.vimrc<CR>
+nnoremap <Leader>zc :e ~/.zshrc<CR>
 nnoremap <Leader>pc :PlugClean<CR>
-nnoremap <Leader>1 :vsp $DRIVE_ETC/.vimrc<CR>:Explore<CR>
-nnoremap <Leader>c :%s!"!!g<CR>:%s! = !=!g<CR>:%s!\n!\&!g<CR>
+nnoremap <Leader>pi :PlugInstall<CR>
+nnoremap <Leader>so :so ~/.vimrc<CR>
 nnoremap <Leader><Leader> :ZoomToggle<CR>
 
 """""""""""""""""""""""""
 "         CtrlP         "
 """""""""""""""""""""""""
 
-" CtrlP
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 """""""""""""""""""""""""
@@ -86,12 +89,8 @@ let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 " TextEdit might fail if hidden is not set.
 set hidden
 
-" Some servers have issues with backup files, see #649.
-set nobackup
-set nowritebackup
-
 " Give more space for displaying messages.
-set cmdheight=2
+set cmdheight=1
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -108,14 +107,14 @@ set signcolumn=yes
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+			\ pumvisible() ? "\<C-n>" :
+			\ <SID>check_back_space() ? "\<TAB>" :
+			\ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1]  =~# '\s'
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
@@ -125,9 +124,9 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
-  inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+	inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
-  inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+	inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
 " Use `[g` and `]g` to navigate diagnostics
@@ -144,11 +143,11 @@ nmap <silent> gr <Plug>(coc-references)
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
@@ -162,11 +161,11 @@ xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder.
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+	autocmd!
+	" Setup formatexpr specified filetype(s).
+	autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+	" Update signature help on jump placeholder.
+	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
 " Applying codeAction to the selected region.
@@ -176,8 +175,9 @@ nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Remap keys for applying codeAction to the current line.
 nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Apply AutoFix to problem on the current line (Ruins <leader>q remap)
+" nmap <leader>qf  <Plug>(coc-fix-current)
 
 " Introduce function text object
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
