@@ -16,8 +16,9 @@ endif
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'morhetz/gruvbox'
 Plug 'godlygeek/tabular'
-Plug 'ctrlpvim/ctrlp.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -60,21 +61,25 @@ let maplocalleader = " "
 "      Remappings       "
 """""""""""""""""""""""""
 
-imap jj <Esc>
+imap jk <Esc>
+
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
-nnoremap <Leader>d "_d
-nnoremap <Leader>b :CtrlPBuffer<CR>
+
+nnoremap <Leader>/ :Ag<CR>
+nnoremap <Leader>. :Files<CR>
+nnoremap <Leader>b :Buffers<CR>
+
 nnoremap <Leader>ec :e ~/.vimrc<CR>
 nnoremap <Leader>zc :e ~/.zshrc<CR>
+
 nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
-nnoremap <Leader><Leader> :ZoomToggle<CR>
 
 """""""""""""""""""""""""
 "         CtrlP         "
