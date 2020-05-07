@@ -16,6 +16,9 @@ endif
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'morhetz/gruvbox'
 Plug 'godlygeek/tabular'
+Plug 'sheerun/vim-polyglot'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'airblade/vim-rooter'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -57,6 +60,8 @@ set noswapfile             " Disables swp files creation
 let mapleader = " "
 let maplocalleader = " "
 
+let g:rooter_change_directory_for_non_project_files = 'current'
+
 """""""""""""""""""""""""
 "      Remappings       "
 """""""""""""""""""""""""
@@ -80,12 +85,6 @@ nnoremap <Leader>zc :e ~/.zshrc<CR>
 nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
-
-"""""""""""""""""""""""""
-"         CtrlP         "
-"""""""""""""""""""""""""
-
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 """""""""""""""""""""""""
 "        Coc.vim        "
@@ -190,12 +189,6 @@ xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
-
-" Use <TAB> for selections ranges.
-" NOTE: Requires 'textDocument/selectionRange' support from the language server.
-" coc-tsserver, coc-python are the examples of servers that support it.
-nmap <silent> <TAB> <Plug>(coc-range-select)
-xmap <silent> <TAB> <Plug>(coc-range-select)
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
