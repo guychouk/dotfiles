@@ -42,7 +42,7 @@ set clipboard=unnamed      " Mainly for better compatibility with Windows
 set foldmethod=syntax      " Set foldmethod for programming
 
 set number                 " Show line numbers
-set termguicolors 		   " Emit true (24-bit) colours in the terminal
+set termguicolors 		   " Emit true (24-bit) colors in the terminal
 set nobackup               " No backup files
 set nowritebackup          " No backup files
 set nowrap                 " Disable line wrapping
