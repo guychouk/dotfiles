@@ -19,9 +19,13 @@ Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'airblade/vim-rooter'
+Plug 'junegunn/goyo.vim'
+Plug 'mattn/emmet-vim'
+Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'psliwka/vim-smoothie'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -31,27 +35,39 @@ call plug#end()
 syntax on                  " Syntax highlighting
 colorscheme gruvbox 	   " Gruvbox theme
 filetype plugin indent on  " Turn on filetype detections
-highlight clear SignColumn " Remove sign column background color
 
-set tabstop=4              " Sets tab to 4 instead of vim's crazy 8
-set backspace=2            " Fix <BS> key
-set laststatus=2           " Set statusbar to always appear (for Lightline)
-set shiftwidth=4           " Assits with code formatting
-set encoding=utf-8         " Encoding for files
-set clipboard=unnamed      " Mainly for better compatibility with Windows
-set foldmethod=syntax      " Set foldmethod for programming
+" Hightlights
+highlight clear SignColumn
+highlight link ALEErrorSign   GruvboxRed
+highlight link ALEInfoSign    GruvboxWhite
+highlight link ALEWarningSign GruvboxYellow
 
-set number                 " Show line numbers
-set termguicolors 		   " Emit true (24-bit) colors in the terminal
-set nobackup               " No backup files
-set nowritebackup          " No backup files
-set nowrap                 " Disable line wrapping
-set smarttab               " Improves tabbing
-set incsearch              " Sets incremental search
-set autoindent             " New lines will be indented as well
-set smartcase              " No ignore case when pattern has uppercase
-set nohlsearch             " Disable search highlight
-set noswapfile             " Disables swp files creation
+" Options
+set backspace=2       " Fix <BS> key
+set encoding=utf-8    " Encoding for files
+set shiftwidth=4      " Assits with code formatting
+set foldlevel=99      " Unfolds all folds by default
+set foldmethod=manual " Set foldmethod for programming
+set tabstop=4         " Sets tab to 4 instead of vim's crazy 8
+set clipboard=unnamed " Mainly for better compatibility with Windows
+set cmdheight=2       " More space for displaying messages
+set laststatus=2      " Set statusbar to always appear (for Lightline)
+set updatetime=300    " Recommended value for updatetime found in coc.vim's wiki
+set shortmess+=c      " Avoid passing messages to ins-completion-menu
+set signcolumn=yes    " Always show signcolumn
+
+set nobackup          " No backup files
+set nowritebackup     " No backup files
+set smarttab          " Improves tabbing
+set number            " Show line numbers
+set nowrap            " Disable line wrapping
+set incsearch         " Sets incremental search
+set nohlsearch        " Disable search highlight
+set noswapfile        " Disables swp files creation
+set autoindent        " New lines will be indented as well
+set termguicolors     " Emit true (24-bit) colors in the terminal
+set smartcase         " No ignore case when pattern has uppercase
+set hidden            " Hide abandoned buffers instead of unloading them
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -60,9 +76,69 @@ set noswapfile             " Disables swp files creation
 let mapleader = " "
 let maplocalleader = " "
 
+" ALE
+let g:ale_sign_error = '•'
+let g:ale_sign_warning = '•'
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_linters_explicit = 1
+let g:ale_pattern_options_enabled = 1
+let g:ale_linters = {
+\   'javascript': ['eslint'],
+\}
+let g:ale_fixers = {
+\   'javascript': ['eslint'],
+\}
+let g:ale_pattern_options = {
+\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
+\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
+\}
+
+" GitGutter
 let g:gitgutter_map_keys = 0
 let g:gitgutter_set_sign_backgrounds = 1
+
+" Rooter
 let g:rooter_change_directory_for_non_project_files = 'current'
+
+" Emmet (<c-y>,)
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+"""""""""""""""""""""""""
+"      Status Line      "
+"""""""""""""""""""""""""
+
+set statusline=
+set statusline+=%<%F\ %m\ %r\ %h                                      " File path, modified, readonly, helpfile, preview
+set statusline+=%=                                                    " left/right separator
+set statusline+=%{b:gitbranch}                                        " show git branch
+set statusline+=\ %y                                                  " filetype
+set statusline+=\ %L                                                  " cursor line/total lines
+set statusline+=\ %P                                                  " percentage of file
+set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " Show COC status
+
+function! StatuslineGitBranch()
+  let b:gitbranch=""
+  if &modifiable
+    try
+      let l:dir=expand('%:p:h')
+      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
+      if !v:shell_error
+        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').") "
+      endif
+    catch
+    endtry
+  endif
+endfunction
+
+augroup GetGitBranch
+  autocmd!
+  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
+augroup END
 
 """""""""""""""""""""""""
 "      Remappings       "
@@ -88,30 +164,56 @@ nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
 
+" Use `[g` and `]g` to navigate diagnostics
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+	if (index(['vim','help'], &filetype) >= 0)
+		execute 'h '.expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
+endfunction
+
+" Show all diagnostics.
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list.
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
 """""""""""""""""""""""""
 "        Coc.vim        "
 """""""""""""""""""""""""
 
-" TextEdit might fail if hidden is not set.
-set hidden
-
-" Give more space for displaying messages.
-set cmdheight=1
-
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
-set updatetime=300
-
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved.
-set signcolumn=yes
-
 " Use tab for trigger completion with characters ahead and navigate.
-" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" other plugin before putting this into your config.
 inoremap <silent><expr> <TAB>
 			\ pumvisible() ? "\<C-n>" :
 			\ <SID>check_back_space() ? "\<TAB>" :
@@ -135,36 +237,8 @@ else
 	inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
-" Use `[g` and `]g` to navigate diagnostics
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-	if (index(['vim','help'], &filetype) >= 0)
-		execute 'h '.expand('<cword>')
-	else
-		call CocAction('doHover')
-	endif
-endfunction
-
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
-
-" Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
 	autocmd!
@@ -174,19 +248,7 @@ augroup mygroup
 	autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
 augroup end
 
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
-
-" Remap keys for applying codeAction to the current line.
-nmap <leader>ac  <Plug>(coc-codeaction)
-
-" Apply AutoFix to problem on the current line (Ruins <leader>q remap)
-" nmap <leader>qf  <Plug>(coc-fix-current)
-
 " Introduce function text object
-" NOTE: Requires 'textDocument.documentSymbol' support from the language server.
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
@@ -200,26 +262,3 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
-
-" Add (Neo)Vim's native statusline support.
-" NOTE: Please see `:h coc-status` for integrations with external plugins that
-" provide custom statusline: lightline.vim, vim-airline.
-set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
-
-" Mappings using CoCList:
-" Show all diagnostics.
-nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
