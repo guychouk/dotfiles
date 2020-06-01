@@ -46,6 +46,7 @@ unsetopt PROMPT_SP          # Fix percent sign on initialization
 #########################
 
 
+alias g=git
 alias v='f -e nvim' # quick opening files with vim
 
 alias pip=pip3
