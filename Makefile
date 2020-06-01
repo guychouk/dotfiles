@@ -1,17 +1,36 @@
-INSTALLER := brew
+INSTALLER = 
+INSTALL_CMD = 
+DRIVE = /mnt/d/Drive
 
-ifeq (,$(shell which scoop))
- INSTALLER := scoop
+ifeq ($(INSTALLER), cask)
+ INSTALL_CMD = `brew cask install`
 endif
+
+ifeq ($(INSTALLER), brew)
+ INSTALL_CMD = `brew install`
+endif
+
+ifeq ($(INSTALLER), scoop)
+ INSTALL_CMD = `scoop install`
+endif
+
+ifeq ($(INSTALLER), pacman)
+ INSTALL_CMD = `pacman --noconfirm -Sy`
+endif
+
+ifeq ($(INSTALLER),)
+ $(error Forgot to set INSTALLER)
+endif
+
+PACKAGES_LIST = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
+
+.PHONY: install
+install:
+	@echo $(INSTALLER) $(PACKAGES_LIST)
 
 .PHONY: setup
 setup:
-	@echo "Installing development dependencies..."
-	npm i -g typescript typescript-language-server eslint
-	rustup component add rls rust-analysis rust-src
-	@echo "Installing the_silver_searcher..."
-	$(INSTALLER) install the_silver_searcher
-	@echo "Installing Wakatime..."
-	pip install wakatime
 	@echo "Symlinking Espanso config dir..."
-	ln -s ~/Drive/etc/.espanso ~/Library/Preferences/espanso
+	ln -s $(DRIVE)/etc/.espanso ~/Library/Preferences/espanso
+	@echo "Symlinking SSH config dir..."
+	ln -s $(DRIVE)/etc/.ssh ~/.ssh
