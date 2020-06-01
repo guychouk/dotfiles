@@ -100,3 +100,8 @@ fi
 
 # Setup zsh-syntax-highlighting (should be last)
 source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+
+# Require only if running in WSL
+function wslsetup() {
+       export DOCKER_HOST=tcp://localhost:2375 
+}
