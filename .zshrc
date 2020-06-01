@@ -75,6 +75,7 @@ export NVM_DIR="$HOME/.nvm"                                                     
 export EDITOR=$(which nvim)                                                                  # Set NeoVim as default editor
 export KEYTIMEOUT=1                                                                          # How long to wait for additional keys in key sequences (10ms)
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH" # Add yarn, npm & go "bin" directories to path
+export PATH=$(echo $PATH | tr ':' '\n' | grep -v /mnt/ | tr -s '\n' ':')                     # Remove Windows paths from PATH
 
 #########################
 #         FASD          #

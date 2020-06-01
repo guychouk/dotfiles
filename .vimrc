@@ -21,11 +21,14 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'airblade/vim-rooter'
 Plug 'junegunn/goyo.vim'
 Plug 'mattn/emmet-vim'
+Plug 'pangloss/vim-javascript'
 Plug 'dense-analysis/ale'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'psliwka/vim-smoothie'
+Plug 'preservim/nerdtree'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -47,7 +50,8 @@ set backspace=2       " Fix <BS> key
 set encoding=utf-8    " Encoding for files
 set shiftwidth=4      " Assits with code formatting
 set foldlevel=99      " Unfolds all folds by default
-set foldmethod=manual " Set foldmethod for programming
+set foldlevelstart=1  " Fold method
+set foldmethod=syntax " Set foldmethod for programming
 set tabstop=4         " Sets tab to 4 instead of vim's crazy 8
 set clipboard=unnamed " Mainly for better compatibility with Windows
 set cmdheight=2       " More space for displaying messages
@@ -73,8 +77,14 @@ set hidden            " Hide abandoned buffers instead of unloading them
 "       Variables       "
 """""""""""""""""""""""""
 
+let javascript_fold = 1
+let g:polyglot_disabled = ['javascript']
+
 let mapleader = " "
 let maplocalleader = " "
+
+" NERDTree
+let NERDTreeShowHidden=1
 
 " ALE
 let g:ale_sign_error = '•'
@@ -108,6 +118,8 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 
+au BufNewFile,BufRead *.js set filetype=javascript
+
 """""""""""""""""""""""""
 "      Status Line      "
 """""""""""""""""""""""""
@@ -115,11 +127,11 @@ autocmd FileType html,css EmmetInstall
 set statusline=
 set statusline+=%<%F\ %m\ %r\ %h                                      " File path, modified, readonly, helpfile, preview
 set statusline+=%=                                                    " left/right separator
-set statusline+=%{b:gitbranch}                                        " show git branch
 set statusline+=\ %y                                                  " filetype
 set statusline+=\ %L                                                  " cursor line/total lines
 set statusline+=\ %P                                                  " percentage of file
 set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " Show COC status
+" set statusline+=%{b:gitbranch}                                      " show git branch
 
 function! StatuslineGitBranch()
   let b:gitbranch=""
@@ -153,6 +165,9 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 
+nnoremap <Leader>J :sp<CR>
+nnoremap <Leader>L :vsp<CR>
+
 nnoremap <Leader>/ :Ag<CR>
 nnoremap <Leader>. :Files<CR>
 nnoremap <Leader>b :Buffers<CR>
@@ -163,6 +178,8 @@ nnoremap <Leader>zc :e ~/.zshrc<CR>
 nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
+
+nnoremap <silent> <expr> <F6> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
 
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
