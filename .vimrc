@@ -28,6 +28,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'editorconfig/editorconfig-vim'
 call plug#end()
 
@@ -96,6 +97,7 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 
+" Set .js files as Javascript filetype
 au BufNewFile,BufRead *.js set filetype=javascript
 
 """""""""""""""""""""""""

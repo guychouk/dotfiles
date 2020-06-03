@@ -105,3 +105,16 @@ source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-
 function wslsetup() {
        export DOCKER_HOST=tcp://localhost:2375 
 }
+
+function apesterdev() {
+        dc up -d sdk campaign player editor console
+}
+
+function dockersplits() {
+        tmux \
+        new-session -d -s work 'docker-compose -f ~/Projects/box/docker-compose.yml up editor' \; \
+        split-window 'docker-compose -f ~/Projects/box/docker-compose.yml up users' \; \
+        split-window 'docker-compose -f ~/Projects/box/docker-compose.yml up plans-api' \; \
+        select-layout even-vertical \; \
+        attach \;
+}
