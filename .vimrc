@@ -19,7 +19,6 @@ Plug 'godlygeek/tabular'
 Plug 'airblade/vim-rooter'
 Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'junegunn/goyo.vim'
 Plug 'mattn/emmet-vim'
 Plug 'dense-analysis/ale'
@@ -90,6 +89,10 @@ let g:ale_pattern_options = {
 set updatetime=250
 autocmd BufWritePost * GitGutter
 
+
+" Delete buffer after git commit, rebase or config
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+
 " Rooter
 let g:rooter_change_directory_for_non_project_files = 'current'
 
@@ -99,6 +102,10 @@ autocmd FileType html,css EmmetInstall
 
 " Set .js files as Javascript filetype
 au BufNewFile,BufRead *.js set filetype=javascript
+
+" JS settings
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+
 
 """""""""""""""""""""""""
 "      Status Line      "
@@ -254,7 +261,7 @@ omap af <Plug>(coc-funcobj-a)
 command! -nargs=0 Format :call CocAction('format')
 
 " Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
