@@ -15,6 +15,12 @@ compinit
 _comp_options+=(globdots) # Include hidden files.
 
 #########################
+#         FASD          #
+#########################
+
+eval "$(fasd --init auto)"
+
+#########################
 #       Bindkeys        #
 #########################
 
@@ -45,25 +51,25 @@ unsetopt PROMPT_SP          # Fix percent sign on initialization
 #        Aliases        #
 #########################
 
-
 alias g=git
-alias v='f -e nvim' # quick opening files with vim
-
 alias pip=pip3
 alias python=python3
-
-alias em='emacsclient -n'
+alias ll='ls -la'
+alias v='f -e nvim'
+alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
+alias dcl='dc logs -f'
 alias req='http --verify=no'
-alias dc='docker-compose -f ~/Projects/box/docker-compose.yml'
-alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
+alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #########################
 #     ENV Variables     #
 #########################
 
 # Stylize prompt:
-PS1="%B%{$fg[red]%}[ %{$fg[yellow]%}%n%{$fg[green]%} %{$fg[magenta]%}%~%{$fg[red]%} ]%{$reset_color%}%{$fg[yellow]%} λ%b "
+PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
+
+TMUX_SESSION='Main'
 
 HISTSIZE=10000
 SAVEHIST=10000
@@ -73,16 +79,11 @@ export LANG=en_US.UTF-8                                                         
 export LC_ALL=en_US.UTF-8                                                                    # Locale
 export LANGUAGE=en_US.UTF-8                                                                  # Locale
 export NVM_DIR="$HOME/.nvm"                                                                  # NVM directory
-export EDITOR=$(which nvim)                                                                  # Set NeoVim as default editor
+export VISUAL=nvim                                                                           # Set NeoVim as visual editor
+export EDITOR="$VISUAL"                                                                      # Set $EDITOR to the same editor in $VISUAL
 export KEYTIMEOUT=1                                                                          # How long to wait for additional keys in key sequences (10ms)
 export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH" # Add yarn, npm & go "bin" directories to path
 export PATH=$(echo $PATH | tr ':' '\n' | grep -v /mnt/ | tr -s '\n' ':')                     # Remove Windows paths from PATH
-
-#########################
-#         FASD          #
-#########################
-
-eval "$(fasd --init auto)"
 
 #########################
 #        Setup          #
@@ -94,27 +95,46 @@ eval "$(fasd --init auto)"
 
 # Setup Google cloud SDK completions
 if [[ -a /usr/local/Caskroom ]]; then
-	source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-	source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 fi
+
+#########################
+#       Functions       #
+#########################
+
+function dcr() {
+  dc stop "$1" && dc rm -f "$1" && dc up -d "$1" && dc logs -f "$1"
+}
+
+# For running Docker commands on WSL
+function wslsetup() {
+  export DOCKER_HOST=tcp://localhost:2375 
+}
+
+function ape-dev() {
+  dc up -d sdk campaign player editor console
+}
+
+function ape-logs() {
+  tmux \
+    new-window -n Logs \; send-keys -t Main:Logs "dcc up -d editor; dcc logs -f editor" C-m \; \
+    split-window \; send-keys "dcc up -d users; dcc logs -f users" C-m \; \
+    split-window \; send-keys "dcc up -d match; dcc logs -f match" C-m \; \
+    split-window \; send-keys "dcc up -d player; dcc logs -f player" C-m \; \
+    select-layout tiled
+}
 
 # Setup zsh-syntax-highlighting (should be last)
 source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
-# Require only if running in WSL
-function wslsetup() {
-       export DOCKER_HOST=tcp://localhost:2375 
-}
-
-function apesterdev() {
-        dc up -d sdk campaign player editor console
-}
-
-function dockersplits() {
-        tmux \
-        new-session -d -s work 'docker-compose -f ~/Projects/box/docker-compose.yml up editor' \; \
-        split-window 'docker-compose -f ~/Projects/box/docker-compose.yml up users' \; \
-        split-window 'docker-compose -f ~/Projects/box/docker-compose.yml up plans-api' \; \
-        select-layout even-vertical \; \
-        attach \;
-}
+# Check that tmux exists, that we're in an interactive shell and not already within tmux.
+# Taken from here: https://unix.stackexchange.com/a/113768/312299
+if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
+  # Tests to see if the session already exists. If it does, just reattach.
+  if [ "$(tmux list-sessions 2> /dev/null | grep -o $TMUX_SESSION)" != "$TMUX_SESSION" ]; then
+    exec tmux new-session -s $TMUX_SESSION
+  else
+    exec tmux attach -t $TMUX_SESSION
+  fi
+fi
