@@ -34,3 +34,10 @@ setup:
 	ln -s $(DRIVE)/etc/.espanso ~/Library/Preferences/espanso
 	@echo "Symlinking SSH config dir..."
 	ln -s $(DRIVE)/etc/.ssh ~/.ssh
+
+.PHONY: gitalias
+gitalias:
+	@-grep -q "include" ~/.gitconfig
+	@if [ $$? = 1 ]; then \
+	  @echo $$'[include]\n        path = ~/.gitaliases' >> ~/.gitconfig; \
+	fi
