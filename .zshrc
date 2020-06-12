@@ -104,7 +104,7 @@ fi
 #########################
 
 function dcr() {
-  dc stop "$1" && dc rm -f "$1" && dc up -d "$1" && dc logs -f "$1"
+  dcc stop "$1" && dc rm -f "$1" && dc up -d "$1" && dc logs -f "$1"
 }
 
 # For running Docker commands on WSL
@@ -113,7 +113,7 @@ function wslsetup() {
 }
 
 function ape-dev() {
-  dc up -d sdk campaign player editor console
+  dcc up -d sdk campaign player editor console
 }
 
 function ape-logs() {
@@ -121,7 +121,14 @@ function ape-logs() {
     new-window -n Logs \; send-keys -t Main:Logs "dcc up -d editor; dcc logs -f editor" C-m \; \
     split-window -h \; send-keys "dcc up -d users; dcc logs -f users" C-m \; \
     split-window -h \; send-keys "dcc up -d match; dcc logs -f match" C-m \; \
-    split-window -h \; send-keys "dcc up -d player; dcc logs -f player" C-m
+    split-window -h \; send-keys "dcc up -d player; dcc logs -f player" C-m \; \
+    select-layout tiled
+}
+
+function color-codes() {
+        for i in {0..255}; do
+                printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
+        done
 }
 
 # Setup zsh-syntax-highlighting (should be last)
