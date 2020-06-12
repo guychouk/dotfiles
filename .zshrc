@@ -57,7 +57,7 @@ alias python=python3
 alias ll='ls -la'
 alias v='f -e nvim'
 alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
-alias dcl='dc logs -f'
+alias dcl='dcc logs -f'
 alias req='http --verify=no'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -119,10 +119,9 @@ function ape-dev() {
 function ape-logs() {
   tmux \
     new-window -n Logs \; send-keys -t Main:Logs "dcc up -d editor; dcc logs -f editor" C-m \; \
-    split-window \; send-keys "dcc up -d users; dcc logs -f users" C-m \; \
-    split-window \; send-keys "dcc up -d match; dcc logs -f match" C-m \; \
-    split-window \; send-keys "dcc up -d player; dcc logs -f player" C-m \; \
-    select-layout tiled
+    split-window -h \; send-keys "dcc up -d users; dcc logs -f users" C-m \; \
+    split-window -h \; send-keys "dcc up -d match; dcc logs -f match" C-m \; \
+    split-window -h \; send-keys "dcc up -d player; dcc logs -f player" C-m
 }
 
 # Setup zsh-syntax-highlighting (should be last)

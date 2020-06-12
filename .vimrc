@@ -28,6 +28,9 @@ Plug 'junegunn/fzf.vim'
 Plug 'preservim/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'mattn/vim-gist'
+Plug 'mattn/webapi-vim'
 Plug 'editorconfig/editorconfig-vim'
 call plug#end()
 
@@ -114,31 +117,12 @@ autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 set statusline=
 set statusline+=%#Search#
 set statusline+=%<%F\ %m\ %r\ %h                                      " File path, modified, readonly, helpfile, preview
+set statusline+=\ %{FugitiveStatusline()}                             " Show git branch
 set statusline+=%=                                                    " left/right separator
 set statusline+=\ %y                                                  " filetype
 set statusline+=\ %L                                                  " cursor line/total lines
 set statusline+=\ %P                                                  " percentage of file
 set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " Show COC status
-" set statusline+=%{b:gitbranch}                                      " show git branch
-
-function! StatuslineGitBranch()
-  let b:gitbranch=""
-  if &modifiable
-    try
-      let l:dir=expand('%:p:h')
-      let l:gitrevparse = system("git -C ".l:dir." rev-parse --abbrev-ref HEAD")
-      if !v:shell_error
-        let b:gitbranch="(".substitute(l:gitrevparse, '\n', '', 'g').") "
-      endif
-    catch
-    endtry
-  endif
-endfunction
-
-augroup GetGitBranch
-  autocmd!
-  autocmd VimEnter,WinEnter,BufEnter * call StatuslineGitBranch()
-augroup END
 
 """""""""""""""""""""""""
 "      Remappings       "
@@ -157,7 +141,7 @@ nnoremap <Leader>J :sp<CR>
 nnoremap <Leader>L :vsp<CR>
 
 nnoremap <Leader>/ :Ag<CR>
-nnoremap <Leader>. :Files<CR>
+nnoremap <Leader>. :GFiles<CR>
 nnoremap <Leader>b :Buffers<CR>
 
 nnoremap <Leader>ec :e ~/.vimrc<CR>
@@ -265,3 +249,6 @@ command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " Add `:OR` command for organize imports of the current buffer.
 command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Show only changed files
+command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
