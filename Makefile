@@ -18,9 +18,10 @@ ifeq ($(INSTALLER), pacman)
  INSTALL_CMD = `pacman --noconfirm -Sy`
 endif
 
-ifeq ($(INSTALLER),)
- $(error Forgot to set INSTALLER)
-endif
+# Use only if not setting an installer will break something
+#ifeq ($(INSTALLER),)
+# $(error Forgot to set INSTALLER)
+#endif
 
 PACKAGES_LIST = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
 
@@ -35,9 +36,9 @@ setup:
 	@echo "Symlinking SSH config dir..."
 	ln -s $(DRIVE)/etc/.ssh ~/.ssh
 
+# Easy way to run conditional statements in a make file where using
+# an if statement would be problematic due to how make runs commands.
+# See https://unix.stackexchange.com/a/184026/312299
 .PHONY: gitalias
 gitalias:
-	@-grep -q "include" ~/.gitconfig
-	@if [ $$? = 1 ]; then \
-	  @echo $$'[include]\n        path = ~/.gitaliases' >> ~/.gitconfig; \
-	fi
+	@grep -q "include" ~/.gitconfig && echo "Aliases are already setup!" || echo $$'[include]\n        path = ~/.gitaliases' >> ~/.gitconfig 
