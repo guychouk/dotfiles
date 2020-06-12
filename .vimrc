@@ -92,7 +92,6 @@ let g:ale_pattern_options = {
 set updatetime=250
 autocmd BufWritePost * GitGutter
 
-
 " Delete buffer after git commit, rebase or config
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
@@ -109,13 +108,12 @@ au BufNewFile,BufRead *.js set filetype=javascript
 " JS settings
 autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 
-
 """""""""""""""""""""""""
 "      Status Line      "
 """""""""""""""""""""""""
+hi statusline guibg=black ctermfg=8 guifg=plum ctermbg=15
 
 set statusline=
-set statusline+=%#Search#
 set statusline+=%<%F\ %m\ %r\ %h                                      " File path, modified, readonly, helpfile, preview
 set statusline+=\ %{FugitiveStatusline()}                             " Show git branch
 set statusline+=%=                                                    " left/right separator
