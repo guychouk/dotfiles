@@ -32,35 +32,36 @@ Plug 'tpope/vim-fugitive'
 Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
 Plug 'editorconfig/editorconfig-vim'
+Plug 'ruanyl/vim-gh-line'
 call plug#end()
 
 """""""""""""""""""""""""
 "        General        "
 """""""""""""""""""""""""
 
-syntax on                  " Syntax highlighting
-filetype plugin indent on  " Turn on filetype detections
-colorscheme afterglow      " Afterglow color scheme
+syntax on                 " Syntax highlighting
+filetype plugin indent on " Turn on filetype detections
+colorscheme afterglow     " Afterglow color scheme
 
-set clipboard=unnamed " ?
-set encoding=utf-8    " Encoding for files
-set foldmethod=manual " Set foldmethod for programming
-set signcolumn=yes    " Always show signcolumn
-set shortmess+=c      " Avoid passing messages to ins-completion-menu
+set clipboard=unnamed     " Use the clipboard register '*'
+set encoding=utf-8        " Encoding for files
+set foldmethod=manual     " Set foldmethod for programming
+set signcolumn=yes        " Always show signcolumn
+set shortmess+=c          " Avoid passing messages to ins-completion-menu
 
-set nobackup          " No backup files
-set nowritebackup     " No backup files
-set smarttab          " Improves tabbing
-set number            " Show line numbers
-set nowrap            " Disable line wrapping
-set incsearch         " Sets incremental search
-set nohlsearch        " Disable search highlight
-set noswapfile        " Disables swp files creation
-set expandtab         " Insert spaces when tab is pressed
-set autoindent        " New lines will be indented as well
-set termguicolors     " Emit true (24-bit) colors in the terminal
-set smartcase         " No ignore case when pattern has uppercase
-set hidden            " Hide abandoned buffers instead of unloading them
+set nobackup              " No backup files
+set nowritebackup         " No backup files
+set smarttab              " Improves tabbing
+set number                " Show line numbers
+set nowrap                " Disable line wrapping
+set incsearch             " Sets incremental search
+set nohlsearch            " Disable search highlight
+set noswapfile            " Disables swp files creation
+set expandtab             " Insert spaces when tab is pressed
+set autoindent            " New lines will be indented as well
+set termguicolors         " Emit true (24-bit) colors in the terminal
+set smartcase             " No ignore case when pattern has uppercase
+set hidden                " Hide abandoned buffers instead of unloading them
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -123,6 +124,59 @@ set statusline+=\ %P                                                  " percenta
 set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " Show COC status
 
 """""""""""""""""""""""""
+"       Functions       "
+"""""""""""""""""""""""""
+
+function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+        execute 'h '.expand('<cword>')
+    else
+        call CocAction('doHover')
+    endif
+endfunction
+
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+function! s:nerdtree_toggle()
+        let isOpen = g:NERDTree.IsOpen()
+        execute isOpen ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
+endfunction
+
+"""""""""""""""""""""""""
+"     Autocommands      "
+"""""""""""""""""""""""""
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+augroup mygroup
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+"""""""""""""""""""""""""
+"       Commands        "
+"""""""""""""""""""""""""
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Show only changed files
+command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
+
+"""""""""""""""""""""""""
 "      Remappings       "
 """""""""""""""""""""""""
 
@@ -141,6 +195,7 @@ nnoremap <Leader>L :vsp<CR>
 nnoremap <Leader>/ :Ag<CR>
 nnoremap <Leader>. :GFiles<CR>
 nnoremap <Leader>b :Buffers<CR>
+nnoremap <Leader>g :G<CR>
 
 nnoremap <Leader>ec :e ~/.vimrc<CR>
 nnoremap <Leader>zc :e ~/.zshrc<CR>
@@ -149,7 +204,7 @@ nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
 
-nnoremap <silent> <expr> <F6> g:NERDTree.IsOpen() ? "\:NERDTreeClose<CR>" : bufexists(expand('%')) ? "\:NERDTreeFind<CR>" : "\:NERDTree<CR>"
+nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
 
 " Navigate ALE diagnostics
 nmap <silent> [g <Plug>(ale_previous)
@@ -170,14 +225,6 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
-endfunction
 
 " Manage extensions.
 nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
@@ -205,11 +252,6 @@ inoremap <silent><expr> <TAB>
             \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -222,31 +264,8 @@ else
     inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-" Introduce function text object
+" Add function text object
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
-" Show only changed files
-command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
