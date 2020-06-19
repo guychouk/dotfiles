@@ -39,15 +39,22 @@ call plug#end()
 "        General        "
 """""""""""""""""""""""""
 
-syntax on                 " Syntax highlighting
-filetype plugin indent on " Turn on filetype detections
-colorscheme afterglow     " Afterglow color scheme
+syntax on                  " Syntax highlighting
+filetype plugin indent on  " Turn on filetype detections
 
-set clipboard=unnamed     " Use the clipboard register '*'
+" Configure theme & colors
+colorscheme afterglow     
+hi Normal guibg=none
+hi LineNr guibg=none
+hi SignColumn guibg=none
+hi ALEErrorSign guibg=none
+hi ALEWarningSign guibg=none
+
 set encoding=utf-8        " Encoding for files
 set foldmethod=manual     " Set foldmethod for programming
 set signcolumn=yes        " Always show signcolumn
 set shortmess+=c          " Avoid passing messages to ins-completion-menu
+set clipboard=unnamedplus " Enables OS clipboard support (for WSL as well)
 
 set nobackup              " No backup files
 set nowritebackup         " No backup files
@@ -62,6 +69,7 @@ set autoindent            " New lines will be indented as well
 set termguicolors         " Emit true (24-bit) colors in the terminal
 set smartcase             " No ignore case when pattern has uppercase
 set hidden                " Hide abandoned buffers instead of unloading them
+set relativenumber        " Set line numbers relative to cursor
 
 """""""""""""""""""""""""
 "       Variables       "
