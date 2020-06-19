@@ -71,7 +71,9 @@ PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]
 
 TMUX_SESSION='Main'
 
-HISTSIZE=10000
+
+DISPLAY=localhost:0.0
+HISTSIZ=E10000
 SAVEHIST=10000
 HISTFILE=~/.cache/.zsh_history
 
@@ -82,7 +84,7 @@ export NVM_DIR="$HOME/.nvm"                                                     
 export VISUAL=nvim                                                                           # Set NeoVim as visual editor
 export EDITOR="$VISUAL"                                                                      # Set $EDITOR to the same editor in $VISUAL
 export KEYTIMEOUT=1                                                                          # How long to wait for additional keys in key sequences (10ms)
-export PATH="$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH" # Add yarn, npm & go "bin" directories to path
+export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH" # Add yarn, npm & go "bin" directories to path
 export PATH=$(echo $PATH | tr ':' '\n' | grep -v /mnt/ | tr -s '\n' ':')                     # Remove Windows paths from PATH
 
 #########################
@@ -139,8 +141,8 @@ source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
   # Tests to see if the session already exists. If it does, just reattach.
   if [ "$(tmux list-sessions 2> /dev/null | grep -o $TMUX_SESSION)" != "$TMUX_SESSION" ]; then
-    exec tmux new-session -s $TMUX_SESSION
+    tmux new-session -s "$TMUX_SESSION"
   else
-    exec tmux attach -t $TMUX_SESSION
+    tmux attach -t "$TMUX_SESSION"
   fi
 fi
