@@ -15,6 +15,7 @@
 	sp = stash pop
 	sl = stash list
 	sa = stash apply
+        cm = commit -m
 	#############
 	chk = checkout
 	new = checkout -b
