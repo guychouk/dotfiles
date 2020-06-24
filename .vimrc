@@ -13,26 +13,26 @@ if has('win32') || has('win64')
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'danilo-augusto/vim-afterglow'
-Plug 'psliwka/vim-smoothie'
-Plug 'godlygeek/tabular'
-Plug 'airblade/vim-rooter'
-Plug 'sheerun/vim-polyglot'
 Plug 'airblade/vim-gitgutter'
-Plug 'junegunn/goyo.vim'
-Plug 'mattn/emmet-vim'
+Plug 'airblade/vim-rooter'
+Plug 'danilo-augusto/vim-afterglow'
 Plug 'dense-analysis/ale'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'editorconfig/editorconfig-vim'
+Plug 'godlygeek/tabular'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'preservim/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
+Plug 'junegunn/goyo.vim'
+Plug 'mattn/emmet-vim'
 Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
-Plug 'editorconfig/editorconfig-vim'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'preservim/nerdtree'
+Plug 'psliwka/vim-smoothie'
 Plug 'ruanyl/vim-gh-line'
+Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -82,16 +82,24 @@ let maplocalleader = " "
 let NERDTreeShowHidden = 1
 
 " ALE
+let g:ale_lint_delay = 700
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%] [%code%]'
 let g:ale_lint_on_text_changed = 'always'
-let g:ale_lint_delay = 1000
 let g:ale_linters_explicit = 1
-let g:ale_linters = { 'javascript': ['eslint'] }
-let g:ale_fixers = { 'javascript': ['eslint'] }
+let g:ale_linters = { 
+\ 'javascript': ['eslint'],
+\ 'typescript': ['tsserver'],
+\ 'typescriptreact': ['tsserver']
+\}
+let g:ale_fixers = { 
+\ 'javascript': ['eslint'],
+\ 'typescript': ['eslint', 'tsserver'],
+\ 'typescriptreact': ['eslint', 'tsserver']
+\}
 let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
 \ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
@@ -203,7 +211,7 @@ nnoremap <Leader>L :vsp<CR>
 nnoremap <Leader>/ :Ag<CR>
 nnoremap <Leader>. :GFiles<CR>
 nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>g :G<CR>
+nnoremap <Leader>gg :G<CR>
 
 nnoremap <Leader>ec :e ~/.vimrc<CR>
 nnoremap <Leader>zc :e ~/.zshrc<CR>
