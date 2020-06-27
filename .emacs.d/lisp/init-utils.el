@@ -7,11 +7,6 @@
 
 ;; -*- coding: utf-8; lexical-binding: t; -*-
 
-(defun my-hermes-task ()
-  "Generate JIRA URL to task interactively."
-  (interactive)
-  (insert (format " [[https://apester.atlassian.net/browse/HERMES-%1$s][HERMES-%1$s]] " (read-string "Story ID: "))))
-
 (defun local-require (pkg)
   "Require local PKG in site-lisp directory."
   (unless (featurep pkg)

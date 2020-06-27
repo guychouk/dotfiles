@@ -43,7 +43,6 @@
 (require-init 'init-utils)
 (require-init 'init-keybindings)
 (require-init 'init-dap)
-(require-init 'init-services)
 (require-init 'init-modes)
 
 ;; Load MacOS settings

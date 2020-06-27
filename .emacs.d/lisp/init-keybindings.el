@@ -48,7 +48,6 @@ _v_ariable       _u_ser-option
   "File jumps"
   ("z" (lambda() (interactive)(find-file "~/.zshrc")) "ZSH Config")
   ("i" (lambda() (interactive)(find-file "~/.emacs.d/init.el")) "Init File")
-  ("e" (lambda() (interactive)(find-file "~/Drive/etc/.espanso/default.yml")) "Espanso File")
   ("k" (lambda() (interactive)(find-file "~/.emacs.d/lisp/init-keybindings.el")) "Keybindings")
   ("ow" (lambda() (interactive)(find-file "~/Drive/docs/orgs/work.org")) "Work Org")
   ("os" (lambda() (interactive)(find-file "~/Drive/docs/orgs/stem.org")) "STEM Org"))
