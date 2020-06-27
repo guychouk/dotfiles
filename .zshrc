@@ -48,6 +48,37 @@ setopt interactivecomments  # Turn on comments interactive comments
 unsetopt PROMPT_SP          # Fix percent sign on initialization
 
 #########################
+#       Variables       #
+#########################
+
+# Stylize prompt
+PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
+
+TMUX_SESSION='Main'
+DISPLAY=localhost:0.0
+HISTSIZ=E10000
+SAVEHIST=10000
+HISTFILE=~/.cache/.zsh_history
+
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+export ANDROID_AVD_HOME="$HOME/.android/avd"
+export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
+
+export VISUAL=nvim      # Set NeoVim as visual editor
+export EDITOR="$VISUAL" # Set $EDITOR to the same editor in $VISUAL
+export KEYTIMEOUT=1     # How long to wait for additional keys in key sequences (10ms)
+
+typeset -aU path        # Removes duplicates from $PATH
+path=($path
+        "$HOME/bin"
+        "$HOME/go/bin"
+        "$HOME/.yarn/bin"
+        "$HOME/.config/yarn/global/node_modules/.bin")
+
+#########################
 #        Aliases        #
 #########################
 
@@ -61,56 +92,22 @@ alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias req='http --verify=no'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-#########################
-#     ENV Variables     #
-#########################
-
-# Stylize prompt:
-PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
-
-TMUX_SESSION='Main'
-DISPLAY=localhost:0.0
-HISTSIZ=E10000
-SAVEHIST=10000
-HISTFILE=~/.cache/.zsh_history
-
-# Locale
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-export KEYTIMEOUT=1                                                                                    # How long to wait for additional keys in key sequences (10ms)
-export VISUAL=nvim                                                                                     # Set NeoVim as visual editor
-export EDITOR="$VISUAL"                                                                                # Set $EDITOR to the same editor in $VISUAL
-export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH" # Add yarn, npm & go "bin" directories to path
+alias emu="$ANDROID_SDK_ROOT/tools/emulator"
 
 #########################
 #        Setup          #
 #########################
 
-# Setup NVM if installed
-export NVM_DIR="$HOME/.nvm"                                                                            # NVM directory
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"                           # This loads nvm
-[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion" # This loads nvm bash_completion
+# Setup NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
+[ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
 # Setup Google cloud SDK completions
 if [[ -a /usr/local/Caskroom ]]; then
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 fi
-
-#########################
-#       Functions       #
-#########################
-
-# For running Docker commands on WSL
-function wslsetup() {
-  export DOCKER_HOST=tcp://localhost:2375 
-}
-
-# Setup zsh-syntax-highlighting (should be last)
-source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
 # Taken from here: https://unix.stackexchange.com/a/113768/312299
@@ -122,3 +119,6 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
     tmux attach -t "$TMUX_SESSION"
   fi
 fi
+
+# Setup zsh-syntax-highlighting (should be last)
+source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
