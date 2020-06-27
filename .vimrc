@@ -71,10 +71,11 @@ set smartcase             " No ignore case when pattern has uppercase
 set hidden                " Hide abandoned buffers instead of unloading them
 set relativenumber        " Set line numbers relative to cursor
 
+runtime snippets.vim
+
 """""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
-
 let mapleader = " "
 let maplocalleader = " "
 
