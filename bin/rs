@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dcc stop "$1" && \
+            dc rm -f "$1" && \
+            dc up -d "$1" && \
+            dc logs -f "$1"

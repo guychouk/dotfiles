@@ -56,8 +56,8 @@ alias pip=pip3
 alias python=python3
 alias ll='ls -la'
 alias v='f -e nvim'
-alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias dcl='dcc logs -f'
+alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias req='http --verify=no'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -70,28 +70,27 @@ alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
 
 TMUX_SESSION='Main'
-
-
 DISPLAY=localhost:0.0
 HISTSIZ=E10000
 SAVEHIST=10000
 HISTFILE=~/.cache/.zsh_history
 
-export LANG=en_US.UTF-8                                                                      # Locale
-export LC_ALL=en_US.UTF-8                                                                    # Locale
-export LANGUAGE=en_US.UTF-8                                                                  # Locale
-export NVM_DIR="$HOME/.nvm"                                                                  # NVM directory
-export VISUAL=nvim                                                                           # Set NeoVim as visual editor
-export EDITOR="$VISUAL"                                                                      # Set $EDITOR to the same editor in $VISUAL
-export KEYTIMEOUT=1                                                                          # How long to wait for additional keys in key sequences (10ms)
+# Locale
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
+export KEYTIMEOUT=1                                                                                    # How long to wait for additional keys in key sequences (10ms)
+export VISUAL=nvim                                                                                     # Set NeoVim as visual editor
+export EDITOR="$VISUAL"                                                                                # Set $EDITOR to the same editor in $VISUAL
 export PATH="$HOME/bin:$HOME/.yarn/bin:$HOME/.config/yarn/global/node_modules/.bin:$HOME/go/bin:$PATH" # Add yarn, npm & go "bin" directories to path
-export PATH=$(echo $PATH | tr ':' '\n' | grep -v /mnt/ | tr -s '\n' ':')                     # Remove Windows paths from PATH
 
 #########################
 #        Setup          #
 #########################
 
 # Setup NVM if installed
+export NVM_DIR="$HOME/.nvm"                                                                            # NVM directory
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"                           # This loads nvm
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion" # This loads nvm bash_completion
 
@@ -105,32 +104,9 @@ fi
 #       Functions       #
 #########################
 
-function dcr() {
-  dcc stop "$1" && dc rm -f "$1" && dc up -d "$1" && dc logs -f "$1"
-}
-
 # For running Docker commands on WSL
 function wslsetup() {
   export DOCKER_HOST=tcp://localhost:2375 
-}
-
-function ape-dev() {
-  dcc up -d sdk campaign player editor console
-}
-
-function ape-logs() {
-  tmux \
-    new-window -n Logs \; send-keys -t Main:Logs "dcc up -d editor; dcc logs -f editor" C-m \; \
-    split-window -h \; send-keys "dcc up -d users; dcc logs -f users" C-m \; \
-    split-window -h \; send-keys "dcc up -d match; dcc logs -f match" C-m \; \
-    split-window -h \; send-keys "dcc up -d player; dcc logs -f player" C-m \; \
-    select-layout tiled
-}
-
-function color-codes() {
-        for i in {0..255}; do
-                printf "\x1b[38;5;${i}mcolour${i}\x1b[0m\n"
-        done
 }
 
 # Setup zsh-syntax-highlighting (should be last)

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    exit 0
+fi
+
+tmux new-window -n Logs \; send-keys -t Main:Logs "dcc up -d $1; dcc logs -f $1" C-m
+shift
+
+while [ ! -z $1 ]
+do
+    tmux split-window -h \; send-keys "dcc up -d $1; dcc logs -f $1" C-m
+    shift
+done
+
+tmux select-layout tiled
