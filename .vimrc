@@ -56,6 +56,10 @@ set signcolumn=yes        " Always show signcolumn
 set shortmess+=c          " Avoid passing messages to ins-completion-menu
 set clipboard=unnamedplus " Enables OS clipboard support (for WSL as well)
 
+set tabstop=4             " Width of a hard tabstop measured in spaces
+set shiftwidth=4          " When indenting with '>', use 4 spaces width
+set expandtab             " Make the tab key insert spaces instead of tab characters
+
 set nobackup              " No backup files
 set nowritebackup         " No backup files
 set smarttab              " Improves tabbing
