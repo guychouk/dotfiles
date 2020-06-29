@@ -92,7 +92,6 @@ alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias req='http --verify=no'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias emu="$ANDROID_SDK_ROOT/tools/emulator"
 
 #########################
 #        Setup          #

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+AVD_NAME=pixel_xl_10
+ANDROID_SDK_EMULATOR_DIR=/usr/local/Caskroom/android-sdk/4333796/emulator
+
+cd $ANDROID_SDK_EMULATOR_DIR
+
+[[ $1 == run ]] && emulator -avd "$AVD_NAME"
+[[ $1 == rm ]] && avdmanager delete avd -n "$AVD_NAME"
+
+if [[ $1 == create ]] ; then
+    [ ! -f ./sdcard.img ] && ./mksdcard 1G sdcard.img
+    echo "no" | avdmanager --verbose create avd \
+        --force \
+        --name "$AVD_NAME" \
+        --device "pixel_xl" \
+        --package "system-images;android-29;google_apis;x86_64" \
+        --abi google_apis/x86_64 \
+        --sdcard ./sdcard.img
+fi
