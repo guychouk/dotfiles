@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Extract amounts from PDF file
+pdftotext -enc UTF-8 $1 - | ag -o "\d{2}\.\d{2}"

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    exit 0
+fi
+
+TOKEN=$(<~/.gist-token)
+URL=https://api.github.com
+
+curl -s --header "Authorization: token $TOKEN" --request DELETE $URL/gists/$1

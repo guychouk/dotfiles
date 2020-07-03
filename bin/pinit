@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [[ $# -eq 0 ]] ; then
+    exit 0
+fi
+
+TOKEN=$(<~/.pinterest-token)
+URL=https://api.pinterest.com/v1/pins/
+
+curl --header "Authorization: Bearer $TOKEN" -F image=@$1 board=$2 note=$3 --request POST $URL
