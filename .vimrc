@@ -29,10 +29,11 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 Plug 'psliwka/vim-smoothie'
 Plug 'ruanyl/vim-gh-line'
-Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -110,6 +111,9 @@ let g:ale_pattern_options = {
 \ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
 \}
 
+" JSX Syntax Highlighting
+let g:vim_jsx_pretty_colorful_config = 1
+
 " GitGutter
 set updatetime=250
 autocmd BufWritePost * GitGutter
@@ -123,6 +127,7 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 " Emmet (<c-y>,)
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
+autocmd FileType html set shiftwidth=2
 
 " Set .js files as Javascript filetype
 au BufNewFile,BufRead *.js set filetype=javascript
