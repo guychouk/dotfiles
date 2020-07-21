@@ -7,13 +7,13 @@ fi
 CURRENT_SESSION=$(tmux list-sessions | sed -n '/(attached)/s/:.*//p')
 
 tmux new-window -t "$CURRENT_SESSION" -n Logs
-tmyx send-keys -t "$CURRENT_SESSION:Logs" "dcc up -d $1; dcc logs -f $1" C-m
+tmux send-keys -t "$CURRENT_SESSION:Logs" "dcc up -d $1 && dcc logs -f $1" C-m
 shift
 
 while [ ! -z $1 ]
 do
     tmux split-window -h
-    tmux send-keys "dcc up -d $1; dcc logs -f $1" C-m
+    tmux send-keys "dcc up -d $1 && dcc logs -f $1" C-m
     shift
 done
 
