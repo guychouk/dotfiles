@@ -40,9 +40,6 @@ call plug#end()
 "        General        "
 """""""""""""""""""""""""
 
-syntax on                  " Syntax highlighting
-filetype plugin indent on  " Turn on filetype detections
-
 " Configure theme & colors
 colorscheme afterglow     
 hi Normal guibg=none
@@ -50,6 +47,9 @@ hi LineNr guibg=none
 hi SignColumn guibg=none
 hi ALEErrorSign guibg=none
 hi ALEWarningSign guibg=none
+
+syntax on                  " Syntax highlighting
+filetype plugin indent on  " Turn on filetype detections
 
 set encoding=utf-8        " Encoding for files
 set foldmethod=manual     " Set foldmethod for programming
@@ -138,7 +138,7 @@ autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 """""""""""""""""""""""""
 "      Status Line      "
 """""""""""""""""""""""""
-hi statusline guibg=black ctermfg=8 guifg=plum ctermbg=15
+hi statusline guifg=grey20 guibg=white ctermbg=15 ctermfg=8
 
 set statusline=
 set statusline+=%<%F\ %m\ %r\ %h                                      " File path, modified, readonly, helpfile, preview
@@ -259,13 +259,6 @@ nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
-nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
-" Do default action for next item.
-nnoremap <silent> <space>j  :<C-u>CocNext<CR>
-" Do default action for previous item.
-nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
-" Resume latest coc list.
-nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
 
 """""""""""""""""""""""""
 "        Coc.vim        "
