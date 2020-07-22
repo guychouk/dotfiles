@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+pattern='(mongo|postgres)'
+dc_services=("${(@f)$(dcc ps -a --services)}")
+printf '%s\n' ${dc_services:#$~pattern} | xargs -I{} zsh -c 'docker-compose rm -s -f -v {}'
