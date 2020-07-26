@@ -99,11 +99,13 @@ let g:ale_linters_explicit = 1
 let g:ale_linters = { 
 \ 'javascript': ['eslint'],
 \ 'typescript': ['tsserver'],
+\ 'javascriptreact': ['eslint'],
 \ 'typescriptreact': ['tsserver']
 \}
 let g:ale_fixers = { 
 \ 'javascript': ['eslint'],
 \ 'typescript': ['eslint', 'tsserver'],
+\ 'javascriptreact': ['eslint'],
 \ 'typescriptreact': ['eslint', 'tsserver']
 \}
 let g:ale_pattern_options = {
@@ -133,7 +135,7 @@ autocmd FileType html set shiftwidth=2
 au BufNewFile,BufRead *.js set filetype=javascript
 
 " JS settings
-autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType javascript,javascriptreact setlocal ts=2 sts=2 sw=2
 
 """""""""""""""""""""""""
 "      Status Line      "
@@ -141,13 +143,11 @@ autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 hi statusline guifg=grey20 guibg=white ctermbg=15 ctermfg=8
 
 set statusline=
-set statusline+=%<%F\ %m\ %r\ %h                                      " File path, modified, readonly, helpfile, preview
-set statusline+=\ %{FugitiveStatusline()}                             " Show git branch
-set statusline+=%=                                                    " left/right separator
-set statusline+=\ %y                                                  " filetype
-set statusline+=\ %L                                                  " cursor line/total lines
-set statusline+=\ %P                                                  " percentage of file
-set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " Show COC status
+set statusline+=\ %<%F\ %m\ %r\ %h                                    " File path, modified, readonly, helpfile, preview
+set statusline+=%=                                                    " Add left/right separator
+set statusline+=\ %{FugitiveStatusline()}                             " Current git branch
+set statusline+=\ %y                                                  " Show FileType
+set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " COC status (if available)
 
 """""""""""""""""""""""""
 "       Functions       "
