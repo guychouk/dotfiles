@@ -1,33 +1,24 @@
 INSTALLER = 
-INSTALL_CMD = 
-DRIVE = /mnt/d/Drive
-
-ifeq ($(INSTALLER), cask)
- INSTALL_CMD = `brew cask install`
-endif
+DRIVE = ~/Drive
 
 ifeq ($(INSTALLER), brew)
- INSTALL_CMD = `brew install`
+ INSTALL_CMD = `brew bundle --file`
+ PACKAGES = `$(DRIVE)/etc/Brewfile`
 endif
 
 ifeq ($(INSTALLER), scoop)
  INSTALL_CMD = `scoop install`
+ PACKAGES = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
 endif
 
 ifeq ($(INSTALLER), pacman)
  INSTALL_CMD = `pacman --noconfirm -Sy`
+ PACKAGES = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
 endif
-
-# Use only if not setting an installer will break something
-#ifeq ($(INSTALLER),)
-# $(error Forgot to set INSTALLER)
-#endif
-
-PACKAGES_LIST = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
 
 .PHONY: install
 install:
-	@echo $(INSTALLER) $(PACKAGES_LIST)
+	@echo $(INSTALL_CMD) $(PACKAGES)
 
 .PHONY: setup
 setup:
