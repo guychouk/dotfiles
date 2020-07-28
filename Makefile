@@ -3,17 +3,17 @@ DRIVE = ~/Drive
 
 ifeq ($(INSTALLER), brew)
  INSTALL_CMD = `brew bundle --file`
- PACKAGES = `$(DRIVE)/etc/Brewfile`
+ PACKAGES = `$(DRIVE)/etc/Brewfile.txt`
 endif
 
 ifeq ($(INSTALLER), scoop)
  INSTALL_CMD = `scoop install`
- PACKAGES = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
+ PACKAGES = `cat $(DRIVE)/etc/Scoopfile.txt | xargs`
 endif
 
 ifeq ($(INSTALLER), pacman)
  INSTALL_CMD = `pacman --noconfirm -Sy`
- PACKAGES = `cat $(DRIVE)/etc/$(INSTALLER)-list.txt | xargs`
+ PACKAGES = `cat $(DRIVE)/etc/Pacmanfile.txt | xargs`
 endif
 
 .PHONY: install
