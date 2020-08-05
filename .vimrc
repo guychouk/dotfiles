@@ -13,9 +13,8 @@ if has('win32') || has('win64')
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
-Plug 'danilo-augusto/vim-afterglow'
+Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'godlygeek/tabular'
@@ -27,13 +26,14 @@ Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
-Plug 'psliwka/vim-smoothie'
 Plug 'ruanyl/vim-gh-line'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'danilo-augusto/vim-afterglow'
+Plug '~/.vim/custom/swift'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -55,6 +55,7 @@ set encoding=utf-8        " Encoding for files
 set foldmethod=manual     " Set foldmethod for programming
 set signcolumn=yes        " Always show signcolumn
 set shortmess+=c          " Avoid passing messages to ins-completion-menu
+set shortmess+=I         " Supress startup message
 set clipboard=unnamedplus " Enables OS clipboard support (for WSL as well)
 
 set tabstop=4             " Width of a hard tabstop measured in spaces
