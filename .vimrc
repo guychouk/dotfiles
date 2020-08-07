@@ -8,15 +8,10 @@ if empty(glob('~/.vim/autoload/plug.vim'))
     autocmd VimEnter * PlugInstall | source $MYVIMRC
 endif
 
-if has('win32') || has('win64')
-    let &shell='cmd.exe'
-endif
-
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
-Plug 'editorconfig/editorconfig-vim'
 Plug 'godlygeek/tabular'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -34,6 +29,7 @@ Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'danilo-augusto/vim-afterglow'
 Plug '~/.vim/custom/swift'
+Plug 'jpalardy/vim-slime'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -48,15 +44,16 @@ hi SignColumn guibg=none
 hi ALEErrorSign guibg=none
 hi ALEWarningSign guibg=none
 
-syntax on                  " Syntax highlighting
-filetype plugin indent on  " Turn on filetype detections
+syntax on                 " Syntax highlighting
+filetype plugin indent on " Turn on filetype detections
 
 set encoding=utf-8        " Encoding for files
 set foldmethod=manual     " Set foldmethod for programming
 set signcolumn=yes        " Always show signcolumn
 set shortmess+=c          " Avoid passing messages to ins-completion-menu
-set shortmess+=I         " Supress startup message
+set shortmess+=I          " Supress startup message
 set clipboard=unnamedplus " Enables OS clipboard support (for WSL as well)
+set pyx=3                 " Set Python version to 3
 
 set tabstop=4             " Width of a hard tabstop measured in spaces
 set shiftwidth=4          " When indenting with '>', use 4 spaces width
@@ -77,7 +74,7 @@ set smartcase             " No ignore case when pattern has uppercase
 set hidden                " Hide abandoned buffers instead of unloading them
 set relativenumber        " Set line numbers relative to cursor
 
-runtime snippets.vim
+runtime snippets.vim      " Load snippets
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -117,6 +114,10 @@ let g:ale_pattern_options = {
 " JSX Syntax Highlighting
 let g:vim_jsx_pretty_colorful_config = 1
 
+" Vim-Slime
+let g:slime_target = "tmux"
+let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
+
 " GitGutter
 set updatetime=250
 autocmd BufWritePost * GitGutter
@@ -132,10 +133,8 @@ let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 autocmd FileType html set shiftwidth=2
 
-" Set .js files as Javascript filetype
-au BufNewFile,BufRead *.js set filetype=javascript
-
 " JS settings
+au BufNewFile,BufRead *.js set filetype=javascript
 autocmd FileType javascript,javascriptreact setlocal ts=2 sts=2 sw=2
 
 """""""""""""""""""""""""
@@ -168,8 +167,8 @@ function! s:check_back_space() abort
 endfunction
 
 function! s:nerdtree_toggle()
-        let isOpen = g:NERDTree.IsOpen()
-        execute isOpen ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
+        let is_open = g:NERDTree.IsOpen()
+        execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
 endfunction
 
 """""""""""""""""""""""""
@@ -259,7 +258,6 @@ nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
 
 """""""""""""""""""""""""
 "        Coc.vim        "
@@ -271,9 +269,6 @@ inoremap <silent><expr> <TAB>
             \ <SID>check_back_space() ? "\<TAB>" :
             \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-" Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
 " position. Coc only does snippet and additional edit on confirm.
