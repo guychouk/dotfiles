@@ -25,11 +25,11 @@ Plug 'ruanyl/vim-gh-line'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
+Plug 'jpalardy/vim-slime'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'danilo-augusto/vim-afterglow'
 Plug '~/.vim/custom/swift'
-Plug 'jpalardy/vim-slime'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -86,7 +86,7 @@ let maplocalleader = " "
 let NERDTreeShowHidden = 1
 
 " ALE
-let g:ale_lint_delay = 700
+let g:ale_lint_delay = 250
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
 let g:ale_echo_msg_error_str = 'E'
@@ -96,20 +96,20 @@ let g:ale_lint_on_text_changed = 'always'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 
 \ 'javascript': ['eslint'],
-\ 'typescript': ['tsserver'],
-\ 'javascriptreact': ['eslint'],
-\ 'typescriptreact': ['tsserver']
-\}
-let g:ale_fixers = { 
-\ 'javascript': ['eslint'],
 \ 'typescript': ['eslint', 'tsserver'],
-\ 'javascriptreact': ['eslint'],
-\ 'typescriptreact': ['eslint', 'tsserver']
+\ 'typescript.tsx': ['eslint', 'tsserver'],
 \}
 let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
 \ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
 \}
+
+" FileType settings
+au BufNewFile,BufRead *.js set filetype=javascript
+au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+au BufNewFile,BufRead *.ts set filetype=typescript
+au BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+autocmd FileType javascript setlocal ts=2 sts=2 sw=2
 
 " JSX Syntax Highlighting
 let g:vim_jsx_pretty_colorful_config = 1
@@ -132,10 +132,6 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 let g:user_emmet_install_global = 0
 autocmd FileType html,css EmmetInstall
 autocmd FileType html set shiftwidth=2
-
-" JS settings
-au BufNewFile,BufRead *.js set filetype=javascript
-autocmd FileType javascript,javascriptreact setlocal ts=2 sts=2 sw=2
 
 """""""""""""""""""""""""
 "      Status Line      "
