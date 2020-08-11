@@ -102,6 +102,9 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
 [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 
+# Set Node REPL global package path
+export NODE_PATH=`npm config get prefix`/lib/node_modules/
+
 # Setup Google cloud SDK completions
 if [[ -a /usr/local/Caskroom ]]; then
   source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
