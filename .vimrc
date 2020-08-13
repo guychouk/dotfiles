@@ -109,7 +109,8 @@ au BufNewFile,BufRead *.js set filetype=javascript
 au BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 au BufNewFile,BufRead *.ts set filetype=typescript
 au BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-autocmd FileType javascript setlocal ts=2 sts=2 sw=2
+autocmd FileType javascript,javascript.tsx setlocal ts=2 sts=2 sw=2
+autocmd FileType typescript,typescript.tsx setlocal ts=2 sts=2 sw=2
 
 " JSX Syntax Highlighting
 let g:vim_jsx_pretty_colorful_config = 1
