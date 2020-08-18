@@ -30,6 +30,7 @@ Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'danilo-augusto/vim-afterglow'
 Plug '~/.vim/custom/swift'
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 """""""""""""""""""""""""
