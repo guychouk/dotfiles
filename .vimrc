@@ -171,46 +171,11 @@ function! s:nerdtree_toggle()
 endfunction
 
 """""""""""""""""""""""""
-"     Autocommands      "
-"""""""""""""""""""""""""
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-"""""""""""""""""""""""""
-"       Commands        "
-"""""""""""""""""""""""""
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
-
-" Show only changed files
-command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
-
-"""""""""""""""""""""""""
 "      Remappings       "
 """""""""""""""""""""""""
 
 imap jk <Esc>
 
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 
@@ -257,6 +222,37 @@ nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
 nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
 " Find symbol of current document.
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+
+"""""""""""""""""""""""""
+"     Autocommands      "
+"""""""""""""""""""""""""
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+augroup mygroup
+    autocmd!
+    " Setup formatexpr specified filetype(s).
+    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+    " Update signature help on jump placeholder.
+    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+"""""""""""""""""""""""""
+"       Commands        "
+"""""""""""""""""""""""""
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
+
+" Show only changed files
+command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
 
 """""""""""""""""""""""""
 "        Coc.vim        "
