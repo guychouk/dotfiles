@@ -1,4 +1,11 @@
 #########################
+#       Autoloads       #
+#########################
+
+autoload -U compinit
+autoload -U colors && colors
+
+#########################
 #     ENV variables     #
 #########################
 
@@ -12,18 +19,10 @@ export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export TMUX_SESSION='Main'
 export DISPLAY=localhost:0.0
-export ZDOTDIR=~/.cache/.zcompdump
 export HISTFILE=~/.cache/.zsh_history
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
 export PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
-
-#########################
-#       Autoloads       #
-#########################
-
-autoload -U compinit
-autoload -U colors && colors
 
 #########################
 #      Completion       #
@@ -31,8 +30,8 @@ autoload -U colors && colors
 
 zmodload zsh/complist
 zstyle ':completion:*' menu select
-compinit
-_comp_options+=(globdots) # Include hidden files.
+compinit -d ~/.cache/.zcompdump
+_comp_options+=(globdots)
 
 #########################
 #         FASD          #
@@ -75,14 +74,11 @@ unsetopt PROMPT_SP          # Fix percent sign on initialization
 alias g=git
 alias pip=pip3
 alias python=python3
-alias ll='ls -la'
 alias v='f -e nvim'
 alias dcl='dcc logs -f'
 alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
-alias req='http --verify=no'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
 
 #########################
 #        Setup          #
@@ -97,7 +93,9 @@ path=($path
         "$HOME/.config/yarn/global/node_modules/.bin")
 
 if [[ ! -f /proc/sys/kernel/hostname ]]; then
-    # We're on the Mac
+    # We're on macOS
+    alias ll='ls -laG'
+
     export NVM_DIR="$HOME/.nvm"
     [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
     [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
@@ -105,7 +103,10 @@ if [[ ! -f /proc/sys/kernel/hostname ]]; then
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
     source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
 else 
-    # We're on the Arch lab
+    # We're on Arch
+    alias ll='ls -la --color=auto'
+    alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
+
     source /usr/share/nvm/init-nvm.sh
     source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
