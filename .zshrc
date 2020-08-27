@@ -1,4 +1,24 @@
 #########################
+#     ENV variables     #
+#########################
+
+export VISUAL=nvim
+export EDITOR="$VISUAL"
+export KEYTIMEOUT=1
+export HISTSIZ=E10000
+export SAVEHIST=10000
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+export TMUX_SESSION='Main'
+export DISPLAY=localhost:0.0
+export ZDOTDIR=~/.cache/.zcompdump
+export HISTFILE=~/.cache/.zsh_history
+export ANDROID_AVD_HOME="$HOME/.android/avd"
+export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
+export PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
+
+#########################
 #       Autoloads       #
 #########################
 
@@ -47,36 +67,6 @@ setopt share_history        # share history between different instances of the s
 setopt interactivecomments  # Turn on comments interactive comments
 unsetopt PROMPT_SP          # Fix percent sign on initialization
 
-#########################
-#       Variables       #
-#########################
-
-# Stylize prompt
-PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
-
-TMUX_SESSION='Main'
-DISPLAY=localhost:0.0
-HISTSIZ=E10000
-SAVEHIST=10000
-HISTFILE=~/.cache/.zsh_history
-
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
-
-export ANDROID_AVD_HOME="$HOME/.android/avd"
-export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
-
-export VISUAL=nvim      # Set NeoVim as visual editor
-export EDITOR="$VISUAL" # Set $EDITOR to the same editor in $VISUAL
-export KEYTIMEOUT=1     # How long to wait for additional keys in key sequences (10ms)
-
-typeset -aU path        # Removes duplicates from $PATH
-path=($path
-        "$HOME/bin"
-        "$HOME/go/bin"
-        "$HOME/.yarn/bin"
-        "$HOME/.config/yarn/global/node_modules/.bin")
 
 #########################
 #        Aliases        #
@@ -92,10 +82,19 @@ alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias req='http --verify=no'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
 
 #########################
 #        Setup          #
 #########################
+
+# Removes duplicates from $PATH
+typeset -aU path
+path=($path
+        "$HOME/bin"
+        "$HOME/go/bin"
+        "$HOME/.yarn/bin"
+        "$HOME/.config/yarn/global/node_modules/.bin")
 
 if [[ ! -f /proc/sys/kernel/hostname ]]; then
     # We're on the Mac
@@ -113,6 +112,8 @@ else
     eval $(keychain --eval --quiet id_rsa)
 fi
 
+export NODE_PATH=`npm config get prefix`/lib/node_modules/
+
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
 # Taken from here: https://unix.stackexchange.com/a/113768/312299
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
@@ -124,4 +125,3 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   fi
 fi
 
-export NODE_PATH=`npm config get prefix`/lib/node_modules/
