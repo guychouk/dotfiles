@@ -17,7 +17,6 @@ export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-export TMUX_SESSION='Main'
 export DISPLAY=localhost:0.0
 export HISTFILE=~/.cache/.zsh_history
 export ANDROID_AVD_HOME="$HOME/.android/avd"
@@ -76,6 +75,7 @@ alias pip=pip3
 alias python=python3
 alias v='f -e nvim'
 alias dcl='dcc logs -f'
+alias dcr='dcc restart'
 alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
 alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
 alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -95,10 +95,13 @@ path=($path
 if [[ ! -f /proc/sys/kernel/hostname ]]; then
     # We're on macOS
     alias ll='ls -laG'
+    alias labo='ssh gv@local.lab.com'
 
+    export TMUX_SESSION='Work'
     export NVM_DIR="$HOME/.nvm"
     [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
     [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
+
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
     source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
     source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
@@ -107,6 +110,7 @@ else
     alias ll='ls -la --color=auto'
     alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
 
+    export TMUX_SESSION='Lab'
     source /usr/share/nvm/init-nvm.sh
     source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
