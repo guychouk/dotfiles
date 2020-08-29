@@ -17,7 +17,6 @@ export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-export DISPLAY=localhost:0.0
 export HISTFILE=~/.cache/.zsh_history
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
