@@ -31,6 +31,7 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'danilo-augusto/vim-afterglow'
 Plug '~/.vim/custom/swift'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'andys8/vim-elm-syntax', { 'for': ['elm'] }
 call plug#end()
 
 """""""""""""""""""""""""
@@ -53,6 +54,7 @@ set clipboard=unnamedplus  " Enables OS clipboard support (for WSL as well)
 
 set nobackup               " No backup files
 set nowritebackup          " No backup files
+set noshowmode             " Don't show mode - handled in status line
 set smarttab               " Improves tabbing
 set number                 " Show line numbers
 set nowrap                 " Disable line wrapping
@@ -121,29 +123,59 @@ hi LineNr guibg=none
 hi SignColumn guibg=none
 hi ALEErrorSign guibg=none
 hi ALEWarningSign guibg=none
-hi MyIcons guibg=#212730 guifg=#d290e8 ctermbg=15 ctermfg=8
-hi MyIconsNC guibg=#212730 guifg=#d290e8 ctermbg=15 ctermfg=8
-hi StatusLine guifg=#212730 guibg=lightgrey ctermbg=15 ctermfg=8
-hi StatusLineNC guifg=#212730 guibg=grey ctermbg=15 ctermfg=8
 
-function! Show_coc()
+hi StatusLineNC guifg=#212730 guibg=grey
+hi StatusLine guifg=#212730 guibg=lightgrey
+
+hi User1 gui=bold guibg=#212730 guifg=cyan
+hi User2 guibg=#212730 guifg=cyan
+hi User3 gui=bold guibg=#212730 guifg=lightgrey
+
+function! ShowCoc()
     if (empty(get(g:, 'coc_status', '')))
         return ''
     else
-        return '[' . coc#status() . ']'
+        return ' [' . coc#status() . '] '
     endif
 endfunction
 
-set statusline=%#MyIcons#                  " Custom colors for icons
-set statusline+=(•◡•)╯\ \                  " Icon
-set statusline+=%*                         " Restore default highlight
-set statusline+=%{expand('%')}\ %m\ %r\ %h " File path, modified, readonly, helpfile, preview
-set statusline+=%=                         " Add left/right separator
-set statusline+=%{FugitiveStatusline()}    " Current git branch
-set statusline+=\ \ %y                     " Show FileType
-set statusline+=\ \ %{Show_coc()}          " Show coc.vim status
-set statusline+=%#MyIcons#                 " Custom colors for icons
-set statusline+=\ \ ╰(^◡^)                 " Icon
+let g:statusline_mode_map = {
+    \ 'n'  : 'NORMAL',  'no' : 'NORMAL',
+    \ 'v'  : 'VISUAL',  'V'  : 'VISUAL',  "\<C-V>" : 'VISUAL',
+    \ 's'  : 'SELECT',  'S'  : 'SELECT',  "<\C-S>" : 'SELECT',
+    \ 'i'  : 'INSERT',
+    \ 'R'  : 'REPLACE', 'Rv' : 'REPLACE',
+    \ 'c'  : 'COMMAND', 'cv' : 'COMMAND', 'ce' : 'COMMAND',
+    \ 'r'  : 'PROMPT',  'rm' : 'PROMPT',  'r?' : 'PROMPT',
+    \ '!'  : 'SHELL',
+    \ }
+
+function! StatusLine(active)
+  let l:statusline = ''
+  let l:statusline .= a:active ? '%1*' : '%*'
+  let l:statusline .= '(•◡•)╯ '
+  let l:statusline .= '%*'                          " Restore default highlight
+  let l:statusline .= '%3*'
+  let l:statusline .= '%{expand("%")} %m %r %h'     " File path, modified, readonly, helpfile, preview
+  let l:statusline .= '%*'                          " Restore default highlight
+  let l:statusline .= '%='                          " Divider between left (before) and right (after)
+  let l:statusline .= '%{FugitiveStatusline()}'     " Current git branch
+  let l:statusline .= ' %y '                        " Show FileType
+  let l:statusline .= '%{ShowCoc()}'
+  let l:statusline .= a:active ? '%2*' : '%*'
+  let l:statusline .= '｜ %{toupper(g:statusline_mode_map[mode()])} ｜'
+  let l:statusline .= a:active ? '%1*' : '%*'
+  let l:statusline .= ' ╰(^◡^) '
+  return l:statusline
+endfunction
+
+set statusline=%!StatusLine(1)
+
+augroup statusline_commands
+  autocmd!
+  autocmd WinEnter * setlocal statusline=%!StatusLine(1)
+  autocmd WinLeave * setlocal statusline=%!StatusLine(0)
+augroup END
 
 """""""""""""""""""""""""
 "       Functions       "
