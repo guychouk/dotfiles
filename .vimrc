@@ -121,20 +121,29 @@ hi LineNr guibg=none
 hi SignColumn guibg=none
 hi ALEErrorSign guibg=none
 hi ALEWarningSign guibg=none
-hi MyIcons guifg=white guibg=#515070 ctermbg=15 ctermfg=8
-hi statusline guifg=#393b44 guibg=white ctermbg=15 ctermfg=8
+hi MyIcons guibg=#212730 guifg=#d290e8 ctermbg=15 ctermfg=8
+hi MyIconsNC guibg=#212730 guifg=#d290e8 ctermbg=15 ctermfg=8
+hi StatusLine guifg=#212730 guibg=lightgrey ctermbg=15 ctermfg=8
+hi StatusLineNC guifg=#212730 guibg=grey ctermbg=15 ctermfg=8
 
-set statusline=%#MyIcons#                                             " Custom colors for icons
-set statusline+=｜\ (⌒‿⌒)\ ｜                                         " Icon
-set statusline+=%*                                                    " Restore default highlight
-set statusline+=\ %{expand('%')}\ %m\ %r\ %h                          " File path, modified, readonly, helpfile, preview
-set statusline+=%=                                                    " Add left/right separator
-set statusline+=\ %{FugitiveStatusline()}                             " Current git branch
-set statusline+=\ %y                                                  " Show FileType
-set statusline+=\ %{coc#status()}%{get(b:,'coc_current_function','')} " COC status (if available)
-set statusline+=%#MyIcons#                                            " Custom colors for icons
-set statusline+=｜\ (∪｡∪)...zzZ\ ｜                                   " Icon
-set statusline+=%*                                                    " Restore default highlight
+function! Show_coc()
+    if (empty(get(g:, 'coc_status', '')))
+        return ''
+    else
+        return '[' . coc#status() . ']'
+    endif
+endfunction
+
+set statusline=%#MyIcons#                  " Custom colors for icons
+set statusline+=(•◡•)╯\ \                  " Icon
+set statusline+=%*                         " Restore default highlight
+set statusline+=%{expand('%')}\ %m\ %r\ %h " File path, modified, readonly, helpfile, preview
+set statusline+=%=                         " Add left/right separator
+set statusline+=%{FugitiveStatusline()}    " Current git branch
+set statusline+=\ \ %y                     " Show FileType
+set statusline+=\ \ %{Show_coc()}          " Show coc.vim status
+set statusline+=%#MyIcons#                 " Custom colors for icons
+set statusline+=\ \ ╰(^◡^)                 " Icon
 
 """""""""""""""""""""""""
 "       Functions       "
