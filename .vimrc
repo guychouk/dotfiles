@@ -38,6 +38,8 @@ call plug#end()
 "       Settings        "
 """""""""""""""""""""""""
 
+colorscheme afterglow
+
 syntax on                  " Syntax highlighting
 filetype plugin indent on  " Turn on filetype detections
 
@@ -71,13 +73,17 @@ set termguicolors          " Emit true (24-bit) colors in the terminal
 
 runtime snippets.vim       " Load snippets
 
+let mapleader = " "
+let maplocalleader = " "
+
 """""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
 
-let mapleader = " "
-let maplocalleader = " "
+" NERDTree
 let NERDTreeShowHidden = 1
+
+" ALE
 let g:ale_lint_delay = 250
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
@@ -106,6 +112,7 @@ autocmd BufWritePost * GitGutter
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 " Rooter
+let g:rooter_silent_chdir = 1
 let g:rooter_change_directory_for_non_project_files = 'current'
 let g:rooter_patterns = ['.git', 'Makefile']
 
@@ -113,10 +120,8 @@ let g:rooter_patterns = ['.git', 'Makefile']
 let g:user_emmet_install_global = 0
 
 """""""""""""""""""""""""
-"      Status Line      "
+"       Highlights      "
 """""""""""""""""""""""""
-
-colorscheme afterglow     
 
 hi Normal guibg=none
 hi LineNr guibg=none
@@ -124,49 +129,54 @@ hi SignColumn guibg=none
 hi ALEErrorSign guibg=none
 hi ALEWarningSign guibg=none
 
-hi StatusLineNC guifg=#212730 guibg=grey
-hi StatusLine guifg=#212730 guibg=lightgrey
+hi StatusLine guifg=#1f2630 guibg=grey90
+hi StatusLineNC guifg=#1f2630 guibg=grey30
 
-hi User1 gui=bold guibg=#212730 guifg=cyan
-hi User2 guibg=#212730 guifg=cyan
-hi User3 gui=bold guibg=#212730 guifg=lightgrey
+hi User1 guifg=orange guibg=#1f2630
+hi User2 guifg=grey30 guibg=#1f2630
+hi User3 guifg=green guibg=#1f2630
 
-function! ShowCoc()
-    if (empty(get(g:, 'coc_status', '')))
-        return ''
-    else
-        return ' [' . coc#status() . '] '
-    endif
-endfunction
+"""""""""""""""""""""""""
+"      Statusline       "
+"""""""""""""""""""""""""
 
 let g:statusline_mode_map = {
-    \ 'n'  : 'NORMAL',  'no' : 'NORMAL',
-    \ 'v'  : 'VISUAL',  'V'  : 'VISUAL',  "\<C-V>" : 'VISUAL',
-    \ 's'  : 'SELECT',  'S'  : 'SELECT',  "<\C-S>" : 'SELECT',
-    \ 'i'  : 'INSERT',
-    \ 'R'  : 'REPLACE', 'Rv' : 'REPLACE',
-    \ 'c'  : 'COMMAND', 'cv' : 'COMMAND', 'ce' : 'COMMAND',
+    \ 'i'  : 'I',
+    \ '!'  : '!',
+    \ 't'  : 'B',
+    \ 'R'  : 'R', 'Rv' : 'R',
+    \ 'n'  : 'N',  'no' : 'N',
+    \ 'v'  : 'V',  'V'  : 'V',  "\<C-V>" : 'V',
+    \ 's'  : 'S',  'S'  : 'S',  "<\C-S>" : 'S',
+    \ 'c'  : 'C', 'cv' : 'C', 'ce' : 'C',
     \ 'r'  : 'PROMPT',  'rm' : 'PROMPT',  'r?' : 'PROMPT',
-    \ '!'  : 'SHELL',
     \ }
 
 function! StatusLine(active)
-  let l:statusline = ''
-  let l:statusline .= a:active ? '%1*' : '%*'
-  let l:statusline .= '(•◡•)╯ '
-  let l:statusline .= '%*'                          " Restore default highlight
-  let l:statusline .= '%3*'
-  let l:statusline .= '%{expand("%")} %m %r %h'     " File path, modified, readonly, helpfile, preview
-  let l:statusline .= '%*'                          " Restore default highlight
-  let l:statusline .= '%='                          " Divider between left (before) and right (after)
-  let l:statusline .= '%{FugitiveStatusline()}'     " Current git branch
-  let l:statusline .= ' %y '                        " Show FileType
-  let l:statusline .= '%{ShowCoc()}'
-  let l:statusline .= a:active ? '%2*' : '%*'
-  let l:statusline .= '｜ %{toupper(g:statusline_mode_map[mode()])} ｜'
-  let l:statusline .= a:active ? '%1*' : '%*'
-  let l:statusline .= ' ╰(^◡^) '
-  return l:statusline
+    let l:separator = '   '
+    let l:filetype = empty(&filetype) ? 'N/A' : '%{&filetype}'
+    let l:ft_with_coc_status = l:filetype . (get(g:, 'coc_status', '') != '' ? '｜%{tolower(coc#status())}' : '')
+    if a:active
+        let l:icon = '⎡•◡•⎤'
+        let l:mode_hl = '%1*'
+    else 
+        let l:icon = '⎡ᴗ˳ᴗ⎤'
+        let l:mode_hl = '%2*'
+    endif
+    " Start building stautsline
+    let l:statusline = ''
+    let l:statusline .= l:mode_hl . '⎡%{g:statusline_mode_map[mode()]}⎤%*'
+    let l:statusline .= l:separator
+    let l:statusline .= '%{expand("%")} %m %r %h'
+    let l:statusline .= '%='
+    if a:active && FugitiveHead() != ''
+        let l:statusline .= '%3*●%* %{FugitiveHead()}'
+        let l:statusline .= l:separator
+    endif
+    let l:statusline .= l:ft_with_coc_status
+    let l:statusline .= l:separator
+    let l:statusline .= l:mode_hl . l:icon . '%*'
+    return l:statusline
 endfunction
 
 set statusline=%!StatusLine(1)
