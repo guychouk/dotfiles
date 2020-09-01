@@ -67,7 +67,6 @@ set expandtab              " Insert spaces when tab is pressed
 set autoindent             " New lines will be indented as well
 set smartcase              " No ignore case when pattern has uppercase
 set hidden                 " Hide abandoned buffers instead of unloading them
-set relativenumber         " Set line numbers relative to cursor
 set expandtab              " Make the tab key insert spaces instead of tab characters
 set termguicolors          " Emit true (24-bit) colors in the terminal
 
@@ -124,7 +123,7 @@ let g:user_emmet_install_global = 0
 """""""""""""""""""""""""
 
 hi Normal guibg=none
-hi LineNr guibg=none
+hi LineNr guibg=none guifg=#404040
 hi SignColumn guibg=none
 hi ALEErrorSign guibg=none
 hi ALEWarningSign guibg=none
