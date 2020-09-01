@@ -84,8 +84,8 @@ let NERDTreeShowHidden = 1
 
 " ALE
 let g:ale_lint_delay = 250
-let g:ale_sign_error = '•'
-let g:ale_sign_warning = '•'
+let g:ale_sign_error = '• '
+let g:ale_sign_warning = '• '
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%] [%code%]'
@@ -152,30 +152,23 @@ let g:statusline_mode_map = {
     \ }
 
 function! StatusLine(active)
-    let l:separator = '   '
+    let l:icon = a:active ? '⎡•◡•⎤' : '⎡ᴗ˳ᴗ⎤'
+    let l:mode_color = a:active ? '%1*' : '%2*'
     let l:filetype = empty(&filetype) ? 'N/A' : '%{&filetype}'
-    let l:ft_with_coc_status = l:filetype . (get(g:, 'coc_status', '') != '' ? '｜%{tolower(coc#status())}' : '')
-    if a:active
-        let l:icon = '⎡•◡•⎤'
-        let l:mode_hl = '%1*'
-    else 
-        let l:icon = '⎡ᴗ˳ᴗ⎤'
-        let l:mode_hl = '%2*'
-    endif
-    " Start building stautsline
-    let l:statusline = ''
-    let l:statusline .= l:mode_hl . '⎡%{g:statusline_mode_map[mode()]}⎤%*'
-    let l:statusline .= l:separator
-    let l:statusline .= '%{expand("%")} %m %r %h'
-    let l:statusline .= '%='
-    if a:active && FugitiveHead() != ''
-        let l:statusline .= '%3*●%* %{FugitiveHead()}'
-        let l:statusline .= l:separator
-    endif
-    let l:statusline .= l:ft_with_coc_status
-    let l:statusline .= l:separator
-    let l:statusline .= l:mode_hl . l:icon . '%*'
-    return l:statusline
+    let l:fugitive = a:active && FugitiveHead() != '' ? '%3*●%* %{FugitiveHead()}' : ''
+    let l:coc_status = get(g:, 'coc_status', '') != '' ? '｜%{tolower(coc#status())}' : ''
+    let l:statusline_segments = [
+                \ l:mode_color . '⎡%{g:statusline_mode_map[mode()]}⎤' . '%*',
+                \ '   ',
+                \ '%{expand("%")} %m %r %h',
+                \ '%=',
+                \ l:fugitive,
+                \ '   ',
+                \ l:filetype . l:coc_status,
+                \ '   ',
+                \ l:mode_color . l:icon . '%*' 
+                \]
+    return join(l:statusline_segments)
 endfunction
 
 set statusline=%!StatusLine(1)
