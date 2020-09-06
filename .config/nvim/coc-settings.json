@@ -1,5 +1,17 @@
 {
-    "diagnostic.displayByAle": true,
-    "coc.preferences.messageLevel": "warning",
-    "diagnostic.level": "warning"
+  "diagnostic.displayByAle": true,
+  "coc.preferences.messageLevel": "warning",
+  "diagnostic.level": "warning",
+  "languageserver": {
+    "ccls": {
+      "command": "ccls",
+      "filetypes": ["c", "cc", "cpp", "c++", "objc", "objcpp"],
+      "rootPatterns": [".ccls"],
+      "initializationOptions": {
+        "cache": {
+          "directory": "/tmp/ccls"
+        }
+      }
+    }
+  }
 }
