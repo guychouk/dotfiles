@@ -186,8 +186,15 @@ augroup END
 """""""""""""""""""""""""
 
 function! s:nerdtree_toggle()
-        let is_open = g:NERDTree.IsOpen()
-        execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
+    let is_open = g:NERDTree.IsOpen()
+    execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
+endfunction
+
+function RemoveJsObjQuotesFromKeys() range
+    for linenum in range(a:firstline, a:lastline)
+        " Uses vim-surround's ds" to delete quotes
+        normal 0ds"j
+    endfor
 endfunction
 
 """""""""""""""""""""""""
@@ -241,6 +248,9 @@ augroup end
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
+
+" Remove quotes from JS object keys
+command! -range Rq <line1>,<line2>call RemoveJsObjQuotesFromKeys()
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
