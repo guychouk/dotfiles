@@ -195,6 +195,7 @@ endfunction
 """""""""""""""""""""""""
 
 imap jk <Esc>
+
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>J :sp<CR>
@@ -208,9 +209,14 @@ nnoremap <Leader>zc :e ~/.zshrc<CR>
 nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
-nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+
 nmap <silent> [g <Plug>(ale_previous)
 nmap <silent> ]g <Plug>(ale_next)
+nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+nnoremap <silent> <Leader>h= :exe "resize " . (winheight(0) * 4/3)<CR>
+nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
+nnoremap <silent> <Leader>v= :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
+nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 
 """""""""""""""""""""""""
 "     Autocommands      "
