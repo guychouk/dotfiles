@@ -9,17 +9,17 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
+Plug '~/.vim/custom/swift'
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
 Plug 'godlygeek/tabular'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/goyo.vim'
 Plug 'mattn/emmet-vim'
 Plug 'mattn/vim-gist'
 Plug 'mattn/webapi-vim'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'preservim/nerdtree'
 Plug 'ruanyl/vim-gh-line'
 Plug 'tpope/vim-commentary'
@@ -29,9 +29,9 @@ Plug 'jpalardy/vim-slime'
 Plug 'yuezk/vim-js'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'danilo-augusto/vim-afterglow'
-Plug '~/.vim/custom/swift'
+Plug 'andys8/vim-elm-syntax'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'andys8/vim-elm-syntax', { 'for': ['elm'] }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 """""""""""""""""""""""""
@@ -92,6 +92,7 @@ let g:ale_echo_msg_format = '[%linter%] %s [%severity%] [%code%]'
 let g:ale_lint_on_text_changed = 'always'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 
+\ 'cpp': ['ccls'],
 \ 'javascript': ['eslint'],
 \ 'typescript': ['eslint', 'tsserver'],
 \ 'typescript.tsx': ['eslint', 'tsserver'],
@@ -117,6 +118,7 @@ let g:rooter_patterns = ['.git', 'Makefile']
 
 " Emmet (<c-y>,)
 let g:user_emmet_install_global = 0
+let g:user_emmet_expandabbr_key='<Tab>'
 
 """""""""""""""""""""""""
 "       Highlights      "
@@ -184,8 +186,8 @@ augroup END
 """""""""""""""""""""""""
 
 function! s:nerdtree_toggle()
-        let is_open = g:NERDTree.IsOpen()
-        execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
+    let is_open = g:NERDTree.IsOpen()
+    execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
 endfunction
 
 """""""""""""""""""""""""
@@ -193,6 +195,7 @@ endfunction
 """""""""""""""""""""""""
 
 imap jk <Esc>
+
 nnoremap <Leader>w :w<CR>
 nnoremap <Leader>q :q<CR>
 nnoremap <Leader>J :sp<CR>
@@ -206,9 +209,14 @@ nnoremap <Leader>zc :e ~/.zshrc<CR>
 nnoremap <Leader>pc :PlugClean<CR>
 nnoremap <Leader>pi :PlugInstall<CR>
 nnoremap <Leader>so :so ~/.vimrc<CR>
-nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+
 nmap <silent> [g <Plug>(ale_previous)
 nmap <silent> ]g <Plug>(ale_next)
+nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+nnoremap <silent> <Leader>h= :exe "resize " . (winheight(0) * 4/3)<CR>
+nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
+nnoremap <silent> <Leader>v= :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
+nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 
 """""""""""""""""""""""""
 "     Autocommands      "
@@ -239,6 +247,9 @@ augroup end
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
+
+" Remove quotes from JS object keys
+command! -range=% Rq <line1>,<line2>normal 0ds"j
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
