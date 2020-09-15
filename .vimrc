@@ -195,28 +195,28 @@ endfunction
 """""""""""""""""""""""""
 
 imap jk <Esc>
-
-nnoremap <Leader>w :w<CR>
-nnoremap <Leader>q :q<CR>
-nnoremap <Leader>J :sp<CR>
-nnoremap <Leader>L :vsp<CR>
-nnoremap <Leader>/ :Ag<CR>
-nnoremap <Leader>. :GFiles<CR>
-nnoremap <Leader>b :Buffers<CR>
-nnoremap <Leader>gg :G<CR>
-nnoremap <Leader>ec :e ~/.vimrc<CR>
-nnoremap <Leader>zc :e ~/.zshrc<CR>
-nnoremap <Leader>pc :PlugClean<CR>
-nnoremap <Leader>pi :PlugInstall<CR>
-nnoremap <Leader>so :so ~/.vimrc<CR>
-
-nmap <silent> [g <Plug>(ale_previous)
 nmap <silent> ]g <Plug>(ale_next)
-nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+nmap <silent> [g <Plug>(ale_previous)
+
+nnoremap <silent> <Leader>w :w<CR>
+nnoremap <silent> <Leader>q :q<CR>
+nnoremap <silent> <Leader>J :sp<CR>
+nnoremap <silent> <Leader>L :vsp<CR>
+nnoremap <silent> <Leader>/ :Ag<CR>
+nnoremap <silent> <Leader>. :GFiles<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>gg :G<CR>
+nnoremap <silent> <Leader>ec :e ~/.vimrc<CR>
+nnoremap <silent> <Leader>zc :e ~/.zshrc<CR>
+nnoremap <silent> <Leader>pc :PlugClean<CR>
+nnoremap <silent> <Leader>pi :PlugInstall<CR>
+nnoremap <silent> <Leader>so :so ~/.vimrc<CR>
 nnoremap <silent> <Leader>h= :exe "resize " . (winheight(0) * 4/3)<CR>
 nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
 nnoremap <silent> <Leader>v= :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
 nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
+
+nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
 
 """""""""""""""""""""""""
 "     Autocommands      "
