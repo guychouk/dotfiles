@@ -63,7 +63,7 @@ setopt inc_append_history   # save history entries as soon as they are entered
 setopt share_history        # share history between different instances of the shell
 setopt interactivecomments  # Turn on comments interactive comments
 unsetopt PROMPT_SP          # Fix percent sign on initialization
-
+typeset -aU path            # Removes duplicates from $PATH
 
 #########################
 #        Aliases        #
@@ -83,40 +83,13 @@ alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 #        Setup          #
 #########################
 
-# Removes duplicates from $PATH
-typeset -aU path
-path=($path
-        "$HOME/bin"
-        "$HOME/go/bin"
-        "$HOME/.yarn/bin"
-        "$HOME/.config/yarn/global/node_modules/.bin")
+path=($path "$HOME/bin")
 
-if [[ ! -f /proc/sys/kernel/hostname ]]; then
-    # We're on macOS
-    alias ll='ls -laG'
-    alias labo='ssh gv@local.lab.com'
-
-    export TMUX_SESSION='Work'
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
-    [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
-
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-    source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
-    source /usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh 2>/dev/null
+if [[ $(uname) = "Darwin" ]]; then
+    source .osx-setup
 else 
-    # We're on Arch
-    alias ll='ls -la --color=auto'
-    alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
-
-    export TMUX_SESSION='Lab'
-    source /usr/share/nvm/init-nvm.sh
-    source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-    source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-    eval $(keychain --eval --quiet id_rsa)
+    source .arch-setup
 fi
-
-export NODE_PATH=`npm config get prefix`/lib/node_modules/
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
 # Taken from here: https://unix.stackexchange.com/a/113768/312299
