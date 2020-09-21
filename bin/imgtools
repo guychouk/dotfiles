@@ -35,22 +35,25 @@ while [ "$CMD" != "" ]; do
     case $CMD in
         resize)
             convert $INPUT -resize $SIZE $OUTPUT
+            exit 1
             ;;
         scale)
             # Scale an image (good for pixel art)
             convert $INPUT -filter point -resize $SIZE $OUTPUT
-            exit 1;
+            exit 1
             ;;
         blank)
             # Generate image of certain size and color (Hex can also be used here!)
             # https://stackoverflow.com/questions/39504522/create-blank-image-in-imagemagick
             convert -size $SIZE xc:white blank.png
+            exit 1
             ;;
         sprite)
             # An ImageMagick tool called montage for packing frames into spritesheets, taken from here:
             # http://acamara.es/blog/2012/12/assembling-sprite-sheets-with-imagemagick/
             # Example: anim[1-8].png -tile 4x4
             montage $INPUT -tile $SIZE -geometry $GEOMETRY+0+0 -background transparent $OUTPUT
+            exit 1
             ;;
         cutvid)
             # Cut a clip from second (-ss) with length (-t) and output mp4
@@ -59,27 +62,32 @@ while [ "$CMD" != "" ]; do
         vid2gif)
             # Output clip as GIF
             ffmpeg -ss $TIME -t $SIZE -i $INPUT -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $OUTPUT
+            exit 1
             ;;
         icon)
             # Convert .png to .ico
             convert $INPUT -define icon:auto-resize=64,48,32,16 $OUTPUT
+            exit 1
             ;;
         pad)
             # Pad image with transparent background to certain dimensions
             convert $INPUT -background none -gravity center -extent $SIZE $OUTPUT
+            exit 1
             ;;
         pdf2png)
             # PDF to PNG
             convert -density 300 $INPUT -resize 35% $OUTPUT
+            exit 1
             ;;
         cleantext)
             # Clean text in document image and make it B&W
             # Using textcleaner script from Fred's Imagick Scripts:
             # http://www.fmwconcepts.com/imagemagick/textcleaner/index.php
             textcleaner -e normalize $INPUT $OUTPUT
+            exit 1
             ;;
         -h | --help )           usage
-            exit
+            exit 1
             ;;
         * )                     usage
             exit 1
