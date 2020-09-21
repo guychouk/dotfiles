@@ -51,19 +51,19 @@ set encoding=utf-8         " Encoding for files
 set signcolumn=yes         " Always show signcolumn
 set shortmess+=c           " Avoid passing messages to ins-completion-menu
 set shortmess+=I           " Supress startup message
-set foldmethod=manual      " Set foldmethod for programming
-set clipboard=unnamedplus  " Enables OS clipboard support (for WSL as well)
+set foldmethod=manual      " Set foldmethod to be manual
+set clipboard=unnamedplus  " Enables OS clipboard support
 
+set noswapfile             " No swap files
 set nobackup               " No backup files
 set nowritebackup          " No backup files
-set noshowmode             " Don't show mode - handled in status line
 set smarttab               " Improves tabbing
 set number                 " Show line numbers
 set nowrap                 " Disable line wrapping
 set incsearch              " Sets incremental search
 set nohlsearch             " Disable search highlight
-set noswapfile             " Disables swp files creation
 set expandtab              " Insert spaces when tab is pressed
+set noshowmode             " Don't show current mode in cmdline
 set autoindent             " New lines will be indented as well
 set smartcase              " No ignore case when pattern has uppercase
 set hidden                 " Hide abandoned buffers instead of unloading them
@@ -197,6 +197,7 @@ endfunction
 imap jk <Esc>
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
+nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
 
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
@@ -216,8 +217,6 @@ nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
 nnoremap <silent> <Leader>v= :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
 nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 
-nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
-
 """""""""""""""""""""""""
 "     Autocommands      "
 """""""""""""""""""""""""
@@ -227,22 +226,11 @@ autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.ts set filetype=typescript
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
-autocmd FileType json setlocal ts=2 sts=2 sw=2
+autocmd FileType html setlocal shiftwidth=2
+autocmd FileType html,css EmmetInstall
 autocmd FileType javascript,javascript.tsx setlocal ts=2 sts=2 sw=2
 autocmd FileType typescript,typescript.tsx setlocal ts=2 sts=2 sw=2
-autocmd FileType html,css EmmetInstall
-autocmd FileType html set shiftwidth=2
-
-" Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+autocmd FileType json setlocal ts=2 sts=2 sw=2 formatexpr=CocAction('formatSelected')
 
 """""""""""""""""""""""""
 "       Commands        "
@@ -256,9 +244,6 @@ command! -nargs=0 Format :call CocAction('format')
 
 " Add `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-" Add `:OR` command for organize imports of the current buffer.
-command! -nargs=0 OR :call CocAction('runCommand', 'editor.action.organizeImport')
 
 " Show only changed files
 command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
@@ -302,6 +287,9 @@ xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
+" Coc Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
+
 " Coc GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
@@ -311,9 +299,6 @@ nmap <silent> gr <Plug>(coc-references)
 " Coc Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
 nmap <leader>f  <Plug>(coc-format-selected)
-
-" Coc Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
 
 " Manage extensions.
 nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
