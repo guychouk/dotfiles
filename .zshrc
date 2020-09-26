@@ -86,9 +86,9 @@ alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 path=($path "$HOME/bin")
 
 if [[ $(uname) = "Darwin" ]]; then
-    source .osx-setup
+    source ~/.osx-setup
 else 
-    source .arch-setup
+    source ~/.arch-setup
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
