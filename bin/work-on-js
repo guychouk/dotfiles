@@ -1,0 +1,12 @@
+#!/bin/bash
+
+CURRENT_SESSION=$(tmux list-sessions | sed -n '/(attached)/s/:.*//p')
+
+tmux new-window -t "$CURRENT_SESSION" -n Lab
+tmux select-window -t Lab
+
+tmux send-keys -t "$CURRENT_SESSION:Lab.0" "nvim" C-m
+tmux split-window -v
+tmux send-keys -t "$CURRENT_SESSION:Lab.1" "node" C-m
+tmux split-window -h
+tmux send-keys -t "$CURRENT_SESSION:Lab.2" "npm run test" C-m
