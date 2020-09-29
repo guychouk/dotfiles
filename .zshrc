@@ -20,7 +20,7 @@ export LANGUAGE=en_US.UTF-8
 export HISTFILE=~/.cache/.zsh_history
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
-export PS1="%{$fg[cyan]%}[ %{$reset_color%}%{$fg[yellow]%}%~%{$reset_color%}%{$fg[cyan]%} ]%{$reset_color%}%{$fg[yellow]%} λ "
+export PS1="%F{38}%1~%F{208} λ %f"
 
 #########################
 #      Completion       #
