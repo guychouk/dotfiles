@@ -11,15 +11,9 @@ shift
 
 while getopts ":s:t:g:" o; do
     case "${o}" in
-        s)
-            SIZE=${OPTARG}
-            ;;
-        t)
-            TIME=${OPTARG}
-            ;;
-        g)
-            GEOMETRY=${OPTARG}
-            ;;
+        s) SIZE="${OPTARG}" ;;
+        t) TIME="${OPTARG}" ;;
+        g) GEOMETRY="${OPTARG}" ;;
     esac
 done
 shift $((OPTIND-1))
@@ -27,7 +21,7 @@ shift $((OPTIND-1))
 INPUT=$1
 OUTPUT=$2
 
-if [ -z "${INPUT}" ] || [ -z "${OUTPUT}" ] || [ -z "${SIZE}" ]; then
+if [ -z "${INPUT}" ] || [ -z "${SIZE}" ]; then
     usage
 fi
 
@@ -45,7 +39,7 @@ while [ "$CMD" != "" ]; do
         blank)
             # Generate image of certain size and color (Hex can also be used here!)
             # https://stackoverflow.com/questions/39504522/create-blank-image-in-imagemagick
-            convert -size $SIZE xc:white blank.png
+            convert -size $SIZE xc:white $INPUT
             exit 1
             ;;
         sprite)
