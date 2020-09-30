@@ -1,26 +1,24 @@
-#########################
-#       Autoloads       #
-#########################
-
+# Basic auto/tab complete:
 autoload -U compinit
+
+# Enable colors and change prompt:
 autoload -U colors && colors
+export PS1="%F{38}%1~%F{208} λ %f"
 
 #########################
 #     ENV variables     #
 #########################
 
-export VISUAL=nvim
-export EDITOR="$VISUAL"
-export KEYTIMEOUT=1
-export HISTSIZ=E10000
+export HISTSIZE=10000
 export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-export HISTFILE=~/.cache/.zsh_history
+export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
+
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
-export PS1="%F{38}%1~%F{208} λ %f"
+export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 #########################
 #      Completion       #
@@ -86,9 +84,9 @@ alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 path=($path "$HOME/bin")
 
 if [[ $(uname) = "Darwin" ]]; then
-    source ~/.osx-setup
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/.osxenv"
 else 
-    source ~/.arch-setup
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/.archenv"
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
