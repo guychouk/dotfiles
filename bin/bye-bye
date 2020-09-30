@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Outputting dotfiles instead of deleting, change this manually to override"
+/usr/bin/git --git-dir=$$HOME/.dotfiles/ --work-tree=$$HOME ls-files | xargs echo
