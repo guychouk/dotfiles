@@ -82,7 +82,7 @@ let maplocalleader = " "
 
 " NERDTree
 let NERDTreeShowHidden = 1
-let g:NERDTreeBookmarksFile = $HOME . '/.config/nvim/.nerdtree-bookmarks'
+let g:NERDTreeBookmarksFile = $XDG_CONFIG_HOME . "/nvim/.nerdtree-bookmarks"
 
 " ALE
 let g:ale_lint_delay = 250
@@ -111,7 +111,7 @@ let g:ale_pattern_options = {
 let g:vim_jsx_pretty_colorful_config = 1
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
-let g:slime_paste_file = "$XDG_CACHE_HOME/.slime_paste"
+let g:slime_paste_file = $XDG_CACHE_HOME . "/.slime_paste"
 
 " GitGutter
 autocmd BufWritePost * GitGutter

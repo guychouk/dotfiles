@@ -106,9 +106,10 @@ else
 
     export TMUX_SESSION='Lab'
     export ZSH_SYNTAX_HIGHLIGHTING="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/share/nvm/init-nvm.sh"
 
     eval $(keychain --eval --quiet id_rsa)
+
+    [ -s "/usr/share/nvm/init-nvm.sh" ] && . "/usr/share/nvm/init-nvm.sh"
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
