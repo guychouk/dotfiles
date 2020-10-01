@@ -14,11 +14,11 @@ export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
+export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/.nvm"
+export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
-
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
-export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 #########################
 #      Completion       #
@@ -26,7 +26,7 @@ export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 zmodload zsh/complist
 zstyle ':completion:*' menu select
-compinit -d ~/.cache/.zcompdump
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/.zcompdump"
 _comp_options+=(globdots)
 
 #########################
@@ -86,9 +86,27 @@ alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 path=($path "$HOME/bin")
 
 if [[ $(uname) = "Darwin" ]]; then
-    source "${XDG_CONFIG_HOME:-$HOME/.config}/.osxenv"
+    alias ll='ls -laG'
+    alias labo='ssh gv@local.lab.com'
+
+    export TMUX_SESSION='Work'
+    export GCLOUD_SDK="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
+    export ZSH_SYNTAX_HIGHLIGHTING="/usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+
+    source "${GCLOUD_SDK}/path.zsh.inc"
+    source "${GCLOUD_SDK}/completion.zsh.inc"
+
+    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
+    [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 else 
-    source "${XDG_CONFIG_HOME:-$HOME/.config}/.archenv"
+    alias ll='ls -la --color=auto'
+    alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
+
+    export TMUX_SESSION='Lab'
+    export ZSH_SYNTAX_HIGHLIGHTING="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/share/nvm/init-nvm.sh"
+
+    eval $(keychain --eval --quiet id_rsa)
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
@@ -102,3 +120,5 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   fi
 fi
 
+# Load syntax highlighting; should be last.
+source $ZSH_SYNTAX_HIGHLIGHTING 2>/dev/null
