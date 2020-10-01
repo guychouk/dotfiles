@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep -q "include" ~/.gitconfig && echo "Aliases are already setup!" || echo $$'[include]\n        path = ~/.config/.gitaliases' >> ~/.gitconfig 

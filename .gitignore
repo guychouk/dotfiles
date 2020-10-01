@@ -15,7 +15,7 @@
 .emulator_console_auth_token
 .gitconfig
 .gradle/
-.local/
+.local/share
 .npm/
 .npmrc
 .nvm/

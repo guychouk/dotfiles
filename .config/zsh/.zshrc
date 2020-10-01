@@ -15,6 +15,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/.nvm"
+export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 export ANDROID_AVD_HOME="$HOME/.android/avd"
@@ -69,21 +70,22 @@ typeset -aU path            # Removes duplicates from $PATH
 #        Aliases        #
 #########################
 
-alias g=git
-alias pip=pip3
-alias python=python3
-alias v='f -e nvim'
-alias dcl='dcc logs -f'
-alias dcr='dcc restart'
-alias dcc='docker-compose -f ~/Projects/box/docker-compose.yml'
-alias ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif'
-alias dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+alias \
+    g=git \
+    pip=pip3 \
+    python=python3 \
+    v='f -e nvim' \
+    dcl='dcc logs -f' \
+    dcr='dcc restart' \
+    dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
+    ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif' \
+    dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #########################
 #        Setup          #
 #########################
 
-path=($path "$HOME/bin")
+path=($path "$HOME/.local/bin")
 
 if [[ $(uname) = "Darwin" ]]; then
     alias ll='ls -laG'
