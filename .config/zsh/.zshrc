@@ -9,6 +9,10 @@ export PS1="%F{38}%1~%F{208} λ %f"
 #     ENV variables     #
 #########################
 
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/.zsh_history"
+
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
 
@@ -26,7 +30,7 @@ export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/.zcompdump"
 _comp_options+=(globdots)
 
 #########################
