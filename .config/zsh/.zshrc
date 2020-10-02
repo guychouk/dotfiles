@@ -80,8 +80,8 @@ alias \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
     ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif' \
-    tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/config"' \
-    dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+    dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
+    tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"' \
 
 #########################
 #        Setup          #
