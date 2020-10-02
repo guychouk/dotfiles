@@ -91,7 +91,7 @@ let g:ale_sign_warning = '• '
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%] [%code%]'
-let g:ale_lint_on_text_changed = 'always'
+let g:ale_lint_on_text_changed = 'normal'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 
 \ 'cpp': ['ccls'],
@@ -100,6 +100,7 @@ let g:ale_linters = {
 \ 'typescript.tsx': ['eslint', 'tsserver'],
 \}
 let g:ale_fixers = { 
+\ 'go': ['gofmt'],
 \ 'javascript': ['eslint'],
 \ 'typescript': ['eslint'],
 \ 'typescript.tsx': ['eslint'],
@@ -219,7 +220,7 @@ nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>pc :PlugClean<CR>
 nnoremap <silent> <Leader>pi :PlugInstall<CR>
-nnoremap <silent> <Leader>so :so ~/.vimrc<CR>
+nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>h= :exe "resize " . (winheight(0) * 4/3)<CR>
 nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
 nnoremap <silent> <Leader>v= :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
