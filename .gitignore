@@ -4,6 +4,9 @@
 .Xauthority
 .android/
 .cache/
+.elm/
+.gnupg/
+.keychain/
 .config/nvim/plugins/*
 .config/nvim/.nerdtree-bookmarks
 .config/coc/
@@ -31,5 +34,5 @@ Library
 Movies
 Music
 Pictures
-Projects
+[p|P]rojects
 Public
