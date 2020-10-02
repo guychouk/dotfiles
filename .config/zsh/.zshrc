@@ -33,7 +33,7 @@ export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
 _comp_options+=(globdots)
 
 #########################
