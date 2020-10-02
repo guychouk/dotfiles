@@ -9,17 +9,15 @@ export PS1="%F{38}%1~%F{208} λ %f"
 #     ENV variables     #
 #########################
 
-export HISTSIZE=10000
-export SAVEHIST=10000
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
+
+export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
+export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
 export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
-export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 
 #########################
 #      Completion       #
@@ -57,15 +55,16 @@ bindkey '^R' history-incremental-search-backward
 #        Options        #
 #########################
 
-setopt auto_cd              # CD to path without using `cd`
-setopt hist_reduce_blanks   # remove superfluous blanks from history items
-setopt hist_ignore_all_dups # remove older duplicate entries from history
-setopt appendhistory        # Append history to the history file (no overwriting)
-setopt inc_append_history   # save history entries as soon as they are entered
-setopt share_history        # share history between different instances of the shell
-setopt interactivecomments  # Turn on comments interactive comments
-unsetopt PROMPT_SP          # Fix percent sign on initialization
-typeset -aU path            # Removes duplicates from $PATH
+setopt auto_cd                      # CD to path without using `cd`
+setopt hist_reduce_blanks           # remove superfluous blanks from history items
+setopt hist_ignore_all_dups         # remove older duplicate entries from history
+setopt appendhistory                # Append history to the history file (no overwriting)
+setopt inc_append_history           # save history entries as soon as they are entered
+setopt share_history                # share history between different instances of the shell
+setopt interactivecomments          # Turn on comments interactive comments
+setopt hist_expire_dups_first       # Expire duplicate entries first when trimming history
+unsetopt PROMPT_SP                  # Fix percent sign on initialization
+typeset -aU path                    # Removes duplicates from $PATH
 
 #########################
 #        Aliases        #
