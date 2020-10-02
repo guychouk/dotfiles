@@ -11,15 +11,15 @@ export PS1="%F{38}%1~%F{208} λ %f"
 
 HISTSIZE=10000
 SAVEHIST=10000
-HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/.zsh_history"
+HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
 
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
-export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
+export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
@@ -30,7 +30,7 @@ export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
-compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/.zcompdump"
+compinit
 _comp_options+=(globdots)
 
 #########################
