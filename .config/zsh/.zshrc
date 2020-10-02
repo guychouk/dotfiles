@@ -1,7 +1,7 @@
-# Basic auto/tab complete:
-autoload -U compinit
+#########################
+#    Colors & Prompt    #
+#########################
 
-# Enable colors and change prompt:
 autoload -U colors && colors
 export PS1="%F{38}%1~%F{208} λ %f"
 
@@ -14,7 +14,7 @@ export SAVEHIST=10000
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LANGUAGE=en_US.UTF-8
-export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/.nvm"
+export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
 export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
@@ -25,6 +25,7 @@ export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
 #      Completion       #
 #########################
 
+autoload -U compinit
 zmodload zsh/complist
 zstyle ':completion:*' menu select
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/.zcompdump"
@@ -79,6 +80,7 @@ alias \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
     ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif' \
+    tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/config"' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 #########################
@@ -105,10 +107,11 @@ else
     alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
 
     export TMUX_SESSION='Lab'
+    export GNUPGHOME="${XDG_CONFIG_HOME:-$HOME/.config}/gnupg"
     export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/.npmrc"
     export ZSH_SYNTAX_HIGHLIGHTING="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
-    eval $(keychain --eval --quiet id_rsa)
+    eval $(keychain --dir "${XDG_DATA_HOME:-$HOME/.local/share}/keychain" --eval --quiet id_rsa)
 
     [ -s "/usr/share/nvm/init-nvm.sh" ] && . "/usr/share/nvm/init-nvm.sh"
 fi
