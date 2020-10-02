@@ -1,3 +1,6 @@
+# Create ZSH cache directory if it does not exist
+[[ ! -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" 
+
 #########################
 #    Colors & Prompt    #
 #########################
