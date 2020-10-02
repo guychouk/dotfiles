@@ -1,0 +1,5 @@
+[include]
+        path = ~/.config/git/aliases
+[user]
+	email = 10582405+cudacoder@users.noreply.github.com
+	name = cudacoder
