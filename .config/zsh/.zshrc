@@ -17,6 +17,7 @@ export LANGUAGE=en_US.UTF-8
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/.nvm"
 export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/.npmrc"
 export HISTFILE="${XDG_DATA_HOME:-$HOME/.local/share}/history"
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
