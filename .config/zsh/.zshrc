@@ -107,7 +107,6 @@ if [[ $(uname) = "Darwin" ]]; then
     source "${GCLOUD_SDK}/completion.zsh.inc"
 
     [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
-    [ -s "/usr/local/opt/nvm/etc/bash_completion" ] && . "/usr/local/opt/nvm/etc/bash_completion"
 else 
     alias ll='ls -la --color=auto'
     alias list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
@@ -119,7 +118,7 @@ else
 
     eval $(keychain --dir "${XDG_DATA_HOME:-$HOME/.local/share}/keychain" --eval --quiet id_rsa)
 
-    [ -s "/usr/share/nvm/init-nvm.sh" ] && . "/usr/share/nvm/init-nvm.sh"
+    [ -s "/usr/share/nvm/nvm.sh" ] && . "/usr/share/nvm/nvm.sh"
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
