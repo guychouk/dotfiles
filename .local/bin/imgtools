@@ -53,6 +53,14 @@ while [ "$CMD" != "" ]; do
             # Cut a clip from second (-ss) with length (-t) and output mp4
             ffmpeg -ss $TIME -t $SIZE -i $INPUT -async 1 $OUTPUT
             ;;
+        cutvid-with-sub)
+            # Cut a clip from time to time with burned subtitles
+            ffmpeg -ss $FROM -to $TO -copyts -i $INPUT -vf subtitles=$SUBTITLE -c:a copy -ss $TIME -y $OUTPUT
+            ;;
+        extract-sub)
+            # Extracts subtitle track from mkv
+            ffmpeg -i $INPUT -map 0:s:0 ex-sub.srt
+            ;;
         vid2gif)
             # Output clip as GIF
             ffmpeg -ss $TIME -t $SIZE -i $INPUT -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $OUTPUT
