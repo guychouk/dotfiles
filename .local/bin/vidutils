@@ -1,19 +1,25 @@
-#!/bin/sh
+#!/bin/bash
 
+X=""
+Y=""
+W=""
+H=""
 SIZE=""
 TIME=""
-GEOMETRY=""
 
 usage() { echo "TBD" 1>&2; exit 1; }
 
 CMD=$1
 shift
 
-while getopts ":s:t:g:" o; do
+while getopts ":s:t:g:x:y:w:h:" o; do
     case "${o}" in
+        x) X="${OPTARG}" ;;
+        y) Y="${OPTARG}" ;;
+        w) W="${OPTARG}" ;;
+        h) H="${OPTARG}" ;;
         s) SIZE="${OPTARG}" ;;
         t) TIME="${OPTARG}" ;;
-        g) GEOMETRY="${OPTARG}" ;;
     esac
 done
 shift $((OPTIND-1))
@@ -28,7 +34,11 @@ while [ "$CMD" != "" ]; do
             exit 1
             ;;
         screen-record)
-            ffmpeg -f avfoundation -i "1" -framerate 30 screen-recording-$(date +"%m-%d-%y").mkv
+            # avfoundation is only available on OSX
+            # TODO: Add linux support
+            ffmpeg -f avfoundation -i "1" -framerate 30 -filter:v "crop=${W}:${H}:${X}:${Y}" screen-recording-$(date +"%m-%d-%y").mkv
+            ffmpeg -i screen-recording-$(date +"%m-%d-%y").mkv -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
+                -loop 0 screen-gif-$(date +"%m-%d-%y").gif
             exit 1
             ;;
         cut)
