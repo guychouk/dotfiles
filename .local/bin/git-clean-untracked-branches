@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 git remote prune origin
 git branch -r | awk '{print $1}' | egrep -v -f /dev/stdin <(git branch -vv | grep origin | grep -v "*") | awk '{print $1}' | xargs git branch -D

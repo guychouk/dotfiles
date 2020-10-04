@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 if [[ ! -a ./package.json ]]; then
     npm init -y
@@ -8,7 +8,8 @@ fi
 if ! (jq -e '.scripts.watch' package.json) ; then
     jq ".scripts.test = \"jest\"" package.json > package.json.tmp
     cp package.json.tmp package.json && rm package.json.tmp
-    jq ".scripts.watch = \"find . ! -path '*node_modules*' ! -path '*.git*' ! -path '*.json' | entr -c npm test\"" package.json > package.json.tmp
+    jq ".scripts.watch = \"find . ! -path '*node_modules*' ! -path '*.git*' ! -path '*.json' | entr -c npm test\"" \
+        package.json > package.json.tmp
     cp package.json.tmp package.json && rm package.json.tmp
 fi
 

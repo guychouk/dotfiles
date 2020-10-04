@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # This command shows commits in GitHub for the current repo.
 # NOTE: Uses `open` here - this is for OSX.

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 AVD_NAME=pixel_xl_10
 ANDROID_SDK_EMULATOR_DIR=/usr/local/Caskroom/android-sdk/4333796/emulator

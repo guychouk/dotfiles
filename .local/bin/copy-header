@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 HEADER_LIB=~/Projects/lib.header
 TARGET_PROJECT=editor
