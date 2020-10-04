@@ -45,33 +45,6 @@ while [ "$CMD" != "" ]; do
             montage $INPUT -tile $SIZE -geometry $GEOMETRY+0+0 -background transparent $OUTPUT
             exit 1
             ;;
-        crop-vid)
-            ffmpeg -i $INPUT -filter:v "crop=100:100:1:1" $OUTPUT
-            exit 1
-            ;;
-        record-screen)
-            ffmpeg -f avfoundation -i "1" -framerate 30 screen-recording-$(date +"%m-%d-%y").mkv
-            exit 1
-            ;;
-        cutvid)
-            # Cut a clip from second (-ss) with length (-t) and output mp4
-            ffmpeg -ss $TIME -t $SIZE -i $INPUT -async 1 $OUTPUT
-            exit 1
-            ;;
-        cutvid-with-sub)
-            # Cut a clip from time to time with burned subtitles
-            ffmpeg -ss $FROM -to $TO -copyts -i $INPUT -vf subtitles=$SUBTITLE -c:a copy -ss $TIME -y $OUTPUT
-            ;;
-        extract-sub)
-            # Extracts subtitle track from mkv
-            ffmpeg -i $INPUT -map 0:s:0 ex-sub.srt
-            exit 1
-            ;;
-        vid2gif)
-            # Output clip as GIF
-            ffmpeg -ss $TIME -t $SIZE -i $INPUT -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 $OUTPUT
-            exit 1
-            ;;
         icon)
             # Convert .png to .ico
             convert $INPUT -define icon:auto-resize=64,48,32,16 $OUTPUT
