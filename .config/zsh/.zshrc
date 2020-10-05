@@ -124,9 +124,10 @@ fi
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
 # Taken from here: https://unix.stackexchange.com/a/113768/312299
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  # Tests to see if the session already exists. If it does, just reattach.
+  # If the session with the name $TMUX_SESSION does not exist - create it.
   if [ "$(tmux list-sessions 2> /dev/null | grep -o $TMUX_SESSION)" != "$TMUX_SESSION" ]; then
     tmux new-session -s "$TMUX_SESSION"
+  # Otherwise just reattach.
   else
     tmux attach -t "$TMUX_SESSION"
   fi
