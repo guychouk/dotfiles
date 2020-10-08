@@ -19,8 +19,6 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/goyo.vim'
 Plug 'mattn/emmet-vim'
-Plug 'mattn/vim-gist'
-Plug 'mattn/webapi-vim'
 Plug 'preservim/nerdtree'
 Plug 'ruanyl/vim-gh-line'
 Plug 'tpope/vim-commentary'
