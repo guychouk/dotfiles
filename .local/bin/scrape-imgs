@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Originally was used to scrape Ghibli's site for desktop wallpapers,
+# proved to be useful in general :)
+# Requires html-xml-utils package.
+
+# Here is the original URL:
+# http://www.ghibli.jp/info/013251/
+
+curl -s $1 | hxwls | grep -E "(jpg|png)" | grep -v thumb | xargs -I{} curl -s -O {}
