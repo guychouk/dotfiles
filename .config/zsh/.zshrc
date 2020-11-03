@@ -19,6 +19,7 @@ HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 export ANDROID_AVD_HOME="$HOME/.android/avd"
 export ANDROID_SDK_ROOT=/usr/local/Caskroom/android-sdk/4333796
 
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse'
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
@@ -82,6 +83,7 @@ alias \
     pip=pip3 \
     python=python3 \
     v='f -e nvim' \
+    fv='nvim $(fzf)' \
     dcl='dcc logs -f' \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
