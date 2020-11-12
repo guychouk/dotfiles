@@ -115,12 +115,14 @@ else
 
     export TMUX_SESSION='Lab'
     export GNUPGHOME="${XDG_CONFIG_HOME:-$HOME/.config}/gnupg"
+    export PYENV_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/pyenv"
     export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/.npmrc"
     export ZSH_SYNTAX_HIGHLIGHTING="/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
     eval $(keychain --dir "${XDG_DATA_HOME:-$HOME/.local/share}/keychain" --eval --quiet id_rsa)
 
     [ -s "/usr/share/nvm/nvm.sh" ] && . "/usr/share/nvm/nvm.sh"
+    eval "$(pyenv init -)"
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
