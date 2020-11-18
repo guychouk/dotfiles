@@ -1,0 +1,10 @@
+# Bindings
+map g top
+map <c-y> up
+map <c-e> down
+map <c-r> reload
+map c push A<c-u>           # new rename
+map A rename                # at the very end
+map I push A<c-a>           # at the very beginning
+map i push A<a-b><a-b><a-f> # before extention
+map a push A<a-b>           # after extention
