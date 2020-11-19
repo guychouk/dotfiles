@@ -260,6 +260,9 @@ autocmd BufWritePost * GitGutter
 " Delete buffer after git commit, rebase or config
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
+" Use map <buffer> to only map dd in the quickfix window. Requires +localmap
+autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
+
 autocmd BufNewFile,BufRead *.js set filetype=javascript
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.ts set filetype=typescript
@@ -274,6 +277,9 @@ autocmd FileType json setlocal ts=2 sts=2 sw=2 formatexpr=CocAction('formatSelec
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
+
+" Remove entry from quickfix list
+command! RemoveQFItem :call RemoveQFItem()
 
 " Remove quotes from JS object keys
 command! -range=% Rq <line1>,<line2>normal 0ds"j
