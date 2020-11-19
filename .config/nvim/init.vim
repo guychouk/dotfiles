@@ -113,12 +113,6 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
 let g:slime_paste_file = $XDG_CACHE_HOME . "/.slime_paste"
 
-" GitGutter
-autocmd BufWritePost * GitGutter
-
-" Delete buffer after git commit, rebase or config
-autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-
 " Rooter
 let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json']
@@ -228,6 +222,12 @@ nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 """""""""""""""""""""""""
 "     Autocommands      "
 """""""""""""""""""""""""
+
+" Run GitGutter on buffer save
+autocmd BufWritePost * GitGutter
+
+" Delete buffer after git commit, rebase or config
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 autocmd BufNewFile,BufRead *.js set filetype=javascript
 autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
