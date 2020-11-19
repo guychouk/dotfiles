@@ -192,6 +192,35 @@ function! s:nerdtree_toggle()
     execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
 endfunction
 
+function! AgRange(type, ...)
+    let sel_save = &selection
+    let &selection = "inclusive"
+    let reg_save = @@
+
+    if a:0  " Invoked from Visual mode, use gv command.
+        silent exe "normal! gvy"
+    elseif a:type == 'line'
+        silent exe "normal! '[V']y"
+    else
+        silent exe "normal! `[v`]y"
+    endif
+
+    execute "Ag " . @@
+
+    let &selection = sel_save
+    let @@ = reg_save
+endfunction
+
+" When using `dd` in the quickfix list, remove the item from the quickfix list.
+function! RemoveQFItem()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endfunction
+
 """""""""""""""""""""""""
 "      Remappings       "
 """""""""""""""""""""""""
@@ -200,6 +229,9 @@ imap jk <Esc>
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
 nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+
+nnoremap <silent> <leader>/ :set operatorfunc=AgRange<cr>g@
+vnoremap <silent> <leader>/ :<c-u>call AgRange(visualmode(), 1)<cr>
 
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
