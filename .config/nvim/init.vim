@@ -71,12 +71,13 @@ set termguicolors          " Emit true (24-bit) colors in the terminal
 
 runtime snippets.vim       " Load snippets
 
-let mapleader = " "
-let maplocalleader = " "
-
 """""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
+
+" <SPC> as leader
+let mapleader = " "
+let maplocalleader = " "
 
 " NERDTree
 let NERDTreeShowHidden = 1
