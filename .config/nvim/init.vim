@@ -237,14 +237,13 @@ nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>J :sp<CR>
 nnoremap <silent> <Leader>L :vsp<CR>
-nnoremap <silent> <Leader>/ :Ag<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>gg :G<CR>
-nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
-nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>pc :PlugClean<CR>
 nnoremap <silent> <Leader>pi :PlugInstall<CR>
+nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
+nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>h= :exe "resize " . (winheight(0) * 4/3)<CR>
 nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
@@ -266,8 +265,8 @@ autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
 autocmd BufNewFile,BufRead *.ts set filetype=typescript
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
 
-autocmd FileType html setlocal shiftwidth=2
 autocmd FileType html,css EmmetInstall
+autocmd FileType html setlocal shiftwidth=2
 autocmd FileType javascript,javascript.tsx setlocal ts=2 sts=2 sw=2
 autocmd FileType typescript,typescript.tsx setlocal ts=2 sts=2 sw=2
 autocmd FileType json setlocal ts=2 sts=2 sw=2 formatexpr=CocAction('formatSelected')
