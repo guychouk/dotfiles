@@ -216,6 +216,11 @@ function! RemoveQFItem()
   :copen
 endfunction
 
+function! QuwikiEntry()
+	0r ~/.config/nvim/skeleton.help
+	execute '%s/:F:/' . expand('%:t')
+endfunction
+
 """""""""""""""""""""""""
 "      Remappings       "
 """""""""""""""""""""""""
@@ -248,6 +253,9 @@ nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 """""""""""""""""""""""""
 "     Autocommands      "
 """""""""""""""""""""""""
+
+" Setup skeleton for quwiki entries
+autocmd BufNewFile */quwiki/*.txt :call QuwikiEntry()
 
 " Run GitGutter on buffer save
 autocmd BufWritePost * GitGutter
