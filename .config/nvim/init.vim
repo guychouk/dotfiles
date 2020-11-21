@@ -43,30 +43,25 @@ syntax on                  " Syntax highlighting
 filetype plugin indent on  " Turn on filetype detections
 
 set pyx=3                  " Set Python version to 3
+set shortmess+=I           " Supress startup message
+set shortmess+=c           " Avoid passing messages to ins-completion-menu
 set updatetime=250         " Set CursorHold delay time
-set tabstop=4              " Width of a hard tabstop measured in spaces
-set shiftwidth=4           " When indenting with '>', use 4 spaces width
 set encoding=utf-8         " Encoding for files
 set signcolumn=yes         " Always show signcolumn
-set shortmess+=c           " Avoid passing messages to ins-completion-menu
-set shortmess+=I           " Supress startup message
 set foldmethod=manual      " Set foldmethod to be manual
 set clipboard=unnamedplus  " Enables OS clipboard support
 
+set nowrap                 " Disable line wrapping
 set noswapfile             " No swap files
 set nobackup               " No backup files
 set nowritebackup          " No backup files
-set smarttab               " Improves tabbing
-set number                 " Show line numbers
-set nowrap                 " Disable line wrapping
-set incsearch              " Sets incremental search
 set nohlsearch             " Disable search highlight
-set expandtab              " Insert spaces when tab is pressed
 set noshowmode             " Don't show current mode in cmdline
+set number                 " Show line numbers
+set incsearch              " Sets incremental search
 set autoindent             " New lines will be indented as well
 set smartcase              " No ignore case when pattern has uppercase
 set hidden                 " Hide abandoned buffers instead of unloading them
-set expandtab              " Make the tab key insert spaces instead of tab characters
 set termguicolors          " Emit true (24-bit) colors in the terminal
 
 runtime snippets.vim       " Load snippets
