@@ -67,6 +67,21 @@ set termguicolors          " Emit true (24-bit) colors in the terminal
 runtime snippets.vim       " Load snippets
 
 """""""""""""""""""""""""
+"     Quwiki Setup      "
+"""""""""""""""""""""""""
+
+function! QuwikiEntry()
+	0r ~/.config/nvim/skeleton.help
+	execute '%s/:F:/' . expand('%:t')
+endfunction
+
+let g:QuwikiPath='~/quwiki'
+let &runtimepath.=','.g:QuwikiPath
+nmap <silent> <leader>ht :exe "helptags" . g:QuwikiPath<CR>
+" Setup skeleton for quwiki entries
+autocmd BufNewFile */quwiki/*.txt :call QuwikiEntry()
+
+"""""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
 
@@ -216,11 +231,6 @@ function! RemoveQFItem()
   :copen
 endfunction
 
-function! QuwikiEntry()
-	0r ~/.config/nvim/skeleton.help
-	execute '%s/:F:/' . expand('%:t')
-endfunction
-
 """""""""""""""""""""""""
 "      Remappings       "
 """""""""""""""""""""""""
@@ -228,11 +238,11 @@ endfunction
 imap jk <Esc>
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
-nnoremap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+nmap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
 
-nnoremap <silent> <leader>/ :set operatorfunc=AgRange<cr>g@
 vnoremap <silent> <leader>/ :<c-u>call AgRange(visualmode(), 1)<cr>
 
+nnoremap <silent> <leader>/ :set operatorfunc=AgRange<cr>g@
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>J :sp<CR>
@@ -253,9 +263,6 @@ nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 """""""""""""""""""""""""
 "     Autocommands      "
 """""""""""""""""""""""""
-
-" Setup skeleton for quwiki entries
-autocmd BufNewFile */quwiki/*.txt :call QuwikiEntry()
 
 " Run GitGutter on buffer save
 autocmd BufWritePost * GitGutter
