@@ -1,5 +1,5 @@
 """""""""""""""""""""""""
-"       vim-plug        "
+"       Plugins         "
 """""""""""""""""""""""""
 
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
@@ -37,8 +37,6 @@ call plug#end()
 "       Settings        "
 """""""""""""""""""""""""
 
-colorscheme afterglow
-
 syntax on                  " Syntax highlighting
 filetype plugin indent on  " Turn on filetype detections
 
@@ -62,24 +60,41 @@ set incsearch              " Sets incremental search
 set autoindent             " New lines will be indented as well
 set smartcase              " No ignore case when pattern has uppercase
 set hidden                 " Hide abandoned buffers instead of unloading them
-set termguicolors          " Emit true (24-bit) colors in the terminal
 
 runtime snippets.vim       " Load snippets
 
 """""""""""""""""""""""""
-"     Quwiki Setup      "
+"        Colors         "
 """""""""""""""""""""""""
 
-function! QuwikiEntry()
+set termguicolors          " Emit true (24-bit) colors in the terminal
+colorscheme afterglow
+
+hi Normal guibg=none
+hi SignColumn guibg=none
+hi ALEErrorSign guibg=none
+hi ALEWarningSign guibg=none
+hi LineNr guibg=none guifg=#404040
+
+hi User1 guifg=orange guibg=#1f2630
+hi User2 guifg=grey30 guibg=#1f2630
+hi User3 guifg=green guibg=#1f2630
+
+hi StatusLine guifg=#1f2630 guibg=grey90
+hi StatusLineNC guifg=#1f2630 guibg=grey30
+
+let g:vim_jsx_pretty_colorful_config = 1
+
+"""""""""""""""""""""""""
+"        Quwiki         "
+"""""""""""""""""""""""""
+
+function! QuwikiSkeleton()
 	0r ~/.config/nvim/skeleton.help
 	execute '%s/:F:/' . expand('%:t')
 endfunction
 
-let g:QuwikiPath='~/quwiki'
-let &runtimepath.=','.g:QuwikiPath
-nmap <silent> <leader>ht :exe "helptags" . g:QuwikiPath<CR>
-" Setup skeleton for quwiki entries
-autocmd BufNewFile */quwiki/*.txt :call QuwikiEntry()
+autocmd BufNewFile */quwiki/*.txt :call QuwikiSkeleton()
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -118,10 +133,11 @@ let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
 \ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
 \}
-let g:vim_jsx_pretty_colorful_config = 1
+
+" Slime
 let g:slime_target = "tmux"
-let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
 let g:slime_paste_file = $XDG_CACHE_HOME . "/.slime_paste"
+let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_pane": ":.2"}
 
 " Rooter
 let g:rooter_silent_chdir = 1
@@ -133,21 +149,113 @@ let g:user_emmet_install_global = 0
 let g:user_emmet_expandabbr_key='<Tab>'
 
 """""""""""""""""""""""""
-"       Highlights      "
+"       Functions       "
 """""""""""""""""""""""""
 
-hi Normal guibg=none
-hi LineNr guibg=none guifg=#404040
-hi SignColumn guibg=none
-hi ALEErrorSign guibg=none
-hi ALEWarningSign guibg=none
+function! s:nerdtree_toggle()
+    let is_open = g:NERDTree.IsOpen()
+    execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
+endfunction
 
-hi StatusLine guifg=#1f2630 guibg=grey90
-hi StatusLineNC guifg=#1f2630 guibg=grey30
+function! AgRange(type, ...)
+    let sel_save = &selection
+    let &selection = "inclusive"
+    let reg_save = @@
 
-hi User1 guifg=orange guibg=#1f2630
-hi User2 guifg=grey30 guibg=#1f2630
-hi User3 guifg=green guibg=#1f2630
+    if a:0  " Invoked from Visual mode, use gv command.
+        silent exe "normal! gvy"
+    elseif a:type == 'line'
+        silent exe "normal! '[V']y"
+    else
+        silent exe "normal! `[v`]y"
+    endif
+
+    execute "Ag " . @@
+
+    let &selection = sel_save
+    let @@ = reg_save
+endfunction
+
+" When using `dd` in the quickfix list,
+" remove selected item from the quickfix list.
+function! RemoveQFItem()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endfunction
+
+"""""""""""""""""""""""""
+"      Remappings       "
+"""""""""""""""""""""""""
+
+imap jk <Esc>
+
+nmap <silent> ]g <Plug>(ale_next)
+nmap <silent> [g <Plug>(ale_previous)
+nmap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+
+nnoremap <silent> <Leader>w :w<CR>
+nnoremap <silent> <Leader>q :q<CR>
+nnoremap <silent> <Leader>g :G<CR>
+nnoremap <silent> <Leader>s :Ag<CR>
+nnoremap <silent> <Leader>J :sp<CR>
+nnoremap <silent> <Leader>L :vsp<CR>
+nnoremap <silent> <Leader>. :GFiles<CR>
+nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <leader>/ :set operatorfunc=AgRange<cr>g@
+vnoremap <silent> <leader>/ :<c-u>call AgRange(visualmode(), 1)<cr>
+
+nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
+nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
+nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
+nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
+
+nnoremap <silent> <Leader>=h :exe "resize " . (winheight(0) * 4/3)<CR>
+nnoremap <silent> <Leader>=v :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
+nnoremap <silent> <Leader>-h :exe "resize " . (winheight(0) * 3/4)<CR>
+nnoremap <silent> <Leader>-v :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
+
+"""""""""""""""""""""""""
+"     Autocommands      "
+"""""""""""""""""""""""""
+
+autocmd BufWritePost * GitGutter
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+
+autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
+
+autocmd BufNewFile,BufRead *.js set filetype=javascript
+autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
+autocmd BufNewFile,BufRead *.ts set filetype=typescript
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+
+autocmd FileType html,css EmmetInstall
+autocmd FileType html setlocal shiftwidth=2
+autocmd FileType javascript,javascript.tsx setlocal ts=2 sts=2 sw=2
+autocmd FileType typescript,typescript.tsx setlocal ts=2 sts=2 sw=2
+autocmd FileType json setlocal ts=2 sts=2 sw=2 formatexpr=CocAction('formatSelected')
+
+"""""""""""""""""""""""""
+"       Commands        "
+"""""""""""""""""""""""""
+
+" Remove entry from quickfix list
+command! RemoveQFItem :call RemoveQFItem()
+
+" Remove quotes from JS object keys
+command! -range=% Rq <line1>,<line2>normal 0ds"j
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
+
+" Show only changed files
+command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
 
 """""""""""""""""""""""""
 "      Statusline       "
@@ -194,116 +302,6 @@ augroup statusline_commands
 augroup END
 
 """""""""""""""""""""""""
-"       Functions       "
-"""""""""""""""""""""""""
-
-function! s:nerdtree_toggle()
-    let is_open = g:NERDTree.IsOpen()
-    execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
-endfunction
-
-function! AgRange(type, ...)
-    let sel_save = &selection
-    let &selection = "inclusive"
-    let reg_save = @@
-
-    if a:0  " Invoked from Visual mode, use gv command.
-        silent exe "normal! gvy"
-    elseif a:type == 'line'
-        silent exe "normal! '[V']y"
-    else
-        silent exe "normal! `[v`]y"
-    endif
-
-    execute "Ag " . @@
-
-    let &selection = sel_save
-    let @@ = reg_save
-endfunction
-
-" When using `dd` in the quickfix list, remove the item from the quickfix list.
-function! RemoveQFItem()
-  let curqfidx = line('.') - 1
-  let qfall = getqflist()
-  call remove(qfall, curqfidx)
-  call setqflist(qfall, 'r')
-  execute curqfidx + 1 . "cfirst"
-  :copen
-endfunction
-
-"""""""""""""""""""""""""
-"      Remappings       "
-"""""""""""""""""""""""""
-
-imap jk <Esc>
-nmap <silent> ]g <Plug>(ale_next)
-nmap <silent> [g <Plug>(ale_previous)
-nmap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
-
-vnoremap <silent> <leader>/ :<c-u>call AgRange(visualmode(), 1)<cr>
-
-nnoremap <silent> <leader>/ :set operatorfunc=AgRange<cr>g@
-nnoremap <silent> <Leader>w :w<CR>
-nnoremap <silent> <Leader>q :q<CR>
-nnoremap <silent> <Leader>J :sp<CR>
-nnoremap <silent> <Leader>L :vsp<CR>
-nnoremap <silent> <Leader>. :GFiles<CR>
-nnoremap <silent> <Leader>b :Buffers<CR>
-nnoremap <silent> <Leader>gg :G<CR>
-nnoremap <silent> <Leader>pc :PlugClean<CR>
-nnoremap <silent> <Leader>pi :PlugInstall<CR>
-nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
-nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
-nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
-nnoremap <silent> <Leader>h= :exe "resize " . (winheight(0) * 4/3)<CR>
-nnoremap <silent> <Leader>h- :exe "resize " . (winheight(0) * 3/4)<CR>
-nnoremap <silent> <Leader>v= :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
-nnoremap <silent> <Leader>v- :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
-
-"""""""""""""""""""""""""
-"     Autocommands      "
-"""""""""""""""""""""""""
-
-" Run GitGutter on buffer save
-autocmd BufWritePost * GitGutter
-
-" Delete buffer after git commit, rebase or config
-autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-
-" Use map <buffer> to only map dd in the quickfix window. Requires +localmap
-autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
-
-autocmd BufNewFile,BufRead *.js set filetype=javascript
-autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-autocmd BufNewFile,BufRead *.ts set filetype=typescript
-autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-
-autocmd FileType html,css EmmetInstall
-autocmd FileType html setlocal shiftwidth=2
-autocmd FileType javascript,javascript.tsx setlocal ts=2 sts=2 sw=2
-autocmd FileType typescript,typescript.tsx setlocal ts=2 sts=2 sw=2
-autocmd FileType json setlocal ts=2 sts=2 sw=2 formatexpr=CocAction('formatSelected')
-
-"""""""""""""""""""""""""
-"       Commands        "
-"""""""""""""""""""""""""
-
-" Remove entry from quickfix list
-command! RemoveQFItem :call RemoveQFItem()
-
-" Remove quotes from JS object keys
-command! -range=% Rq <line1>,<line2>normal 0ds"j
-
-" Add `:Format` command to format current buffer.
-command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
-
-" Show only changed files
-command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
-
-"""""""""""""""""""""""""
 "        Coc.vim        "
 """""""""""""""""""""""""
 
@@ -320,8 +318,11 @@ function! s:check_back_space() abort
     return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current
-" position. Coc only does snippet and additional edit on confirm.
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at 
+" current position. Coc only does snippet and additional edit on confirm.
 " <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
 if exists('*complete_info')
     inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -346,10 +347,10 @@ omap af <Plug>(coc-funcobj-a)
 nmap <leader>rn <Plug>(coc-rename)
 
 " Coc GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gy <Plug>(coc-type-definition)
 
 " Coc Formatting selected code.
 xmap <leader>f  <Plug>(coc-format-selected)
@@ -357,6 +358,3 @@ nmap <leader>f  <Plug>(coc-format-selected)
 
 " Find symbol of current document.
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
-
-" Use K to show documentation in preview window.
-nnoremap <silent> K :call <SID>show_documentation()<CR>
