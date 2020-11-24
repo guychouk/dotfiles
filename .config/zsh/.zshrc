@@ -41,7 +41,7 @@ _comp_options+=(globdots)
 #         FASD          #
 #########################
 
-eval "$(fasd --init auto)"
+eval "$(fasd --init posix-alias zsh-hook zsh-wcomp-install zsh-wcomp)"
 
 #########################
 #       Bindkeys        #
@@ -63,16 +63,16 @@ bindkey '^R' history-incremental-search-backward
 #        Options        #
 #########################
 
-setopt auto_cd                      # CD to path without using `cd`
+setopt auto_cd                      # jump to path without using `cd`
 setopt hist_reduce_blanks           # remove superfluous blanks from history items
 setopt hist_ignore_all_dups         # remove older duplicate entries from history
-setopt appendhistory                # Append history to the history file (no overwriting)
+setopt appendhistory                # append history to the history file (no overwriting)
 setopt inc_append_history           # save history entries as soon as they are entered
 setopt share_history                # share history between different instances of the shell
-setopt interactivecomments          # Turn on comments interactive comments
-setopt hist_expire_dups_first       # Expire duplicate entries first when trimming history
-unsetopt PROMPT_SP                  # Fix percent sign on initialization
-typeset -aU path                    # Removes duplicates from $PATH
+setopt interactivecomments          # turn on comments interactive comments
+setopt hist_expire_dups_first       # expire duplicate entries first when trimming history
+unsetopt PROMPT_SP                  # fix percent sign on initialization
+typeset -aU path                    # removes duplicates from $PATH
 
 #########################
 #        Aliases        #
@@ -83,13 +83,11 @@ alias \
     pip=pip3 \
     python=python3 \
     v='f -e nvim' \
-    fv='nvim $(fzf)' \
     dcl='dcc logs -f' \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
-    ffc='ffmpeg -i "`ls -t1 | head -n 1`" ../output.gif' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
-    tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"' \
+    tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 #########################
 #        Setup          #
