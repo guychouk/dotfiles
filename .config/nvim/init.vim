@@ -148,6 +148,10 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 let g:user_emmet_install_global = 0
 let g:user_emmet_expandabbr_key='<Tab>'
 
+" vim-gh-line
+let g:gh_line_map_default = 0
+let g:gh_line_blame_map_default = 1
+
 """""""""""""""""""""""""
 "       Functions       "
 """""""""""""""""""""""""
