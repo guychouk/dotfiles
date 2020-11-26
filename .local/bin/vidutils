@@ -34,11 +34,8 @@ while [ "$CMD" != "" ]; do
             exit 1
             ;;
         screen-record)
-            # avfoundation is only available on OSX
-            # TODO: Add linux support
-            ffmpeg -f avfoundation -i "1" -framerate 30 -filter:v "crop=${W}:${H}:${X}:${Y}" screen-recording-$(date +"%m-%d-%y").mkv
-            ffmpeg -i screen-recording-$(date +"%m-%d-%y").mkv -vf "fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" \
-                -loop 0 screen-gif-$(date +"%m-%d-%y").gif
+	    # TODO: Add linux support (avfoundation is only available on OSX)
+            ffmpeg -f avfoundation -i "1" -framerate 30 "screen-recording-$(date +"%m-%d-%y").mkv"
             exit 1
             ;;
         cut)
