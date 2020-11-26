@@ -1,5 +1,45 @@
 #!/bin/bash
 
+####
+# USAGE: vidutils [--help]
+# USAGE: vidutils command [-x X][-y Y][-w width][-h height][-f from][-t to][-l length][-s subtitle]
+# 
+# COMMANDS:
+# 
+#     crop           -  Crop video (use -xywh options to specify the size)
+#     screen-record  -  Record screen (only supports OSX)
+#     cut            -  Cut a clip $FROM second (-ss) $TO second (-t)
+#     cut-with-sub   -  Cut a clip from time to time and burn subtitles
+#     extract-sub    -  Extract subtitle track
+#     to-gif         -  Convert clip to GIF
+# 
+# OPTIONS:
+# 
+#     -x      X          X point in screen (only for crop command)
+#     -y      Y          Y point in screen (only for crop command)
+#     -w      width      width of cropping (only for crop command)
+#     -h      height     height of cropping (only for crop command)
+#     -f      from       from time
+#     -t      to         to time
+#     -l      length     length of clip
+#     -s      subtitle   subtitle file
+###
+
+PROGNAME=`type $0 | awk '{print $3}'`
+PROGDIR=`dirname $PROGNAME`
+PROGNAME=`basename $PROGNAME`
+usage()
+{
+    echo >&2 "$PROGNAME:" "$@"
+    sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //' "$PROGDIR/$PROGNAME"
+}
+
+if [[ $# -eq 0 ]] ; then
+    echo ""
+    usage
+    exit 0
+fi
+
 X=""
 Y=""
 W=""
@@ -7,7 +47,6 @@ H=""
 SIZE=""
 TIME=""
 
-usage() { echo "TBD" 1>&2; exit 1; }
 
 CMD=$1
 shift
