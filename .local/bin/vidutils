@@ -44,21 +44,24 @@ X=""
 Y=""
 W=""
 H=""
-SIZE=""
-TIME=""
-
+TO=""
+FROM=""
+LENGTH=""
+SUBTITLE=""
 
 CMD=$1
 shift
 
-while getopts ":s:t:g:x:y:w:h:" o; do
+while getopts ":x:y:w:h:t:f:l:s:" o; do
     case "${o}" in
         x) X="${OPTARG}" ;;
         y) Y="${OPTARG}" ;;
         w) W="${OPTARG}" ;;
         h) H="${OPTARG}" ;;
-        s) SIZE="${OPTARG}" ;;
-        t) TIME="${OPTARG}" ;;
+        t) TO="${OPTARG}" ;;
+        f) FROM="${OPTARG}" ;;
+        l) LENGTH="${OPTARG}" ;;
+        s) SUBTITLE="${OPTARG}" ;;
     esac
 done
 shift $((OPTIND-1))
@@ -69,39 +72,34 @@ OUTPUT=$2
 while [ "$CMD" != "" ]; do
     case $CMD in
         crop)
-            ffmpeg -i $INPUT -filter:v "crop=100:100:1:1" $OUTPUT
+            ffmpeg -i $INPUT -filter:v "crop=${W}:${H}:${X}:${Y}" $OUTPUT
             exit 1
             ;;
         screen-record)
-	    # TODO: Add linux support (avfoundation is only available on OSX)
             ffmpeg -f avfoundation -i "1" -framerate 30 "screen-recording-$(date +"%m-%d-%y").mkv"
             exit 1
             ;;
         cut)
-            # Cut a clip from second (-ss) with length (-t) and output mp4
-            ffmpeg -ss $TIME -t $SIZE -i $INPUT -async 1 $OUTPUT
+            ffmpeg -ss $FROM -t $TO -i $INPUT -async 1 $OUTPUT
             exit 1
             ;;
         cut-with-sub)
-            # Cut a clip from time to time with burned subtitles
-            ffmpeg -ss $FROM -to $TO -copyts -i $INPUT -vf subtitles=$SUBTITLE -c:a copy -ss $TIME -y $OUTPUT
+            ffmpeg -ss $FROM -to $TO -copyts -i $INPUT -vf subtitles=$SUBTITLE -c:a copy -ss $LENGTH -y $OUTPUT
             exit 1
             ;;
         extract-sub)
-            # Extracts subtitle track from mkv
             ffmpeg -i $INPUT -map 0:s:0 ex-sub.srt
             exit 1
             ;;
-        gif)
-            # Output clip as GIF
+        to-gif)
 	    GIF_SETTINGS="fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
-            ffmpeg -ss $TIME -t $SIZE -i $INPUT -vf $GIF_SETTINGS -loop 0 $OUTPUT
+            ffmpeg -ss $FROM -t $TO -i $INPUT -vf $GIF_SETTINGS -loop 0 $OUTPUT
             exit 1
             ;;
-        -h | --help )           usage
+        --help )           usage
             exit 1
             ;;
-        * )                     usage
+        * )                usage
             exit 1
     esac
     shift
