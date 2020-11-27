@@ -227,20 +227,14 @@ nnoremap <silent> <Leader>-v :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 """""""""""""""""""""""""
 
 autocmd BufWritePost * GitGutter
-autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+autocmd BufNewFile,BufReadPost *.tsx set filetype=typescript
+autocmd BufNewFile,BufReadPost *.jsx set filetype=javascript
 
 autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
-
-autocmd BufNewFile,BufRead *.js set filetype=javascript
-autocmd BufNewFile,BufRead *.jsx set filetype=javascript.jsx
-autocmd BufNewFile,BufRead *.ts set filetype=typescript
-autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 autocmd FileType html,css EmmetInstall
 autocmd FileType html setlocal shiftwidth=2
-autocmd FileType javascript,javascript.tsx setlocal ts=2 sts=2 sw=2
-autocmd FileType typescript,typescript.tsx setlocal ts=2 sts=2 sw=2
-autocmd FileType json setlocal ts=2 sts=2 sw=2 formatexpr=CocAction('formatSelected')
 
 """""""""""""""""""""""""
 "       Commands        "
