@@ -10,26 +10,24 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'airblade/vim-rooter'
-Plug 'airblade/vim-gitgutter'
-Plug 'dense-analysis/ale'
-Plug 'godlygeek/tabular'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/goyo.vim'
 Plug 'mattn/emmet-vim'
+Plug 'godlygeek/tabular'
+Plug 'dense-analysis/ale'
+Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
-Plug 'ruanyl/vim-gh-line'
-Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'jpalardy/vim-slime'
-Plug 'yuezk/vim-js'
-Plug 'maxmellon/vim-jsx-pretty'
+Plug 'sheerun/vim-polyglot'
+Plug 'airblade/vim-rooter'
+Plug 'ruanyl/vim-gh-line'
+Plug 'tpope/vim-commentary'
+Plug 'airblade/vim-gitgutter'
 Plug 'danilo-augusto/vim-afterglow'
-Plug 'andys8/vim-elm-syntax'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 call plug#end()
 
 """""""""""""""""""""""""
@@ -82,8 +80,6 @@ hi User3 guifg=green guibg=#1f2630
 hi StatusLine guifg=#1f2630 guibg=grey90
 hi StatusLineNC guifg=#1f2630 guibg=grey30
 
-let g:vim_jsx_pretty_colorful_config = 1
-
 """""""""""""""""""""""""
 "        Quwiki         "
 """""""""""""""""""""""""
@@ -108,25 +104,28 @@ let NERDTreeShowHidden = 1
 let g:NERDTreeBookmarksFile = $XDG_CONFIG_HOME . "/nvim/.nerdtree-bookmarks"
 
 " ALE
-let g:ale_lint_delay = 250
 let g:ale_sign_error = '• '
 let g:ale_sign_warning = '• '
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_insert_leave = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%] [%code%]'
-let g:ale_lint_on_text_changed = 'normal'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 
 \ 'cpp': ['ccls'],
 \ 'javascript': ['eslint'],
-\ 'typescript': ['eslint', 'tsserver'],
-\ 'typescript.tsx': ['eslint', 'tsserver'],
+\ 'javascriptreact': ['eslint'],
+\ 'typescript': ['eslint'],
+\ 'typescriptreact': ['eslint'],
 \}
 let g:ale_fixers = { 
 \ 'go': ['gofmt'],
 \ 'javascript': ['eslint'],
+\ 'javascriptreact': ['eslint'],
 \ 'typescript': ['eslint'],
-\ 'typescript.tsx': ['eslint'],
+\ 'typescriptreact': ['eslint'],
 \}
 let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
@@ -143,13 +142,13 @@ let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json']
 let g:rooter_change_directory_for_non_project_files = 'current'
 
-" Emmet (<c-y>,)
+" Emmet
 let g:user_emmet_install_global = 0
 let g:user_emmet_expandabbr_key='<Tab>'
 
 " vim-gh-line
 let g:gh_line_map_default = 0
-let g:gh_line_blame_map_default = 1
+let g:gh_line_blame_map_default = 0
 
 """""""""""""""""""""""""
 "       Functions       "
@@ -165,7 +164,8 @@ function! AgRange(type, ...)
     let &selection = "inclusive"
     let reg_save = @@
 
-    if a:0  " Invoked from Visual mode, use gv command.
+		" Invoked from Visual mode, use gv command.
+    if a:0
         silent exe "normal! gvy"
     elseif a:type == 'line'
         silent exe "normal! '[V']y"
@@ -226,14 +226,9 @@ nnoremap <silent> <Leader>-v :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 """""""""""""""""""""""""
 
 autocmd BufWritePost * GitGutter
-autocmd BufNewFile,BufReadPost *.tsx set filetype=typescript
-autocmd BufNewFile,BufReadPost *.jsx set filetype=javascript
-
+autocmd BufRead init.vim let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
 autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-
-autocmd FileType html,css EmmetInstall
-autocmd FileType html setlocal shiftwidth=2
 
 """""""""""""""""""""""""
 "       Commands        "
