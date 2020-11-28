@@ -10,7 +10,6 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug '~/.vim/custom/swift'
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
