@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -e
+
+main() {
+  cd ~/quwiki
+  file_to_edit=`select_file`
+
+  if [ -n "$file_to_edit" ] ; then
+    "$EDITOR" "$file_to_edit"
+    main "$file_to_edit"
+  fi
+  cd -
+}
+
+select_file() {
+  find *.md -type f | fzf --preview="cat {}" --preview-window=right:70%:wrap
+}
+
+main ""
