@@ -11,23 +11,23 @@ endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'mattn/emmet-vim'
-Plug 'godlygeek/tabular'
 Plug 'dense-analysis/ale'
-Plug 'junegunn/goyo.vim'
 Plug 'preservim/nerdtree'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
 Plug 'jpalardy/vim-slime'
 Plug 'sheerun/vim-polyglot'
-Plug 'airblade/vim-rooter'
 Plug 'ruanyl/vim-gh-line'
-Plug 'tpope/vim-commentary'
-Plug 'airblade/vim-gitgutter'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'airblade/vim-rooter'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 call plug#end()
 
 """""""""""""""""""""""""
