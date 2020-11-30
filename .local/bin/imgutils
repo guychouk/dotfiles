@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Compress pdf
+# gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH  -dQUIET -sOutputFile=output.pdf input.pdf
+
 SIZE=""
 TIME=""
 GEOMETRY=""
