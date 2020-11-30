@@ -81,8 +81,12 @@ typeset -aU path                    # removes duplicates from $PATH
 alias \
     g=git \
     pip=pip3 \
+    vim=nvim \
+    nv=nvim \
     python=python3 \
     v='f -e nvim' \
+    fh='find ~/ | fzf' \
+    fb='find ~/.local/bin | fzf' \
     dcl='dcc logs -f' \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
