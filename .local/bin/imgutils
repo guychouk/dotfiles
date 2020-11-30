@@ -1,13 +1,48 @@
-#!/bin/sh
+#!/bin/bash
+
+####
+# USAGE: imgutils [--help]
+# USAGE: imgutils command [-s WxH][-t RxC][-g WxH+X+Y] input output
+# 
+# COMMANDS:
+# 
+#     blank     - Generate image of certain size and color (Hex can also be used here!)
+#     cleantext - Clean text in document image and make it B&W (requires textcleaner script in path)
+#     compress  - Compress PDF's size
+#     icon      - Convert .png to .ico
+#     pad       - Pad image with transparent background to certain dimensions
+#     pdf2png   - PDF to PNG
+#     scale     - Scale an image (good for pixel art)
+#     sprite    - An ImageMagick tool called montage for packing frames into spritesheets
+# 
+# OPTIONS:
+# 
+#    -s         size expressed as W x H
+#    -t         tile size expressed as R x C
+#    -g         geometry expressed as W x H + X_OFFSET + Y_OFFSET
+###
+
+PROGNAME=`type $0 | awk '{print $3}'`
+PROGDIR=`dirname $PROGNAME`
+PROGNAME=`basename $PROGNAME`
+usage()
+{
+    echo >&2 "$PROGNAME:" "$@"
+    sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //' "$PROGDIR/$PROGNAME"
+}
+
+if [[ $# -eq 0 ]] ; then
+    echo ""
+    usage
+    exit 0
+fi
 
 # Compress pdf
-# gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH  -dQUIET -sOutputFile=output.pdf input.pdf
+# 
 
 SIZE=""
-TIME=""
 GEOMETRY=""
-
-usage() { echo "TBD" 1>&2; exit 1; }
+TILE_SIZE=""
 
 CMD=$1
 shift
@@ -15,7 +50,7 @@ shift
 while getopts ":s:t:g:" o; do
     case "${o}" in
         s) SIZE="${OPTARG}" ;;
-        t) TIME="${OPTARG}" ;;
+        t) TILE_SIZE="${OPTARG}" ;;
         g) GEOMETRY="${OPTARG}" ;;
     esac
 done
@@ -30,43 +65,35 @@ while [ "$CMD" != "" ]; do
             convert $INPUT -resize $SIZE $OUTPUT
             exit 1
             ;;
+        compress)
+            gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH  -dQUIET -sOutputFile=$OUTPUT $INPUT
+            exit 1
+            ;;
         scale)
-            # Scale an image (good for pixel art)
             convert $INPUT -filter point -resize $SIZE $OUTPUT
             exit 1
             ;;
         blank)
-            # Generate image of certain size and color (Hex can also be used here!)
-            # https://stackoverflow.com/questions/39504522/create-blank-image-in-imagemagick
             convert -size $SIZE xc:white $INPUT
             exit 1
             ;;
         sprite)
-            # An ImageMagick tool called montage for packing frames into spritesheets, taken from here:
-            # http://acamara.es/blog/2012/12/assembling-sprite-sheets-with-imagemagick/
-            # Example: anim[1-8].png -tile 4x4
-            montage $INPUT -tile $SIZE -geometry $GEOMETRY+0+0 -background transparent $OUTPUT
+            montage $INPUT -tile $TILE_SIZE -geometry $GEOMETRY -background transparent $OUTPUT
             exit 1
             ;;
         icon)
-            # Convert .png to .ico
             convert $INPUT -define icon:auto-resize=64,48,32,16 $OUTPUT
             exit 1
             ;;
         pad)
-            # Pad image with transparent background to certain dimensions
             convert $INPUT -background none -gravity center -extent $SIZE $OUTPUT
             exit 1
             ;;
         pdf2png)
-            # PDF to PNG
             convert -density 300 $INPUT -resize 35% $OUTPUT
             exit 1
             ;;
         cleantext)
-            # Clean text in document image and make it B&W
-            # Using textcleaner script from Fred's Imagick Scripts:
-            # http://www.fmwconcepts.com/imagemagick/textcleaner/index.php
             textcleaner -e normalize $INPUT $OUTPUT
             exit 1
             ;;
