@@ -97,7 +97,7 @@ alias \
 #        Setup          #
 #########################
 
-path=($path "$HOME/.local/bin" "${XDG_DATA_HOME:-$HOME/.local/share}/go/bin")
+path=($path "$HOME/.local/bin" "$GOPATH/bin")
 
 if [[ $(uname) = "Darwin" ]]; then
     alias ll='ls -laG'
