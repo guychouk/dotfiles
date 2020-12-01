@@ -126,6 +126,7 @@ else
 
     [ -s "/usr/share/nvm/nvm.sh" ] && . "/usr/share/nvm/nvm.sh"
     eval "$(pyenv init -)"
+    eval "$(rbenv init -)"
 fi
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
