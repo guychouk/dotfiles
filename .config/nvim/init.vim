@@ -287,7 +287,9 @@ function! StatusLine(active)
     let l:fugitive = a:active && FugitiveHead() != '' ? '%3*●%* %{FugitiveHead()}' : ''
     let l:coc_status = get(g:, 'coc_status', '') != '' ? '｜%{tolower(coc#status())}' : ''
     let l:statusline_segments = [
-                \ l:mode_color . '⎡%{g:statusline_mode_map[mode()]}⎤' . '%*',
+                \ l:mode_color . '⎡ %{g:statusline_mode_map[mode()]} ⎤' . '%*',
+                \ '   ',
+                \ fnamemodify(getcwd(), ':t'),
                 \ '   ',
                 \ '%{expand("%")} %m %r %h',
                 \ '%=',
