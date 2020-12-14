@@ -208,13 +208,13 @@ nmap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>g :G<CR>
-nnoremap <silent> <Leader>s :Ag<CR>
+nnoremap <silent> <Leader>/ :Ag<CR>
 nnoremap <silent> <Leader>J :sp<CR>
 nnoremap <silent> <Leader>L :vsp<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
-nnoremap <silent> <leader>/ :set operatorfunc=AgRange<cr>g@
-vnoremap <silent> <leader>/ :<c-u>call AgRange(visualmode(), 1)<cr>
+nnoremap <silent> <leader>ss :set operatorfunc=AgRange<cr>g@
+vnoremap <silent> <leader>ss :<c-u>call AgRange(visualmode(), 1)<cr>
 
 nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
