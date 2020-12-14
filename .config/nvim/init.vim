@@ -84,12 +84,21 @@ hi StatusLineNC guifg=#1f2630 guibg=grey30
 "        Quwiki         "
 """""""""""""""""""""""""
 
+" This gets called from the wiki shell
+" script in .local/bin/wiki
+function! WikiFile()
+	execute('Goyo')
+	nnoremap <silent> <Leader>q :qa<CR>
+endfunction
+
+" Create skeleton of wiki file
+" TODO: needs revisioning
 function! QuwikiSkeleton()
 	0r ~/.config/nvim/skeleton.help
 	execute '%s/:F:/' . expand('%:t')
 endfunction
 
-autocmd BufNewFile */quwiki/*.txt :call QuwikiSkeleton()
+command! SetupWiki :call WikiFile()
 
 """""""""""""""""""""""""
 "       Variables       "
