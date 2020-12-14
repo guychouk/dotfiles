@@ -239,6 +239,16 @@ autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 "       Commands        "
 """""""""""""""""""""""""
 
+" Hack for making js watchers inside a container to pickup on changes
+command! DockerRefresh execute
+			\ 'silent !docker-compose -f ~/Projects/box/docker-compose.yml exec -T '
+			\ . fnamemodify(getcwd(), ':t')
+			\ . ' touch '
+			\ . expand('%')
+			\ . ' & '
+
+autocmd BufWritePost */box/projects/* DockerRefresh
+
 " Remove entry from quickfix list
 command! RemoveQFItem :call RemoveQFItem()
 
