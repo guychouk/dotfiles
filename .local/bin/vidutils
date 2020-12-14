@@ -92,7 +92,7 @@ while [ "$CMD" != "" ]; do
             exit 1
             ;;
         to-gif)
-	    GIF_SETTINGS="fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
+            GIF_SETTINGS="fps=10,scale=320:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse"
             ffmpeg -ss $FROM -t $TO -i $INPUT -vf $GIF_SETTINGS -loop 0 $OUTPUT
             exit 1
             ;;
