@@ -2,7 +2,7 @@
 set -e
 
 main() {
-  cd ~/quwiki
+  cd $WIKI_PATH
   file_to_edit=`select_file`
 
   if [ -n "$file_to_edit" ] ; then
