@@ -86,7 +86,7 @@ while [ "$CMD" != "" ]; do
             exit 1
             ;;
         pad)
-            convert $INPUT -background none -gravity center -extent $SIZE $OUTPUT
+            convert $INPUT -background none -gravity center -resize $SIZE -extent $SIZE $OUTPUT
             exit 1
             ;;
         pdf2png)
