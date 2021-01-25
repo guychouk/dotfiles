@@ -239,7 +239,7 @@ autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 "       Commands        "
 """""""""""""""""""""""""
 
-" Hack for making js watchers inside a container to pickup on changes
+" hack for making js watchers pickup changes inside docker containers
 command! DockerRefresh execute
 			\ 'silent !docker-compose -f ~/Projects/box/docker-compose.yml exec -T '
 			\ . fnamemodify(getcwd(), ':t')
@@ -257,9 +257,6 @@ command! -range=% Rq <line1>,<line2>normal 0ds"j
 
 " Add `:Format` command to format current buffer.
 command! -nargs=0 Format :call CocAction('format')
-
-" Add `:Fold` command to fold current buffer.
-command! -nargs=? Fold :call CocAction('fold', <f-args>)
 
 " Show only changed files
 command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
