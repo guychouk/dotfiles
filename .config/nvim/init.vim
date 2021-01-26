@@ -80,25 +80,24 @@ hi User3 guifg=green guibg=#1f2630
 hi StatusLine guifg=#1f2630 guibg=grey90
 hi StatusLineNC guifg=#1f2630 guibg=grey30
 
-"""""""""""""""""""""""""
-"        Quwiki         "
-"""""""""""""""""""""""""
+""""""""""""""""""""""""""
+"      Zettelkasten      "
+""""""""""""""""""""""""""
 
-" This gets called from the wiki shell
-" script in .local/bin/wiki
-function! WikiFile()
+" This gets called from the zettzim script in .local/bin/zettzim
+function! Zettelkasten()
 	execute('Goyo')
 	nnoremap <silent> <Leader>q :qa<CR>
+	nnoremap <silent> <Leader>zk :ZettelkastenTemplate<CR>
 endfunction
 
-" Create skeleton of wiki file
-" TODO: needs revisioning
-function! QuwikiSkeleton()
+function! ZettelkastenTemplate()
 	0r ~/.config/nvim/skeleton.help
-	execute '%s/:F:/' . expand('%:t')
+	execute '%s/%id%/' . strftime("%Y%m%d%H%M%S")
 endfunction
 
-command! SetupWiki :call WikiFile()
+command! Zettelkasten :call Zettelkasten()
+command! ZettelkastenTemplate :call ZettelkastenTemplate()
 
 """""""""""""""""""""""""
 "       Variables       "
