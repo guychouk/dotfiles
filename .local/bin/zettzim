@@ -13,7 +13,7 @@ main() {
 }
 
 select_file() {
-  find * -type f | fzf --preview="cat {}" --height=100% --preview-window=right:70%:wrap
+  find * -path assets -prune -o -print -type f | fzf --preview="cat {}" --height=100% --preview-window=right:70%:wrap
 }
 
 main ""
