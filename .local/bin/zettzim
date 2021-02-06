@@ -6,14 +6,14 @@ main() {
   file_to_edit=`select_file`
 
   if [ -n "$file_to_edit" ] ; then
-    nvim +Zettelkasten "$file_to_edit"
+    nvim "$file_to_edit"
     main "$file_to_edit"
   fi
   cd -
 }
 
 select_file() {
-  find * -path assets -prune -o -print -type f | fzf --preview="cat {}" --height=100% --preview-window=right:70%:wrap
+  find *.zettel -path assets -prune -o -print -type f | fzf --preview="cat {}" --height=100% --preview-window=right:70%:wrap
 }
 
 main ""

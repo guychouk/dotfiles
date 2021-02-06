@@ -80,25 +80,6 @@ hi User3 guifg=green guibg=#1f2630
 hi StatusLine guifg=#1f2630 guibg=grey90
 hi StatusLineNC guifg=#1f2630 guibg=grey30
 
-""""""""""""""""""""""""""
-"      Zettelkasten      "
-""""""""""""""""""""""""""
-
-" This gets called from the zettzim script in .local/bin/zettzim
-function! Zettelkasten()
-	execute('Goyo')
-	nnoremap <silent> <Leader>q :qa<CR>
-	nnoremap <silent> <Leader>zk :ZettelkastenTemplate<CR>
-endfunction
-
-function! ZettelkastenTemplate()
-	0r ~/.config/nvim/skeleton.help
-	execute '%s/%id%/' . strftime("%Y%m%d%H%M%S")
-endfunction
-
-command! Zettelkasten :call Zettelkasten()
-command! ZettelkastenTemplate :call ZettelkastenTemplate()
-
 """""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
@@ -229,8 +210,9 @@ nnoremap <silent> <Leader>-v :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 "     Autocommands      "
 """""""""""""""""""""""""
 
-autocmd BufWritePost * GitGutter
+autocmd VimEnter *.zettel Goyo
 autocmd BufRead init.vim let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
+autocmd BufWritePost * GitGutter
 autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
