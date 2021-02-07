@@ -237,6 +237,7 @@ nnoremap <silent> <Leader>-v :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
 autocmd BufWritePost * GitGutter
 autocmd BufRead tmux.config set ft=tmux
 autocmd BufRead init.vim let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
+autocmd FileType zettel Goyo
 autocmd FileType qf map <silent> <buffer> dd :RemoveQFItem<cr>
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
