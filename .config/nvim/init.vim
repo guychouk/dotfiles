@@ -158,7 +158,9 @@ function! NewZettel()
 					\]
 		call append(0, l:zk_skeleton)
 		execute 'silent w ' . l:zid . '-' . l:dash_separated . '.zettel'
-		set syntax=zettel
+		normal! gg
+		execute 'Goyo'
+		normal! G
 endfunction
 
 function! s:nerdtree_toggle()
