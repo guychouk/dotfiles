@@ -135,6 +135,9 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 let g:gh_line_map_default = 0
 let g:gh_line_blame_map_default = 0
 
+" Goyo
+let g:goyo_width = 85
+
 """""""""""""""""""""""""
 "       Functions       "
 """""""""""""""""""""""""
