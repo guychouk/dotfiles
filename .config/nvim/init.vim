@@ -65,21 +65,25 @@ runtime snippets.vim       " Load snippets
 "        Colors         "
 """""""""""""""""""""""""
 
-set termguicolors          " Emit true (24-bit) colors in the terminal
+set termguicolors
 colorscheme afterglow
 
-hi Normal guibg=none
-hi SignColumn guibg=none
-hi ALEErrorSign guibg=none
-hi ALEWarningSign guibg=none
-hi LineNr guibg=none guifg=#404040
+" User1 - Default base color
+" User2 - Inactive pane
+" User3 - Insert
+" User4 - Command
+" User5 - Visual
 
-hi User1 guifg=orange guibg=#1f2630
-hi User2 guifg=grey30 guibg=#1f2630
-hi User3 guifg=green guibg=#1f2630
+" guifg in User highlights is for *text* color
+hi User1 guifg=orange guibg=#1a1a1a
+hi User2 guifg=grey30 guibg=#1a1a1a
+hi User3 guifg=violet guibg=#1a1a1a
+hi User4 guifg=lime guibg=#1a1a1a
+hi User5 guifg=yellow guibg=#1a1a1a
 
-hi StatusLine guifg=#1f2630 guibg=grey90
-hi StatusLineNC guifg=#1f2630 guibg=grey30
+" guifg in StatusLine highlights is for *its* color
+hi StatusLine guifg=#1a1a1a guibg=grey70
+hi StatusLineNC guifg=#1a1a1a guibg=grey30
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -274,6 +278,12 @@ command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard
 "      Statusline       "
 """""""""""""""""""""""""
 
+let g:statusline_mode_color_map = {
+    \ 'i'  : '%3*',
+    \ 'c'  : '%4*', 'cv' : '%4*', 'ce' : '%4*',
+    \ 'v'  : '%5*',  'V'  : '%5*',  "\<C-V>" : '%5*',
+		\ }
+
 let g:statusline_mode_map = {
     \ 'i'  : 'I',
     \ '!'  : '!',
@@ -287,13 +297,14 @@ let g:statusline_mode_map = {
     \ }
 
 function! StatusLine(active)
-    let l:icon = a:active ? '⎡•◡•⎤' : '⎡ᴗ˳ᴗ⎤'
-    let l:mode_color = a:active ? '%1*' : '%2*'
-    let l:filetype = empty(&filetype) ? 'N/A' : '%{&filetype}'
+    let l:clear = '%*'
+    let l:icon = a:active ? '(•◡•)' : '(ᴗ˳ᴗ)'
+    let l:mode_color = a:active ? get(g:statusline_mode_color_map, mode(), '%1*') : '%2*'
+    let l:filetype = empty(&filetype) ? '?' : '%{&filetype}'
     let l:fugitive = a:active && FugitiveHead() != '' ? '%3*●%* %{FugitiveHead()}' : ''
     let l:coc_status = get(g:, 'coc_status', '') != '' ? '｜%{tolower(coc#status())}' : ''
     let l:statusline_segments = [
-                \ l:mode_color . '⎡ %{g:statusline_mode_map[mode()]} ⎤' . '%*',
+                \ l:mode_color . '(%{g:statusline_mode_map[mode()]})' . l:clear,
                 \ '   ',
                 \ fnamemodify(getcwd(), ':t'),
                 \ '   ',
@@ -303,7 +314,7 @@ function! StatusLine(active)
                 \ '   ',
                 \ l:filetype . l:coc_status,
                 \ '   ',
-                \ l:mode_color . l:icon . '%*' 
+                \ l:icon 
                 \]
     return join(l:statusline_segments)
 endfunction
