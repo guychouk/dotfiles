@@ -225,10 +225,10 @@ nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
 
-nnoremap <silent> <Leader>=h :exe "resize " . (winheight(0) * 4/3)<CR>
-nnoremap <silent> <Leader>=v :exe "vertical resize " . (winwidth(0) * 4/3)<CR>
-nnoremap <silent> <Leader>-h :exe "resize " . (winheight(0) * 3/4)<CR>
-nnoremap <silent> <Leader>-v :exe "vertical resize " . (winwidth(0) * 3/4)<CR>
+nnoremap <silent> <Leader>=h :exe "resize +5"<CR>
+nnoremap <silent> <Leader>=v :exe "vertical resize +5"<CR>
+nnoremap <silent> <Leader>-h :exe "resize -5"<CR>
+nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 
 """""""""""""""""""""""""
 "     Autocommands      "
