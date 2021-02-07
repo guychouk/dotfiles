@@ -142,6 +142,25 @@ let g:goyo_width = 85
 "       Functions       "
 """""""""""""""""""""""""
 
+function! NewZettel()
+		let l:zid = strftime("%Y%m%d%H%M%S")
+		let l:title = input('Title: ')
+		let l:dash_separated = substitute(l:title, ' ', '-', 'g')
+		let l:capitalized = substitute(l:title, '\<.', '\u&', 'g')
+		let l:zk_skeleton = [
+					\ '---',
+					\ 'id: ' . l:zid,
+					\ 'title: ' . l:dash_separated,
+					\ '---',
+					\ '',
+					\ l:capitalized,
+					\ ''
+					\]
+		call append(0, l:zk_skeleton)
+		execute 'silent w ' . l:zid . '-' . l:dash_separated . '.zettel'
+		set syntax=zettel
+endfunction
+
 function! s:nerdtree_toggle()
     let is_open = g:NERDTree.IsOpen()
     execute is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
@@ -222,6 +241,8 @@ autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
+
+command! NewZettel :call NewZettel()
 
 " hack for making js watchers pickup changes inside docker containers
 command! DockerRefresh execute
