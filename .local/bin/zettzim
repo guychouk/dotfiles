@@ -2,7 +2,7 @@
 set -e
 
 main() {
-  cd $WIKI_PATH
+  cd $ZK_PATH
   file_to_edit=`select_file`
 
   if [ "$file_to_edit" = "-- NEW --" ]; then
