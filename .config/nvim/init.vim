@@ -241,7 +241,7 @@ nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 """""""""""""""""""""""""
 
 autocmd BufWritePost * GitGutter
-autocmd BufRead ~/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
+autocmd BufRead $XDG_CONFIG_HOME/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
 
 """""""""""""""""""""""""
 "       Commands        "
