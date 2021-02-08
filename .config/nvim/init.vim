@@ -166,6 +166,7 @@ function! NewZettel()
 		normal! gg
 		execute 'Goyo'
 		normal! G
+		filetype detect
 endfunction
 
 function! s:nerdtree_toggle()
