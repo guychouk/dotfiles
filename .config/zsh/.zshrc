@@ -87,7 +87,6 @@ alias \
     v='f -e nvim' \
     fh='find ~/ | fzf' \
     fb='find ~/.local/bin | fzf' \
-    zk='ZK_PATH=~/Projects/personal/zettzim zettzim' \
     dcl='dcc logs -f' \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \

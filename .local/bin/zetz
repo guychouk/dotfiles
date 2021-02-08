@@ -2,7 +2,6 @@
 set -e
 
 main() {
-  cd $ZK_PATH
   file_to_edit=`select_file`
 
   if [ "$file_to_edit" = "-- NEW --" ]; then
@@ -18,7 +17,9 @@ main() {
 }
 
 select_file() {
-  { echo "-- NEW --"; find *.zettel -path assets -prune -o -print -type f; } | tr - - | fzf --preview="cat {}" --height=100% --preview-window=right:70%:wrap
+  { echo "-- NEW --"; find *.md -path assets -prune -o -print -type f; } \
+    | tr - - \
+    | fzf --preview="[[ {} == '-- NEW --' ]] && echo '' || cat {}" --height=100% --preview-window=right:60%:wrap
 }
 
 main ""

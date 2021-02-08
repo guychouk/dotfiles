@@ -152,21 +152,12 @@ function! NewZettel()
 		let l:title = input('Title: ')
 		let l:dash_separated = substitute(l:title, ' ', '-', 'g')
 		let l:capitalized = substitute(l:title, '\<.', '\u&', 'g')
-		let l:zk_skeleton = [
-					\ '---',
-					\ 'id: ' . l:zid,
-					\ 'title: ' . l:dash_separated,
-					\ '---',
-					\ '',
-					\ l:capitalized,
-					\ ''
-					\]
-		call append(0, l:zk_skeleton)
+		let l:first_line = '# ' . l:zid . ' ' . l:capitalized
+		call setline(1, l:first_line)
 		execute 'silent w ' . l:zid . '-' . l:dash_separated . '.zettel'
-		normal! gg
 		execute 'Goyo'
-		normal! G
 		filetype detect
+		execute "normal! 2o\<Esc>"
 endfunction
 
 function! s:nerdtree_toggle()
