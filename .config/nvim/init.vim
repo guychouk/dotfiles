@@ -154,7 +154,7 @@ function! NewZettel()
 		let l:capitalized = substitute(l:title, '\<.', '\u&', 'g')
 		let l:first_line = '# ' . l:zid . ' ' . l:capitalized
 		call setline(1, l:first_line)
-		execute 'silent w ' . l:zid . '-' . l:dash_separated . '.zettel'
+		execute 'silent w ' . l:zid . '-' . l:dash_separated . '.md'
 		execute 'Goyo'
 		filetype detect
 		execute "normal! 2o\<Esc>"
