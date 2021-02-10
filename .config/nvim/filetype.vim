@@ -14,6 +14,21 @@ function! SetupZettelkasten()
 	nnoremap <silent> gf :exe "edit " . expand("**/" . expand("<cword>") . "**")<CR>
 endfunction
 
+""""""""""""""""
+"   Quickfix   "
+""""""""""""""""
+
+function! RemoveLineFromQuickfix()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endfunction
+
+command! RemoveLineFromQuickfix :call RemoveFromQuickfix()
+
 """"""""""""""""""""""""""""""""
 "      Filetypes augroup       "
 """"""""""""""""""""""""""""""""
@@ -22,7 +37,7 @@ if exists("did_load_filetypes")
 	finish
 endif
 augroup filetypedetect
-	au! FileType qf map <silent> <buffer> dd :RemoveQFItem<CR>
+	au! FileType qf map <silent> <buffer> dd :RemoveLineFromQuickfix<CR>
 	au! FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 	au! BufRead tmux.config setfiletype tmux
