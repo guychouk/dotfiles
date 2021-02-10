@@ -4,14 +4,14 @@
 
 function! LinkZettel(val)
 		let zid = split(a:val, '-')[0]
-		execute "normal! i [" . zid . "]\<Esc>"
+		execute "normal! i[".zid."]\<Esc>"
 endfunction
 
 function! SetupZettelkasten()
 	set textwidth=80
 	nnoremap <silent> <Leader>q :qa<CR>
 	nnoremap <silent> <Leader>l :call fzf#run(fzf#wrap({'sink': funcref('LinkZettel')}))<CR>
-	nnoremap <silent> gf :exe "edit " . expand("**/" . expand("<cword>") . "**")<CR>
+	nnoremap <silent> gf :exe "edit ".expand("**/".expand("<cword>")."**")<CR>
 endfunction
 
 """"""""""""""""
