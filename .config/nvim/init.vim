@@ -3,20 +3,19 @@
 """""""""""""""""""""""""
 
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
-    echo "Downloading junegunn/vim-plug to manage plugins..."
+  echo "Downloading junegunn/vim-plug to manage plugins..."
 	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
 	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
 	autocmd VimEnter * PlugInstall
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'godlygeek/tabular'
 Plug 'mattn/emmet-vim'
 Plug 'dense-analysis/ale'
 Plug 'preservim/nerdtree'
 Plug 'jpalardy/vim-slime'
-Plug 'sheerun/vim-polyglot'
 Plug 'ruanyl/vim-gh-line'
+Plug 'sheerun/vim-polyglot'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'airblade/vim-rooter'
@@ -170,7 +169,7 @@ function! AgRange(type, ...)
     let &selection = "inclusive"
     let reg_save = @@
 
-		" Invoked from Visual mode, use gv command.
+		" Invoked from Visual mode, use gv command
     if a:0
         silent exe "normal! gvy"
     elseif a:type == 'line'
@@ -185,8 +184,7 @@ function! AgRange(type, ...)
     let @@ = reg_save
 endfunction
 
-" When using `dd` in the quickfix list,
-" remove selected item from the quickfix list.
+" When using `dd` in the quickfix list,emove selected item from the list
 function! RemoveQFItem()
   let curqfidx = line('.') - 1
   let qfall = getqflist()
@@ -212,6 +210,7 @@ nnoremap <silent> <Leader>g :G<CR>
 nnoremap <silent> <Leader>/ :Ag<CR>
 nnoremap <silent> <Leader>J :sp<CR>
 nnoremap <silent> <Leader>L :vsp<CR>
+nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=AgRange<cr>g@
@@ -223,16 +222,9 @@ nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
 
 nnoremap <silent> <Leader>=h :exe "resize +5"<CR>
-nnoremap <silent> <Leader>=v :exe "vertical resize +5"<CR>
 nnoremap <silent> <Leader>-h :exe "resize -5"<CR>
+nnoremap <silent> <Leader>=v :exe "vertical resize +5"<CR>
 nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
-
-"""""""""""""""""""""""""
-"     Autocommands      "
-"""""""""""""""""""""""""
-
-autocmd BufWritePost * GitGutter
-autocmd BufRead $XDG_CONFIG_HOME/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
 
 """""""""""""""""""""""""
 "       Commands        "
@@ -248,19 +240,25 @@ command! DockerRefresh execute
 			\ . expand('%')
 			\ . ' & '
 
-autocmd BufWritePost */box/projects/* DockerRefresh
-
 " Remove entry from quickfix list
 command! RemoveQFItem :call RemoveQFItem()
 
 " Remove quotes from JS object keys
 command! -range=% Rq <line1>,<line2>normal 0ds"j
 
-" Add `:Format` command to format current buffer.
+" Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 
 " Show only changed files
 command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
+
+"""""""""""""""""""""""""
+"     Autocommands      "
+"""""""""""""""""""""""""
+
+autocmd BufWritePost * GitGutter
+autocmd BufWritePost */box/projects/* DockerRefresh
+autocmd BufRead $XDG_CONFIG_HOME/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
 
 """""""""""""""""""""""""
 "      Statusline       "
@@ -319,6 +317,7 @@ augroup END
 "        Coc.vim        "
 """""""""""""""""""""""""
 
+" Use K to show documentation in preview window
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
         execute 'h '.expand('<cword>')
@@ -327,12 +326,6 @@ function! s:show_documentation()
     endif
 endfunction
 
-function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-" Use K to show documentation in preview window.
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at 
@@ -345,6 +338,11 @@ else
 endif
 
 " Use tab for trigger completion with characters ahead and navigate.
+function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
 inoremap <silent><expr> <TAB>
             \ pumvisible() ? "\<C-n>" :
             \ <SID>check_back_space() ? "\<TAB>" :
@@ -357,18 +355,18 @@ xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-" Coc Symbol renaming.
+" Rename symbol
 nmap <leader>rn <Plug>(coc-rename)
 
-" Coc GoTo code navigation.
+" GoTo code navigation
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gy <Plug>(coc-type-definition)
 
-" Coc Formatting selected code.
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" Format selected code
+xmap <leader>f <Plug>(coc-format-selected)
+nmap <leader>f <Plug>(coc-format-selected)
 
-" Find symbol of current document.
+" Find symbol of current document
 nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
