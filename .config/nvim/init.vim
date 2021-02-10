@@ -187,6 +187,11 @@ nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
 nmap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
 
+" Start interactive EasyAlign in visual mode
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object
+nmap ga <Plug>(EasyAlign)
+
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>g :G<CR>
