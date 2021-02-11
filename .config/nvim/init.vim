@@ -192,6 +192,7 @@ xmap ga <Plug>(EasyAlign)
 " Start interactive EasyAlign for a motion/text object
 nmap ga <Plug>(EasyAlign)
 
+nnoremap S :%s//g<Left><Left>
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>g :G<CR>
@@ -201,6 +202,7 @@ nnoremap <silent> <Leader>L :vsp<CR>
 nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=AgRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call AgRange(visualmode(), 1)<cr>
 
