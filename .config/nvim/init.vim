@@ -182,7 +182,9 @@ imap jk <Esc>
 
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
-nmap <silent> <F6> :call <SID>nerdtree_toggle()<CR>
+nmap <silent> ]h <Plug>(GitGutterNextHunk)
+nmap <silent> [h <Plug>(GitGutterPrevHunk)
+nmap <silent> sh <Plug>(GitGutterStageHunk)
 
 " Start interactive EasyAlign in visual mode
 xmap ga <Plug>(EasyAlign)
