@@ -65,6 +65,11 @@ set clipboard=unnamedplus " Enables OS clipboard support
 set termguicolors
 colorscheme afterglow
 
+" Remove background
+hi Normal guibg=none
+hi LineNr guibg=none
+hi SignColumn guibg=none
+
 " User1 - Default base color
 " User2 - Inactive pane
 " User3 - Insert
