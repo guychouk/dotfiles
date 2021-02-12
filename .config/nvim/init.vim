@@ -201,6 +201,7 @@ nnoremap <silent> <Leader>L :vsp<CR>
 nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
 nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=AgRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call AgRange(visualmode(), 1)<cr>
@@ -350,6 +351,3 @@ nmap <silent> gy <Plug>(coc-type-definition)
 " Format selected code
 xmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format-selected)
-
-" Find symbol of current document
-nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
