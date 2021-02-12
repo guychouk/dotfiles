@@ -77,15 +77,15 @@ hi SignColumn guibg=none
 " User5 - Visual
 
 " guifg in User highlights is for *text* color
-hi User1 guifg=orange guibg=#1a1a1a
-hi User2 guifg=grey30 guibg=#1a1a1a
-hi User3 guifg=violet guibg=#1a1a1a
-hi User4 guifg=lime   guibg=#1a1a1a
-hi User5 guifg=yellow guibg=#1a1a1a
+hi User1 guifg=orange guibg=#4b4b4b
+hi User2 guifg=grey30 guibg=#4b4b4b
+hi User3 guifg=violet guibg=#4b4b4b
+hi User4 guifg=lime   guibg=#4b4b4b
+hi User5 guifg=yellow guibg=#4b4b4b
 
 " guifg in StatusLine highlights is for *its* color
-hi StatusLine   guifg=#1a1a1a guibg=grey70
-hi StatusLineNC guifg=#1a1a1a guibg=grey30
+hi StatusLine   guifg=#4b4b4b guibg=white
+hi StatusLineNC guifg=#4b4b4b guibg=grey30
 
 """""""""""""""""""""""""
 "       Variables       "
