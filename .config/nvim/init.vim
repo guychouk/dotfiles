@@ -299,6 +299,27 @@ augroup statusline_commands
     autocmd WinLeave * setlocal statusline=%!StatusLine(0)
 augroup END
 
+" Function for toggling the statusline
+let s:hidden_all = 0
+function! ToggleStatusline()
+    if s:hidden_all  == 0
+        let s:hidden_all = 1
+        set noshowmode
+        set noruler
+        set laststatus=0
+        set noshowcmd
+    else
+        let s:hidden_all = 0
+        set showmode
+        set ruler
+        set laststatus=2
+        set showcmd
+    endif
+endfunction
+nnoremap <silent> <leader>hh :call ToggleStatusline()<CR>
+
+call ToggleStatusline()
+
 """""""""""""""""""""""""
 "        Coc.vim        "
 """""""""""""""""""""""""
