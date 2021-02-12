@@ -90,10 +90,6 @@ hi StatusLineNC guifg=#1a1a1a guibg=grey30
 let mapleader = " "
 let maplocalleader = " "
 
-" NERDTree
-let NERDTreeShowHidden = 1
-let g:NERDTreeBookmarksFile = $XDG_CONFIG_HOME . "/nvim/.nerdtree-bookmarks"
-
 " ALE
 let g:ale_sign_error = '• '
 let g:ale_sign_warning = '• '
@@ -140,6 +136,11 @@ let g:gh_line_blame_map_default = 0
 " Goyo
 let g:goyo_width = 85
 
+" Nerd tree
+let NERDTreeShowHidden = 1
+let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
+map <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
+
 """""""""""""""""""""""""
 "       Functions       "
 """""""""""""""""""""""""
@@ -155,11 +156,6 @@ function! NewZettel()
 	exe 'Goyo'
 	filetype detect
 	exe "normal! 2o\<Esc>"
-endfunction
-
-function! s:nerdtree_toggle()
-	let is_open = g:NERDTree.IsOpen()
-	exe is_open ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'
 endfunction
 
 function! AgRange(type, ...)
