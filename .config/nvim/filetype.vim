@@ -27,7 +27,7 @@ function! RemoveLineFromQuickfix()
   :copen
 endfunction
 
-command! RemoveLineFromQuickfix :call RemoveFromQuickfix()
+command! RemoveLineFromQuickfix :call RemoveLineFromQuickfix()
 
 """"""""""""""""""""""""""""""""
 "      Filetypes augroup       "
