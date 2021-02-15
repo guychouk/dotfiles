@@ -153,11 +153,11 @@ map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(ex
 function! NewZettel()
 	let l:zid = strftime("%Y%m%d%H%M%S")
 	let l:title = input('Title: ')
-	let l:dash_separated = substitute(l:title, ' ', '-', 'g')
 	let l:capitalized = substitute(l:title, '\<.', '\u&', 'g')
+	let l:filename = l:zid . '-' . substitute(l:title, ' ', '-', 'g') . '.md'
 	let l:first_line = '# ' . l:zid . ' ' . l:capitalized
 	call setline(1, l:first_line)
-	exe 'silent w ' . l:zid . '-' . l:dash_separated . '.md'
+	exe 'silent w' l:filename
 	exe 'Goyo'
 	filetype detect
 	exe "normal! 2o\<Esc>"
@@ -174,7 +174,7 @@ function! AgRange(type, ...)
 	else
 		silent exe "normal! `[v`]y"
 	endif
-	exe "Ag " . @@
+	exe "Ag" @@
 	let &selection = sel_save
 	let @@ = reg_save
 endfunction
@@ -232,11 +232,11 @@ command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard
 
 " hack for making js watchers pickup changes inside docker containers
 command! DockerRefresh exe
-            \ 'silent !docker-compose -f ~/Projects/box/docker-compose.yml exec -T '
-            \ . fnamemodify(getcwd(), ':t')
-            \ . ' touch '
-            \ . expand('%')
-            \ . ' & '
+            \ 'silent !docker-compose -f ~/Projects/box/docker-compose.yml exec -T'
+            \ fnamemodify(getcwd(), ':t')
+            \ 'touch'
+            \ expand('%')
+            \ '&'
 
 """""""""""""""""""""""""
 "     Autocommands      "
@@ -330,7 +330,7 @@ command! -nargs=0 Format :call CocAction('format')
 " Use K to show documentation in preview window
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
-        exe 'h '.expand('<cword>')
+        exe 'h' expand('<cword>')
     else
         call CocAction('doHover')
     endif
