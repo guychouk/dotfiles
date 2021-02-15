@@ -163,7 +163,7 @@ function! NewZettel()
 	exe "normal! 2o\<Esc>"
 endfunction
 
-function! AgRange(type, ...)
+function! SearchRange(type, ...)
 	let sel_save = &selection
 	let &selection = "inclusive"
 	let reg_save = @@
@@ -208,8 +208,8 @@ nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
 nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
-nnoremap <silent> <leader>ss :set operatorfunc=AgRange<cr>g@
-vnoremap <silent> <leader>ss :<c-u>call AgRange(visualmode(), 1)<cr>
+nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
+vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
 
 nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
