@@ -144,7 +144,7 @@ let g:goyo_width = 85
 " Nerd tree
 let NERDTreeShowHidden = 1
 let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
-map <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
+map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
 
 """""""""""""""""""""""""
 "       Functions       "
