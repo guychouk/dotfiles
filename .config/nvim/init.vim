@@ -207,6 +207,7 @@ nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
+nnoremap <silent> <Leader>h :exe 'set keymap=' . (&keymap == 'hebrew' ? '' : 'hebrew')<CR>
 nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
