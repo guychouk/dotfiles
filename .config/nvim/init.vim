@@ -153,14 +153,12 @@ map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(ex
 function! NewZettel()
 	let l:zid = strftime("%Y%m%d%H%M%S")
 	let l:title = input('Title: ')
-	let l:capitalized = substitute(l:title, '\<.', '\u&', 'g')
-	let l:filename = l:zid . '-' . substitute(l:title, ' ', '-', 'g') . '.md'
-	let l:first_line = '# ' . l:zid . ' ' . l:capitalized
+	let l:filename = l:zid . '.md'
+	let l:first_line = '#' . ' ' . substitute(l:title, '\<.', '\u&', 'g')
 	call setline(1, l:first_line)
 	exe 'silent w' l:filename
 	exe 'Goyo'
 	filetype detect
-	exe "normal! 2o\<Esc>"
 endfunction
 
 function! SearchRange(type, ...)

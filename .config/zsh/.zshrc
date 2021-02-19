@@ -107,6 +107,7 @@ if [[ $(uname) = "Darwin" ]]; then
     export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
     export GCLOUD_SDK="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
     export ZSH_SYNTAX_HIGHLIGHTING="/usr/local/opt/zsh-syntax-highlighting/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    export ZETZ_PATH="${HOME}/Projects/personal/zetz"
 
     source "${GCLOUD_SDK}/path.zsh.inc"
     source "${GCLOUD_SDK}/completion.zsh.inc"

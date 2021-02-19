@@ -3,15 +3,18 @@
 """""""""""""""""""""""""""
 
 function! LinkZettel(val)
-		let zid = split(a:val, '-')[0]
-		execute "normal! i[".zid."]\<Esc>"
+		let reg_save = @@
+		silent exe "normal! gvy"
+		silent exe "%s/".@@."/[".@@."]/g"
+		silent exe "normal! Go\<Esc>o[".@@."]: ./".a:val."\<Esc>"
+		let @@ = reg_save
 endfunction
 
 function! SetupZettelkasten()
 	set textwidth=80
 	nnoremap <silent> <Leader>q :qa<CR>
-	nnoremap <silent> <Leader>l :call fzf#run(fzf#wrap({'sink': funcref('LinkZettel')}))<CR>
-	nnoremap <silent> gf :exe "edit ".expand("**/".expand("<cword>")."**")<CR>
+	vnoremap <silent> <Leader>l :<c-u>call fzf#run(fzf#wrap({'sink': funcref('LinkZettel')}))<CR>
+	nnoremap <silent> gl :exe "edit ".expand("**/".expand("<cword>")."**")<CR>
 endfunction
 
 """"""""""""""""
