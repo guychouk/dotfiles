@@ -10,6 +10,17 @@ function! LinkZettel(val)
 		let @@ = reg_save
 endfunction
 
+function! NewZettel()
+	let l:zid = strftime("%Y%m%d%H%M%S")
+	let l:title = input('Title: ')
+	let l:filename = l:zid . '.md'
+	let l:first_line = '#' . ' ' . substitute(l:title, '\<.', '\u&', 'g')
+	call setline(1, l:first_line)
+	exe 'silent w' l:filename
+	exe 'Goyo'
+	filetype detect
+endfunction
+
 function! SetupZettelkasten()
 	set textwidth=80
 	nnoremap <silent> <Leader>q :qa<CR>
@@ -44,5 +55,6 @@ augroup filetypedetect
 	au! FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 	au! BufRead tmux.config setfiletype tmux
+	au! BufRead,BufNewFile NEW_ZETTEL call NewZettel()
 	au! BufRead,BufNewFile **/zetz/*.md call SetupZettelkasten()
 augroup END

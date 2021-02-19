@@ -150,17 +150,6 @@ map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(ex
 "       Functions       "
 """""""""""""""""""""""""
 
-function! NewZettel()
-	let l:zid = strftime("%Y%m%d%H%M%S")
-	let l:title = input('Title: ')
-	let l:filename = l:zid . '.md'
-	let l:first_line = '#' . ' ' . substitute(l:title, '\<.', '\u&', 'g')
-	call setline(1, l:first_line)
-	exe 'silent w' l:filename
-	exe 'Goyo'
-	filetype detect
-endfunction
-
 function! SearchRange(type, ...)
 	let sel_save = &selection
 	let &selection = "inclusive"
@@ -223,8 +212,6 @@ nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
-
-command! NewZettel :call NewZettel()
 
 " Show only changed files
 command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
