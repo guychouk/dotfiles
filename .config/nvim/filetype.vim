@@ -4,21 +4,11 @@
 
 function! LinkZettel(val)
 		let reg_save = @@
+		let zid = system("ag -l " . a:val . "| tr -d '\n'")
 		silent exe "normal! gvy"
 		silent exe "%s/".@@."/[".@@."]/g"
-		silent exe "normal! Go\<Esc>o[".@@."]: ./".a:val."\<Esc>"
+		silent exe "normal! Go\<Esc>o[".@@."]: ./".zid." \"".a:val."\"\<Esc>"
 		let @@ = reg_save
-endfunction
-
-function! NewZettel()
-	let l:zid = strftime("%Y%m%d%H%M%S")
-	let l:title = input('Title: ')
-	let l:filename = l:zid . '.md'
-	let l:first_line = '#' . ' ' . substitute(l:title, '\<.', '\u&', 'g')
-	call setline(1, l:first_line)
-	exe 'silent w' l:filename
-	exe 'Goyo'
-	filetype detect
 endfunction
 
 function! SetupZettelkasten()
@@ -51,10 +41,9 @@ if exists("did_load_filetypes")
 	finish
 endif
 augroup filetypedetect
-	au! FileType qf map <silent> <buffer> dd :RemoveLineFromQuickfix<CR>
 	au! FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+	au! FileType qf map <silent> <buffer> dd :RemoveLineFromQuickfix<CR>
 
 	au! BufRead tmux.config setfiletype tmux
-	au! BufRead,BufNewFile NEW_ZETTEL call NewZettel()
-	au! BufRead,BufNewFile **/zetz/*.md call SetupZettelkasten()
+	au! BufRead,BufNewFile */zetz/*.md call SetupZettelkasten()
 augroup END
