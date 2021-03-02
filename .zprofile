@@ -6,3 +6,4 @@ export ZDOTDIR="${XDG_CONFIG_HOME:-$HOME/.config}/zsh"
 export VISUAL=nvim
 export LESSHISTFILE="-"
 export EDITOR="$VISUAL"
+export LC_ALL="en_US.UTF-8"
