@@ -310,6 +310,8 @@ call ToggleStatusline()
 "        Coc.vim        "
 """""""""""""""""""""""""
 
+let g:coc_start_at_startup = v:false
+
 " Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 
