@@ -13,5 +13,8 @@
         }
       }
     }
+  },
+  "yaml.schemas": {
+    "kubernetes": "/*.yaml"
   }
 }
