@@ -336,6 +336,13 @@ call ToggleStatusline()
 let g:coc_start_at_startup = v:false
 
 command! -nargs=0 Format :call CocAction('format')
+function! CocOn()
+	let g:coc_node_path = trim(system('source "$(brew --prefix nvm)/nvm.sh" && nvm which lts/fermium'))
+	exe "CocStart"
+	exe "CocEnable"
+endfunction
+
+command! -nargs=0 CocOn :call CocOn()
 
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
