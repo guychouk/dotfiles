@@ -11,7 +11,7 @@ LDFLAGS=-L/usr/local/opt/openssl/lib
 [ -f ${GCLOUD_SDK}/path.zsh.inc ] && source "${GCLOUD_SDK}/path.zsh.inc"
 [ -f ${GCLOUD_SDK}/completion.zsh.inc ] && source "${GCLOUD_SDK}/completion.zsh.inc"
 
-[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"
+[ -s "$(brew --prefix nvm)/nvm.sh" ] && source "$(brew --prefix nvm)/nvm.sh"
 
 autoload -U add-zsh-hook
 load-nvmrc() {
