@@ -198,16 +198,13 @@ endfunction
 
 imap jk <Esc>
 
+xmap <silent> ga <Plug>(EasyAlign)
+nmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
 nmap <silent> ]h <Plug>(GitGutterNextHunk)
 nmap <silent> [h <Plug>(GitGutterPrevHunk)
 nmap <silent> sh <Plug>(GitGutterStageHunk)
-
-" Start interactive EasyAlign in visual mode
-xmap ga <Plug>(EasyAlign)
-" Start interactive EasyAlign for a motion/text object
-nmap ga <Plug>(EasyAlign)
 
 nnoremap S :%s//g<Left><Left>
 nnoremap <silent> <Leader>w :w<CR>
@@ -224,12 +221,10 @@ nnoremap <silent> <Leader>h :exe 'set keymap=' . (&keymap == 'hebrew' ? '' : 'he
 nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
-
 nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
-
 nnoremap <silent> <Leader>=h :exe "resize +5"<CR>
 nnoremap <silent> <Leader>-h :exe "resize -5"<CR>
 nnoremap <silent> <Leader>=v :exe "vertical resize +5"<CR>
@@ -303,15 +298,6 @@ function! StatusLine(active)
 	return join(l:statusline_segments)
 endfunction
 
-set statusline=%!StatusLine(1)
-
-augroup statusline_commands
-    autocmd!
-    autocmd WinEnter * setlocal statusline=%!StatusLine(1)
-    autocmd WinLeave * setlocal statusline=%!StatusLine(0)
-augroup END
-
-" Function for toggling the statusline
 let s:hidden_all = 0
 function! ToggleStatusline()
     if s:hidden_all  == 0
@@ -328,8 +314,15 @@ function! ToggleStatusline()
         set showcmd
     endif
 endfunction
-nnoremap <silent> <leader>hh :call ToggleStatusline()<CR>
 
+augroup statusline_commands
+    autocmd!
+    autocmd WinEnter * setlocal statusline=%!StatusLine(1)
+    autocmd WinLeave * setlocal statusline=%!StatusLine(0)
+augroup END
+
+nnoremap <silent> <leader>hh :call ToggleStatusline()<CR>
+set statusline=%!StatusLine(1)
 call ToggleStatusline()
 
 """""""""""""""""""""""""
@@ -373,63 +366,19 @@ inoremap <silent><expr> <TAB>
             \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-" Add function text object
+command! -nargs=0 Format :call CocAction('format')
+
 xmap if <Plug>(coc-funcobj-i)
 xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-" Rename symbol
-nmap <leader>rn <Plug>(coc-rename)
-
-" GoTo code navigation
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gy <Plug>(coc-type-definition)
 
-" Format selected code
 xmap <leader>f <Plug>(coc-format-selected)
 nmap <leader>f <Plug>(coc-format-selected)
 
-"""""""""""""""""""""""""""
-"      Zettelkasten       "
-"""""""""""""""""""""""""""
-
-function! LinkZettel(val)
-		let reg_save = @@
-		let zid = system("ag -Qsl '" . a:val . "'| tr -d '\n'")
-		silent exe "normal! gvy"
-		silent exe "%s/".@@."/[".@@."]/g"
-		silent exe "normal! Go\<Esc>o[".@@."]: ./".zid." \"".a:val."\"\<Esc>"
-		let @@ = reg_save
-endfunction
-
-function! SetupZettelkasten()
-	set textwidth=80
-	nnoremap <silent> <Leader>q :qa<CR>
-	vnoremap <silent> <Leader>l :<c-u>call fzf#run(fzf#wrap({'sink': funcref('LinkZettel')}))<CR>
-	nnoremap <silent> gl :exe "edit ".expand("**/".expand("<cword>")."**")<CR>
-endfunction
-
-""""""""""""""""
-"   Quickfix   "
-""""""""""""""""
-
-function! RemoveLineFromQuickfix()
-  let curqfidx = line('.') - 1
-  let qfall = getqflist()
-  call remove(qfall, curqfidx)
-  call setqflist(qfall, 'r')
-  execute curqfidx + 1 . "cfirst"
-  :copen
-endfunction
-
-""""""""""""""""""""""""""""""""
-"      Filetypes augroup       "
-""""""""""""""""""""""""""""""""
-
-au! BufRead tmux.config setfiletype tmux
-au! FileType markdown :call SetupZettelkasten()
-au! FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-au! FileType qf map <silent> <buffer> dd :call RemoveLineFromQuickfix()<CR>
+nmap <leader>rn <Plug>(coc-rename)
