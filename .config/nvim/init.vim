@@ -335,10 +335,8 @@ call ToggleStatusline()
 
 let g:coc_start_at_startup = v:false
 
-" Add `:Format` command to format current buffer
 command! -nargs=0 Format :call CocAction('format')
 
-" Use K to show documentation in preview window
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
         exe 'h' expand('<cword>')
