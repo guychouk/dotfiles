@@ -178,10 +178,10 @@ endfunction
 
 function! LinkZettel(val)
 	let reg_save = @@
-	let zid = system("ag -Qsl '" . a:val . "'| tr -d '\n'")
+	let zid = system("ag -Qsl " . shellescape(a:val) . " | tr -d '\n'")
 	silent exe "normal! gvy"
 	silent exe "%s/".@@."/[".@@."]/"
-	silent exe "normal! Go\<Esc>o[".@@."]: ./".zid." \"".a:val."\"\<Esc>"
+	silent exe "normal! Go\<Esc>o[".@@."]: ./".zid."\<Esc>"
 	let @@ = reg_save
 endfunction
 
