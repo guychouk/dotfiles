@@ -168,21 +168,21 @@ function! SearchRange(type, ...)
 endfunction
 
 function! RemoveLineFromQuickfix()
-  let curqfidx = line('.') - 1
-  let qfall = getqflist()
-  call remove(qfall, curqfidx)
-  call setqflist(qfall, 'r')
-  execute curqfidx + 1 . "cfirst"
-  :copen
+	let curqfidx = line('.') - 1
+	let qfall = getqflist()
+	call remove(qfall, curqfidx)
+	call setqflist(qfall, 'r')
+	execute curqfidx + 1 . "cfirst"
+	:copen
 endfunction
 
 function! LinkZettel(val)
-		let reg_save = @@
-		let zid = system("ag -Qsl '" . a:val . "'| tr -d '\n'")
-		silent exe "normal! gvy"
-		silent exe "%s/".@@."/[".@@."]/g"
-		silent exe "normal! Go\<Esc>o[".@@."]: ./".zid." \"".a:val."\"\<Esc>"
-		let @@ = reg_save
+	let reg_save = @@
+	let zid = system("ag -Qsl '" . a:val . "'| tr -d '\n'")
+	silent exe "normal! gvy"
+	silent exe "%s/".@@."/[".@@."]/g"
+	silent exe "normal! Go\<Esc>o[".@@."]: ./".zid." \"".a:val."\"\<Esc>"
+	let @@ = reg_save
 endfunction
 
 function! SetupZettelkasten()
@@ -304,19 +304,19 @@ endfunction
 
 let s:hidden_all = 0
 function! ToggleStatusline()
-    if s:hidden_all  == 0
-        let s:hidden_all = 1
-        set noshowmode
-        set noruler
-        set laststatus=0
-        set noshowcmd
-    else
-        let s:hidden_all = 0
-        set showmode
-        set ruler
-        set laststatus=2
-        set showcmd
-    endif
+	if s:hidden_all  == 0
+		let s:hidden_all = 1
+		set noshowmode
+		set noruler
+		set laststatus=0
+		set noshowcmd
+	else
+		let s:hidden_all = 0
+		set showmode
+		set ruler
+		set laststatus=2
+		set showcmd
+	endif
 endfunction
 
 augroup statusline_commands
@@ -344,11 +344,11 @@ endfunction
 command! -nargs=0 CocOn :call CocOn()
 
 function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        exe 'h' expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
+	if (index(['vim','help'], &filetype) >= 0)
+		exe 'h' expand('<cword>')
+	else
+		call CocAction('doHover')
+	endif
 endfunction
 
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -364,8 +364,8 @@ endif
 
 " Use tab for trigger completion with characters ahead and navigate.
 function! s:check_back_space() abort
-    let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~# '\s'
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 inoremap <silent><expr> <TAB>
