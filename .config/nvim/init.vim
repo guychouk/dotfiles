@@ -76,16 +76,16 @@ hi SignColumn guibg=none
 " User4 - Command
 " User5 - Visual
 
-" guifg in User highlights is for *text* color
-hi User1 guifg=orange guibg=#4b4b4b
-hi User2 guifg=grey30 guibg=#4b4b4b
-hi User3 guifg=violet guibg=#4b4b4b
-hi User4 guifg=lime   guibg=#4b4b4b
-hi User5 guifg=yellow guibg=#4b4b4b
+" In User highlights, guifg is for text color.
+hi User1 guifg=orange guibg=#212121
+hi User2 guifg=grey30 guibg=#212121
+hi User3 guifg=violet guibg=#212121
+hi User4 guifg=lime   guibg=#212121
+hi User5 guifg=yellow guibg=#212121
 
-" guifg in StatusLine highlights is for *its* color
-hi StatusLine   guifg=#4b4b4b guibg=white
-hi StatusLineNC guifg=#4b4b4b guibg=grey30
+" In StatusLine highlights, guifg is for background color.
+hi StatusLine   guifg=#212121 guibg=white
+hi StatusLineNC guifg=#212121 guibg=grey30
 
 """""""""""""""""""""""""
 "       Variables       "
