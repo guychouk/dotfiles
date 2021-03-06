@@ -198,6 +198,7 @@ endfunction
 
 imap jk <Esc>
 
+nmap <silent> / :BLines<CR>
 xmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ]g <Plug>(ale_next)
