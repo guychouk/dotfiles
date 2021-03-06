@@ -52,6 +52,7 @@ alias \
     dcr='dcc restart' \
     dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
+    zetz='${ZETZ_PATH}/bin/zetz' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 path=($path "$HOME/bin" "$GOPATH/bin")
