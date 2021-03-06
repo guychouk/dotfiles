@@ -249,9 +249,13 @@ command! DockerRefresh exe
 "     Autocommands      "
 """""""""""""""""""""""""
 
-autocmd BufWritePost * GitGutter
-autocmd BufWritePost */box/projects/* DockerRefresh
-autocmd BufRead $XDG_CONFIG_HOME/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
+au BufWritePost * GitGutter
+au BufRead tmux.config setfiletype tmux
+au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
+au BufRead $XDG_CONFIG_HOME/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
+
+au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+au FileType qf map <silent> <buffer> dd :call RemoveLineFromQuickfix()<CR>
 
 """""""""""""""""""""""""
 "      Statusline       "
