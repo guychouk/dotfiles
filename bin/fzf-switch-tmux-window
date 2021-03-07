@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tmux select-window -t \
+    `tmux list-windows -F '#{window_name}' | fzf-tmux -u 20% || tmux display-message -p '#W'`
