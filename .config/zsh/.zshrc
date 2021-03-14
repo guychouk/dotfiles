@@ -44,16 +44,12 @@ setopt hist_expire_dups_first       # expire duplicate entries first when trimmi
 alias \
     g=git \
     nv=nvim \
-    vim=nvim \
     v='f -e nvim' \
-    fh='find ~/ | fzf' \
-    fb='find ~/.local/bin | fzf' \
-    dcl='dcc logs -f' \
-    dcr='dcc restart' \
-    dcc='docker-compose -f ~/Projects/box/docker-compose.yml' \
-    dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
     zetz='${ZETZ_PATH}/bin/zetz' \
+    dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
+
+[ -f "~/.local-aliases" ] && source ~/.local-aliases
 
 path=($path "$HOME/bin" "$GOPATH/bin")
 
