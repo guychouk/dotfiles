@@ -3,42 +3,32 @@
 	d = diff
 	m = merge
 	f = fetch
-	c = commit
 	b = branch
 	s = status
-	#############
+	r = reset
+	rh = reset --hard
 	pl = pull
 	ps = push
-	re = reset
 	cl = clone
-	ba = branch -a
+	rb = rebase
+	rbi = rebase -i
+	c = commit
+  cm = commit -m
+	cam = commit -a -m
 	sp = stash pop
 	sl = stash list
 	sa = stash apply
-        cm = commit -m
-	#############
-	chk = checkout
+	pr = !gh pr
+	to = checkout
 	new = checkout -b
-	ffs = flow feature start
-	fft = flow feature track
-	ffp = flow feature publish
-	fff = flow feature finish
-	psu = push --set-upstream origin
-	#############
-	pso = push origin
-	reh = reset --hard
-	cam = commit -a -m
 	rao = remote add origin
 	rso = remote show origin
+	rsuo = remote set-url origin
+	pso = push origin
 	psd = push --delete origin
-	rsu = remote set-url origin
-	#############
+	psu = push --set-upstream origin
 	psom = push origin master
-	rehh = reset --hard HEAD
-	ours = "!f() { git checkout --ours $@ && git add $@; }; f"
-	#############
 	assume = update-index --assume-unchanged
 	unassume = update-index --no-assume-unchanged
 	lp = log --pretty=format:\"%h - %cn, %cd : %s\"
 	ignored = !git ls-files -v | grep "^[[:lower:]]"
-	theirs = "!f() { git checkout --theirs $@ && git add $@; }; f"
