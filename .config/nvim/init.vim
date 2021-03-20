@@ -136,8 +136,10 @@ let g:rooter_patterns = ['.git', 'Makefile', 'package.json']
 let g:rooter_change_directory_for_non_project_files = 'current'
 
 " vim-gh-line
+let g:gh_use_canonical = 1
 let g:gh_line_map_default = 0
 let g:gh_line_blame_map_default = 0
+let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 
 " Goyo
 let g:goyo_width = 85
