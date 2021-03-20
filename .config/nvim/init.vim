@@ -83,7 +83,8 @@ hi User3 guifg=violet guibg=#212121
 hi User4 guifg=lime   guibg=#212121
 hi User5 guifg=yellow guibg=#212121
 
-" In StatusLine highlights, guifg is for background color.
+" For StatusLine, guifg is the background color,
+" and guibg is the text color ¯\(ツ)/¯
 hi StatusLine   guifg=#212121 guibg=white
 hi StatusLineNC guifg=#212121 guibg=grey30
 
@@ -198,8 +199,8 @@ endfunction
 function! s:show_documentation()
 	if (index(['vim','help'], &filetype) >= 0)
 		exe 'h' expand('<cword>')
+	endif
 endfunction
-
 
 """""""""""""""""""""""
 "      Mappings       "
@@ -218,7 +219,6 @@ nmap <silent> ]h <Plug>(GitGutterNextHunk)
 nmap <silent> [h <Plug>(GitGutterPrevHunk)
 nmap <silent> sh <Plug>(GitGutterStageHunk)
 
-nnoremap S :%s//g<Left><Left>
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>g :G<CR>
@@ -228,8 +228,8 @@ nnoremap <silent> <Leader>L :vsp<CR>
 nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
+
 nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
-nnoremap <silent> <Leader>h :exe 'set keymap=' . (&keymap == 'hebrew' ? '' : 'hebrew')<CR>
 nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
@@ -237,6 +237,7 @@ nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
+
 nnoremap <silent> <Leader>=h :exe "resize +5"<CR>
 nnoremap <silent> <Leader>-h :exe "resize -5"<CR>
 nnoremap <silent> <Leader>=v :exe "vertical resize +5"<CR>
