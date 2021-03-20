@@ -45,6 +45,7 @@ alias \
     g=git \
     nv=nvim \
     v='f -e nvim' \
+    vf='nv `fzf`' \
     zetz='${ZETZ_PATH}/bin/zetz' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
