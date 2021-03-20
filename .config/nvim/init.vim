@@ -146,6 +146,10 @@ let NERDTreeShowHidden = 1
 let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
 map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
 
+" fzf.vim
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right:40%:hidden', 'ctrl-]']
+
 """""""""""""""""""""""""
 "       Functions       "
 """""""""""""""""""""""""
@@ -191,13 +195,21 @@ function! SetupZettelkasten()
 	nnoremap <silent> gl :exe "edit ".expand("**/".expand("<cword>")."**")<CR>
 endfunction
 
+function! s:show_documentation()
+	if (index(['vim','help'], &filetype) >= 0)
+		exe 'h' expand('<cword>')
+endfunction
+
+
 """""""""""""""""""""""
 "      Mappings       "
 """""""""""""""""""""""
 
 imap jk <Esc>
 
-nmap <silent> / :BLines<CR>
+nnoremap S :%s//g<Left><Left>
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
 xmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ]g <Plug>(ale_next)
@@ -233,9 +245,6 @@ nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
-
-" Show only changed files
-command! Fzfc :call fzf#run(fzf#wrap({'source': 'git ls-files --exclude-standard --others --modified'}))
 
 " hack for making js watchers pickup changes inside docker containers
 command! DockerRefresh exe
