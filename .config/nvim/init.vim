@@ -264,7 +264,6 @@ command! DockerRefresh exe
 au BufWritePost * GitGutter
 au BufRead tmux.config setfiletype tmux
 au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
-au BufRead $XDG_CONFIG_HOME/* let g:gitgutter_git_args = '--git-dir="$HOME/.dotfiles" --work-tree="$HOME"'
 
 au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 au FileType qf map <silent> <buffer> dd :call RemoveLineFromQuickfix()<CR>
