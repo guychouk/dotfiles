@@ -10,26 +10,25 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'vim-scripts/DrawIt'
-Plug 'ap/vim-css-color'
-Plug 'mattn/emmet-vim'
-Plug 'dense-analysis/ale'
-Plug 'preservim/nerdtree'
-Plug 'jpalardy/vim-slime'
-Plug 'ruanyl/vim-gh-line'
-Plug 'sheerun/vim-polyglot'
-Plug 'danilo-augusto/vim-afterglow'
-Plug 'christoomey/vim-tmux-navigator'
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'danilo-augusto/vim-afterglow'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'vim-scripts/DrawIt'
+Plug 'ap/vim-css-color'
+Plug 'mattn/emmet-vim'
+Plug 'preservim/nerdtree'
+Plug 'jpalardy/vim-slime'
+Plug 'ruanyl/vim-gh-line'
+Plug 'sheerun/vim-polyglot'
+Plug 'dense-analysis/ale'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -330,64 +329,39 @@ nnoremap <silent> <leader>hh :call ToggleStatusline()<CR>
 set statusline=%!StatusLine(1)
 call ToggleStatusline()
 
-"""""""""""""""""""""""""
-"        Coc.vim        "
-"""""""""""""""""""""""""
+"""""""""""""""""""""""""""
+"       Completion        "
+"""""""""""""""""""""""""""
 
-let g:coc_start_at_startup = v:false
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+imap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.7, 'xoffset': 1 }})
 
-function! CocOn()
-	let g:coc_node_path = trim(system('source "$(brew --prefix nvm)/nvm.sh" && nvm which lts/fermium'))
-	exe "CocStart"
-	exe "CocEnable"
+inoremap <expr> <c-x><c-x> fzf#vim#complete(fzf#wrap({
+  \ 'prefix': '^.*$',
+  \ 'source': 'rg -n ^ --color always',
+  \ 'options': '--ansi --delimiter : --nth 3..',
+  \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+
+command! -bang Binaries call fzf#vim#files('~/bin', <bang>0)
+
+function! s:check_back_space() abort
+	let col = col('.') - 1
+	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-command! -nargs=0 CocOn :call CocOn()
+" Use tab for trigger completion - if there is whitespace,
+" insert <TAB> instead of completing.
+inoremap <silent><expr> <TAB>
+            \ pumvisible() ? "\<C-n>" :
+            \ <SID>check_back_space() ? "\<TAB>" :
+            \ "\<C-x>\<C-i>"
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
-function! s:show_documentation()
-	if (index(['vim','help'], &filetype) >= 0)
-		exe 'h' expand('<cword>')
-	else
-		call CocAction('doHover')
-	endif
-endfunction
-
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-
-" Use <cr> to confirm completion, `<C-g>u` means break undo chain at 
-" current position. Coc only does snippet and additional edit on confirm.
-" <cr> could be remapped by other vim plugin, try `:verbose imap <CR>`.
+" Use <cr> to confirm completion and `<C-g>u` to break undo chain at current position.
 if exists('*complete_info')
     inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 else
     inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 endif
 
-" Use tab for trigger completion with characters ahead and navigate.
-function! s:check_back_space() abort
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~# '\s'
-endfunction
-
-inoremap <silent><expr> <TAB>
-            \ pumvisible() ? "\<C-n>" :
-            \ <SID>check_back_space() ? "\<TAB>" :
-            \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
-command! -nargs=0 Format :call CocAction('format')
-
-xmap if <Plug>(coc-funcobj-i)
-xmap af <Plug>(coc-funcobj-a)
-omap if <Plug>(coc-funcobj-i)
-omap af <Plug>(coc-funcobj-a)
-
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gy <Plug>(coc-type-definition)
-
-xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
-
-nmap <leader>rn <Plug>(coc-rename)
