@@ -150,8 +150,6 @@ let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
 map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
 
 " fzf.vim
-let g:fzf_layout = { 'down': '40%' }
-let g:fzf_preview_window = ['right:40%:hidden', 'ctrl-]']
 
 """""""""""""""""""""""""
 "       Functions       "
@@ -340,9 +338,12 @@ nnoremap <silent> <leader>hh :call ToggleStatusline()<CR>
 set statusline=%!StatusLine(1)
 call ToggleStatusline()
 
-"""""""""""""""""""""""""""
-"       Completion        "
-"""""""""""""""""""""""""""
+""""""""""""""""""""""""
+"   fzf & completion   "
+""""""""""""""""""""""""
+
+let g:fzf_layout = { 'down': '40%' }
+let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-l> <plug>(fzf-complete-line)
