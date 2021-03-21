@@ -225,6 +225,7 @@ nnoremap <silent> <Leader>g :G<CR>
 nnoremap <silent> <Leader>/ :Ag<CR>
 nnoremap <silent> <Leader>J :sp<CR>
 nnoremap <silent> <Leader>L :vsp<CR>
+nnoremap <silent> <Leader>t :Tags<CR>
 nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
