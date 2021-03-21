@@ -245,18 +245,6 @@ nnoremap <silent> <Leader>=v :exe "vertical resize +5"<CR>
 nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 
 """""""""""""""""""""""""
-"       Commands        "
-"""""""""""""""""""""""""
-
-" hack for making js watchers pickup changes inside docker containers
-command! DockerRefresh exe
-            \ 'silent !docker-compose -f ~/Projects/box/docker-compose.yml exec -T'
-            \ fnamemodify(getcwd(), ':t')
-            \ 'touch'
-            \ expand('%')
-            \ '&'
-
-"""""""""""""""""""""""""
 "     Autocommands      "
 """""""""""""""""""""""""
 
