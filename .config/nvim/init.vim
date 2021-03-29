@@ -15,6 +15,8 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-repeat'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf.vim'
@@ -229,12 +231,13 @@ nnoremap <silent> <Leader>t :Tags<CR>
 nnoremap <silent> <Leader>p :Files<CR>
 nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>cd :call RemoveCurrentFileFromQuickfix()<CR>
 
-nnoremap <silent> <leader>o :setlocal spell! spelllang=en_us<CR>
 nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
 nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
+
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
