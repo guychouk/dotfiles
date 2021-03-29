@@ -6,6 +6,7 @@
 	b = branch
 	s = status
 	r = reset
+	bd = branch -D
 	rh = reset --hard
 	pl = pull
 	ps = push
