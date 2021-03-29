@@ -171,13 +171,15 @@ function! SearchRange(type, ...)
 	let @@ = reg_save
 endfunction
 
-function! RemoveLineFromQuickfix()
-	let curqfidx = line('.') - 1
+function! RemoveCurrentFileFromQuickfix()
+	let curqfidx = getqflist({ 'idx': 1 }).idx - 1
 	let qfall = getqflist()
 	call remove(qfall, curqfidx)
 	call setqflist(qfall, 'r')
-	execute curqfidx + 1 . "cfirst"
-	:copen
+	if len(qfall) == 0
+		silent ccl
+		return
+	endif
 endfunction
 
 function! LinkZettel(val)
@@ -254,7 +256,6 @@ au BufRead tmux.config setfiletype tmux
 au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
 
 au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-au FileType qf map <silent> <buffer> dd :call RemoveLineFromQuickfix()<CR>
 
 """""""""""""""""""""""""
 "      Statusline       "
