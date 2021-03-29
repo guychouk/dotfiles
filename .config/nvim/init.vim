@@ -151,8 +151,6 @@ let NERDTreeShowHidden = 1
 let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
 map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
 
-" fzf.vim
-
 """""""""""""""""""""""""
 "       Functions       "
 """""""""""""""""""""""""
