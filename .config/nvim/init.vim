@@ -21,6 +21,7 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'vim-scripts/DrawIt'
