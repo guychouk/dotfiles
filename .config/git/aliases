@@ -20,7 +20,7 @@
 	sl = stash list
 	sa = stash apply
 	pr = !gh pr
-	to = checkout
+	co = checkout
 	new = checkout -b
 	rao = remote add origin
 	rso = remote show origin
