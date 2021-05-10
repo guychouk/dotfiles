@@ -23,7 +23,7 @@ zmodload zsh/complist
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
 _comp_options+=(globdots)
 
-bindkey -v
+bindkey -e
 export KEYTIMEOUT=1
 
 bindkey -M menuselect 'h' vi-backward-char
