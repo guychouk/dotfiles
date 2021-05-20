@@ -43,14 +43,13 @@ setopt hist_expire_dups_first       # expire duplicate entries first when trimmi
 
 alias \
     g=git \
+    k=kubectl \
     nv=nvim \
     v='f -e nvim' \
     vf='nv `fzf`' \
     zetz='${ZETZ_PATH}/bin/zetz' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
-
-[ -f "~/.local-aliases" ] && source ~/.local-aliases
 
 path=($path "$HOME/bin" "$GOPATH/bin")
 
