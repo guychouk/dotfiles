@@ -107,7 +107,7 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%] [%code%]'
+let g:ale_echo_msg_format = '[%linter%][%severity%][%code%] %s'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 
 \ 'cpp': ['ccls'],
@@ -118,9 +118,10 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = { 
 \ 'go': ['gofmt'],
-\ 'javascript': ['eslint'],
+\ 'yaml': ['prettier'],
+\ 'javascript': ['prettier', 'eslint'],
 \ 'javascriptreact': ['eslint'],
-\ 'typescript': ['eslint'],
+\ 'typescript': ['prettier', 'eslint'],
 \ 'typescriptreact': ['eslint'],
 \}
 let g:ale_pattern_options = {
@@ -255,7 +256,6 @@ nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 au BufWritePost * GitGutter
 au BufRead tmux.config setfiletype tmux
 au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
-
 au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 """""""""""""""""""""""""
