@@ -32,6 +32,8 @@ Plug 'jpalardy/vim-slime'
 Plug 'ruanyl/vim-gh-line'
 Plug 'sheerun/vim-polyglot'
 Plug 'dense-analysis/ale'
+Plug 'Yggdroot/indentLine'
+Plug 'pedrohdz/vim-yaml-folds'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -113,7 +115,7 @@ let g:ale_linters = {
 \ 'cpp': ['ccls'],
 \ 'javascript': ['eslint'],
 \ 'javascriptreact': ['eslint'],
-\ 'typescript': ['eslint'],
+\ 'typescript': ['tsserver', 'eslint'],
 \ 'typescriptreact': ['eslint'],
 \}
 let g:ale_fixers = { 
@@ -147,6 +149,9 @@ let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 
 " Goyo
 let g:goyo_width = 85
+
+" IndentLine
+let g:indentLine_enabled = 0
 
 " Nerd tree
 let NERDTreeShowHidden = 1
@@ -235,10 +240,9 @@ nnoremap <silent> <Leader>. :GFiles<CR>
 nnoremap <silent> <Leader>b :Buffers<CR>
 nnoremap <silent> <Leader>cd :call RemoveCurrentFileFromQuickfix()<CR>
 
-nnoremap <silent> <leader>sc :!clear && shellcheck -x %<CR>
+nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
 nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
 vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
-nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
 
 nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
@@ -286,7 +290,6 @@ function! StatusLine(active)
 	let l:mode_color = a:active ? get(g:statusline_mode_color_map, mode(), '%1*') : '%2*'
 	let l:filetype = empty(&filetype) ? '?' : '%{&filetype}'
 	let l:fugitive = a:active && FugitiveHead() != '' ? '%3*●%* %{FugitiveHead()}' : ''
-	let l:coc_status = get(g:, 'coc_status', '') != '' ? '｜%{tolower(coc#status())}' : ''
 	let l:statusline_segments = [
 				\ l:mode_color . '(%{g:statusline_mode_map[mode()]})' . l:clear,
 				\ '   ',
@@ -296,7 +299,7 @@ function! StatusLine(active)
 				\ '%=',
 				\ l:fugitive,
 				\ '   ',
-				\ l:filetype . l:coc_status,
+				\ l:filetype,
 				\ '   ',
 				\ l:icon 
 				\]
@@ -346,8 +349,6 @@ inoremap <expr> <c-x><c-x> fzf#vim#complete(fzf#wrap({
   \ 'source': 'rg -n ^ --color always',
   \ 'options': '--ansi --delimiter : --nth 3..',
   \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
-
-command! -bang Binaries call fzf#vim#files('~/bin', <bang>0)
 
 function! s:check_back_space() abort
 	let col = col('.') - 1
