@@ -41,27 +41,27 @@ call plug#end()
 """""""""""""""""""""""""
 
 syntax on                 " Syntax highlighting
-filetype plugin indent on " Turn on filetype detections
 runtime snippets.vim      " Load snippets
+filetype plugin indent on " Turn on filetype detections
 
-set number                " Show line numbers
-set nowrap                " Disable line wrapping
-set noswapfile            " No swap files
+set autoindent            " New lines will be indented as well
+set clipboard=unnamedplus " Enables OS clipboard support
+set encoding=utf-8        " Encoding for files
+set foldmethod=manual     " Set foldmethod to be manual
+set hidden                " Hide abandoned buffers instead of unloading them
+set incsearch             " Sets incremental search
 set nobackup              " No backup files
 set nohlsearch            " Disable search highlight
 set noshowmode            " Don't show current mode in status line
-set incsearch             " Sets incremental search
-set autoindent            " New lines will be indented as well
-set smartcase             " No ignore case when pattern has uppercase
-set hidden                " Hide abandoned buffers instead of unloading them
+set noswapfile            " No swap files
+set nowrap                " Disable line wrapping
+set number                " Show line numbers
 set pyx=3                 " Set Python version to 3
 set shortmess+=I          " Supress startup message
 set shortmess+=c          " Don't give in-completion-menu messages
-set updatetime=250        " Set CursorHold delay time
-set encoding=utf-8        " Encoding for files
 set signcolumn=yes        " Always show signcolumn
-set foldmethod=manual     " Set foldmethod to be manual
-set clipboard=unnamedplus " Enables OS clipboard support
+set smartcase             " No ignore case when pattern has uppercase
+set updatetime=250        " Set CursorHold delay time
 
 """""""""""""""""""""""""
 "        Colors         "
@@ -105,6 +105,7 @@ let maplocalleader = " "
 let g:ale_sign_error = '• '
 let g:ale_sign_warning = '• '
 let g:ale_lint_on_save = 1
+let g:ale_completion_enabled = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 let g:ale_echo_msg_error_str = 'E'
@@ -200,9 +201,8 @@ endfunction
 
 function! SetupZettelkasten()
 	set textwidth=80
-	nnoremap <silent> <Leader>q :qa<CR>
-	vnoremap <silent> <Leader>l :<c-u>call fzf#run(fzf#wrap({'sink': funcref('LinkZettel')}))<CR>
 	nnoremap <silent> gl :exe "edit ".expand("**/".expand("<cword>")."**")<CR>
+	vnoremap <silent> <Leader>l :<c-u>call fzf#run(fzf#wrap({'sink': funcref('LinkZettel')}))<CR>
 endfunction
 
 function! s:show_documentation()
@@ -306,16 +306,17 @@ function! StatusLine(active)
 	return join(l:statusline_segments)
 endfunction
 
-let s:hidden_all = 0
+let s:is_statusline_visible = 1
+
 function! ToggleStatusline()
-	if s:hidden_all  == 0
-		let s:hidden_all = 1
+	if s:is_statusline_visible == 1
+		let s:is_statusline_visible = 0
 		set noshowmode
 		set noruler
 		set laststatus=0
 		set noshowcmd
 	else
-		let s:hidden_all = 0
+		let s:is_statusline_visible = 1
 		set showmode
 		set ruler
 		set laststatus=2
@@ -323,14 +324,20 @@ function! ToggleStatusline()
 	endif
 endfunction
 
+" Switch between two statuslines: window focused / unfocused
 augroup statusline_commands
     autocmd!
     autocmd WinEnter * setlocal statusline=%!StatusLine(1)
     autocmd WinLeave * setlocal statusline=%!StatusLine(0)
 augroup END
 
+" Setup <leader>hh to toggle statusline
 nnoremap <silent> <leader>hh :call ToggleStatusline()<CR>
+
+" Generate statusline
 set statusline=%!StatusLine(1)
+
+" Hide by default
 call ToggleStatusline()
 
 """"""""""""""""""""""""
@@ -343,7 +350,6 @@ let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 imap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.7, 'xoffset': 1 }})
-
 inoremap <expr> <c-x><c-x> fzf#vim#complete(fzf#wrap({
   \ 'prefix': '^.*$',
   \ 'source': 'rg -n ^ --color always',
@@ -355,8 +361,7 @@ function! s:check_back_space() abort
 	return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-" Use tab for trigger completion - if there is whitespace,
-" insert <TAB> instead of completing.
+" Use tab to trigger completion or insert \t if there is whitespace.
 inoremap <silent><expr> <TAB>
             \ pumvisible() ? "\<C-n>" :
             \ <SID>check_back_space() ? "\<TAB>" :
