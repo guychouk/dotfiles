@@ -114,7 +114,7 @@ let g:ale_echo_msg_format = '[%linter%][%severity%][%code%] %s'
 let g:ale_linters_explicit = 1
 let g:ale_linters = { 
 \ 'cpp': ['ccls'],
-\ 'javascript': ['eslint'],
+\ 'javascript': ['tsserver', 'eslint'],
 \ 'javascriptreact': ['eslint'],
 \ 'typescript': ['tsserver', 'eslint'],
 \ 'typescriptreact': ['eslint'],
@@ -224,6 +224,7 @@ xmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
+nmap <silent> gt <Plug>(ale_go_to_definition)
 nmap <silent> ]h <Plug>(GitGutterNextHunk)
 nmap <silent> [h <Plug>(GitGutterPrevHunk)
 nmap <silent> sh <Plug>(GitGutterStageHunk)
