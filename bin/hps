@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [[ $# -eq 0 ]] ; then
+    exit 0
+fi
+
+[[ $1 == 0 ]] && displayplacer "id:3443C794-D15D-A4D2-09FD-E8E749830261 res:1200x1920 hz:60 color_depth:8 scaling:off origin:(0,0) degree:0"
+[[ $1 == 90 ]] && displayplacer "id:3443C794-D15D-A4D2-09FD-E8E749830261 res:1200x1920 hz:60 color_depth:8 scaling:off origin:(0,0) degree:90"
