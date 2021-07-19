@@ -12,6 +12,7 @@ endif
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
+Plug 'dbeniamine/cheat.sh-vim'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
