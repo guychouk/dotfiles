@@ -1,6 +1,6 @@
 alias ll='ls -laG'
 
-export TMUX_SESSION='Work'
+export TMUX_SESSION='β'
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
 export GCLOUD_SDK="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
