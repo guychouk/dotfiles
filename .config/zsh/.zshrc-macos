@@ -33,3 +33,6 @@ load-nvmrc() {
 }
 add-zsh-hook chpwd load-nvmrc
 load-nvmrc
+
+# set max open file descriptors (for helmer ¯\\_(ツ)_/¯)
+ulimit -n 10240
