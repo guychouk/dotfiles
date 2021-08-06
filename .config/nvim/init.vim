@@ -12,29 +12,26 @@ endif
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
-Plug 'dbeniamine/cheat.sh-vim'
+Plug 'ap/vim-css-color'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'danilo-augusto/vim-afterglow'
+Plug 'dense-analysis/ale'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'jpalardy/vim-slime'
+Plug 'pedrohdz/vim-yaml-folds'
+Plug 'preservim/nerdtree'
+Plug 'ruanyl/vim-gh-line'
+Plug 'sheerun/vim-polyglot'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
-Plug 'junegunn/goyo.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
-Plug 'danilo-augusto/vim-afterglow'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'vim-scripts/DrawIt'
-Plug 'ap/vim-css-color'
-Plug 'mattn/emmet-vim'
-Plug 'preservim/nerdtree'
-Plug 'jpalardy/vim-slime'
-Plug 'ruanyl/vim-gh-line'
-Plug 'sheerun/vim-polyglot'
-Plug 'dense-analysis/ale'
 Plug 'Yggdroot/indentLine'
-Plug 'pedrohdz/vim-yaml-folds'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -78,19 +75,19 @@ hi SignColumn guibg=none
 
 " User1 - Default base color
 " User2 - Inactive pane
-" User3 - Insert
-" User4 - Command
-" User5 - Visual
+" User3 - Insert Mode
+" User4 - Command Mode
+" User5 - Visual Mode
+" NOTE: In User highlights, guifg is for text color.
 
-" In User highlights, guifg is for text color.
 hi User1 guifg=orange guibg=#212121
 hi User2 guifg=grey30 guibg=#212121
 hi User3 guifg=violet guibg=#212121
 hi User4 guifg=lime   guibg=#212121
 hi User5 guifg=yellow guibg=#212121
 
-" For StatusLine, guifg is the background color,
-" and guibg is the text color ¯\(ツ)/¯
+" NOTE: For StatusLine, guifg is the background
+" color and guibg is the text color ¯\(ツ)/¯
 hi StatusLine   guifg=#212121 guibg=white
 hi StatusLineNC guifg=#212121 guibg=grey30
 
@@ -118,18 +115,18 @@ let g:ale_cpp_cc_options = '-std=c++11 -Iinclude'
 let g:ale_linters = { 
 \ 'cpp': ['g++'],
 \ 'javascript': ['tsserver', 'eslint'],
-\ 'javascriptreact': ['eslint'],
+\ 'javascriptreact': ['tsserver', 'eslint'],
 \ 'typescript': ['tsserver', 'eslint'],
-\ 'typescriptreact': ['eslint'],
+\ 'typescriptreact': ['tsserver', 'eslint'],
 \}
 let g:ale_fixers = { 
-\ 'cpp': ['clang-format'],
 \ 'go': ['gofmt'],
 \ 'yaml': ['prettier'],
+\ 'cpp': ['clang-format'],
 \ 'javascript': ['prettier', 'eslint'],
-\ 'javascriptreact': ['eslint'],
+\ 'javascriptreact': ['prettier', 'eslint'],
 \ 'typescript': ['prettier', 'eslint'],
-\ 'typescriptreact': ['eslint'],
+\ 'typescriptreact': ['prettier', 'eslint'],
 \}
 let g:ale_pattern_options = {
 \ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
@@ -161,7 +158,7 @@ let g:indentLine_enabled = 0
 " Nerd tree
 let NERDTreeShowHidden = 1
 let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
-map <silent> <leader>n :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
+map <silent> <leader><leader> :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
 
 """""""""""""""""""""""""
 "       Functions       "
@@ -219,12 +216,12 @@ endfunction
 "      Mappings       "
 """""""""""""""""""""""
 
-imap jk <Esc>
+inoremap jk <Esc>
 
 nnoremap S :%s//g<Left><Left>
 nnoremap <silent> K :call <SID>show_documentation()<CR>
 
-xmap <silent> ga <Plug>(EasyAlign)
+nmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ga <Plug>(EasyAlign)
 nmap <silent> ]g <Plug>(ale_next)
 nmap <silent> [g <Plug>(ale_previous)
@@ -236,20 +233,12 @@ nmap <silent> sh <Plug>(GitGutterStageHunk)
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
 nnoremap <silent> <Leader>g :G<CR>
-nnoremap <silent> <Leader>/ :Ag<CR>
-nnoremap <silent> <Leader>J :sp<CR>
-nnoremap <silent> <Leader>L :vsp<CR>
-nnoremap <silent> <Leader>t :Tags<CR>
-nnoremap <silent> <Leader>p :Files<CR>
-nnoremap <silent> <Leader>. :GFiles<CR>
-nnoremap <silent> <Leader>b :Buffers<CR>
+nnoremap <silent> <Leader>j :sp<CR>
+nnoremap <silent> <Leader>l :vsp<CR>
+
 nnoremap <silent> <Leader>cd :call RemoveCurrentFileFromQuickfix()<CR>
-
 nnoremap <silent> <Leader>yf :let @*=expand("%:p")<CR>
-nnoremap <silent> <leader>ss :set operatorfunc=SearchRange<cr>g@
-vnoremap <silent> <leader>ss :<c-u>call SearchRange(visualmode(), 1)<cr>
 
-nnoremap <silent> <Leader>zc :e ~/.config/zsh/.zshrc<CR>
 nnoremap <silent> <Leader>ec :e ~/.config/nvim/init.vim<CR>
 nnoremap <silent> <Leader>so :so ~/.config/nvim/init.vim<CR>
 
@@ -264,8 +253,8 @@ nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 
 au BufWritePost * GitGutter
 au BufRead tmux.config setfiletype tmux
+au BufRead,BufNewFile *.req setfiletype req
 au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
-au BufRead,BufNewFile *.req set ft=req
 au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 """""""""""""""""""""""""
@@ -347,20 +336,31 @@ set statusline=%!StatusLine(1)
 call ToggleStatusline()
 
 """"""""""""""""""""""""
-"   fzf & completion   "
+"     Vim <3 FZF       "
 """"""""""""""""""""""""
 
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-imap <expr> <c-x><c-k> fzf#vim#complete#word({'window': { 'width': 0.2, 'height': 0.7, 'xoffset': 1 }})
+nnoremap <silent> <leader>t :Tags<CR>
+nnoremap <silent> <leader>f :Files<CR>
+nnoremap <silent> <leader>. :GFiles<CR>
+nnoremap <silent> <leader>b :Buffers<CR>
+nnoremap <silent> <leader>/ :Ag<CR>
+vnoremap <silent> <leader>/ :<c-u>call SearchRange(visualmode(), 1)<cr>
+
+inoremap <c-x><c-f> <plug>(fzf-complete-path)
+inoremap <c-x><c-l> <plug>(fzf-complete-line)
+inoremap <expr> <c-x><c-k> fzf#vim#complete#word()
 inoremap <expr> <c-x><c-x> fzf#vim#complete(fzf#wrap({
   \ 'prefix': '^.*$',
   \ 'source': 'rg -n ^ --color always',
   \ 'options': '--ansi --delimiter : --nth 3..',
   \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+
+""""""""""""""""""""""""
+"     Completion       "
+""""""""""""""""""""""""
 
 function! s:check_back_space() abort
 	let col = col('.') - 1
