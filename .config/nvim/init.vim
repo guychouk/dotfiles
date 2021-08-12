@@ -252,8 +252,9 @@ nnoremap <silent> <Leader>-v :exe "vertical resize -5"<CR>
 """""""""""""""""""""""""
 
 au BufWritePost * GitGutter
-au BufRead tmux.config setfiletype tmux
-au BufRead,BufNewFile *.req setfiletype req
+au BufRead tmux.config set ft=tmux
+au BufRead,BufNewFile *.req set ft=req
+au BufRead,BufNewFile *.frag set ft=glsl
 au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
 au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
