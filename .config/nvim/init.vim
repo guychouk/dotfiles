@@ -229,6 +229,7 @@ nmap <silent> gd <Plug>(ale_go_to_definition)
 nmap <silent> ]h <Plug>(GitGutterNextHunk)
 nmap <silent> [h <Plug>(GitGutterPrevHunk)
 nmap <silent> sh <Plug>(GitGutterStageHunk)
+nmap <silent> <leader>rn <Plug>(ale_rename)
 
 nnoremap <silent> <Leader>w :w<CR>
 nnoremap <silent> <Leader>q :q<CR>
