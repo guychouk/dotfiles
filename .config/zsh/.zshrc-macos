@@ -1,6 +1,9 @@
+path=($path "/usr/local/opt/sbt/bin")
+
 alias ll='ls -laG'
 
 export TMUX_SESSION='β'
+export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
 export GCLOUD_SDK="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
