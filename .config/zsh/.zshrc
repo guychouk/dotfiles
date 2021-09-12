@@ -51,6 +51,13 @@ alias \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
+# For quick calculations, use the = command (Uses bc)
+function = 
+{
+  echo "$@" | bc -l
+}
+alias calc="="
+
 path=($path "$HOME/bin" "$GOPATH/bin")
 
 typeset -aU path                    # removes duplicates from $PATH
