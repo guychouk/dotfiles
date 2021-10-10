@@ -10,6 +10,7 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
+Plug 'mattn/emmet-vim'
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'ap/vim-css-color'
