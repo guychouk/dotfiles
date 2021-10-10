@@ -1,8 +1,14 @@
 [[ ! -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" 
 
-unsetopt PROMPT_SP                  # fix percent sign on initialization
+unsetopt PROMPT_SP  # Remove annoying percent sign
 autoload -U colors && colors
 export PS1="%F{38}%1~%F{208} λ %f"
+
+autoload -U compinit
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
+_comp_options+=(globdots)
 
 HISTSIZE=10000
 SAVEHIST=10000
@@ -15,13 +21,8 @@ export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
 export NVM_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/nvm"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
-
-autoload -U compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
-_comp_options+=(globdots)
 
 bindkey -e
 export KEYTIMEOUT=1
@@ -44,29 +45,30 @@ setopt hist_expire_dups_first       # expire duplicate entries first when trimmi
 alias \
     g=git \
     k=kubectl \
+    d='fasd -d' \
+    f='fasd -f' \
+    j='fasd_cd -d' \
+    v='fasd -f -e nvim' \
+    z='cd `find . * -type d | fzf`' \
     nv=nvim \
-    v='f -e nvim' \
-    vf='nv `fzf`' \
-    zetz='${ZETZ_PATH}/bin/zetz' \
+    nf='fzf -e nvim' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
+    zetz='${ZETZ_PATH}/bin/zetz' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
-# For quick calculations, use the = command (Uses bc)
-function = 
-{
-  echo "$@" | bc -l
-}
-alias calc="="
-
+# append to path
 path=($path "$HOME/bin" "$GOPATH/bin")
-
-typeset -aU path                    # removes duplicates from $PATH
+# removes duplicate entries
+typeset -aU path                            
 
 if [[ $(uname) = "Darwin" ]]; then
   source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc-macos"
 else 
   source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc-arch"
 fi
+
+# tmux
+# -------------
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
@@ -79,26 +81,34 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
   fi
 fi
 
+# asdf
+# -------------
+
+[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+. $(brew --prefix asdf)/libexec/asdf.sh
+
+# fasd
+# -------------
+
 if command -v fasd 1>/dev/null 2>&1; then
-  eval "$(fasd --init posix-alias zsh-hook zsh-wcomp-install zsh-wcomp)"
+  eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
 fi
 
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+fasd_cd() {
+  if [ $# -le 1 ]; then
+    fasd "$@"
+  else
+    local _fasd_ret="$(fasd -e 'printf %s' "$@")"
+    [ -z "$_fasd_ret" ] && return
+    [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
+  fi
+}
+
+# fzf <3 git
+# -------------
 
 [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh" ] \
   && source "${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh"
-
-[ -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh" ] \
-  || git clone https://github.com/zdharma/fast-syntax-highlighting "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh"
-
-[ -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh/fast-syntax-highlighting.plugin.zsh" ] \
-  && source "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh/fast-syntax-highlighting.plugin.zsh"
-
-
-# GIT <3 FZF
-# -------------
 
 if command -v fzf 1>/dev/null; then
 
@@ -157,3 +167,12 @@ if command -v fzf 1>/dev/null; then
   }
 
 fi
+
+# Fast syntax highlighting
+# -------------
+
+[ -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh" ] \
+  || git clone https://github.com/zdharma/fast-syntax-highlighting "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh"
+
+[ -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh/fast-syntax-highlighting.plugin.zsh" ] \
+  && source "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh/fast-syntax-highlighting.plugin.zsh"
