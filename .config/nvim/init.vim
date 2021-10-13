@@ -81,16 +81,18 @@ hi SignColumn guibg=none
 " User5 - Visual Mode
 " NOTE: In User highlights, guifg is for text color.
 
-hi User1 guifg=orange guibg=#212121
-hi User2 guifg=grey30 guibg=#212121
-hi User3 guifg=violet guibg=#212121
-hi User4 guifg=lime   guibg=#212121
-hi User5 guifg=yellow guibg=#212121
+let g:guibg_color = '#212121'
+
+execute 'hi User1 guifg=orange guibg=' . g:guibg_color
+execute 'hi User2 guifg=grey30 guibg=' . g:guibg_color
+execute 'hi User3 guifg=violet guibg=' . g:guibg_color
+execute 'hi User4 guifg=lime   guibg=' . g:guibg_color
+execute 'hi User5 guifg=yellow guibg=' . g:guibg_color
 
 " NOTE: For StatusLine, guifg is the background
 " color and guibg is the text color ¯\(ツ)/¯
-hi StatusLine   guifg=#212121 guibg=white
-hi StatusLineNC guifg=#212121 guibg=grey30
+execute 'hi StatusLine   guibg=white  guifg=' . g:guibg_color
+execute 'hi StatusLineNC guibg=grey30 guifg=' . g:guibg_color
 
 """""""""""""""""""""""""
 "       Variables       "
@@ -122,6 +124,7 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = { 
 \ 'go': ['gofmt'],
+\ 'scala': ['scalafmt'],
 \ 'yaml': ['prettier'],
 \ 'cpp': ['clang-format'],
 \ 'javascript': ['prettier', 'eslint'],
@@ -259,6 +262,18 @@ au BufRead,BufNewFile *.req set ft=req
 au BufRead,BufNewFile *.frag set ft=glsl
 au BufRead,BufNewFile */zetz/*.md :call SetupZettelkasten()
 au FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+
+" Clear cmd line message
+function! s:empty_message(timer)
+  if mode() ==# 'n'
+    echon ''
+  endif
+endfunction
+
+augroup cmd_msg_cls
+    autocmd!
+    autocmd CmdlineLeave :  call timer_start(1500, funcref('s:empty_message'))
+augroup END
 
 """""""""""""""""""""""""
 "      Statusline       "
