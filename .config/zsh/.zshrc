@@ -47,6 +47,7 @@ alias \
     k=kubectl \
     d='fasd -d' \
     f='fasd -f' \
+    s='cmd-split' \
     j='fasd_cd -d' \
     v='fasd -f -e nvim' \
     z='cd `find . * -type d | fzf`' \
