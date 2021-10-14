@@ -1,8 +1,0 @@
-#!/bin/sh
-
-if [[ $# -eq 0 ]] ; then
-    exit 0
-fi
-
-[[ $1 == e2t ]] && date -d @$2 '+%Y-%m-%d %H:%M:%S'
-[[ $1 == t2e ]] && date -d $2 +%s

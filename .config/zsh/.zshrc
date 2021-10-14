@@ -1,6 +1,8 @@
 [[ ! -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" 
 
-unsetopt PROMPT_SP  # Remove annoying percent sign
+# Remove annoying percent sign
+unsetopt PROMPT_SP  
+
 autoload -U colors && colors
 export PS1="%F{38}%1~%F{208} λ %f"
 
@@ -45,14 +47,11 @@ setopt hist_expire_dups_first       # expire duplicate entries first when trimmi
 alias \
     g=git \
     k=kubectl \
-    d='fasd -d' \
     f='fasd -f' \
     s='cmd-split' \
     j='fasd_cd -d' \
     v='fasd -f -e nvim' \
-    z='cd `find . * -type d | fzf`' \
     nv=nvim \
-    nf='fzf -e nvim' \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
     zetz='${ZETZ_PATH}/bin/zetz' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
@@ -170,7 +169,7 @@ if command -v fzf 1>/dev/null; then
 fi
 
 # Fast syntax highlighting
-# -------------
+# ------------------------
 
 [ -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh" ] \
   || git clone https://github.com/zdharma/fast-syntax-highlighting "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh"

@@ -1,5 +1,5 @@
 #!/bin/sh 
-#
+
 ####
 # 
 # USAGE: aws-keys [-help]
@@ -12,7 +12,6 @@
 # -d      delete            delete AWS Keypair
 ###
 
-# set up functions to report Usage and Usage with Description
 PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
 PROGDIR=`dirname $PROGNAME`            # extract directory of program
 PROGNAME=`basename $PROGNAME`          # base name of program

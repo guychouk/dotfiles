@@ -1,5 +1,0 @@
-#!/bin/zsh
-
-pattern='(mongo|postgres)'
-dc_services=("${(@f)$(docker-compose -f ~/Projects/box/docker-compose.yml ps -a --services)}")
-printf '%s\n' ${dc_services:#$~pattern} | xargs -I{} zsh -c 'docker-compose -f ~/Projects/box/docker-compose.yml rm -s -f -v {}'

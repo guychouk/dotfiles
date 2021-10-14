@@ -1,5 +1,0 @@
-#!/bin/sh
-
-[[ $1 == dp ]] && kubectl describe pod $2
-[[ $1 == gp ]] && kubectl get pods -l app=$2
-[[ $1 == cx ]] && kubectl config current-context

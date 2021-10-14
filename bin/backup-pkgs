@@ -1,7 +1,0 @@
-#!/bin/sh
-
-DRIVE=
-
-which brew && brew leaves > ${DRIVE}/etc/Brewfile.txt
-which scoop && scoop list > ${DRIVE}/etc/Scoopfile.txt
-which pacman && pacman -Qe > ${DRIVE}/etc/Pacmanfile.txt
