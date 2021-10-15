@@ -11,29 +11,31 @@ endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'mattn/emmet-vim'
+Plug 'ap/vim-css-color'
+Plug 'dense-analysis/ale'
+Plug 'jpalardy/vim-slime'
+Plug 'preservim/nerdtree'
+Plug 'Yggdroot/indentLine'
+Plug 'sheerun/vim-polyglot'
+Plug 'pedrohdz/vim-yaml-folds'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'danilo-augusto/vim-afterglow'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
-Plug 'ap/vim-css-color'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'danilo-augusto/vim-afterglow'
-Plug 'dense-analysis/ale'
-Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'jpalardy/vim-slime'
-Plug 'pedrohdz/vim-yaml-folds'
-Plug 'preservim/nerdtree'
-Plug 'ruanyl/vim-gh-line'
-Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-dispatch'
-Plug 'Yggdroot/indentLine'
+Plug 'tpope/vim-dadbod'
 call plug#end()
 
 """""""""""""""""""""""""
@@ -55,7 +57,7 @@ set nohlsearch            " Disable search highlight
 set noshowmode            " Don't show current mode in status line
 set noswapfile            " No swap files
 set nowrap                " Disable line wrapping
-set number                " Show line numbers
+set number relativenumber " Show current line number and relative line numbers
 set pyx=3                 " Set Python version to 3
 set shortmess+=I          " Supress startup message
 set shortmess+=c          " Don't give in-completion-menu messages
@@ -355,27 +357,31 @@ set statusline=%!StatusLine(1)
 call ToggleStatusline()
 
 """"""""""""""""""""""""
-"     Vim <3 FZF       "
+"         FZF          "
 """"""""""""""""""""""""
 
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
+" Make :Ag not match file names, only the file content
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+nnoremap <silent> <leader>/ :Ag<CR>
 nnoremap <silent> <leader>t :Tags<CR>
 nnoremap <silent> <leader>f :Files<CR>
 nnoremap <silent> <leader>. :GFiles<CR>
 nnoremap <silent> <leader>b :Buffers<CR>
-nnoremap <silent> <leader>/ :Ag<CR>
 vnoremap <silent> <leader>/ :<c-u>call SearchRange(visualmode(), 1)<cr>
 
-inoremap <c-x><c-f> <plug>(fzf-complete-path)
-inoremap <c-x><c-l> <plug>(fzf-complete-line)
-inoremap <expr> <c-x><c-k> fzf#vim#complete#word()
-inoremap <expr> <c-x><c-x> fzf#vim#complete(fzf#wrap({
-  \ 'prefix': '^.*$',
-  \ 'source': 'rg -n ^ --color always',
-  \ 'options': '--ansi --delimiter : --nth 3..',
-  \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
 
 """"""""""""""""""""""""
 "     Completion       "
