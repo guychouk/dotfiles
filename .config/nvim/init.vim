@@ -77,12 +77,11 @@ hi Normal guibg=none
 hi LineNr guibg=none
 hi SignColumn guibg=none
 
-" User1 - Default base color
+" User1 - Default color
 " User2 - Inactive pane
 " User3 - Insert Mode
 " User4 - Command Mode
 " User5 - Visual Mode
-" NOTE: In User highlights, guifg is for text color.
 
 let g:guibg_color = '#212121'
 
@@ -109,13 +108,13 @@ let maplocalleader = " "
 let g:ale_sign_error = '• '
 let g:ale_sign_warning = '• '
 let g:ale_lint_on_save = 1
+let g:ale_linters_explicit = 1
 let g:ale_completion_enabled = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%][%severity%][%code%] %s'
-let g:ale_linters_explicit = 1
 let g:ale_cpp_cc_executable = 'g++'
 let g:ale_cpp_cc_options = '-std=c++11 -Iinclude'
 let g:ale_linters = { 
@@ -149,12 +148,6 @@ let g:slime_default_config = {"socket_name": get(split($TMUX, ","), 0), "target_
 let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json']
 let g:rooter_change_directory_for_non_project_files = 'current'
-
-" vim-gh-line
-let g:gh_use_canonical = 1
-let g:gh_line_map_default = 0
-let g:gh_line_blame_map_default = 0
-let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 
 " Goyo
 let g:goyo_width = 85
