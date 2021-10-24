@@ -7,7 +7,6 @@
 # COMMANDS:
 # 
 #     blank     - Generate image of certain size and color (Hex can also be used here!)
-#     cleantext - Clean text in document image and make it B&W (requires textcleaner script in path)
 #     compress  - Compress PDF's size
 #     icon      - Convert .png to .ico
 #     pad       - Pad image with transparent background to certain dimensions
@@ -91,10 +90,6 @@ while [ "$CMD" != "" ]; do
             ;;
         pdf2png)
             convert -density 300 $INPUT -resize 35% $OUTPUT
-            exit 1
-            ;;
-        cleantext)
-            textcleaner -e normalize $INPUT $OUTPUT
             exit 1
             ;;
         -h | --help )           usage
