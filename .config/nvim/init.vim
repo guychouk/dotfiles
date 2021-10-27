@@ -156,6 +156,9 @@ let g:goyo_width = 85
 " IndentLine
 let g:indentLine_enabled = 0
 
+" Instant markdown preview
+let g:instant_markdown_autostart = 0
+
 " Nerd tree
 let NERDTreeShowHidden = 1
 let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
