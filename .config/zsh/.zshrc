@@ -53,7 +53,6 @@ alias \
     v='fasd -f -e nvim' \
     nv=nvim \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
-    zetz='${ZETZ_PATH}/bin/zetz' \
     tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 # append to path

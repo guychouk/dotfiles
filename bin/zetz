@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+
+#                 _       
+#         _______| |_ ____
+#        |_  / _ \ __|_  /
+#         / /  __/ |_ / / 
+#        /___\___|\__/___|
+#                         
+# The most basic note taking app for the terminal.
+# This script has some prerequisites:
+#   - brew install neovim tmux fzf bat the_silver_searcher ripgrep sqlite3
+#   - The $ZETZ_PATH variable is set to the path of your notes.
+#   - All notes have a title on the first line prefixed by one hash symbol, like so: "# Cool Title"
+#   - Your notes are written in markdown, have .md extensions and the filenames are ther creation date in this format: %Y%m%d%H%M%S
+
+pushd $ZETZ_PATH
+
+# Take a daily backup
+file="backup/$(date "+%Y-%m-%d")-index.db"
+if [[ ! -d "backup/" ]]; then
+  mkdir backup
+fi
+if [[ ! -f  $file ]]; then
+  cp index.db "$file"
+fi
+
+FZF_DEFAULT_COMMAND="find *.md -type f" \
+  fzf \
+  --phony \
+  --no-info \
+  --no-multi \
+  --height=100% \
+  --query="${@}" \
+  --preview-window=top:65%:wrap \
+  --preview 'zks -f {} {q} | bat --language md --style=plain --color always' \
+  --bind "change:reload:zks '{q}' || find *.md -type f" \
+  --bind "ctrl-o:execute-silent[ \
+      tmux send-keys -t \{left\} Escape a Space && \
+      tmux send-keys -t \{left\} -l \[\[{}]] && \
+      tmux send-keys -t \{left\} Space && \
+      tmux send-keys -t \{left\} Escape \
+    ]" \
+  --bind "enter:execute-silent[ \
+      tmux send-keys -t \{left\} Escape :e Space && \
+      tmux send-keys -t \{left\} -l {} && \
+      tmux send-keys -t \{left\} Enter \
+    ]" \
+  --bind 'ctrl-i:execute:tmux split-window "FZF_DEFAULT_COMMAND=\"${FZF_DEFAULT_COMMAND}\" $EDITOR `date +"%Y%m%d%H%M%S"`.md"'
+
+popd
