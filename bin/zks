@@ -7,6 +7,12 @@ import getopt
 import sqlite3
 from pathlib import Path
 
+def check_key_dict_list(key, dict):
+    for i in dict:
+        if i == key:
+            return True
+    return False
+
 db = sqlite3.connect(os.getcwd() + '/index.db')
 db.row_factory = sqlite3.Row
 
@@ -28,7 +34,7 @@ for row in raw_existing:
 
 for path in Path('.').glob('*.md'):
     mtime = int(os.path.getmtime(path))
-    if not existing[path.name]:
+    if not check_key_dict_list(path.name, existing):
       contents = path.read_text()
       tags = " ".join(re.findall(r'#[\w-]+', contents))
       args = (path.name, contents, '', mtime)
