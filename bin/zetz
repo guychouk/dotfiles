@@ -31,8 +31,11 @@ fzf \
   --height=100% \
   --query="${@}" \
   --preview-window=top:65%:wrap \
-  --preview 'zks -f {} {q} | bat --language md --style=plain --color always' \
-  --bind "change:reload:zks '{q}' || find *.md -type f" \
+  --preview 'if $(zkk -f {} {q} > /dev/null); then
+               zkk -f {} {q} | bat --language md --style=plain --color always; else
+               bat --language md --style=plain --color always {};
+               fi' \
+  --bind "change:reload:zkk {q}" \
   --bind "ctrl-o:execute-silent[ \
       tmux send-keys -t \{left\} Escape a Space && \
       tmux send-keys -t \{left\} -l \[\[{}]] && \
