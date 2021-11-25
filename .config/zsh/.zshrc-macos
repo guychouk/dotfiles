@@ -14,5 +14,5 @@ export LDFLAGS=-L/usr/local/opt/openssl/lib
 [ -f ${GCLOUD_SDK}/path.zsh.inc ] && source "${GCLOUD_SDK}/path.zsh.inc"
 [ -f ${GCLOUD_SDK}/completion.zsh.inc ] && source "${GCLOUD_SDK}/completion.zsh.inc"
 
-# set max open file descriptors (for helmer ¯\\_(ツ)_/¯)
+# set max open file descriptors (for helmer ¯\_(ツ)_/¯)
 ulimit -n 10240
