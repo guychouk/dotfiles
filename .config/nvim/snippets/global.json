@@ -1,0 +1,16 @@
+{
+  "dunno": {
+    "prefix": "dunno",
+    "body": [
+      "¯\\_(ツ)_/¯"
+    ],
+    "description": "Dunno dude"
+  },
+  "eld": {
+    "prefix": "eld",
+    "body": [
+      "/* eslint-disable max-len */"
+    ],
+    "description": "Add ESLint disable comment"
+  }
+}

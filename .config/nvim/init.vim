@@ -10,7 +10,6 @@ if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autolo
 endif
 
 call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'mattn/emmet-vim'
 Plug 'ap/vim-css-color'
 Plug 'dense-analysis/ale'
 Plug 'jpalardy/vim-slime'
@@ -22,6 +21,9 @@ Plug 'kristijanhusak/vim-dadbod-ui'
 Plug 'danilo-augusto/vim-afterglow'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'rafamadriz/friendly-snippets'
 Plug 'airblade/vim-rooter'
 Plug 'airblade/vim-gitgutter'
 Plug 'junegunn/goyo.vim'
@@ -44,7 +46,6 @@ call plug#end()
 """""""""""""""""""""""""
 
 syntax on                 " Syntax highlighting
-runtime snippets.vim      " Load snippets
 filetype plugin indent on " Turn on filetype detections
 
 set autoindent            " New lines will be indented as well
@@ -100,6 +101,9 @@ execute 'hi StatusLineNC guibg=grey30 guifg=' . g:guibg_color
 """""""""""""""""""""""""
 "       Variables       "
 """""""""""""""""""""""""
+
+" Set Python path
+let g:python3_host_prog = '/usr/local/bin/python3'
 
 " <SPC> as leader
 let mapleader = " "
@@ -163,6 +167,35 @@ let g:instant_markdown_autostart = 0
 let NERDTreeShowHidden = 1
 let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
 map <silent> <leader><leader> :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
+
+" VSnip
+
+" Expand
+imap <silent> <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+smap <silent> <expr> <C-j>   vsnip#expandable()  ? '<Plug>(vsnip-expand)'         : '<C-j>'
+
+" Expand or jump
+imap <silent> <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <silent> <expr> <C-l>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-l>'
+
+" Jump forward or backward
+imap <silent> <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+smap <silent> <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+imap <silent> <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <silent> <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+" Select or cut text to use as $TM_SELECTED_TEXT in the next snippet.
+" See https://github.com/hrsh7th/vim-vsnip/pull/50
+nmap        s   <Plug>(vsnip-select-text)
+xmap        s   <Plug>(vsnip-select-text)
+nmap        S   <Plug>(vsnip-cut-text)
+xmap        S   <Plug>(vsnip-cut-text)
+
+" If you want to use snippet for multiple filetypes, you can `g:vsnip_filetypes` for it.
+let g:vsnip_filetypes = {}
+let g:vsnip_filetypes.javascriptreact = ['javascript']
+let g:vsnip_filetypes.typescriptreact = ['typescript']
+let g:vsnip_snippet_dir = system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/snippets"')
 
 """""""""""""""""""""""""
 "       Functions       "
@@ -232,7 +265,8 @@ nmap <silent> [g <Plug>(ale_previous)
 nmap <silent> gd <Plug>(ale_go_to_definition)
 nmap <silent> ]h <Plug>(GitGutterNextHunk)
 nmap <silent> [h <Plug>(GitGutterPrevHunk)
-nmap <silent> sh <Plug>(GitGutterStageHunk)
+nmap <silent> <leader>hs <Plug>(GitGutterStageHunk)
+nmap <silent> <leader>hu <Plug>(GitGutterUndoHunk)
 nmap <silent> <leader>rn <Plug>(ale_rename)
 
 nnoremap <silent> <Leader>w :w<CR>
