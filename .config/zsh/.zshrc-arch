@@ -2,9 +2,8 @@ alias \
 	ll='ls -la --color=auto' \
 	list_packages='comm -23 <(pacman -Qqett | sort) <(pacman -Qqg base-devel | sort | uniq)'
 
-export TMUX_SESSION='Lab'
+export TMUX_SESSION='Arch'
 export GNUPGHOME="${XDG_CONFIG_HOME:-$HOME/.config}/gnupg"
-export PYENV_ROOT="${XDG_DATA_HOME:-$HOME/.local/share}/pyenv"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/.npmrc"
 
 eval $(keychain --dir "${XDG_DATA_HOME:-$HOME/.local/share}/keychain" --eval --quiet id_rsa)

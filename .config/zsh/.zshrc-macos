@@ -2,17 +2,14 @@ path=($path "/usr/local/opt/sbt/bin")
 
 alias ll='ls -laG'
 
-export TMUX_SESSION='β'
+export TMUX_SESSION='Work'
+
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
+
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-export CLOUDSDK_PYTHON="/usr/local/opt/python@3.8/libexec/bin/python"
-export GCLOUD_SDK="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
 
 export CPPFLAGS=-I/usr/local/opt/openssl/include
 export LDFLAGS=-L/usr/local/opt/openssl/lib
-
-[ -f ${GCLOUD_SDK}/path.zsh.inc ] && source "${GCLOUD_SDK}/path.zsh.inc"
-[ -f ${GCLOUD_SDK}/completion.zsh.inc ] && source "${GCLOUD_SDK}/completion.zsh.inc"
 
 # set max open file descriptors (for helmer ¯\_(ツ)_/¯)
 ulimit -n 10240
