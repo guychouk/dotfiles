@@ -1,11 +1,18 @@
 [[ ! -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" 
 
-# Remove annoying percent sign
-unsetopt PROMPT_SP  
+# Colors
+autoload -U colors
+colors
 
-autoload -U colors && colors
-export PS1="%F{38}%1~%F{208} λ %f"
+# Prompt
+parse_git_branch() {
+  git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
+  if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
+}
+setopt PROMPT_SUBST
+PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 
+# Completion
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
@@ -122,3 +129,7 @@ fsh_plugin="$fsh_cache_dir/fast-syntax-highlighting.plugin.zsh"
 
 [ -d "$fsh_cache_dir" ] || git clone https://github.com/zdharma/fast-syntax-highlighting "$fsh_cache"
 [ -f "$fsh_plugin" ] && source "$fsh_plugin"
+
+# Direnv
+# ------
+command -v direnv 1>/dev/null && eval "$(direnv hook zsh)"

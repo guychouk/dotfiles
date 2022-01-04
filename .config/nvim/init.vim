@@ -132,6 +132,7 @@ let g:ale_linters = {
 let g:ale_fixers = { 
 \ 'go': ['gofmt'],
 \ 'scala': ['scalafmt'],
+\ 'svelte': ['prettier'],
 \ 'yaml': ['prettier'],
 \ 'cpp': ['clang-format'],
 \ 'javascript': ['prettier', 'eslint'],
