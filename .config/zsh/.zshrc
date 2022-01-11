@@ -9,6 +9,7 @@ parse_git_branch() {
   git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
   if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
 }
+unsetopt PROMPT_SP
 setopt PROMPT_SUBST
 PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 
