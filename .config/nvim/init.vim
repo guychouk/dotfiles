@@ -213,7 +213,7 @@ function! SearchRange(type, ...)
 	else
 		silent exe "normal! `[v`]y"
 	endif
-	exe "Ag" @@
+	exe "Rg" @@
 	let &selection = sel_save
 	let @@ = reg_save
 endfunction
@@ -395,10 +395,7 @@ call ToggleStatusline()
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
-" Make :Ag not match file names, only the file content
-command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, {'options': '--delimiter : --nth 4..'}, <bang>0)
-
-nnoremap <silent> <leader>/ :Ag<CR>
+nnoremap <silent> <leader>/ :Rg<CR>
 nnoremap <silent> <leader>t :Tags<CR>
 nnoremap <silent> <leader>f :Files<CR>
 nnoremap <silent> <leader>. :GFiles<CR>
