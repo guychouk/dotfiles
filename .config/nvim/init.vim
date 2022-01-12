@@ -395,6 +395,8 @@ call ToggleStatusline()
 let g:fzf_layout = { 'down': '40%' }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".shellescape(<q-args>), 1, {'options': '--delimiter : --nth 4..'}, <bang>0) 
+
 nnoremap <silent> <leader>/ :Rg<CR>
 nnoremap <silent> <leader>t :Tags<CR>
 nnoremap <silent> <leader>f :Files<CR>
