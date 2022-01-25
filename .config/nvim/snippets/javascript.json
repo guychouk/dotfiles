@@ -5,5 +5,29 @@
       "console.log(`$1`)"
     ],
     "description": "JS console.log"
+  },
+  "mongo": {
+    "prefix": ["#mongo#"],
+    "body": [
+      "const { MongoClient } = require(\"mongodb\");",
+      "const DB = \"bigpanda-data-api\";",
+      "const MONGO_URL = \"mongodb://localhost:27017\";",
+      "const mongoClient = new MongoClient(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });",
+      "async function run() {",
+      "  try {",
+      "    await mongoClient.connect();",
+      "    const db = mongoClient.db(DB);",
+      "  } finally {",
+      "    await mongoClient.close();",
+      "  }",
+      "}",
+      "",
+      "try {",
+      "  run();",
+      "} catch (e) {",
+      "  console.dir(e);",
+      "}"
+    ],
+    "description": "Basic MongoDB boilerplate"
   }
 }
