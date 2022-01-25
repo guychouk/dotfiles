@@ -440,7 +440,7 @@ command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-hea
 
 nnoremap <silent> <leader>/ :Rg<CR>
 nnoremap <silent> <leader>t :Tags<CR>
-nnoremap <silent> <leader>f :Files<CR>
+nnoremap <silent> <leader>p :Files<CR>
 nnoremap <silent> <leader>. :GFiles<CR>
 nnoremap <silent> <leader>b :Buffers<CR>
 vnoremap <silent> <leader>/ :<c-u>call SearchRange(visualmode(), 1)<cr>
