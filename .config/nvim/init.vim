@@ -170,6 +170,7 @@ let g:ale_cpp_cc_executable = 'g++'
 let g:ale_cpp_cc_options = '-std=c++11 -Iinclude'
 let g:ale_linters = { 
 \ 'cpp': ['g++'],
+\ 'cs': ['csc'],
 \ 'javascript': ['tsserver', 'eslint'],
 \ 'javascriptreact': ['tsserver', 'eslint'],
 \ 'typescript': ['tsserver', 'eslint'],
@@ -177,6 +178,7 @@ let g:ale_linters = {
 \}
 let g:ale_fixers = { 
 \ 'go': ['gofmt'],
+\ 'cs': ['dotnet-format'],
 \ 'scala': ['scalafmt'],
 \ 'svelte': ['prettier'],
 \ 'yaml': ['prettier'],
