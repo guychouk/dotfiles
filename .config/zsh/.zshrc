@@ -9,9 +9,13 @@ parse_git_branch() {
   git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
   if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
 }
+parse_kubectl_current_context() {
+  kube_context=$(kubectl config current-context 2> /dev/null)
+  if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
+}
 unsetopt PROMPT_SP
 setopt PROMPT_SUBST
-PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
+PROMPT='%F{38}%1~%F{208}$(parse_git_branch)$(parse_kubectl_current_context) λ %f'
 
 # Completion
 autoload -U compinit
