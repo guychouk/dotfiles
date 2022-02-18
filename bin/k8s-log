@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# This prints JSON logs using stern, and uses jpalardy's trick
+# to handle broken JSON:
+# https://blog.jpalardy.com/posts/handling-broken-json-with-jq/
+
+stern --color always --template '{{printf "%s\n" .Message}}' $@ \
+	| sed -e 's/^{/'$(printf "\x1e")'{/' \
+	| jq --seq -r '.messageData.message' \
+	| sed 's,.*,\x1B[32mLog:\x1B[0m &,' \
+	| xargs printf "%s\n"
