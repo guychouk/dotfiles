@@ -2,6 +2,22 @@
 "       Utilities       "
 """""""""""""""""""""""""
 
+function! NetrwRemoveRecursive()
+	if &filetype ==# 'netrw'
+		cnoremap <buffer> <CR> rm -r<CR>
+		normal mu
+		normal mf
+
+		try
+			normal mx
+		catch
+			echo "Canceled"
+		endtry
+
+		cunmap <buffer> <CR>
+	endif
+endfunction
+
 function! SearchRange(type, ...)
 	let sel_save = &selection
 	let &selection = "inclusive"

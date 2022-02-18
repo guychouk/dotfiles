@@ -22,9 +22,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
-Plug 'preservim/nerdtree'
 Plug 'preservim/vimux'
-Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
@@ -32,6 +30,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
 Plug 'Yggdroot/indentLine'
 call plug#end()
 
@@ -154,10 +153,6 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 " Instant markdown preview
 let g:instant_markdown_autostart = 0
 
-" Nerdtree
-let NERDTreeShowHidden = 1
-let NERDTreeBookmarksFile = stdpath('data') . '/NERDTreeBookmarks'
-
 " VSnip
 let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.javascriptreact = ['javascript']
@@ -208,7 +203,7 @@ nmap <silent> <leader>=v           :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v           :exe "vertical resize -5"<CR>
 nmap <silent> <leader>z            <plug>(ZoomToggle)
 nmap <silent> <leader><tab>        <plug>(fzf-maps-n)
-nmap <silent> <leader><leader>     :exe g:NERDTree.IsOpen() ? 'NERDTreeClose' : bufexists(expand('%')) ? 'NERDTreeFind' : 'NERDTree'<CR>
+nmap <silent> <leader><leader>     :Lexplore<CR>
 
 omap <silent> <leader><tab>        <plug>(fzf-maps-o)
 
@@ -255,4 +250,57 @@ augroup statusline_commands
 	autocmd VimEnter * call ToggleStatusline()
 	autocmd WinEnter * setlocal statusline=%!StatusLine(1)
 	autocmd WinLeave * setlocal statusline=%!StatusLine(0)
+augroup END
+
+"""""""""""""""""""""""""
+"        Netrw          "
+"""""""""""""""""""""""""
+
+" Keep the current directory and the browsing directory synced.
+" This helps you avoid the move files error.
+let g:netrw_keepdir = 0
+" Netrw split size
+let g:netrw_winsize = 24
+" Enable recursive copy of directories
+let g:netrw_localcopydircmd = 'cp -r'
+
+" Highlight marked files in the same way search matches are.
+hi! link netrwMarkFile Search 
+
+function! NetrwMapping()
+	" VinegarUp using h
+	nmap <buffer> h -
+	" l to open
+	nmap <buffer> l <CR>
+	" abort Netrw
+	nmap <buffer> <C-[> <C-^>
+	" <TAB> marks a file
+	nmap <buffer> <TAB> mf
+	" <S-TAB> unmarks a file
+	nmap <buffer> <S-TAB> mF
+	" Clear all marks
+	nmap <buffer> <Leader><TAB> mu
+	" new file
+	nmap <buffer> ff %:w<CR>:buffer #<CR>
+	" rename / move
+	nmap <buffer> fr R
+	" copy to target
+	nmap <buffer> fc mc
+	" set target and copy
+	nmap <buffer> fC mtmc
+	" set target
+	nmap <buffer> ft mt
+	" move to target
+	nmap <buffer> fx mm
+	" set target and move
+	nmap <buffer> fX mtmm
+	" run command on file
+	nmap <buffer> f; mx
+	" remove recursively
+	nmap <buffer> FF :call NetrwRemoveRecursive()<CR>
+endfunction
+
+augroup netrw_mapping
+  autocmd!
+  autocmd filetype netrw call NetrwMapping()
 augroup END
