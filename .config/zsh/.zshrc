@@ -55,6 +55,7 @@ setopt hist_expire_dups_first       # expire duplicate entries first when trimmi
 
 alias \
     g=git \
+    n=nnn \
     k=kubectl \
     nv=nvim \
     dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
