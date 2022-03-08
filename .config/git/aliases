@@ -14,7 +14,8 @@
 	rb = rebase
 	rbi = rebase -i
 	c = commit
-  cm = commit -m
+	ca = commit -a
+	cm = commit -m
 	cam = commit -a -m
 	sp = stash pop
 	sl = stash list
