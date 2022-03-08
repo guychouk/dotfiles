@@ -213,6 +213,7 @@ xmap <silent> <leader><tab>        <plug>(fzf-maps-x)
 
 imap <silent> <c-x><c-k>           <plug>(fzf-complete-word)
 imap <silent> <c-x><c-l>           <plug>(fzf-complete-line)
+imap <silent> <c-x><c-i>           <plug>(fzf-complete-snippet)
 
 imap <silent> <expr> <C-j>         vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
 imap <silent> <expr> <C-l>         vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
