@@ -203,7 +203,6 @@ nmap <silent> <leader>=v           :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v           :exe "vertical resize -5"<CR>
 nmap <silent> <leader>z            <plug>(ZoomToggle)
 nmap <silent> <leader><tab>        <plug>(fzf-maps-n)
-nmap <silent> <leader><leader>     :Lexplore<CR>
 
 omap <silent> <leader><tab>        <plug>(fzf-maps-o)
 
