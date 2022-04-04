@@ -12,6 +12,7 @@
 	ps = push
 	cl = clone
 	rb = rebase
+	to = !fbr
 	rbi = rebase -i
 	c = commit
 	ca = commit -a
