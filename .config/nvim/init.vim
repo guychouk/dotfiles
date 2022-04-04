@@ -22,6 +22,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
+Plug 'ruanyl/vim-gh-line'
 Plug 'preservim/vimux'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
@@ -103,7 +104,7 @@ exe 'hi StatusLineNC guifg=grey30 guibg=' . g:guibg_color
 
 " FZF
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8 } }
+let g:fzf_layout = { 'down': '60%' }
 
 " ALE
 let g:ale_sign_error = '• '
@@ -162,6 +163,9 @@ let g:vsnip_snippet_dir = system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvi
 " IndentLine
 let g:indentLine_fileType = ['yaml', 'yml']
 
+" GH line
+let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
+
 """""""""""""""""""""""
 "      Mappings       "
 """""""""""""""""""""""
@@ -182,6 +186,7 @@ nmap <silent> [g                   <plug>(ale_previous)
 nmap <silent> gd                   <plug>(ale_go_to_definition)
 nmap <silent> [qd                  <plug>(QuickfixRemoveEntry)
 nmap <silent> K                    <plug>(ShowDocumentation)
+nmap <silent> yoa                  :ALEToggleBuffer<CR>
 nmap <silent> <leader>g            :Git<CR>
 nmap <silent> <leader>w            :w<CR>
 nmap <silent> <leader>q            :q<CR>
