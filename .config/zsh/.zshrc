@@ -1,10 +1,14 @@
 [[ ! -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" 
 
 # Colors
+# ------------------------
+
 autoload -U colors
 colors
 
 # Prompt
+# ------------------------
+
 parse_git_branch() {
   git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
   if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
@@ -18,11 +22,17 @@ setopt PROMPT_SUBST
 PROMPT='%F{38}%1~%F{208}$(parse_git_branch)$(parse_kubectl_current_context) λ %f'
 
 # Completion
+# ------------------------
+
 autoload -U compinit
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
 _comp_options+=(globdots)
+
+
+# ENV variables
+# ------------------------
 
 HISTSIZE=10000
 SAVEHIST=10000
@@ -65,7 +75,7 @@ alias \
 path=($path "$HOME/bin" "$GOPATH/bin")
 
 # removes duplicate entries
-typeset -aU path                            
+typeset -aU path
 
 if [[ $(uname) = "Darwin" ]]; then
   source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc-macos"
@@ -73,8 +83,8 @@ else
   source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc-arch"
 fi
 
-# tmux
-# -------------
+# Tmux
+# ------------------------
 
 # Check that tmux exists, that we're in an interactive shell and not already within tmux.
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
@@ -88,7 +98,7 @@ if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] &&
 fi
 
 # fasd
-# -------------
+# ------------------------
 
 if command -v fasd 1>/dev/null 2>&1; then
 
@@ -115,7 +125,7 @@ if command -v fasd 1>/dev/null 2>&1; then
 fi
 
 # FZF
-# -------------
+# ------------------------
 
 if command -v fzf 1>/dev/null; then
 
@@ -137,5 +147,6 @@ fsh_plugin="$fsh_cache_dir/fast-syntax-highlighting.plugin.zsh"
 [ -f "$fsh_plugin" ] && source "$fsh_plugin"
 
 # Direnv
-# ------
+# ------------------------
+
 command -v direnv 1>/dev/null && eval "$(direnv hook zsh)"

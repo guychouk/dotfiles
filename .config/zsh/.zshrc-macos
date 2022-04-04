@@ -3,11 +3,8 @@ path=($path "/usr/local/opt/sbt/bin")
 alias ll='ls -laG'
 
 export TMUX_SESSION='Work'
-
 export JAVA_HOME=`/usr/libexec/java_home -v 1.8`
-
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-
 export CPPFLAGS=-I/usr/local/opt/openssl/include
 export LDFLAGS=-L/usr/local/opt/openssl/lib
 
