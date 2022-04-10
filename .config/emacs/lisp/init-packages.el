@@ -24,10 +24,6 @@
 (define-key company-active-map (kbd "<tab>") 'company-select-next)
 (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
 
-;; company-lsp
-(require 'company-lsp)
-(push 'company-lsp company-backends)
-
 ;; projectile: Index and search projects using standard means
 (require 'projectile)
 (projectile-mode +1)

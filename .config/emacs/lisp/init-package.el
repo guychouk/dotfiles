@@ -13,7 +13,6 @@
                                   all-the-icons
                                   cargo
                                   company
-                                  company-lsp
                                   counsel
                                   counsel-projectile
                                   dap-mode

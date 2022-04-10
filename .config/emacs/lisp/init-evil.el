@@ -39,6 +39,9 @@
 ;; evil-vimish-fold: Enable folding using zf
 (evil-vimish-fold-mode 1)
 
+;; Enable evil
+(evil-mode 1)
+
 (provide 'init-evil)
 
 ;;; init-evil.el ends here

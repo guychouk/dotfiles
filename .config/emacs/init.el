@@ -31,9 +31,9 @@
 
 (defun require-init (pkg)
   "Load PKG by giving the `load` function an absolute path (faster)."
-  (load (file-truename (format "~/.emacs.d/lisp/%s" pkg))))
+  (load (file-truename (format "~/.config/emacs/lisp/%s" pkg))))
 
-(push (expand-file-name "~/.emacs.d/lisp") load-path)
+(push (expand-file-name "~/.config/emacs/lisp") load-path)
 
 (require-init 'base)
 (require-init 'init-package)

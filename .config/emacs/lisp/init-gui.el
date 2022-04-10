@@ -15,9 +15,6 @@
 ;; Remove scroll-bar
 (toggle-scroll-bar -1)
 
-;; Set font to Liberation Mono 12 by default
-(add-to-list 'default-frame-alist '(font . "Liberation Mono 10"))
-
 ;; Themes
 (doom-themes-org-config)
 (load-theme 'doom-one t)

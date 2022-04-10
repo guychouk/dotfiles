@@ -27,7 +27,7 @@
  ;; Disable backup files
  make-backup-files nil
  ;; Set `custom-file` location
- custom-file "~/.emacs.d/custom.el"
+ custom-file "~/.config/emacs/custom.el"
  ;; Remove annoying bell
  ring-bell-function 'ignore
  ;; list of tab stop positions
