@@ -15,7 +15,7 @@ parse_git_branch() {
 }
 parse_kubectl_current_context() {
   kube_context=$(kubectl config current-context 2> /dev/null)
-  if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
+  if [ ! $kube_context ]; then printf ""; else echo "${kube_context}" | awk -F'-' '{printf " [%s]", $1}'; fi
 }
 unsetopt PROMPT_SP
 setopt PROMPT_SUBST
