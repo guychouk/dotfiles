@@ -10,12 +10,12 @@ colors
 # ------------------------
 
 parse_git_branch() {
-  git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
-  if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
+	git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
+	if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
 }
 parse_kubectl_current_context() {
-  kube_context=$(kubectl config current-context 2> /dev/null)
-  if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
+	kube_context=$(kubectl config current-context 2> /dev/null)
+	if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
 }
 unsetopt PROMPT_SP
 setopt PROMPT_SUBST
@@ -30,7 +30,6 @@ zmodload zsh/complist
 compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
 _comp_options+=(globdots)
 
-
 # ENV variables
 # ------------------------
 
@@ -38,11 +37,15 @@ HISTSIZE=10000
 SAVEHIST=10000
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
-export ZETZ_PATH="${HOME}/Projects/personal/zetz"
-export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
+export KUBECONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/kube/config"
+export NPM_CONFIG_GLOBALCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/.npmrc"
+
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
+
+export GNUPGHOME="${XDG_CACHE_HOME:-$HOME/.cache}/gnupg"
 export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
+export NPM_CACHE_LOCATION="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 bindkey -e
@@ -64,12 +67,12 @@ setopt interactivecomments          # enable entering comments as commands that 
 setopt hist_expire_dups_first       # expire duplicate entries first when trimming history
 
 alias \
-    g=git \
-    n=nnn \
-    k=kubectl \
-    nv=nvim \
-    dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
-    tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
+	g=git \
+	n=nnn \
+	k=kubectl \
+	nv=nvim \
+	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
+	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 # append to path
 path=($path "$HOME/bin" "$GOPATH/bin")
@@ -78,72 +81,66 @@ path=($path "$HOME/bin" "$GOPATH/bin")
 typeset -aU path
 
 if [[ $(uname) = "Darwin" ]]; then
-  source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc-macos"
-else 
-  source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc-arch"
-fi
+	alias ll='ls -laG'
 
-# Tmux
-# ------------------------
+	export TMUX_SESSION='Work'
+	export LDFLAGS=-L/usr/local/opt/openssl/lib
+	export CPPFLAGS=-I/usr/local/opt/openssl/include
+	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 
-# Check that tmux exists, that we're in an interactive shell and not already within tmux.
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  # If the session with the name $TMUX_SESSION does not exist - create it.
-  if [ "$(tmux list-sessions 2> /dev/null | grep -o $TMUX_SESSION)" != "$TMUX_SESSION" ]; then
-    tmux new-session -s "$TMUX_SESSION"
-  # Otherwise just reattach.
-  else
-    tmux attach -t "$TMUX_SESSION"
-  fi
+	## set max open file descriptors
+	ulimit -n 10240
+
+	## asdf
+	export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
+	[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+	source $(brew --prefix asdf)/libexec/asdf.sh
+else
+	# Placeholder
 fi
 
 # fasd
 # ------------------------
 
 if command -v fasd 1>/dev/null 2>&1; then
+	fasd_cd() {
+		if [ $# -le 1 ]; then
+			fasd "$@"
+		else
+			local _fasd_ret="$(fasd -e 'printf %s' "$@")"
+			[ -z "$_fasd_ret" ] && return
+			[ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
+		fi
+	}
 
-  alias \
-    f='fasd -f' \
-    s='cmd-split' \
-    j='fasd_cd -d' \
-    v='fasd -f -e nvim'
+	alias \
+		f='fasd -f' \
+		s='cmd-split' \
+		j='fasd_cd -d' \
+		v='fasd -f -e nvim'
 
-  export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
-
-  eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
-
-  fasd_cd() {
-    if [ $# -le 1 ]; then
-      fasd "$@"
-    else
-      local _fasd_ret="$(fasd -e 'printf %s' "$@")"
-      [ -z "$_fasd_ret" ] && return
-      [ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
-    fi
-  }
-
+	export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
+	eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
 fi
 
 # FZF
 # ------------------------
 
+export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
+
 if command -v fzf 1>/dev/null; then
-
-  fzf_config="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh"
-  fzf_git_functions="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf-git.zsh"
-
-  [ -f "$fzf_config" ] && source "$fzf_config"
-  [ -f "$fzf_git_functions" ] && source "$fzf_git_functions"
-
+	fzf_config="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh"
+	fzf_git_functions="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf-git.zsh"
+	[ -f "$fzf_config" ] && source "$fzf_config"
+	[ -f "$fzf_git_functions" ] && source "$fzf_git_functions"
 fi
 
-# Fast syntax highlighting
+# Syntax highlighting
 # ------------------------
 
-fsh_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/fsh"
-fsh_plugin="$fsh_cache_dir/fast-syntax-highlighting.plugin.zsh"
-
-[ -d "$fsh_cache_dir" ] || git clone https://github.com/zdharma/fast-syntax-highlighting "$fsh_cache"
+fsh_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zsh-syntax-highlighting"
+fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
+[ -d "$fsh_cache_dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$fsh_cache_dir"
 [ -f "$fsh_plugin" ] && source "$fsh_plugin"
 
 # Direnv
