@@ -38,14 +38,11 @@ SAVEHIST=10000
 HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
 
 export KUBECONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/kube/config"
-export NPM_CONFIG_GLOBALCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/npm/.npmrc"
 
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 
 export GNUPGHOME="${XDG_CACHE_HOME:-$HOME/.cache}/gnupg"
-export YARN_CACHE_FOLDER="${XDG_CACHE_HOME:-$HOME/.cache}/yarn"
-export NPM_CACHE_LOCATION="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 bindkey -e
