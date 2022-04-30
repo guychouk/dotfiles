@@ -6,6 +6,6 @@
 
 stern --color always --template '{{printf "%s\n" .Message}}' $@ \
 	| sed -e 's/^{/'$(printf "\x1e")'{/' \
-	| jq --seq -r '.messageData.message' \
+	| jq --seq -rc '. as $in | try (.messageData.message) catch $in' \
 	| sed 's,.*,\x1B[32mLog:\x1B[0m &,' \
-	| xargs printf "%s\n"
+	| grep -v "health"
