@@ -1,4 +1,0 @@
-#!/bin/zsh
-
-tmux new-window -c "${ZETZ_PATH}" "zsh -c nvim"
-tmux split-window -h "zsh -c -l zetz"
