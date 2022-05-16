@@ -1,0 +1,9 @@
+#!/bin/bash
+
+REPL=`ls $HOME/repls | fzf`
+
+if [[ ! -z $REPL ]]; then
+	ln -s $HOME/repls/$REPL $REPL
+	nvim $REPL
+	rm $REPL
+fi
