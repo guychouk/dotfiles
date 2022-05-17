@@ -66,8 +66,10 @@ setopt hist_expire_dups_first       # expire duplicate entries first when trimmi
 alias \
 	g=git \
 	n=nnn \
+	d=docker \
 	k=kubectl \
 	nv=nvim \
+	dcc=docker-compose \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
@@ -110,11 +112,17 @@ if command -v fasd 1>/dev/null 2>&1; then
 		fi
 	}
 
+	fasd_fzf() {
+		local _files=`fasd -fs "$@" | awk '{print $2}' | fzf -m`
+		[ ! -z "$_files" ] && nvim $(echo $_files)
+	}
+
 	alias \
 		f='fasd -f' \
 		s='cmd-split' \
 		j='fasd_cd -d' \
-		v='fasd -f -e nvim'
+		v='fasd -f -e nvim' \
+		ff='fasd_fzf'
 
 	export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
 	eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
