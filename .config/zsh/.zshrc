@@ -143,4 +143,13 @@ fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
 # Direnv
 # ------------------------
 
-command -v direnv 1>/dev/null && eval "$(direnv hook zsh)"
+if which direnv &> /dev/null; then
+  eval "$(direnv hook zsh)"
+
+  # This silences direnv
+  # Worth noting that this is dangerous since you might forget it exists.
+  # But I'm ok with that :)
+  _direnv_hook() {
+    eval "$(direnv export zsh 2> >( egrep -v -e '^direnv: (loading|export|unloading)' ))"
+  };
+fi
