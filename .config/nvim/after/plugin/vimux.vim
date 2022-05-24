@@ -13,8 +13,8 @@ endfunction
 function! VimuxSlime()
 	let lines = s:get_visual_selection()
 	for line in lines
-		sleep 100m
-		call VimuxRunCommand(trim(line))
+		sleep 50m
+		call VimuxRunCommand(line)
 	endfor
 endfunction
 
