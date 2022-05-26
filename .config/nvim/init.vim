@@ -23,6 +23,7 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
 Plug 'ruanyl/vim-gh-line'
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'preservim/vimux'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
@@ -67,36 +68,16 @@ set updatetime=300                                         " Set CursorHold dela
 "        Colors         "
 """""""""""""""""""""""""
 
-" Allow color schemes to do bright colors without forcing bold.
-if &t_Co == 8 && $TERM !~# '^Eterm'
-	set t_Co=16
-endif
-
 set termguicolors
-colorscheme ayu
+set background=dark
+colorscheme PaperColor
 
 " Remove background
-hi Normal     guibg=none
-hi LineNr     guibg=none
-hi SignColumn guibg=none
-
-let g:guibg_color = '#212121'
-
-" User1:        Default color
-" User2:        Inactive pane
-" User3:        Insert Mode
-" User4:        Command Mode
-" User5:        Visual Mode
-" Statusline:   Active Statusline
-" StatuslineNC: Inactive Statusline
-
-exe 'hi User1 guifg=orange guibg='        . g:guibg_color
-exe 'hi User2 guifg=grey30 guibg='        . g:guibg_color
-exe 'hi User3 guifg=violet guibg='        . g:guibg_color
-exe 'hi User4 guifg=lime   guibg='        . g:guibg_color
-exe 'hi User5 guifg=yellow guibg='        . g:guibg_color
-exe 'hi StatusLine   guifg=white  guibg=' . g:guibg_color
-exe 'hi StatusLineNC guifg=grey30 guibg=' . g:guibg_color
+hi Normal              guibg=none
+hi LineNr              guibg=none
+hi SignColumn          guibg=none
+hi ALEErrorSign        guibg=none guifg=red
+hi ALEWarningSign      guibg=none guifg=orange
 
 """""""""""""""""""""""""
 "        Globals        "
