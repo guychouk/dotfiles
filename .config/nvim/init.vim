@@ -261,7 +261,7 @@ function! NetrwMapping()
 	" l to open
 	nmap <buffer> l <CR>
 	" abort Netrw
-	nmap <buffer> <C-[> <C-^>
+	nmap <buffer> <ESC> <C-^>
 	" <TAB> marks a file
 	nmap <buffer> <TAB> mf
 	" <S-TAB> unmarks a file
