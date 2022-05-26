@@ -52,8 +52,10 @@ set list                                                   " Show whitespace cha
 set listchars=tab:┊·,trail:·,extends:>,precedes:<,nbsp:+   " Set default whitespace characters
 set nohlsearch                                             " Disable search highlight
 set noshowmode                                             " Don't show current mode in status line
+set noshowcmd                                              " Don't show current cmd related info
 set noswapfile                                             " No swap files
 set nowrap                                                 " Disable line wrapping
+set noruler                                                " Disable ruler
 set number                                                 " Show current line number and relative line numbers
 set relativenumber                                         " Show relative line numbers
 set scrolloff=1                                            " Minimum number of lines above and below cursor
