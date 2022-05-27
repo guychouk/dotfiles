@@ -13,15 +13,14 @@ call plug#begin(split(&rtp, ',')[0] . '/plugins')
 Plug 'airblade/vim-gitgutter'
 Plug 'airblade/vim-rooter'
 Plug 'ap/vim-css-color'
-Plug 'ayu-theme/ayu-vim'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'dense-analysis/ale'
-Plug 'godlygeek/tabular'
 Plug 'hrsh7th/vim-vsnip'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'justinmk/vim-sneak'
+Plug 'junegunn/vim-easy-align'
 Plug 'ruanyl/vim-gh-line'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'preservim/vimux'
@@ -87,7 +86,7 @@ hi ALEWarningSign      guibg=none guifg=orange
 
 " FZF
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
-let g:fzf_layout = { 'down': '60%' }
+let g:fzf_layout = { 'down': '40%' }
 
 " ALE
 let g:ale_sign_error = '•'
@@ -98,15 +97,11 @@ let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
 let g:ale_linters_explicit = 1
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_error_str = 'ERR'
+let g:ale_echo_msg_warning_str = 'WARN'
 let g:ale_echo_msg_format = '[%linter%][%severity%][%code%] %s'
-let g:ale_cpp_cc_executable = 'g++'
-let g:ale_cpp_cc_options = '-std=c++11 -Iinclude'
 let g:ale_linters = { 
-			\ 'cs': ['csc'],
 			\ 'go': ['gopls'],
-			\ 'cpp': ['g++'],
 			\ 'javascript': ['tsserver', 'eslint'],
 			\ 'javascriptreact': ['tsserver', 'eslint'],
 			\ 'typescript': ['tsserver', 'eslint'],
@@ -114,11 +109,9 @@ let g:ale_linters = {
 			\}
 let g:ale_fixers = { 
 			\ 'go': ['gofmt'],
-			\ 'cs': ['dotnet-format'],
 			\ 'scala': ['scalafmt'],
 			\ 'svelte': ['prettier'],
 			\ 'yaml': ['prettier'],
-			\ 'cpp': ['clang-format'],
 			\ 'javascript': ['prettier', 'eslint'],
 			\ 'javascriptreact': ['prettier', 'eslint'],
 			\ 'typescript': ['prettier', 'eslint'],
@@ -162,56 +155,54 @@ inoremap <C-W> <C-G>u<C-W>
 " Break undo before deleting a line
 inoremap <C-U> <C-G>u<C-U>
 
-nmap          R                    :%s//g<Left><Left>
-nmap <silent> <f9>                 :Helptags<CR>
-nmap <silent> ]g                   <plug>(ale_next)
-nmap <silent> [g                   <plug>(ale_previous)
-nmap <silent> gd                   <plug>(ale_go_to_definition)
-nmap <silent> [qd                  <plug>(QuickfixRemoveEntry)
-nmap <silent> K                    <plug>(ShowDocumentation)
-nmap <silent> yoa                  :ALEToggleBuffer<CR>
-nmap <silent> <leader>g            :Git<CR>
-nmap <silent> <leader>w            :w<CR>
-nmap <silent> <leader>q            :q<CR>
-nmap <silent> <leader>j            :sp<CR>
-nmap <silent> <leader>l            :vsp<CR>
-nmap <silent> <leader>/            :Rg<CR>
-nmap <silent> <leader>o            :Files<CR>
-nmap <silent> <leader>.            :GFiles<CR>
-nmap <silent> <leader>b            :Buffers<CR>
-nmap <silent> <leader>p            :Commands<CR>
-nmap <silent> <leader>rn           <plug>(ale_rename)
-nmap <silent> <leader>hh           <plug>(ToggleStatusline)
-nmap <silent> <leader>yf           :let @*=expand("%:p")<CR>
-nmap <silent> <leader>ec           :e   ~/.config/nvim/init.vim<CR>
-nmap <silent> <leader>so           :so  ~/.config/nvim/init.vim<CR>
-nmap <silent> <leader>=h           :exe "resize +5"<CR>
-nmap <silent> <leader>-h           :exe "resize -5"<CR>
-nmap <silent> <leader>=v           :exe "vertical resize +5"<CR>
-nmap <silent> <leader>-v           :exe "vertical resize -5"<CR>
-nmap <silent> <leader>z            <plug>(ZoomToggle)
-nmap <silent> <leader><tab>        <plug>(fzf-maps-n)
+nmap          R              :%s//g<Left><Left>
+nmap <silent> ]g             <plug>(ale_next)
+nmap <silent> [g             <plug>(ale_previous)
+nmap <silent> gd             <plug>(ale_go_to_definition)
+nmap <silent> K              <plug>(ShowDocumentation)
+nmap <silent> yoa            :ALEToggleBuffer<CR>
+nmap <silent> yoz            <plug>(ZoomToggle)
+nmap <silent> <leader>b      :Buffers<CR>
+nmap <silent> <leader>g      :Git<CR>
+nmap <silent> <leader>j      :sp<CR>
+nmap <silent> <leader>l      :vsp<CR>
+nmap <silent> <leader>o      :Files<CR>
+nmap <silent> <leader>p      :Commands<CR>
+nmap <silent> <leader>q      :q<CR>
+nmap <silent> <leader>t      :Helptags<CR>
+nmap <silent> <leader>w      :w<CR>
+nmap <silent> <leader>/      :Rg<CR>
+nmap <silent> <leader>.      :GFiles<CR>
+nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
+nmap <silent> <leader>rn     <plug>(ale_rename)
+nmap <silent> <leader>hh     <plug>(ToggleStatusline)
+nmap <silent> <leader>yf     :let @*=expand("%:p")<CR>
+nmap <silent> <leader>ec     :e   ~/.config/nvim/init.vim<CR>
+nmap <silent> <leader>so     :so  ~/.config/nvim/init.vim<CR>
+nmap <silent> <leader>=h     :exe "resize +5"<CR>
+nmap <silent> <leader>-h     :exe "resize -5"<CR>
+nmap <silent> <leader>=v     :exe "vertical resize +5"<CR>
+nmap <silent> <leader>-v     :exe "vertical resize -5"<CR>
 
-omap <silent> <leader><tab>        <plug>(fzf-maps-o)
+omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
-xmap <silent> ga                   <plug>(EasyAlign)
-xmap <silent> <leader>/            <plug>(SearchRange)
-xmap <silent> <leader><tab>        <plug>(fzf-maps-x)
+xmap <silent> <leader>/      <plug>(SearchRange)
+xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
 
-imap <silent> <c-x><c-k>           <plug>(fzf-complete-word)
-imap <silent> <c-x><c-l>           <plug>(fzf-complete-line)
-imap <silent> <c-x><c-i>           <plug>(fzf-complete-snippet)
+imap <silent> <c-x><c-k>     <plug>(fzf-complete-word)
+imap <silent> <c-x><c-l>     <plug>(fzf-complete-line)
+imap <silent> <c-x><c-i>     <plug>(fzf-complete-snippet)
 
-imap <silent> <expr> <C-j>         vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
-imap <silent> <expr> <C-l>         vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
+imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
+imap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
 
-imap <silent> <expr> <Tab>         vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : '<plug>(SmartTabComplete)')
-imap <silent> <expr> <S-Tab>       vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<C-h>')
+imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : '<plug>(SmartTabComplete)')
+imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<C-h>')
 
-smap <silent> <expr> <C-j>         vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
-smap <silent> <expr> <C-l>         vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <silent> <expr> <Tab>         vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : '<Tab>'
-smap <silent> <expr> <S-Tab>       vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : '<S-Tab>'
+smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
+smap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
+smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : '<Tab>'
+smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 """""""""""""""""""""""""
 "       Commands        "
@@ -219,14 +210,14 @@ smap <silent> <expr> <S-Tab>       vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)
 
 command! Gqf GitGutterQuickFix | copen
 
+autocmd FileType           gitcommit,gitrebase,gitconfig set bufhidden=delete
+autocmd BufNewFile,BufRead init.vim                      let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
 function! s:empty_echo(t)
 	if mode() ==# 'n'
 		echon ''
 	endif
 endfunction
-
-autocmd FileType           gitcommit,gitrebase,gitconfig set bufhidden=delete
-autocmd BufNewFile,BufRead init.vim                      let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 augroup cmd_msg_cls
 	autocmd!
@@ -247,8 +238,6 @@ augroup END
 " Keep the current directory and the browsing directory synced.
 " This helps you avoid the move files error.
 let g:netrw_keepdir = 0
-" Netrw split size
-let g:netrw_winsize = 24
 " Enable recursive copy of directories
 let g:netrw_localcopydircmd = 'cp -r'
 
@@ -260,7 +249,7 @@ function! NetrwMapping()
 	nmap <buffer> h -
 	" l to open
 	nmap <buffer> l <CR>
-	" abort Netrw
+	" close netrw and return to previous buffer
 	nmap <buffer> <ESC> <C-^>
 	" <TAB> marks a file
 	nmap <buffer> <TAB> mf
@@ -285,7 +274,7 @@ function! NetrwMapping()
 	" run command on file
 	nmap <buffer> f; mx
 	" remove recursively
-	nmap <buffer> FF :call NetrwRemoveRecursive()<CR>
+	nmap <buffer> FD :call NetrwRemoveRecursive()<CR>
 endfunction
 
 augroup netrw_mapping
