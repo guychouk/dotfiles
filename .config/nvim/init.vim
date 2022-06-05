@@ -19,11 +19,13 @@ Plug 'hrsh7th/vim-vsnip'
 Plug 'instant-markdown/vim-instant-markdown', {'for': 'markdown', 'do': 'yarn install'}
 Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
-Plug 'justinmk/vim-sneak'
 Plug 'junegunn/vim-easy-align'
+Plug 'justinmk/vim-sneak'
 Plug 'ruanyl/vim-gh-line'
+Plug 'mattn/emmet-vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'preservim/vimux'
+Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
@@ -141,6 +143,10 @@ let g:indentLine_fileType = ['yaml', 'yml']
 
 " GH line
 let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
+
+" Emmet
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
 
 """""""""""""""""""""""
 "      Mappings       "
