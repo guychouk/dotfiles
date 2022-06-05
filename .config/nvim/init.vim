@@ -51,9 +51,9 @@ set history=1000                                           " Set command history
 set ignorecase                                             " Ignore case of characters in search patterns
 set list                                                   " Show whitespace characters
 set listchars=tab:┊·,trail:·,extends:>,precedes:<,nbsp:+   " Set default whitespace characters
-set nohlsearch                                             " Disable search highlight
-set noshowmode                                             " Don't show current mode in status line
-set noshowcmd                                              " Don't show current cmd related info
+set nohlsearch                                             " Disable search highlighting
+set noshowmode                                             " Don't show current mode in last line
+set noshowcmd                                              " Don't show information relating to current mode
 set noswapfile                                             " No swap files
 set nowrap                                                 " Disable line wrapping
 set noruler                                                " Disable ruler
@@ -63,7 +63,7 @@ set scrolloff=1                                            " Minimum number of l
 set shortmess+=I                                           " Supress intro message
 set shortmess+=c                                           " Suppress ins-completion-menu messages
 set signcolumn=yes                                         " Always show signcolumn
-set smartcase                                              " Override 'ignorecase' if the search pattern contains uppercase characters
+set smartcase                                              " Override 'ignorecase' if search pattern contains uppercase characters
 set statusline=%!StatusLine(1)                             " Generate statusline
 set updatetime=300                                         " Set CursorHold delay time
 
@@ -75,7 +75,7 @@ set termguicolors
 set background=dark
 colorscheme PaperColor
 
-" Remove background
+" Remove background from all highlight groups
 hi Normal              guibg=none
 hi LineNr              guibg=none
 hi SignColumn          guibg=none
@@ -193,18 +193,17 @@ nmap <silent> <leader>-v     :exe "vertical resize -5"<CR>
 omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
 xmap <silent> <leader>/      <plug>(SearchRange)
+xmap <silent> <leader>ea     <plug>(EasyAlign)
 xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
 
 imap <silent> <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent> <c-x><c-l>     <plug>(fzf-complete-line)
-imap <silent> <c-x><c-i>     <plug>(fzf-complete-snippet)
+imap <silent> <c-x><c-x>     <plug>(fzf-complete-snippet)
 
 imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
 imap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
-
 imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : '<plug>(SmartTabComplete)')
 imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<C-h>')
-
 smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
 smap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : '<Tab>'
