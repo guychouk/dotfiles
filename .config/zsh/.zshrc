@@ -158,7 +158,7 @@ if which direnv &> /dev/null; then
   # Worth noting that this is dangerous since you might forget it exists.
   # But I'm ok with that :)
   _direnv_hook() {
-    eval "$(direnv export zsh 2> >( egrep -v -e '^direnv: (loading|export|unloading)' ))"
+    eval "$(direnv export zsh 2> >( egrep -v -e 'direnv: (loading|export|unloading|error)' ))"
   };
 fi
 
