@@ -14,7 +14,7 @@ let g:statusline_mode_map = {
 			\ 's'  : 'SELECT',  'S'  : 'SELECT',  "<\C-S>" : 'SELECT',
 			\ }
 
-function! StatusLine(active)
+function! statusline#build(active)
 	let l:icon = a:active ? '(•◡•)' : '(ᴗ˳ᴗ)'
 	let l:filetype = empty(&filetype) ? '?' : '%{&filetype}'
 	let l:fugitive = a:active && FugitiveHead() != '' ? '%{FugitiveHead()}' : ''
@@ -34,7 +34,7 @@ function! StatusLine(active)
 	return join(l:statusline_segments)
 endfunction
 
-function! ToggleStatusline()
+function! statusline#toggle()
 	if &laststatus == 2
 		set laststatus=0
 	else
@@ -42,4 +42,13 @@ function! ToggleStatusline()
 	endif
 endfunction
 
-nnoremap <plug>(ToggleStatusline) :call ToggleStatusline()<CR>
+augroup statusline
+	autocmd!
+	autocmd VimEnter * set statusline=%!statusline#build(1)
+	autocmd WinEnter * set statusline=%!statusline#build(1)
+	autocmd WinLeave * set statusline=%!statusline#build(0)
+augroup END
+
+nnoremap <plug>(statusline_toggle) :call statusline#toggle()<CR>
+
+command! StatusLineToggle call statusline#toggle()

@@ -19,10 +19,10 @@ function! YamlFoldText()
 	return getline(v:foldstart) . '   (level ' . v:foldlevel . ', lines ' . lines . ')'
 endfunction
 
+setlocal foldlevel=2
 setlocal foldmethod=expr
 setlocal foldexpr=YamlFolds()
 setlocal foldtext=YamlFoldText()
-setlocal foldlevel=2
 
 let b:undo_ftplugin =
 			\ exists('b:undo_ftplugin')

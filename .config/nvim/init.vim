@@ -3,9 +3,9 @@
 """""""""""""""""""""""""
 
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
-	echo "Downloading junegunn/vim-plug to manage plugins..."
+	echo 'Downloading junegunn/vim-plug to manage plugins...'
 	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
-	silent !curl "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim" > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
+	silent !curl 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
 	autocmd VimEnter * PlugInstall
 endif
 
@@ -21,11 +21,12 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'justinmk/vim-sneak'
-Plug 'ruanyl/vim-gh-line'
 Plug 'mattn/emmet-vim'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'preservim/vimux'
+Plug 'ruanyl/vim-gh-line'
 Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-characterize'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
@@ -34,6 +35,8 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-jdaddy'
+Plug 'tpope/vim-speeddating'
 Plug 'Yggdroot/indentLine'
 call plug#end()
 
@@ -45,10 +48,12 @@ syntax on                                                  " Syntax highlighting
 filetype plugin indent on                                  " Turn on filetype detections
 
 set clipboard=unnamedplus                                  " Enables OS clipboard support
+set completeopt-=preview                                   " Disable preview for completion selection
 set encoding=utf-8                                         " Encoding for files
 set foldmethod=syntax                                      " Set foldmethod to syntax
 set history=1000                                           " Set command history to 1000
 set ignorecase                                             " Ignore case of characters in search patterns
+set laststatus=0                                           " Don't show statusline by default
 set list                                                   " Show whitespace characters
 set listchars=tab:┊·,trail:·,extends:>,precedes:<,nbsp:+   " Set default whitespace characters
 set nohlsearch                                             " Disable search highlighting
@@ -57,14 +62,13 @@ set noshowcmd                                              " Don't show informat
 set noswapfile                                             " No swap files
 set nowrap                                                 " Disable line wrapping
 set noruler                                                " Disable ruler
-set number                                                 " Show current line number and relative line numbers
-set relativenumber                                         " Show relative line numbers
+set nonumber                                               " Don't show current line number and relative line numbers
+set norelativenumber                                       " Don't show relative line numbers
 set scrolloff=1                                            " Minimum number of lines above and below cursor
-set shortmess+=I                                           " Supress intro message
+set shortmess+=I                                           " Suppress intro message
 set shortmess+=c                                           " Suppress ins-completion-menu messages
 set signcolumn=yes                                         " Always show signcolumn
 set smartcase                                              " Override 'ignorecase' if search pattern contains uppercase characters
-set statusline=%!StatusLine(1)                             " Generate statusline
 set updatetime=300                                         " Set CursorHold delay time
 
 """""""""""""""""""""""""
@@ -87,14 +91,16 @@ hi ALEWarningSign      guibg=none guifg=orange
 """""""""""""""""""""""""
 
 " FZF
-let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
-let g:fzf_layout = { 'down': '40%' }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
+let g:fzf_preview_window = ['down:50%:hidden', 'ctrl-]']
+
+" set options only for the fzf terminal buffer
+autocmd! FileType fzf
+autocmd  FileType fzf set nonumber norelativenumber
 
 " ALE
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
-let g:ale_completion_enabled = 1
-let g:ale_completion_autoimport = 1
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 let g:ale_lint_on_insert_leave = 0
@@ -102,14 +108,14 @@ let g:ale_linters_explicit = 1
 let g:ale_echo_msg_error_str = 'ERR'
 let g:ale_echo_msg_warning_str = 'WARN'
 let g:ale_echo_msg_format = '[%linter%][%severity%][%code%] %s'
-let g:ale_linters = { 
+let g:ale_linters = {
 			\ 'go': ['gopls'],
 			\ 'javascript': ['tsserver', 'eslint'],
 			\ 'javascriptreact': ['tsserver', 'eslint'],
 			\ 'typescript': ['tsserver', 'eslint'],
 			\ 'typescriptreact': ['tsserver', 'eslint'],
 			\}
-let g:ale_fixers = { 
+let g:ale_fixers = {
 			\ 'go': ['gofmt'],
 			\ 'scala': ['scalafmt'],
 			\ 'svelte': ['prettier'],
@@ -133,28 +139,96 @@ let g:rooter_change_directory_for_non_project_files = 'current'
 let g:instant_markdown_autostart = 0
 
 " VSnip
-let g:vsnip_filetypes = {}
-let g:vsnip_filetypes.javascriptreact = ['javascript']
-let g:vsnip_filetypes.typescriptreact = ['typescript']
+let g:vsnip_filetypes = {
+			\ 'typescript': ['javascript'],
+			\ 'javascriptreact': ['javascript'],
+			\ 'typescriptreact': ['javascript'],
+			\}
 let g:vsnip_snippet_dir = system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/snippets"')
 
 " IndentLine
 let g:indentLine_fileType = ['yaml', 'yml']
 
 " GH line
+let g:gh_repo_map = '<leader><leader>go'
+let g:gh_line_map_default = 0
+let g:gh_line_blame_map_default = 0
 let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 
 " Emmet
 let g:user_emmet_install_global = 0
-autocmd FileType html,css EmmetInstall
+
+"""""""""""""""""""""""
+"      Functions      "
+"""""""""""""""""""""""
+
+function! s:tab_completion()
+	let line = getline('.')
+	let substr = strpart(line, 0, col('.') - 1)
+	let is_preceded_by_dot = match(substr, '\.') != -1
+	let is_cursor_on_first_column = col('.') == 1
+	let has_preceding_whitespace = line[col('.') - 2]  =~# '\s'
+	if (is_cursor_on_first_column || has_preceding_whitespace)
+		return "\<Tab>"
+	elseif (is_preceded_by_dot)
+		return "\<C-X>\<C-O>"
+	else
+		return "\<C-N>"
+	endif
+endfunction
+
+function! s:zoom_pane_toggle()
+	if exists('t:zoomed') && t:zoomed
+		execute t:zoom_winrestcmd
+		let t:zoomed = 0
+	else
+		let t:zoom_winrestcmd = winrestcmd()
+		resize
+		vertical resize
+		let t:zoomed = 1
+	endif
+endfunction
+
+function! s:vim_help_cword()
+	if (index(['vim','help'], &filetype) >= 0)
+		exe 'h' expand('<cword>')
+	endif
+endfunction
+
+function! s:qf_remove_entry()
+	let curqfidx = getqflist({ 'idx': 1 }).idx - 1
+	let qfall = getqflist()
+	call remove(qfall, curqfidx)
+	call setqflist(qfall, 'r')
+	if len(qfall) == 0
+		silent ccl
+		return
+	endif
+endfunction
+
+function! s:search_range(type, ...)
+	let sel_save = &selection
+	let &selection = 'inclusive'
+	let reg_save = @@
+	if a:0
+		silent exe 'normal! gvy'
+	elseif a:type == 'line'
+		silent exe "normal! '[V']y"
+	else
+		silent exe "normal! `[v`]y"
+	endif
+	exe 'Rg' @@
+	let &selection = sel_save
+	let @@ = reg_save
+endfunction
 
 """""""""""""""""""""""
 "      Mappings       "
 """""""""""""""""""""""
 
 " Make <SPACE> the leader
-let mapleader = " "
-let maplocalleader = " "
+let mapleader = ' '
+let maplocalleader = ' '
 
 " Break undo before deleting a word
 inoremap <C-W> <C-G>u<C-W>
@@ -162,12 +236,14 @@ inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
 
 nmap          R              :%s//g<Left><Left>
+nmap <silent> K              :call <SID>vim_help_cword()<CR>
 nmap <silent> ]g             <plug>(ale_next)
 nmap <silent> [g             <plug>(ale_previous)
 nmap <silent> gd             <plug>(ale_go_to_definition)
-nmap <silent> K              <plug>(ShowDocumentation)
-nmap <silent> yoa            :ALEToggleBuffer<CR>
-nmap <silent> yoz            <plug>(ZoomToggle)
+nmap <silent> yoa            <Plug>(ale_toggle_buffer)
+nmap <silent> yoz            :call <SID>zoom_pane_toggle()<CR>
+nmap <silent> <leader>/      :Rg<CR>
+nmap <silent> <leader>.      :GFiles<CR>
 nmap <silent> <leader>b      :Buffers<CR>
 nmap <silent> <leader>g      :Git<CR>
 nmap <silent> <leader>j      :sp<CR>
@@ -175,79 +251,94 @@ nmap <silent> <leader>l      :vsp<CR>
 nmap <silent> <leader>o      :Files<CR>
 nmap <silent> <leader>p      :Commands<CR>
 nmap <silent> <leader>q      :q<CR>
-nmap <silent> <leader>t      :Helptags<CR>
+nmap <silent> <leader>r      <plug>(ale_rename)
+nmap <silent> <leader>s      <plug>(statusline_toggle)
+nmap <silent> <leader>t      :BTags<CR>
 nmap <silent> <leader>w      :w<CR>
-nmap <silent> <leader>/      :Rg<CR>
-nmap <silent> <leader>.      :GFiles<CR>
-nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
-nmap <silent> <leader>rn     <plug>(ale_rename)
-nmap <silent> <leader>hh     <plug>(ToggleStatusline)
-nmap <silent> <leader>yf     :let @*=expand("%:p")<CR>
-nmap <silent> <leader>ec     :e   ~/.config/nvim/init.vim<CR>
-nmap <silent> <leader>so     :so  ~/.config/nvim/init.vim<CR>
+nmap <silent> <leader>ec     :e ~/.config/nvim/init.vim<CR>
 nmap <silent> <leader>=h     :exe "resize +5"<CR>
 nmap <silent> <leader>-h     :exe "resize -5"<CR>
 nmap <silent> <leader>=v     :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v     :exe "vertical resize -5"<CR>
 
+xmap <silent> <leader>ea     <plug>(EasyAlign)
+xmap <silent> <leader>/      :<c-u>call <SID>search_range(visualmode(), 1)<CR>
+
+" Fzf: list mappings for different modes
+nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
+xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
 omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
-xmap <silent> <leader>/      <plug>(SearchRange)
-xmap <silent> <leader>ea     <plug>(EasyAlign)
-xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
-
+" Fzf: completions
 imap <silent> <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent> <c-x><c-l>     <plug>(fzf-complete-line)
-imap <silent> <c-x><c-x>     <plug>(fzf-complete-snippet)
+imap <silent> <c-x><c-f>     <plug>(fzf-complete-path)
+imap <silent> <c-x><c-x>     <plug>(custom-fzf-complete-snippet)
 
+" VSnip: Expand
 imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
-imap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
-imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : '<plug>(SmartTabComplete)')
-imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<C-h>')
 smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
+
+" VSnip: Expand or Jump
+imap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
 smap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : '<Tab>'
-smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : '<S-Tab>'
+
+" VSnip: Jump forward or backward
+imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<S-Tab>')
+smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<S-Tab>')
+
+""""""""""""""""""""""""""""""""""
+"       Filetype Settings        "
+""""""""""""""""""""""""""""""""""
+
+autocmd FileType html,css
+			\ setlocal shiftwidth=2
+			\| EmmetInstall
+autocmd FileType json
+			\ setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=1
+autocmd FileType javascript,javascriptreact
+			\ setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=99
+			\| setlocal makeprg=./node_modules/.bin/eslint
+			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
+			\| setlocal omnifunc=ale#completion#OmniFunc
+autocmd FileType typescript,typescriptreact
+			\ setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=99
+			\| setlocal makeprg=./node_modules/.bin/tsc
+			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
+			\| setlocal omnifunc=ale#completion#OmniFunc
+autocmd FileType repl
+			\ vmap <buffer> <silent> <enter> <plug>(VimuxSlime)
+			\| nmap <buffer> <silent> <enter> <plug>(VimuxSlimeLine)
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 """""""""""""""""""""""""
 "       Commands        "
 """""""""""""""""""""""""
 
 command! Gqf GitGutterQuickFix | copen
-
-autocmd FileType           gitcommit,gitrebase,gitconfig set bufhidden=delete
-autocmd BufNewFile,BufRead init.vim                      let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-function! s:empty_echo(t)
-	if mode() ==# 'n'
-		echon ''
-	endif
-endfunction
-
-augroup cmd_msg_cls
-	autocmd!
-	autocmd CmdlineLeave * call timer_start(1500, funcref('s:empty_echo'))
-augroup END
-
-augroup statusline_commands
-	autocmd!
-	autocmd VimEnter * call ToggleStatusline()
-	autocmd WinEnter * setlocal statusline=%!StatusLine(1)
-	autocmd WinLeave * setlocal statusline=%!StatusLine(0)
-augroup END
+command! Aqf ALEPopulateQuickfix | copen
 
 """""""""""""""""""""""""
 "        Netrw          "
 """""""""""""""""""""""""
 
-" Keep the current directory and the browsing directory synced.
-" This helps you avoid the move files error.
-let g:netrw_keepdir = 0
 " Enable recursive copy of directories
 let g:netrw_localcopydircmd = 'cp -r'
 
-" Highlight marked files in the same way search matches are.
-hi! link netrwMarkFile Search 
+" Highlight marked files the same as search matches
+hi! link netrwMarkFile Search
 
 function! NetrwMapping()
 	" VinegarUp using h
@@ -266,23 +357,19 @@ function! NetrwMapping()
 	nmap <buffer> ff %:w<CR>:buffer #<CR>
 	" rename / move
 	nmap <buffer> fr R
+	" set target
+	nmap <buffer> ft mt
 	" copy to target
 	nmap <buffer> fc mc
 	" set target and copy
 	nmap <buffer> fC mtmc
-	" set target
-	nmap <buffer> ft mt
 	" move to target
 	nmap <buffer> fx mm
 	" set target and move
 	nmap <buffer> fX mtmm
-	" run command on file
-	nmap <buffer> f; mx
-	" remove recursively
-	nmap <buffer> FD :call NetrwRemoveRecursive()<CR>
 endfunction
 
 augroup netrw_mapping
-  autocmd!
-  autocmd filetype netrw call NetrwMapping()
+	autocmd!
+	autocmd filetype netrw call NetrwMapping()
 augroup END

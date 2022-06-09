@@ -7,4 +7,4 @@ function! FzfCompleteSnippet(...)
   \ 'reducer': { lines -> trim(split(lines[0], ':')[1]) } }))
 endfunction
 
-inoremap <expr> <plug>(fzf-complete-snippet) FzfCompleteSnippet()
+inoremap <expr> <plug>(custom-fzf-complete-snippet) FzfCompleteSnippet()

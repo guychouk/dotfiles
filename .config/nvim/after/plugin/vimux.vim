@@ -1,3 +1,5 @@
+" Slime-like plugin built on top of Vimux
+
 function! s:get_visual_selection()
 	let [line_start, column_start] = getpos("'<")[1:2]
 	let [line_end, column_end] = getpos("'>")[1:2]
@@ -26,5 +28,5 @@ function! VimuxSlimeLine()
 	call setreg('"', rv, rt)
 endfunction
 
-vnoremap <plug>(VimuxSlime) :<c-u>call VimuxSlime()<CR>
+vnoremap <plug>(VimuxSlime)     :<c-u>call VimuxSlime()<CR>
 nnoremap <plug>(VimuxSlimeLine) :call VimuxSlimeLine()<CR>
