@@ -172,6 +172,8 @@ function! s:tab_completion()
 		return "\<Tab>"
 	elseif (is_preceded_by_dot)
 		return "\<C-X>\<C-O>"
+	elseif (vsnip#expandable())
+		return "\<C-j>"
 	else
 		return "\<C-N>"
 	endif
@@ -276,18 +278,14 @@ imap <silent> <c-x><c-f>     <plug>(fzf-complete-path)
 imap <silent> <c-x><c-x>     <plug>(custom-fzf-complete-snippet)
 
 " VSnip: Expand
-imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
-smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'         : '<C-j>'
-
-" VSnip: Expand or Jump
-imap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
-smap <silent> <expr> <C-l>   vsnip#available(1) ? '<plug>(vsnip-expand-or-jump)' : '<C-l>'
+imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
+smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 
 " VSnip: Jump forward or backward
-imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : <SID>tab_completion())
-smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)'      : (pumvisible() ? '<C-n>' : <SID>tab_completion())
-imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<S-Tab>')
-smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)'      : (pumvisible() ? '<C-p>' : '<S-Tab>')
+imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
+smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
 """"""""""""""""""""""""""""""""""
 "       Filetype Settings        "
