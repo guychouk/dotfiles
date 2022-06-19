@@ -21,7 +21,9 @@ if [[ $# -eq 0 ]] ; then
 	exit 0
 fi
 
-case "$1" in
+ISO_OR_NAME=$1
+
+case "$ISO_OR_NAME" in
 	-h|-help)
 		echo ""
 		usage
@@ -280,10 +282,9 @@ case "$1" in
 			ZW@Zimbabwe
 			EOF
 
-			echo "$COUNTRIES" | awk -F@ "\$1 ~ /$1/ {print \$2}" 
-			echo "$COUNTRIES" | awk -F@ "\$2 ~ /$1/ {print \$1}" 
+			echo "$COUNTRIES" | awk -F@ -v iso=1 "\$iso ~ /$ISO_OR_NAME/ {print \$2}"
+			echo "$COUNTRIES" | awk -F@ -v fullname=2 "\$fullname ~ /$ISO_OR_NAME/ {print \$1}"
 
 			exit 0
 			;;
 	esac
-

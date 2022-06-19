@@ -1,8 +1,0 @@
-#!/bin/sh
-
-# Requires the html-xml-utils package.
-#
-# Here is the original URL used to test this on:
-# http://www.ghibli.jp/info/013251/
-
-curl -s $1 | hxwls | grep -E "(jpg|png)" | grep -v thumb | xargs -I{} curl -s -O {}

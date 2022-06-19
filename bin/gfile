@@ -23,6 +23,9 @@ if [[ $# -eq 0 ]] ; then
 	exit 0
 fi
 
+REPO_NAME=$1
+FILE_PATH=$2
+
 case "$1" in
 	-h|-help)
 		echo ""
@@ -33,7 +36,7 @@ case "$1" in
 		curl -XGET \
 			-H "Authorization: token $(gh config get -h github.com oauth_token)" \
 			-H "Accept: application/vnd.github.v3.raw" \
-			'https://api.github.com/repos/'$1'/contents/'$2
+			'https://api.github.com/repos/'$REPO_NAME'/contents/'$FILE_PATH
 					exit 0
 					;;
 			esac
