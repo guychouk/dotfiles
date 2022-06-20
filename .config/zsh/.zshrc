@@ -65,6 +65,7 @@ alias \
 bindkey -e
 export KEYTIMEOUT=1
 
+bindkey "^U" backward-kill-line
 bindkey -M menuselect 'h' vi-backward-char
 bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
