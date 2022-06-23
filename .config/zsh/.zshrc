@@ -1,4 +1,8 @@
-[[ ! -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" ]] && mkdir "${XDG_CACHE_HOME:-$HOME/.cache}/zsh" 
+# Setup
+# ------------------------
+
+export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+[[ ! -d $ZSH_CACHE_DIR ]] && mkdir $ZSH_CACHE_DIR
 
 # Colors
 # ------------------------
@@ -10,6 +14,9 @@ colors
 # ------------------------
 
 parse_git_branch() {
+	case "$PWD" in
+		/net/*|/Volumes/*) return ;;
+	esac
 	git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
 	if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
 }
@@ -17,32 +24,21 @@ parse_kubectl_current_context() {
 	kube_context=$(kubectl config current-context 2> /dev/null)
 	if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
 }
-unsetopt PROMPT_SP
-setopt PROMPT_SUBST
+
 PROMPT='%F{38}%1~%F{208}$(parse_git_branch)$(parse_kubectl_current_context) λ %f'
+setopt PROMPT_SUBST
 
-# Completion
+# Variables
 # ------------------------
 
-autoload -U compinit
-zstyle ':completion:*' menu select
-zmodload zsh/complist
-compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/compdump"
-_comp_options+=(globdots)
+HISTSIZE=50000
+SAVEHIST=50000
+HISTFILE="$ZSH_CACHE_DIR/history"
 
-# ENV variables
-# ------------------------
-
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/history"
-
-# Config
+export KEYTIMEOUT=1
 export KUBECONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/kube/config"
-# Data
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
-# Cache
 export GNUPGHOME="${XDG_CACHE_HOME:-$HOME/.cache}/gnupg"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
@@ -51,7 +47,6 @@ export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 alias \
 	g=git \
-	n=nnn \
 	d=docker \
 	k=kubectl \
 	nv=nvim \
@@ -59,45 +54,73 @@ alias \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
-# Shell bindings & configuration
+# General
 # ------------------------
 
-bindkey -e
-export KEYTIMEOUT=1
+bindkey -e                          # selects keymap `emacs` & set as main keymap
+bindkey "^U" backward-kill-line     # kill backwards from cursor to the beginning of the line
 
-bindkey "^U" backward-kill-line
-bindkey -M menuselect 'h' vi-backward-char
-bindkey -M menuselect 'k' vi-up-line-or-history
-bindkey -M menuselect 'l' vi-forward-char
-bindkey -M menuselect 'j' vi-down-line-or-history
+setopt AUTO_CD                      # jump to path without using `cd`
+setopt HIST_REDUCE_BLANKS           # remove superfluous blanks from history items
+setopt HIST_IGNORE_ALL_DUPS         # remove older duplicate entries from history
+setopt INC_APPEND_HISTORY           # save commands to history as soon as they are entered
+setopt SHARE_HISTORY                # share history between different instances of the shell
+setopt EXTENDED_HISTORY             # add timestamps to history
+setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that do nothing
+setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
 
-setopt auto_cd                      # jump to path without using `cd`
-setopt hist_reduce_blanks           # remove superfluous blanks from history items
-setopt hist_ignore_all_dups         # remove older duplicate entries from history
-setopt append_history               # append history instead of overwriting
-setopt inc_append_history           # save commands to history as soon as they are entered
-setopt share_history                # share history between different instances of the shell
-setopt extended_history             # add timestamps to history
-setopt interactivecomments          # enable entering comments as commands that do nothing
-setopt hist_expire_dups_first       # expire duplicate entries first when trimming history
-
-# append to path
 path=($path "$HOME/bin" "$GOPATH/bin")
 
 # removes duplicate entries
 typeset -aU path
 
-# Mac OS specifics
 if [[ $(uname) = "Darwin" ]]; then
 	alias ll='ls -laG'
-	export LDFLAGS=-L/usr/local/opt/openssl/lib
-	export CPPFLAGS=-I/usr/local/opt/openssl/include
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-	## set max open file descriptors
 	ulimit -n 10240
 else
-	# Placeholder for Linux-based OSs
 fi
+
+# edit command line with $EDITOR
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M emacs '^e' edit-command-line
+
+# Completion
+# ------------------------
+
+zmodload -i zsh/complist
+# The following lines were added by compinstall
+
+zstyle ':completion:*' completer _complete _ignored
+zstyle ':completion:*' list-colors ''
+zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
+zstyle ':completion:*' matcher-list ''
+zstyle ':completion:*' menu select=2
+zstyle ':completion:*' select-prompt %SScrolling active: current selection at %p%s
+zstyle ':completion:*' use-compctl false
+zstyle :compinstall filename "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/.zshrc"
+
+autoload -Uz compinit
+compinit -d "$ZSH_CACHE_DIR/compdump"
+# End of lines added by compinstall
+
+# select option from completion menu using h,j,k,l
+bindkey -M menuselect 'h' vi-backward-char
+bindkey -M menuselect 'k' vi-up-line-or-history
+bindkey -M menuselect 'l' vi-forward-char
+bindkey -M menuselect 'j' vi-down-line-or-history
+
+# Syntax highlighting
+# ------------------------
+
+fsh_cache_dir="$ZSH_CACHE_DIR/zsh-syntax-highlighting"
+fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
+
+[ -d "$fsh_cache_dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$fsh_cache_dir"
+[ -f "$fsh_plugin" ] && source "$fsh_plugin"
+
+unset fsh_cache_dir fsh_plugin
 
 # FASD
 # ------------------------
@@ -113,17 +136,16 @@ if command -v fasd 1>/dev/null 2>&1; then
 		fi
 	}
 
-	fasd_fzf() {
+	fasd_fzf_edit() {
 		local _files=`fasd -fs "$@" | awk '{print $2}' | fzf -m`
-		[ ! -z "$_files" ] && nvim $(echo $_files)
+		[ ! -z "$_files" ] && $EDITOR $(echo $_files)
 	}
 
 	alias \
 		f='fasd -f' \
-		s='cmd-split' \
 		j='fasd_cd -d' \
 		v='fasd -f -e nvim' \
-		ff='fasd_fzf'
+		vf='fasd_fzf_edit'
 
 	export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
 	eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
@@ -132,42 +154,35 @@ fi
 # FZF
 # ------------------------
 
-export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
+if command -v fzf 1>/dev/null 2>&1; then
+	export FZF_DEFAULT_OPTS='--height 70% --layout=reverse'
 
-if command -v fzf 1>/dev/null; then
-	fzf_config="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf.zsh"
-	fzf_git_functions="${XDG_CONFIG_HOME:-$HOME/.config}/fzf/fzf-git.zsh"
-	[ -f "$fzf_config" ] && source "$fzf_config"
-	[ -f "$fzf_git_functions" ] && source "$fzf_git_functions"
+	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
+	source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/fzf-git"
 fi
-
-# Syntax highlighting
-# ------------------------
-
-fsh_cache_dir="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/zsh-syntax-highlighting"
-fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
-[ -d "$fsh_cache_dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$fsh_cache_dir"
-[ -f "$fsh_plugin" ] && source "$fsh_plugin"
 
 # Direnv
 # ------------------------
 
-if which direnv &> /dev/null; then
-  eval "$(direnv hook zsh)"
+if command -v direnv 1>/dev/null 2>&1; then
+	eval "$(direnv hook zsh)"
 
-  # This silences direnv
-  # Worth noting that this is dangerous since you might forget it exists.
-  # But I'm ok with that :)
-  _direnv_hook() {
-    eval "$(direnv export zsh 2> >( egrep -v -e 'direnv: (loading|export|unloading|error)' ))"
-  };
+	# completely silences direnv
+	_direnv_hook() {
+		eval "$(direnv export zsh 2> >( egrep -v -e 'direnv: (loading|export|unloading|error)' ))"
+	};
 fi
 
 # ASDF
 # ------------------------
 
-export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
-[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
-[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
-source "$ASDF_DIR/asdf.sh"
+if command -v asdf 1>/dev/null 2>&1; then
+	export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
+	export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
+
+	[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+	[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
+
+	source "$ASDF_DIR/asdf.sh"
+fi
