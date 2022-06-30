@@ -84,7 +84,7 @@ fi
 # edit command line with $EDITOR
 autoload -Uz edit-command-line
 zle -N edit-command-line
-bindkey -M emacs '^e' edit-command-line
+bindkey -M emacs '^v' edit-command-line
 
 # Completion
 # ------------------------
@@ -177,12 +177,10 @@ fi
 # ASDF
 # ------------------------
 
-if command -v asdf 1>/dev/null 2>&1; then
-	export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
-	export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
+export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 
-	[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
-	[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
+[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
 
-	source "$ASDF_DIR/asdf.sh"
-fi
+source "$ASDF_DIR/asdf.sh"
