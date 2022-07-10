@@ -1,17 +1,14 @@
-# Setup
-# ------------------------
+## Setup
 
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 [[ ! -d $ZSH_CACHE_DIR ]] && mkdir $ZSH_CACHE_DIR
 
-# Colors
-# ------------------------
+## Colors
 
 autoload -U colors
 colors
 
-# Prompt
-# ------------------------
+## Prompt
 
 parse_git_branch() {
 	case "$PWD" in
@@ -25,11 +22,10 @@ parse_kubectl_current_context() {
 	if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
 }
 
-PROMPT='%F{38}%1~%F{208}$(parse_git_branch)$(parse_kubectl_current_context) λ %f'
+PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 setopt PROMPT_SUBST
 
-# Variables
-# ------------------------
+## Variables
 
 HISTSIZE=50000
 SAVEHIST=50000
@@ -42,8 +38,7 @@ export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GNUPGHOME="${XDG_CACHE_HOME:-$HOME/.cache}/gnupg"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
-# Aliases
-# ------------------------
+## Aliases
 
 alias \
 	g=git \
@@ -51,11 +46,11 @@ alias \
 	k=kubectl \
 	nv=nvim \
 	dcc=docker-compose \
+	ctx='kubectl config current-context' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
-# General
-# ------------------------
+## General
 
 bindkey -e                          # selects keymap `emacs` & set as main keymap
 bindkey "^U" backward-kill-line     # kill backwards from cursor to the beginning of the line
@@ -86,8 +81,7 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M emacs '^v' edit-command-line
 
-# Completion
-# ------------------------
+## Completion
 
 zmodload -i zsh/complist
 # The following lines were added by compinstall
@@ -111,8 +105,7 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 
-# Syntax highlighting
-# ------------------------
+## Syntax highlighting
 
 fsh_cache_dir="$ZSH_CACHE_DIR/zsh-syntax-highlighting"
 fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
@@ -122,8 +115,7 @@ fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
 
 unset fsh_cache_dir fsh_plugin
 
-# FASD
-# ------------------------
+## FASD
 
 if command -v fasd 1>/dev/null 2>&1; then
 	fasd_cd() {
@@ -151,8 +143,7 @@ if command -v fasd 1>/dev/null 2>&1; then
 	eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
 fi
 
-# FZF
-# ------------------------
+## FZF
 
 if command -v fzf 1>/dev/null 2>&1; then
 	export FZF_DEFAULT_OPTS='--height 70% --layout=reverse'
@@ -162,8 +153,7 @@ if command -v fzf 1>/dev/null 2>&1; then
 	source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/fzf-git"
 fi
 
-# Direnv
-# ------------------------
+## Direnv
 
 if command -v direnv 1>/dev/null 2>&1; then
 	eval "$(direnv hook zsh)"
@@ -174,8 +164,7 @@ if command -v direnv 1>/dev/null 2>&1; then
 	};
 fi
 
-# ASDF
-# ------------------------
+## ASDF
 
 export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
 export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"

@@ -1,6 +1,4 @@
-"""""""""""""""""""""""""
-"       Plugins         "
-"""""""""""""""""""""""""
+"" Plugins
 
 if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
 	echo 'Downloading junegunn/vim-plug to manage plugins...'
@@ -40,9 +38,7 @@ Plug 'tpope/vim-speeddating'
 Plug 'Yggdroot/indentLine'
 call plug#end()
 
-"""""""""""""""""""""""""
-"       Settings        "
-"""""""""""""""""""""""""
+"" Settings
 
 syntax on                                                  " Syntax highlighting
 filetype plugin indent on                                  " Turn on filetype detections
@@ -71,9 +67,7 @@ set signcolumn=yes                                         " Always show signcol
 set smartcase                                              " Override 'ignorecase' if search pattern contains uppercase characters
 set updatetime=300                                         " Set CursorHold delay time
 
-"""""""""""""""""""""""""
-"        Colors         "
-"""""""""""""""""""""""""
+"" Colors
 
 set termguicolors
 set background=dark
@@ -86,19 +80,14 @@ hi SignColumn          guibg=none
 hi ALEErrorSign        guibg=none guifg=red
 hi ALEWarningSign      guibg=none guifg=orange
 
-"""""""""""""""""""""""""
-"        Globals        "
-"""""""""""""""""""""""""
+"" Globals
 
-" FZF
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
 let g:fzf_preview_window = ['down:50%:hidden', 'ctrl-]']
 
-" set options only for the fzf terminal buffer
 autocmd! FileType fzf
 autocmd  FileType fzf set nonumber norelativenumber
 
-" ALE
 let g:ale_sign_error = '•'
 let g:ale_sign_warning = '•'
 let g:ale_lint_on_save = 1
@@ -130,15 +119,12 @@ let g:ale_pattern_options = {
 			\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
 			\}
 
-" Rooter
 let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
 let g:rooter_change_directory_for_non_project_files = 'current'
 
-" Instant markdown preview
 let g:instant_markdown_autostart = 0
 
-" VSnip
 let g:vsnip_filetypes = {
 			\ 'typescript': ['javascript'],
 			\ 'javascriptreact': ['javascript'],
@@ -146,21 +132,16 @@ let g:vsnip_filetypes = {
 			\}
 let g:vsnip_snippet_dir = system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/snippets"')
 
-" IndentLine
 let g:indentLine_fileType = ['yaml', 'yml']
 
-" GH line
 let g:gh_repo_map = '<leader><leader>go'
 let g:gh_line_map_default = 0
 let g:gh_line_blame_map_default = 0
 let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 
-" Emmet
 let g:user_emmet_install_global = 0
 
-"""""""""""""""""""""""
-"      Functions      "
-"""""""""""""""""""""""
+"" Functions
 
 function! s:tab_completion()
 	let line = getline('.')
@@ -224,13 +205,10 @@ function! s:search_range(type, ...)
 	let @@ = reg_save
 endfunction
 
-"""""""""""""""""""""""
-"      Mappings       "
-"""""""""""""""""""""""
+"" Mappings
 
-" Make <SPACE> the leader
-let mapleader = ' '
-let maplocalleader = ' '
+let mapleader = "\<Space>"
+let maplocalleader = "\<Space>"
 
 " Break undo before deleting a word
 inoremap <C-W> <C-G>u<C-W>
@@ -266,30 +244,24 @@ nmap <silent> <leader>-v     :exe "vertical resize -5"<CR>
 xmap <silent> <leader>ea     <plug>(EasyAlign)
 xmap <silent> <leader>/      :<c-u>call <SID>search_range(visualmode(), 1)<CR>
 
-" Fzf: list mappings for different modes
 nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
 xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
 omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
-" Fzf: completions
 imap <silent> <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent> <c-x><c-l>     <plug>(fzf-complete-line)
 imap <silent> <c-x><c-f>     <plug>(fzf-complete-path)
 imap <silent> <c-x><c-x>     <plug>(custom-fzf-complete-snippet)
 
-" VSnip: Expand
 imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 
-" VSnip: Jump forward or backward
 imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
 smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
 imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
-""""""""""""""""""""""""""""""""""
-"       Filetype Settings        "
-""""""""""""""""""""""""""""""""""
+"" Filetype Settings
 
 autocmd FileType html,css
 			\ setlocal shiftwidth=2
@@ -321,21 +293,15 @@ autocmd FileType repl
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-"""""""""""""""""""""""""
-"       Commands        "
-"""""""""""""""""""""""""
+"" Commands
 
 command! Gqf GitGutterQuickFix | copen
 command! Aqf ALEPopulateQuickfix | copen
 
-"""""""""""""""""""""""""
-"        Netrw          "
-"""""""""""""""""""""""""
+"" Netrw
 
-" Enable recursive copy of directories
 let g:netrw_localcopydircmd = 'cp -r'
 
-" Highlight marked files the same as search matches
 hi! link netrwMarkFile Search
 
 function! NetrwMapping()
