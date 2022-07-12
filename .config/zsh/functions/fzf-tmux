@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+_fzf-down() {
+  fzf --height 50% "$@"
+}
+
+# List windows
+function ftw {
+ tmux list-windows -F '#{window_name}' | _fzf-down
+}
+
+# Search tmux window and go to it
+function ftow {
+  tmux select-window -t $(ftw)
+}

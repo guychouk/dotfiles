@@ -57,6 +57,14 @@ function fgc() {
   grep -o "[a-f0-9]\{7,\}"
 }
 
+# Search all commits and open it on Github
+function fgoc() {
+  local repo
+  _is_in_git_repo || return
+  repo=$(git config --get remote.origin.url | sed 's/[^:]*://' | sed 's/\.git//')
+  open "https://github.com/$repo/commit/$(fgc)"
+}
+
 # Remotes
 function fgr() {
   _is_in_git_repo || return
@@ -64,4 +72,14 @@ function fgr() {
   _fzf-down --tac \
     --preview 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" {1} | head -200' |
   cut -d$'\t' -f1
+}
+
+# Search all remotes and open it on Github
+function fgor() {
+  pushd ~/Projects > /dev/null || exit
+  find . -type d -maxdepth 1 \
+  	| parallel 'cd {}; git remote get-url origin 2> /dev/null' \
+  	| awk '{match($0, /:(.*)\./, a); if(a[1]) printf "%s\n", a[1]}' \
+  	| fzf --bind 'enter:abort+execute(open http://github.com/{})'
+  popd > /dev/null || exit
 }

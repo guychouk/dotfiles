@@ -151,6 +151,7 @@ if command -v fzf 1>/dev/null 2>&1; then
 	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 	source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/fzf-git"
+	source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/fzf-tmux"
 fi
 
 ## Direnv
@@ -173,3 +174,5 @@ export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 [ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
 
 source "$ASDF_DIR/asdf.sh"
+
+## Functions
