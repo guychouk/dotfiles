@@ -1,7 +1,7 @@
 ## Setup
 
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-[[ ! -d $ZSH_CACHE_DIR ]] && mkdir $ZSH_CACHE_DIR
+[[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir "$ZSH_CACHE_DIR"
 
 ## Colors
 
@@ -15,11 +15,11 @@ parse_git_branch() {
 		/net/*|/Volumes/*) return ;;
 	esac
 	git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
-	if [ ! $git_branch ]; then printf ""; else printf " [${git_branch}]"; fi
+	if [ ! "$git_branch" ]; then printf ""; else printf " [$git_branch]"; fi
 }
 parse_kubectl_current_context() {
 	kube_context=$(kubectl config current-context 2> /dev/null)
-	if [ ! $kube_context ]; then printf ""; else printf " [${kube_context}]"; fi
+	if [ ! "$kube_context" ]; then printf ""; else printf " [$kube_context]"; fi
 }
 
 PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
