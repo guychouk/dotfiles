@@ -10,6 +10,7 @@
   rh       = reset --hard
   pl       = pull
   ps       = push
+  psf      = push -f
   cl       = clone
   rb       = rebase
   rbi      = rebase -i
