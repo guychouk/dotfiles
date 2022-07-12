@@ -17,6 +17,7 @@ parse_git_branch() {
 	git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
 	if [ ! "$git_branch" ]; then printf ""; else printf " [$git_branch]"; fi
 }
+
 parse_kubectl_current_context() {
 	kube_context=$(kubectl config current-context 2> /dev/null)
 	if [ ! "$kube_context" ]; then printf ""; else printf " [$kube_context]"; fi
@@ -150,8 +151,9 @@ if command -v fzf 1>/dev/null 2>&1; then
 
 	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-	source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/fzf-git"
-	source "${XDG_CONFIG_HOME:-$HOME/.config}/zsh/functions/fzf-tmux"
+
+	source "$ZDOTDIR/functions/fzf-git"
+	source "$ZDOTDIR/functions/fzf-tmux"
 fi
 
 ## Direnv
@@ -174,5 +176,3 @@ export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 [ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
 
 source "$ASDF_DIR/asdf.sh"
-
-## Functions
