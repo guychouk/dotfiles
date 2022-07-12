@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ####
 # 
@@ -8,9 +8,9 @@
 # 
 ###
 
-PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
-PROGDIR=`dirname $PROGNAME`            # extract directory of program
-PROGNAME=`basename $PROGNAME`          # base name of program
+PROGNAME="$(type "$0" | awk '{print $3}')"  # search for executable on path
+PROGDIR="$(dirname "$PROGNAME")"            # extract directory of program
+PROGNAME="$(basename "$PROGNAME")"          # base name of program
 usage()
 {
     sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //' "$PROGDIR/$PROGNAME"
@@ -29,11 +29,11 @@ case "$1" in
         exit 0
         ;;
     bg)
-        for i in {0..255}; do printf '\e[48;5;%dm%3d ' $i $i; (((i+3) % 18)) || printf '\e[0m\n'; done
+        for i in {0..255}; do printf '\e[48;5;%dm%3d ' "$i" "$i"; (((i+3) % 18)) || printf '\e[0m\n'; done
         exit 0
         ;;
     fg)
-        for i in {0..255}; do printf '\e[38;5;%dm%3d ' $i $i; (((i+3) % 18)) || printf '\e[0m\n'; done
+        for i in {0..255}; do printf '\e[38;5;%dm%3d ' "$i" "$i"; (((i+3) % 18)) || printf '\e[0m\n'; done
         exit 0
         ;;
 esac

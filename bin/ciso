@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ####
 # Convert ISO country code to full name and vice versa
@@ -7,15 +7,15 @@
 # 
 ###
 
-PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
-PROGDIR=`dirname $PROGNAME`            # extract directory of program
-PROGNAME=`basename $PROGNAME`          # base name of program
+PROGNAME="$(type "$0" | awk '{print $3}')"  # search for executable on path
+PROGDIR="$(dirname "$PROGNAME")"            # extract directory of program
+PROGNAME="$(basename "$PROGNAME")"          # base name of program
 usage()
 {
 	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //' "$PROGDIR/$PROGNAME"
 }
 
-if [[ $# -eq 0 ]] ; then
+if [ $# -eq 0 ] ; then
 	echo ""
 	usage
 	exit 0

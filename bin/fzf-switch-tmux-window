@@ -1,4 +1,4 @@
 #!/bin/bash
 
 tmux select-window -t \
-    `tmux list-windows -F '#{window_name}' | fzf-tmux -d 25%`
+    "$(tmux list-windows -F '#{window_name}' | fzf-tmux -d 25%)"

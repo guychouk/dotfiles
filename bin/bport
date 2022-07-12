@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
-cat `find ~/Projects/helmer/envs/**/*.yaml -type f | fzf`
+cat "$(find ~/Projects/helmer/envs/**/*.yaml -type f | fzf)"
 	\ | awk -v IGNORECASE=1 '$1 == "port:" { print "Port: " $2; exit; }'

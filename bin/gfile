@@ -9,9 +9,9 @@
 # 
 ###
 
-PROGNAME=`type $0 | awk '{print $3}'`  # search for executable on path
-PROGDIR=`dirname $PROGNAME`            # extract directory of program
-PROGNAME=`basename $PROGNAME`          # base name of program
+PROGNAME="$(type "$0" | awk '{print $3}')"  # search for executable on path
+PROGDIR="$(dirname "$PROGNAME")"            # extract directory of program
+PROGNAME="$(basename "$PROGNAME")"          # base name of program
 usage()
 {
 	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //' "$PROGDIR/$PROGNAME"
@@ -36,7 +36,7 @@ case "$1" in
 		curl -XGET \
 			-H "Authorization: token $(gh config get -h github.com oauth_token)" \
 			-H "Accept: application/vnd.github.v3.raw" \
-			'https://api.github.com/repos/'$REPO_NAME'/contents/'$FILE_PATH
+			'https://api.github.com/repos/'"$REPO_NAME"'/contents/'"$FILE_PATH"
 					exit 0
 					;;
 			esac
