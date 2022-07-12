@@ -2,9 +2,9 @@
 
 ####
 # Convert ISO country code to full name and vice versa
-# 
+#
 # USAGE: ciso [iso|fullname]
-# 
+#
 ###
 
 PROGNAME="$(type "$0" | awk '{print $3}')"  # search for executable on path

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Convert MD to PDF
 # This script uses the Marx classless CSS stylesheet:
 # https://github.com/mblode/marx
 

@@ -1,43 +1,8 @@
 #!/bin/bash
 
-####
-# 
-# Download specific files from github repository
-# Uses the gh cli to fetch the token, so run `gh auth login` to get it.
-#
-# USAGE: gfile [repo] [file]
-# 
-###
+# Downloads file from Github repo
 
-PROGNAME="$(type "$0" | awk '{print $3}')"  # search for executable on path
-PROGDIR="$(dirname "$PROGNAME")"            # extract directory of program
-PROGNAME="$(basename "$PROGNAME")"          # base name of program
-usage()
-{
-	sed >&2 -e '1,/^####/d;  /^###/g;  /^#/!q;  s/^#//;  s/^ //' "$PROGDIR/$PROGNAME"
-}
-
-if [[ $# -eq 0 ]] ; then
-	echo ""
-	usage
-	exit 0
-fi
-
-REPO_NAME=$1
-FILE_PATH=$2
-
-case "$1" in
-	-h|-help)
-		echo ""
-		usage
-		exit 0
-		;;
-	*)
-		curl -XGET \
-			-H "Authorization: token $(gh config get -h github.com oauth_token)" \
-			-H "Accept: application/vnd.github.v3.raw" \
-			'https://api.github.com/repos/'"$REPO_NAME"'/contents/'"$FILE_PATH"
-					exit 0
-					;;
-			esac
-
+curl -XGET \
+	-H "Authorization: token $(gh config get -h github.com oauth_token)" \
+	-H "Accept: application/vnd.github.v3.raw" \
+	'https://api.github.com/repos/'"$1"'/contents/'"$2"

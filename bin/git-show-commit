@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# This command shows commits in GitHub for the current repo.
-# NOTE: Uses `open` here - this is for OSX.
-
-REPO=$(cd "$PWD" && git config --get remote.origin.url | sed 's/[^:]*://' | sed 's/\.git//')
-
-open "https://github.com/$REPO/commit/$1"

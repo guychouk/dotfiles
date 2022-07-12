@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Opens REPL in current directory
+
 REPL="$(find "$HOME/repls" -type f | fzf)"
 
 if [[ -n $REPL ]]; then

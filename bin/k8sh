@@ -1,3 +1,5 @@
 #!/bin/bash
 
+# Opens bash in k8s pod
+
 kubectl exec -it "$(kubectl get pods | grep "$1" | awk '{print $1}')" -- /bin/bash

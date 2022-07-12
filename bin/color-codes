@@ -1,11 +1,11 @@
 #!/bin/bash
 
 ####
-# 
+#
 # Generate color codes palette for foreground or background.
 #
 # USAGE: color-codes [fg|bg]
-# 
+#
 ###
 
 PROGNAME="$(type "$0" | awk '{print $3}')"  # search for executable on path

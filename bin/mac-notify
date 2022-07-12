@@ -1,3 +1,5 @@
 #!/bin/bash
 
+# Displays notification on Mac OSX
+
 osascript -e 'display notification "Are you focused?" sound name "Submarine"'

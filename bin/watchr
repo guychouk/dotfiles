@@ -1,3 +1,5 @@
 #!/bin/bash
 
+# Watches current dir for changes in all files and runs command
+
 find . ! -path '*node_modules/*' ! -path '*dist/*' ! -path '*.git/*' | entr "$1"

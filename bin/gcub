@@ -1,4 +1,6 @@
 #!/bin/bash
 
+# Cleans untracked git branches
+
 git remote prune origin
 git branch -r | awk '{print $1}' | grep -E -v -f /dev/stdin <(git branch -vv | grep origin | grep -v ".*") | awk '{print $1}' | xargs git branch -D

@@ -1,3 +1,5 @@
 #!/bin/bash
 
+# Show logs from pod without health checks
+
 stern --color always --template '{{color .PodColor .ContainerName}}: {{printf "%s\n" .Message}}' "$@" | grep -v 'health'
