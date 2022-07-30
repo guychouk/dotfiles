@@ -266,6 +266,9 @@ smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (p
 autocmd FileType html,css
 			\ setlocal shiftwidth=2
 			\| EmmetInstall
+autocmd FileType c
+			\ setlocal tabstop=4
+			\| setlocal shiftwidth=4
 autocmd FileType json
 			\ setlocal expandtab
 			\| setlocal tabstop=2
