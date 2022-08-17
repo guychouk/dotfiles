@@ -341,3 +341,19 @@ augroup netrw_mapping
 	autocmd!
 	autocmd filetype netrw call NetrwMapping()
 augroup END
+
+function! RemoveQFItem()
+  let l:qf_list = getqflist()
+  if len(l:qf_list) <= 1
+	  cclose
+	  return
+  endif
+  let l:curqfidx = line('.') - 1
+  call remove(l:qf_list, curqfidx)
+  call setqflist(l:qf_list, 'r')
+  execute l:curqfidx + 1 . 'cfirst'
+  copen
+endfunction
+
+command! RemoveQFItem :call RemoveQFItem()
+autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
