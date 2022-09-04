@@ -1,40 +1,3 @@
-"" Plugins
-
-if ! filereadable(system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim"'))
-	echo 'Downloading junegunn/vim-plug to manage plugins...'
-	silent !mkdir -p ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/
-	silent !curl 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim' > ${XDG_CONFIG_HOME:-$HOME/.config}/nvim/autoload/plug.vim
-	autocmd VimEnter * PlugInstall
-endif
-
-call plug#begin(split(&rtp, ',')[0] . '/plugins')
-Plug 'airblade/vim-gitgutter'
-Plug 'airblade/vim-rooter'
-Plug 'ap/vim-css-color'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'dense-analysis/ale'
-Plug 'hrsh7th/vim-vsnip'
-Plug 'junegunn/fzf'
-Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-easy-align'
-Plug 'justinmk/vim-sneak'
-Plug 'mattn/emmet-vim'
-Plug 'NLKNguyen/papercolor-theme'
-Plug 'preservim/vimux'
-Plug 'ruanyl/vim-gh-line'
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-characterize'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
-Plug 'Yggdroot/indentLine'
-call plug#end()
-
 "" Settings
 
 syntax on                                                  " Syntax highlighting
@@ -120,8 +83,6 @@ let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
 let g:rooter_change_directory_for_non_project_files = 'current'
 
-let g:instant_markdown_autostart = 0
-
 let g:vsnip_filetypes = {
 			\ 'typescript': ['javascript'],
 			\ 'javascriptreact': ['javascript'],
@@ -175,17 +136,6 @@ function! s:vim_help_cword()
 	endif
 endfunction
 
-function! s:qf_remove_entry()
-	let curqfidx = getqflist({ 'idx': 1 }).idx - 1
-	let qfall = getqflist()
-	call remove(qfall, curqfidx)
-	call setqflist(qfall, 'r')
-	if len(qfall) == 0
-		silent ccl
-		return
-	endif
-endfunction
-
 function! s:search_range(type, ...)
 	let sel_save = &selection
 	let &selection = 'inclusive'
@@ -200,6 +150,19 @@ function! s:search_range(type, ...)
 	exe 'Rg' @@
 	let &selection = sel_save
 	let @@ = reg_save
+endfunction
+
+function! s:remove_qf_item()
+  let l:qf_list = getqflist()
+  if len(l:qf_list) <= 1
+	  cclose
+	  return
+  endif
+  let l:curqfidx = line('.') - 1
+  call remove(l:qf_list, curqfidx)
+  call setqflist(l:qf_list, 'r')
+  execute l:curqfidx + 1 . 'cfirst'
+  copen
 endfunction
 
 "" Mappings
@@ -219,7 +182,7 @@ nmap <silent> [g             <plug>(ale_previous)
 nmap <silent> gd             <plug>(ale_go_to_definition)
 nmap <silent> yoa            <Plug>(ale_toggle_buffer)
 nmap <silent> yoz            :call <SID>zoom_pane_toggle()<CR>
-nmap <silent> <leader>/      :Rg<CR>
+nmap          <leader>/      :Rg ""<Left>
 nmap <silent> <leader>.      :GFiles<CR>
 nmap <silent> <leader>b      :Buffers<CR>
 nmap <silent> <leader>g      :Git<CR>
@@ -292,11 +255,13 @@ autocmd FileType repl
 			\| nmap <buffer> <silent> <enter> <plug>(VimuxSlimeLine)
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
 
 "" Commands
 
 command! Gqf GitGutterQuickFix | copen
 command! Aqf ALEPopulateQuickfix | copen
+command! RemoveQFItem :call <SID>remove_qf_item()
 
 "" Netrw
 
@@ -337,19 +302,3 @@ augroup netrw_mapping
 	autocmd!
 	autocmd filetype netrw call NetrwMapping()
 augroup END
-
-function! RemoveQFItem()
-  let l:qf_list = getqflist()
-  if len(l:qf_list) <= 1
-	  cclose
-	  return
-  endif
-  let l:curqfidx = line('.') - 1
-  call remove(l:qf_list, curqfidx)
-  call setqflist(l:qf_list, 'r')
-  execute l:curqfidx + 1 . 'cfirst'
-  copen
-endfunction
-
-command! RemoveQFItem :call RemoveQFItem()
-autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
