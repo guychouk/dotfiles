@@ -37,47 +37,15 @@ colorscheme PaperColor
 hi Normal              guibg=none
 hi LineNr              guibg=none
 hi SignColumn          guibg=none
-hi ALEErrorSign        guibg=none guifg=red
-hi ALEWarningSign      guibg=none guifg=orange
+hi DiagnosticSignError guibg=none guifg=red
+hi DiagnosticSignWarn  guibg=none guifg=orange
+hi DiagnosticSignHint  guibg=none guifg=gray
+hi DiagnosticSignInfo  guibg=none guifg=cyan
 
 "" Globals
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
 let g:fzf_preview_window = ['down:50%:hidden', 'ctrl-]']
-
-autocmd! FileType fzf
-autocmd  FileType fzf set nonumber norelativenumber
-
-let g:ale_sign_error = '•'
-let g:ale_sign_warning = '•'
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_insert_leave = 0
-let g:ale_linters_explicit = 1
-let g:ale_echo_msg_error_str = 'ERR'
-let g:ale_echo_msg_warning_str = 'WARN'
-let g:ale_echo_msg_format = '[%linter%][%severity%][%code%] %s'
-let g:ale_linters = {
-			\ 'go': ['gopls'],
-			\ 'javascript': ['tsserver', 'eslint'],
-			\ 'javascriptreact': ['tsserver', 'eslint'],
-			\ 'typescript': ['tsserver', 'eslint'],
-			\ 'typescriptreact': ['tsserver', 'eslint'],
-			\}
-let g:ale_fixers = {
-			\ 'go': ['gofmt'],
-			\ 'scala': ['scalafmt'],
-			\ 'svelte': ['prettier'],
-			\ 'yaml': ['prettier'],
-			\ 'javascript': ['prettier', 'eslint'],
-			\ 'javascriptreact': ['prettier', 'eslint'],
-			\ 'typescript': ['prettier', 'eslint'],
-			\ 'typescriptreact': ['prettier', 'eslint'],
-			\}
-let g:ale_pattern_options = {
-			\ '\.min\.js$': {'ale_linters': [], 'ale_fixers': []},
-			\ '\.min\.css$': {'ale_linters': [], 'ale_fixers': []},
-			\}
 
 let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
@@ -177,10 +145,6 @@ inoremap <C-U> <C-G>u<C-U>
 
 nmap          R              :%s//g<Left><Left>
 nmap <silent> K              :call <SID>vim_help_cword()<CR>
-nmap <silent> ]g             <plug>(ale_next)
-nmap <silent> [g             <plug>(ale_previous)
-nmap <silent> gd             <plug>(ale_go_to_definition)
-nmap <silent> yoa            <Plug>(ale_toggle_buffer)
 nmap <silent> yoz            :call <SID>zoom_pane_toggle()<CR>
 nmap          <leader>/      :Rg ""<Left>
 nmap <silent> <leader>.      :GFiles<CR>
@@ -191,7 +155,6 @@ nmap <silent> <leader>l      :vsp<CR>
 nmap <silent> <leader>o      :Files<CR>
 nmap <silent> <leader>p      :Commands<CR>
 nmap <silent> <leader>q      :q<CR>
-nmap <silent> <leader>r      <plug>(ale_rename)
 nmap <silent> <leader>s      <plug>(statusline_toggle)
 nmap <silent> <leader>t      :BTags<CR>
 nmap <silent> <leader>w      :w<CR>
@@ -221,8 +184,51 @@ smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (p
 imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
-"" Filetype Settings
+"" LSP
+lua <<EOF
+	local signs = {
+		{ name = "DiagnosticSignError", text = "•" },
+		{ name = "DiagnosticSignWarn",  text = "•" },
+		{ name = "DiagnosticSignHint",  text = "•" },
+		{ name = "DiagnosticSignInfo",  text = "•" },
+	}
+	for _, sign in ipairs(signs) do
+		vim.fn.sign_define(sign.name, {
+			texthl = sign.name,
+			text = sign.text,
+			numhl = ""
+		})
+	end
+	local opts = { noremap=true, silent=true }
+	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
+	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
+	vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, opts)
+	local on_attach = function(client, bufnr)
+		vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+		local bufopts = { noremap=true, silent=true, buffer=bufnr }
+		vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+		vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+		vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
+		vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
+	end
+	local lsp_flags = {
+		debounce_text_changes = 100,
+	}
+	require('lspconfig').tsserver.setup{
+		on_attach = on_attach,
+		flags = lsp_flags,
+		handlers = {
+			["textDocument/publishDiagnostics"] = vim.lsp.with(
+				vim.lsp.diagnostic.on_publish_diagnostics, {
+					virtual_text=false
+				}
+			),
+		}
+	}
+EOF
 
+"" Filetype Settings
 autocmd FileType html,css
 			\ setlocal shiftwidth=2
 			\| EmmetInstall
@@ -241,7 +247,6 @@ autocmd FileType javascript,javascriptreact
 			\| setlocal foldlevel=99
 			\| setlocal makeprg=./node_modules/.bin/eslint
 			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
-			\| setlocal omnifunc=ale#completion#OmniFunc
 autocmd FileType typescript,typescriptreact
 			\ setlocal expandtab
 			\| setlocal tabstop=2
@@ -249,18 +254,19 @@ autocmd FileType typescript,typescriptreact
 			\| setlocal foldlevel=99
 			\| setlocal makeprg=./node_modules/.bin/tsc
 			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
-			\| setlocal omnifunc=ale#completion#OmniFunc
 autocmd FileType repl
 			\ vmap <buffer> <silent> <enter> <plug>(VimuxSlime)
 			\| nmap <buffer> <silent> <enter> <plug>(VimuxSlimeLine)
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
+autocmd! FileType fzf
+autocmd FileType fzf set nonumber norelativenumber
+autocmd CursorMoved * :call v:lua.require'diagnostics'.echo_diagnostic()
 
 "" Commands
 
 command! Gqf GitGutterQuickFix | copen
-command! Aqf ALEPopulateQuickfix | copen
 command! RemoveQFItem :call <SID>remove_qf_item()
 
 "" Netrw

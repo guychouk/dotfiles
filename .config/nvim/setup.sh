@@ -1,25 +1,25 @@
-git clone https://github.com/airblade/vim-gitgutter
-git clone https://github.com/airblade/vim-rooter
-git clone https://github.com/ap/vim-css-color
-git clone https://github.com/christoomey/vim-tmux-navigator
-git clone https://github.com/dense-analysis/ale
-git clone https://github.com/hrsh7th/vim-vsnip
-git clone https://github.com/junegunn/fzf
-git clone https://github.com/junegunn/fzf.vim
-git clone https://github.com/junegunn/vim-easy-align
-git clone https://github.com/justinmk/vim-sneak
-git clone https://github.com/mattn/emmet-vim
-git clone https://github.com/NLKNguyen/papercolor-theme
-git clone https://github.com/preservim/vimux
-git clone https://github.com/ruanyl/vim-gh-line
-git clone https://github.com/tpope/vim-rsi
-git clone https://github.com/tpope/vim-endwise
-git clone https://github.com/tpope/vim-characterize
-git clone https://github.com/tpope/vim-commentary
-git clone https://github.com/tpope/vim-dispatch
-git clone https://github.com/tpope/vim-fugitive
-git clone https://github.com/tpope/vim-repeat
-git clone https://github.com/tpope/vim-surround
-git clone https://github.com/tpope/vim-unimpaired
-git clone https://github.com/tpope/vim-vinegar
-git clone https://github.com/Yggdroot/indentLine
+airblade/vim-gitgutter
+airblade/vim-rooter
+ap/vim-css-color
+christoomey/vim-tmux-navigator
+hrsh7th/vim-vsnip
+junegunn/fzf
+junegunn/fzf.vim
+junegunn/vim-easy-align
+justinmk/vim-sneak
+mattn/emmet-vim
+NLKNguyen/papercolor-theme
+preservim/vimux
+ruanyl/vim-gh-line
+tpope/vim-rsi
+tpope/vim-endwise
+tpope/vim-characterize
+tpope/vim-commentary
+tpope/vim-dispatch
+tpope/vim-fugitive
+tpope/vim-repeat
+tpope/vim-surround
+tpope/vim-unimpaired
+tpope/vim-vinegar
+Yggdroot/indentLine
+neovim/nvim-lspconfig
