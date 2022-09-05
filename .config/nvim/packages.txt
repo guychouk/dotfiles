@@ -2,13 +2,13 @@ airblade/vim-gitgutter
 airblade/vim-rooter
 ap/vim-css-color
 christoomey/vim-tmux-navigator
+ghifarit53/tokyonight-vim
 hrsh7th/vim-vsnip
 junegunn/fzf
 junegunn/fzf.vim
 junegunn/vim-easy-align
 justinmk/vim-sneak
 mattn/emmet-vim
-NLKNguyen/papercolor-theme
 preservim/vimux
 ruanyl/vim-gh-line
 tpope/vim-rsi
@@ -23,3 +23,4 @@ tpope/vim-unimpaired
 tpope/vim-vinegar
 Yggdroot/indentLine
 neovim/nvim-lspconfig
+nvim-treesitter/nvim-treesitter

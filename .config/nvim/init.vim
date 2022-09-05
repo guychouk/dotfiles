@@ -1,8 +1,6 @@
 "" Settings
 
-syntax on                                                  " Syntax highlighting
-filetype plugin indent on                                  " Turn on filetype detections
-
+set mouse=a                                                " Enable scrolling
 set clipboard=unnamedplus                                  " Enables OS clipboard support
 set completeopt-=preview                                   " Disable preview for completion selection
 set encoding=utf-8                                         " Encoding for files
@@ -30,13 +28,15 @@ set updatetime=300                                         " Set CursorHold dela
 "" Colors
 
 set termguicolors
-set background=dark
-colorscheme PaperColor
+let g:tokyonight_style = 'night'
+let g:tokyonight_enable_italic = 0
+let g:tokyonight_disable_italic_comment = 1
+colorscheme tokyonight
 
-" Remove background from all highlight groups
 hi Normal              guibg=none
 hi LineNr              guibg=none
 hi SignColumn          guibg=none
+
 hi DiagnosticSignError guibg=none guifg=red
 hi DiagnosticSignWarn  guibg=none guifg=orange
 hi DiagnosticSignHint  guibg=none guifg=gray
@@ -215,7 +215,7 @@ lua <<EOF
 	local lsp_flags = {
 		debounce_text_changes = 100,
 	}
-	require('lspconfig').tsserver.setup{
+	require('lspconfig').tsserver.setup {
 		on_attach = on_attach,
 		flags = lsp_flags,
 		handlers = {
@@ -225,6 +225,20 @@ lua <<EOF
 				}
 			),
 		}
+	}
+	-- Treesitter
+	require('nvim-treesitter.configs').setup {
+	ensure_installed = { "javascript", "typescript" },
+	sync_install = false,
+	auto_install = true,
+	highlight = {
+		enable = true,
+		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+		-- Using this option may slow down your editor, and you may see some duplicate highlights.
+		-- Instead of true it can also be a list of languages
+		additional_vim_regex_highlighting = false,
+		},
 	}
 EOF
 
@@ -259,10 +273,11 @@ autocmd FileType repl
 			\| nmap <buffer> <silent> <enter> <plug>(VimuxSlimeLine)
 autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
-autocmd! FileType fzf
-autocmd FileType fzf set nonumber norelativenumber
 autocmd CursorMoved * :call v:lua.require'diagnostics'.echo_diagnostic()
+autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
+
+autocmd! FileType fzf
+autocmd  FileType fzf set nonumber norelativenumber
 
 "" Commands
 
