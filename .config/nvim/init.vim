@@ -36,6 +36,7 @@ colorscheme tokyonight
 hi Normal              guibg=none
 hi LineNr              guibg=none
 hi SignColumn          guibg=none
+hi EndOfBuffer         guibg=none guifg=gray
 
 hi DiagnosticSignError guibg=none guifg=red
 hi DiagnosticSignWarn  guibg=none guifg=orange
