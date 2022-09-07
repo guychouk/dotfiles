@@ -159,12 +159,8 @@ fi
 ## Direnv
 
 if command -v direnv 1>/dev/null 2>&1; then
+	export DIRENV_LOG_FORMAT=
 	eval "$(direnv hook zsh)"
-
-	# completely silences direnv
-	_direnv_hook() {
-		eval "$(direnv export zsh 2> >( egrep -v -e 'direnv: (loading|export|unloading|error)' ))"
-	};
 fi
 
 ## ASDF
