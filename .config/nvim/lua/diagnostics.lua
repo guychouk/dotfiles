@@ -24,9 +24,8 @@ local short_line_limit = 20
 -- Shows the current line's diagnostics in a floating window.
 function M.show_line_diagnostics()
   vim
-    .lsp
     .diagnostic
-    .show_line_diagnostics({ severity_limit = 'Warning' }, vim.fn.bufnr(''))
+    .open_float({ severity_limit = 'Warning' }, vim.fn.bufnr(''))
 end
 
 -- Prints the first diagnostic for the current line.
