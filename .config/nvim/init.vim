@@ -4,7 +4,6 @@ set mouse=a                                                " Enable scrolling
 set clipboard=unnamedplus                                  " Enables OS clipboard support
 set completeopt-=preview                                   " Disable preview for completion selection
 set encoding=utf-8                                         " Encoding for files
-set foldmethod=syntax                                      " Set foldmethod to syntax
 set history=1000                                           " Set command history to 1000
 set ignorecase                                             " Ignore case of characters in search patterns
 set laststatus=0                                           " Don't show statusline by default
@@ -37,6 +36,7 @@ hi Normal              guibg=none
 hi LineNr              guibg=none
 hi SignColumn          guibg=none
 hi EndOfBuffer         guibg=none guifg=gray
+hi Folded              guifg=#c87fe3
 
 hi DiagnosticSignError guibg=none guifg=red
 hi DiagnosticSignWarn  guibg=none guifg=orange
@@ -241,6 +241,8 @@ lua <<EOF
 		additional_vim_regex_highlighting = false,
 		},
 	}
+	vim.opt.foldmethod = "expr"
+	vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 EOF
 
 "" Filetype Settings
@@ -255,6 +257,8 @@ autocmd FileType json
 			\| setlocal tabstop=2
 			\| setlocal shiftwidth=2
 			\| setlocal foldlevel=1
+autocmd FileType yaml
+			\ setlocal foldlevel=3
 autocmd FileType javascript,javascriptreact
 			\ setlocal expandtab
 			\| setlocal tabstop=2
