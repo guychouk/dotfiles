@@ -20,7 +20,7 @@ function fgf() {
 }
 
 
-# print chosen branches
+# Branches
 function fgb() {
   _is_in_git_repo || return
   git branch -a --color=always | grep -v '/HEAD\s' | sort |
@@ -28,15 +28,6 @@ function fgb() {
     --preview 'git log --oneline --graph --date=short --color=always --pretty="format:%C(auto)%cd %h%d %s" $(sed s/^..// <<< {} | cut -d" " -f1) | head -'$LINES |
   sed 's/^..//' | cut -d' ' -f1 |
   sed 's#^remotes/##'
-}
-
-# switch to branch
-function fbr() {
-  local branches branch
-  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
-  branch=$(echo "$branches" |
-           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
 }
 
 # Tags
@@ -57,14 +48,6 @@ function fgc() {
   grep -o "[a-f0-9]\{7,\}"
 }
 
-# Search all commits and open it on Github
-function fgoc() {
-  local repo
-  _is_in_git_repo || return
-  repo=$(git config --get remote.origin.url | sed 's/[^:]*://' | sed 's/\.git//')
-  open "https://github.com/$repo/commit/$(fgc)"
-}
-
 # Remotes
 function fgr() {
   _is_in_git_repo || return
@@ -74,12 +57,20 @@ function fgr() {
   cut -d$'\t' -f1
 }
 
-# Search all remotes and open it on Github
-function fgor() {
+# Commits + Open in browser
+function fghc() {
+  local repo
+  _is_in_git_repo || return
+  repo=$(git config --get remote.origin.url | sed 's/[^:]*://' | sed 's/\.git//')
+  open "https://github.com/$repo/commit/$(fgc)"
+}
+
+# Remote + Open in browser
+function fghr() {
   pushd ~/Projects > /dev/null || exit
   find . -type d -maxdepth 1 \
   	| parallel 'cd {}; git remote get-url origin 2> /dev/null' \
   	| awk '{match($0, /:(.*)\./, a); if(a[1]) printf "%s\n", a[1]}' \
-  	| fzf --bind 'enter:abort+execute(open http://github.com/{})'
+  	| _fzf-down --bind 'enter:abort+execute(open http://github.com/{})'
   popd > /dev/null || exit
 }
