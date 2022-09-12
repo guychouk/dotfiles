@@ -187,6 +187,7 @@ smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (p
 
 "" LSP
 lua <<EOF
+	local diagnostics = require('diagnostics')
 	local signs = {
 		{ name = "DiagnosticSignError", text = "•" },
 		{ name = "DiagnosticSignWarn",  text = "•" },
@@ -204,6 +205,7 @@ lua <<EOF
 	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
 	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
 	vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, opts)
+	vim.keymap.set('n', '<leader>fd', diagnostics.show_line_diagnostics, opts)
 	local on_attach = function(client, bufnr)
 		vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 		local bufopts = { noremap=true, silent=true, buffer=bufnr }
@@ -216,7 +218,8 @@ lua <<EOF
 	local lsp_flags = {
 		debounce_text_changes = 100,
 	}
-	require('lspconfig').tsserver.setup {
+	require'lspconfig'.metals.setup{}
+	require'lspconfig'.tsserver.setup {
 		on_attach = on_attach,
 		flags = lsp_flags,
 		handlers = {
@@ -268,8 +271,8 @@ autocmd FileType javascript,javascriptreact
 			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
 autocmd FileType typescript,typescriptreact
 			\ setlocal expandtab
-			\| setlocal tabstop=2
-			\| setlocal shiftwidth=2
+			\| setlocal tabstop=4
+			\| setlocal shiftwidth=4
 			\| setlocal foldlevel=99
 			\| setlocal makeprg=./node_modules/.bin/tsc
 			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
@@ -280,6 +283,7 @@ autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 autocmd CursorMoved * :call v:lua.require'diagnostics'.echo_diagnostic()
 autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
+command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}'))
 
 autocmd! FileType fzf
 autocmd  FileType fzf set nonumber norelativenumber
