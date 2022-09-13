@@ -65,9 +65,9 @@ setopt EXTENDED_HISTORY             # add timestamps to history
 setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that do nothing
 setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
 
-path=($path "$HOME/bin" "$GOPATH/bin")
+path=($path "$GOPATH/bin" "$HOME/bin")
 
-# removes duplicate entries
+# removes duplicate entries from $PATH
 typeset -aU path
 
 if [[ $(uname) = "Darwin" ]]; then
@@ -108,13 +108,13 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 
 ## Syntax highlighting
 
-fsh_cache_dir="$ZSH_CACHE_DIR/zsh-syntax-highlighting"
-fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
+function () {
+  local fsh_cache_dir="$ZSH_CACHE_DIR/zsh-syntax-highlighting"
+  local fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
 
-[ -d "$fsh_cache_dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$fsh_cache_dir"
-[ -f "$fsh_plugin" ] && source "$fsh_plugin"
-
-unset fsh_cache_dir fsh_plugin
+  [ -d "$fsh_cache_dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$fsh_cache_dir"
+  [ -f "$fsh_plugin" ] && source "$fsh_plugin"
+}
 
 ## FASD
 
@@ -147,7 +147,7 @@ fi
 ## FZF
 
 if command -v fzf 1>/dev/null 2>&1; then
-	export FZF_DEFAULT_OPTS='--height 70% --layout=reverse'
+	export FZF_DEFAULT_OPTS='--height 95% --layout=reverse'
 
 	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
@@ -168,7 +168,7 @@ fi
 export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
 export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 
-[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
 [ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
 
 source "$ASDF_DIR/asdf.sh"
