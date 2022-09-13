@@ -467,18 +467,6 @@
     "prefix": "m",
     "body": "${1:method} (${2:arguments}) {\n\t${0}\n}"
   },
-  "getter": {
-    "prefix": "get",
-    "body": "get ${1:property} () {\n\t${0}\n}"
-  },
-  "setter": {
-    "prefix": "set",
-    "body": "set ${1:property} (${2:value}) {\n\t${0}\n}"
-  },
-  "getter + setter": {
-    "prefix": "gs",
-    "body": "get ${1:property} () {\n\t${0}\n}\nset ${1:property} (${2:value}) {\n\t\n}"
-  },
   "prototype method": {
     "prefix": "proto",
     "body": "${1:Class}.prototype.${2:method} = function (${3:arguments}) {\n\t${0}\n}"
