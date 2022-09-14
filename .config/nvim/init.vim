@@ -239,7 +239,7 @@ autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.d
 
 command! Gqf GitGutterQuickFix | copen
 command! RemoveQFItem :call <SID>remove_qf_item()
-command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}'))
+command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
 
 "" Netrw
 
