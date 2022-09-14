@@ -9,6 +9,7 @@ junegunn/fzf.vim
 junegunn/vim-easy-align
 justinmk/vim-sneak
 mattn/emmet-vim
+nvim-treesitter/nvim-treesitter
 preservim/vimux
 ruanyl/vim-gh-line
 tpope/vim-rsi
@@ -22,5 +23,3 @@ tpope/vim-surround
 tpope/vim-unimpaired
 tpope/vim-vinegar
 Yggdroot/indentLine
-neovim/nvim-lspconfig
-nvim-treesitter/nvim-treesitter

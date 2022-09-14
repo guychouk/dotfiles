@@ -38,11 +38,6 @@ hi SignColumn          guibg=none
 hi EndOfBuffer         guibg=none guifg=gray
 hi Folded              guifg=#c87fe3
 
-hi DiagnosticSignError guibg=none guifg=red
-hi DiagnosticSignWarn  guibg=none guifg=orange
-hi DiagnosticSignHint  guibg=none guifg=gray
-hi DiagnosticSignInfo  guibg=none guifg=cyan
-
 "" Globals
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
@@ -78,8 +73,6 @@ function! s:tab_completion()
 	let has_preceding_whitespace = line[col('.') - 2]  =~# '\s'
 	if (is_cursor_on_first_column || has_preceding_whitespace)
 		return "\<Tab>"
-	elseif (is_preceded_by_dot)
-		return "\<C-X>\<C-O>"
 	elseif (vsnip#expandable())
 		return "\<C-j>"
 	else
@@ -157,8 +150,9 @@ nmap <silent> <leader>o      :Files<CR>
 nmap <silent> <leader>p      :Commands<CR>
 nmap <silent> <leader>q      :q<CR>
 nmap <silent> <leader>s      <plug>(statusline_toggle)
-nmap <silent> <leader>t      :BTags<CR>
 nmap <silent> <leader>w      :w<CR>
+nmap <silent> <leader>tb     :BTags<CR>
+nmap <silent> <leader>tt     :Tags<CR>
 nmap <silent> <leader>ec     :e ~/.config/nvim/init.vim<CR>
 nmap <silent> <leader>=h     :exe "resize +5"<CR>
 nmap <silent> <leader>-h     :exe "resize -5"<CR>
@@ -185,70 +179,23 @@ smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (p
 imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
-"" LSP
 lua <<EOF
-	local diagnostics = require('diagnostics')
-	local signs = {
-		{ name = "DiagnosticSignError", text = "•" },
-		{ name = "DiagnosticSignWarn",  text = "•" },
-		{ name = "DiagnosticSignHint",  text = "•" },
-		{ name = "DiagnosticSignInfo",  text = "•" },
-	}
-	for _, sign in ipairs(signs) do
-		vim.fn.sign_define(sign.name, {
-			texthl = sign.name,
-			text = sign.text,
-			numhl = ""
-		})
-	end
-	local opts = { noremap=true, silent=true }
-	vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, opts)
-	vim.keymap.set('n', ']d', vim.diagnostic.goto_next, opts)
-	vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, opts)
-	vim.keymap.set('n', '<leader>fd', diagnostics.show_line_diagnostics, opts)
-	local on_attach = function(client, bufnr)
-		vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
-		local bufopts = { noremap=true, silent=true, buffer=bufnr }
-		vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-		vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-		vim.keymap.set('n', '<leader>f', vim.lsp.buf.formatting, bufopts)
-		vim.keymap.set('n', '<leader>rn', vim.lsp.buf.rename, bufopts)
-	end
-	local lsp_flags = {
-		debounce_text_changes = 100,
-	}
-	require'lspconfig'.metals.setup{}
-	require'lspconfig'.tsserver.setup {
-		on_attach = on_attach,
-		flags = lsp_flags,
-		handlers = {
-			["textDocument/publishDiagnostics"] = vim.lsp.with(
-				vim.lsp.diagnostic.on_publish_diagnostics, {
-					virtual_text=false
-				}
-			),
-		}
-	}
-	-- Treesitter
-	require('nvim-treesitter.configs').setup {
+-- Treesitter
+require('nvim-treesitter.configs').setup {
 	ensure_installed = { "javascript", "typescript" },
 	sync_install = false,
 	auto_install = true,
 	highlight = {
 		enable = true,
-		-- Setting this to true will run `:h syntax` and tree-sitter at the same time.
-		-- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
-		-- Using this option may slow down your editor, and you may see some duplicate highlights.
-		-- Instead of true it can also be a list of languages
 		additional_vim_regex_highlighting = false,
 		},
 	}
-	vim.opt.foldmethod = "expr"
-	vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 EOF
 
 "" Filetype Settings
+
 autocmd FileType html,css
 			\ setlocal shiftwidth=2
 			\| EmmetInstall
@@ -279,19 +226,20 @@ autocmd FileType typescript,typescriptreact
 autocmd FileType repl
 			\ vmap <buffer> <silent> <enter> <plug>(VimuxSlime)
 			\| nmap <buffer> <silent> <enter> <plug>(VimuxSlimeLine)
-autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-autocmd CursorMoved * :call v:lua.require'diagnostics'.echo_diagnostic()
-autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
-command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}'))
+
+autocmd  FileType qf map <buffer> dd :RemoveQFItem<cr>
+autocmd  FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
 
 autocmd! FileType fzf
 autocmd  FileType fzf set nonumber norelativenumber
+
+autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 "" Commands
 
 command! Gqf GitGutterQuickFix | copen
 command! RemoveQFItem :call <SID>remove_qf_item()
+command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}'))
 
 "" Netrw
 
