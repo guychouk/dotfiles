@@ -1,4 +1,4 @@
-INPUT_FILE=docs/grafana-to-datadog
+INPUT_FILE=
 
 # Convert video to GIF
 GIF_SETTINGS='fps=10,scale=860:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse'
@@ -22,5 +22,10 @@ ffmpeg -i $INPUT_FILE.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(
 # Crop video
 ffmpeg -i $INPUT -filter:v "crop=${W}:${H}:${X}:${Y}" $OUTPUT
 
+## OSX Screen Recording
+
+# List supported devices for recording
+ffmpeg -f avfoundation -list_devices true -i ""
+
 # Record whole screen
-ffmpeg -f avfoundation -i "1" -framerate 30 "screen-recording-$(date +"%m-%d-%y").mp4"
+ffmpeg -f avfoundation -i "1" -framerate 30 "screen-recording-$(date +"%m-%d-%y").mkv"
