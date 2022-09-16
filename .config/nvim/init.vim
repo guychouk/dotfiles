@@ -1,32 +1,26 @@
 "" Settings
 
-set mouse=a                                                " Enable scrolling
-set clipboard=unnamedplus                                  " Enables OS clipboard support
-set completeopt-=preview                                   " Disable preview for completion selection
-set encoding=utf-8                                         " Encoding for files
-set history=1000                                           " Set command history to 1000
-set ignorecase                                             " Ignore case of characters in search patterns
-set laststatus=0                                           " Don't show statusline by default
-set list                                                   " Show whitespace characters
-set listchars=tab:┊·,trail:·,extends:>,precedes:<,nbsp:+   " Set default whitespace characters
-set nohlsearch                                             " Disable search highlighting
-set noshowmode                                             " Don't show current mode in last line
-set noshowcmd                                              " Don't show information relating to current mode
-set noswapfile                                             " No swap files
-set nowrap                                                 " Disable line wrapping
-set noruler                                                " Disable ruler
-set nonumber                                               " Don't show current line number and relative line numbers
-set norelativenumber                                       " Don't show relative line numbers
-set scrolloff=1                                            " Minimum number of lines above and below cursor
-set shortmess+=I                                           " Suppress intro message
-set shortmess+=c                                           " Suppress ins-completion-menu messages
-set signcolumn=yes                                         " Always show signcolumn
-set smartcase                                              " Override 'ignorecase' if search pattern contains uppercase characters
-set updatetime=300                                         " Set CursorHold delay time
+let &clipboard     .= "unnamedplus"
+let &completeopt   .= "preview"
+let &hlsearch       = 0
+let &laststatus     = 0
+let &list           = 1
+let &listchars      = 'tab:┊·,trail:·,extends:>,precedes:<,nbsp:+'
+let &mouse          = "a"
+let &ruler          = 0
+let &scrolloff      = 1
+let &shortmess     .= "I"
+let &shortmess     .= "c"
+let &showcmd        = 0
+let &showmode       = 0
+let &signcolumn     = "yes"
+let &smartcase      = 1
+let &swapfile       = 0
+let &termguicolors  = 1
+let &updatetime     = 300
 
 "" Colors
 
-set termguicolors
 let g:tokyonight_style = 'night'
 let g:tokyonight_enable_italic = 0
 let g:tokyonight_disable_italic_comment = 1
@@ -38,7 +32,7 @@ hi SignColumn          guibg=none
 hi EndOfBuffer         guibg=none guifg=gray
 hi Folded              guifg=#c87fe3
 
-"" Globals
+"" Plugin Settings
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
 let g:fzf_preview_window = ['down:50%:hidden', 'ctrl-]']
@@ -115,16 +109,50 @@ function! s:search_range(type, ...)
 endfunction
 
 function! s:remove_qf_item()
-  let l:qf_list = getqflist()
-  if len(l:qf_list) <= 1
-	  cclose
-	  return
-  endif
-  let l:curqfidx = line('.') - 1
-  call remove(l:qf_list, curqfidx)
-  call setqflist(l:qf_list, 'r')
-  execute l:curqfidx + 1 . 'cfirst'
-  copen
+	let l:qf_list = getqflist()
+	if len(l:qf_list) <= 1
+		cclose
+		return
+	endif
+	let l:curqfidx = line('.') - 1
+	call remove(l:qf_list, curqfidx)
+	call setqflist(l:qf_list, 'r')
+	execute l:curqfidx + 1 . 'cfirst'
+	copen
+endfunction
+
+function! s:get_visual_selection()
+	let [line_start, column_start] = getpos("'<")[1:2]
+	let [line_end, column_end] = getpos("'>")[1:2]
+	let lines = getline(line_start, line_end)
+	if len(lines) == 0
+		return ''
+	endif
+	let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+	let lines[0] = lines[0][column_start - 1:]
+	return lines
+endfunction
+
+function! s:fzf_complete_snippet(...)
+  return fzf#vim#complete(fzf#wrap({
+  \ 'source':  "cat " . $HOME . "/.config/nvim/snippets/" . &ft . ".json" . " | jq -r 'to_entries[] | \"\\(.key): \\(.value.prefix)\"'",
+  \ 'reducer': { lines -> trim(split(lines[0], ':')[1]) } }))
+endfunction
+
+function! s:vimux_slime_selection()
+	let lines = s:get_visual_selection()
+	for line in lines
+		sleep 50m
+		call VimuxRunCommand(line)
+	endfor
+endfunction
+
+function! s:vimux_slime_line()
+	let rv = getreg('"')
+	let rt = getregtype('"')
+	execute "normal! yy"
+	call VimuxRunCommand(trim(@"))
+	call setreg('"', rv, rt)
 endfunction
 
 "" Mappings
@@ -166,10 +194,11 @@ nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
 xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
 omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
-imap <silent> <c-x><c-k>     <plug>(fzf-complete-word)
-imap <silent> <c-x><c-l>     <plug>(fzf-complete-line)
-imap <silent> <c-x><c-f>     <plug>(fzf-complete-path)
-imap <silent> <c-x><c-x>     <plug>(custom-fzf-complete-snippet)
+imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
+imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
+imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
+
+imap <silent> <expr> <c-x><c-x>     <SID>fzf_complete_snippet()
 
 imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
@@ -179,8 +208,72 @@ smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (p
 imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
+"" Filetype Settings
+
+autocmd FileType html,css
+			\  setlocal shiftwidth=2
+			\| EmmetInstall
+
+autocmd FileType c
+			\  setlocal tabstop=4
+			\| setlocal shiftwidth=4
+
+autocmd FileType json
+			\  setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=1
+
+autocmd FileType yaml
+			\ setlocal foldlevel=3
+
+autocmd FileType javascript,javascriptreact
+			\  setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=99
+			\| setlocal makeprg=./node_modules/.bin/eslint
+			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
+
+autocmd FileType typescript,typescriptreact
+			\  setlocal expandtab
+			\| setlocal tabstop=4
+			\| setlocal shiftwidth=4
+			\| setlocal foldlevel=99
+			\| setlocal makeprg=./node_modules/.bin/tsc
+			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
+
+autocmd FileType repl
+			\  nmap <buffer> <silent> <enter> :call <SID>vimux_slime_line()<CR>
+			\| vmap <buffer> <silent> <enter> :<c-u>call <SID>vimux_slime_selection()<CR>
+
+autocmd FileType netrw
+			\  nmap <buffer> h -
+			\| nmap <buffer> l <CR>
+			\| nmap <buffer> <ESC> <C-^>
+			\| nmap <buffer> ff %:w<CR>:buffer #<CR>
+
+autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
+
+autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+
+autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+"" Commands
+
+command! Gqf GitGutterQuickFix | copen
+command! RemoveQFItem call <SID>remove_qf_item()
+command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
+
+" Exclude file names from Rg matches
+command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".<q-args>, 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+
+"" Treesitter
+
 lua <<EOF
--- Treesitter
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+
 require('nvim-treesitter.configs').setup {
 	ensure_installed = { "javascript", "typescript" },
 	sync_install = false,
@@ -188,95 +281,6 @@ require('nvim-treesitter.configs').setup {
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
-		},
-	}
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+	},
+}
 EOF
-
-"" Filetype Settings
-
-autocmd FileType html,css
-			\ setlocal shiftwidth=2
-			\| EmmetInstall
-autocmd FileType c
-			\ setlocal tabstop=4
-			\| setlocal shiftwidth=4
-autocmd FileType json
-			\ setlocal expandtab
-			\| setlocal tabstop=2
-			\| setlocal shiftwidth=2
-			\| setlocal foldlevel=1
-autocmd FileType yaml
-			\ setlocal foldlevel=3
-autocmd FileType javascript,javascriptreact
-			\ setlocal expandtab
-			\| setlocal tabstop=2
-			\| setlocal shiftwidth=2
-			\| setlocal foldlevel=99
-			\| setlocal makeprg=./node_modules/.bin/eslint
-			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
-autocmd FileType typescript,typescriptreact
-			\ setlocal expandtab
-			\| setlocal tabstop=4
-			\| setlocal shiftwidth=4
-			\| setlocal foldlevel=99
-			\| setlocal makeprg=./node_modules/.bin/tsc
-			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
-autocmd FileType repl
-			\ vmap <buffer> <silent> <enter> <plug>(VimuxSlime)
-			\| nmap <buffer> <silent> <enter> <plug>(VimuxSlimeLine)
-
-autocmd  FileType qf map <buffer> dd :RemoveQFItem<cr>
-autocmd  FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
-
-autocmd! FileType fzf
-autocmd  FileType fzf set nonumber norelativenumber
-
-autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
-
-"" Commands
-
-command! Gqf GitGutterQuickFix | copen
-command! RemoveQFItem :call <SID>remove_qf_item()
-command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
-
-"" Netrw
-
-let g:netrw_localcopydircmd = 'cp -r'
-
-hi! link netrwMarkFile Search
-
-function! NetrwMapping()
-	" VinegarUp using h
-	nmap <buffer> h -
-	" l to open
-	nmap <buffer> l <CR>
-	" close netrw and return to previous buffer
-	nmap <buffer> <ESC> <C-^>
-	" <TAB> marks a file
-	nmap <buffer> <TAB> mf
-	" <S-TAB> unmarks a file
-	nmap <buffer> <S-TAB> mF
-	" Clear all marks
-	nmap <buffer> <Leader><TAB> mu
-	" new file
-	nmap <buffer> ff %:w<CR>:buffer #<CR>
-	" rename / move
-	nmap <buffer> fr R
-	" set target
-	nmap <buffer> ft mt
-	" copy to target
-	nmap <buffer> fc mc
-	" set target and copy
-	nmap <buffer> fC mtmc
-	" move to target
-	nmap <buffer> fx mm
-	" set target and move
-	nmap <buffer> fX mtmm
-endfunction
-
-augroup netrw_mapping
-	autocmd!
-	autocmd filetype netrw call NetrwMapping()
-augroup END
