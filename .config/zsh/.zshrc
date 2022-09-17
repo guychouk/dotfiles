@@ -71,7 +71,7 @@ path=($path "$GOPATH/bin" "$HOME/bin")
 typeset -aU path
 
 if [[ $(uname) = "Darwin" ]]; then
-	alias ll='ls -laG'
+	alias ll='ls -laGh'
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 	ulimit -n 10240
 else
