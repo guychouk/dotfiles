@@ -3,9 +3,10 @@
 # Opens REPL in current directory
 
 REPL="$(find "$HOME/repls" -type f | fzf)"
+FILENAME=$(basename "$REPL")
 
 if [[ -n $REPL ]]; then
-	ln -s "$HOME/repls/$REPL" "$REPL"
-	nvim "$REPL"
-	rm "$REPL"
+	ln -s "$REPL" "$FILENAME"
+	nvim "$FILENAME"
+	rm "$FILENAME"
 fi
