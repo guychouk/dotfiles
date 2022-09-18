@@ -31,7 +31,6 @@
   pso      = push origin
   psd      = push --delete origin
   psu      = push --set-upstream origin
-  psom     = push origin master
   unstage  = restore --staged
   assume   = update-index --assume-unchanged
   unassume = update-index --no-assume-unchanged
