@@ -21,16 +21,12 @@ let &updatetime     = 300
 
 "" Colors
 
-let g:tokyonight_style = 'night'
-let g:tokyonight_enable_italic = 0
-let g:tokyonight_disable_italic_comment = 1
-colorscheme tokyonight
+colorscheme tokyonight-night
 
 hi Normal              guibg=none
 hi LineNr              guibg=none
 hi SignColumn          guibg=none
 hi EndOfBuffer         guibg=none guifg=gray
-hi Folded              guifg=#c87fe3
 
 "" Plugin Settings
 
