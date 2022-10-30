@@ -1,7 +1,7 @@
 "" Settings
 
 let &clipboard     .= "unnamedplus"
-let &completeopt   .= "preview"
+let &completeopt    = "menu,preview"
 let &hlsearch       = 0
 let &laststatus     = 0
 let &list           = 1
