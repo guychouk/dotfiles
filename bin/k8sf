@@ -3,7 +3,7 @@
 # Exit all subprocesses with ctrl-c
 # See this: https://stackoverflow.com/a/52033580/4814251
 (trap 'kill 0' SIGINT; \
-	kubectl -n $1 port-forward services/redis 6379 & \
-	kubectl -n $1 port-forward services/mongodb 27017 & \
-	kubectl -n $1 port-forward services/rabbitmq 5672 & \
+	kubectl -n $1 port-forward services/redis 6379:6379 & \
+	kubectl -n $1 port-forward services/mongodb 27017:27017 & \
+	kubectl -n $1 port-forward services/rabbitmq 5672:5672 & \
 	wait)
