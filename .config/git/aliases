@@ -15,10 +15,12 @@
   cl       = clone
   rb       = rebase
   rbi      = rebase -i
+  rbc      = rebase --continue
   c        = commit
   ca       = commit -a
   cm       = commit -m
   cam      = commit -a -m
+  can      = commit --amend --no-edit
   sp       = stash pop
   sl       = stash list
   sa       = stash apply
