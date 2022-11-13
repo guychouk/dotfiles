@@ -43,10 +43,9 @@ export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
 
 alias \
 	g=git \
+	n=nvim \
 	d=docker \
 	k=kubectl \
-	nv=nvim \
-	dcc=docker-compose \
 	ctx='kubectl config current-context' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
