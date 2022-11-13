@@ -178,12 +178,14 @@ nmap <silent> <leader>w      :w<CR>
 nmap <silent> <leader>tb     :BTags<CR>
 nmap <silent> <leader>tt     :Tags<CR>
 nmap <silent> <leader>ec     :e ~/.config/nvim/init.vim<CR>
+
 nmap <silent> <leader>=h     :exe "resize +5"<CR>
 nmap <silent> <leader>-h     :exe "resize -5"<CR>
 nmap <silent> <leader>=v     :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v     :exe "vertical resize -5"<CR>
 
 xmap <silent> <leader>ea     <plug>(EasyAlign)
+xmap <silent> <leader>ys     <plug>(VSurround)
 xmap <silent> <leader>/      :<c-u>call <SID>search_range(visualmode(), 1)<CR>
 
 nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
