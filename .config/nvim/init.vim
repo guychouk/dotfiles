@@ -237,6 +237,7 @@ autocmd FileType javascript,javascriptreact
 			\| setlocal foldlevel=99
 			\| setlocal makeprg=./node_modules/.bin/eslint
 			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
+			\| EmmetInstall
 
 autocmd FileType typescript,typescriptreact
 			\  setlocal expandtab
@@ -245,6 +246,7 @@ autocmd FileType typescript,typescriptreact
 			\| setlocal foldlevel=99
 			\| setlocal makeprg=./node_modules/.bin/tsc
 			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
+			\| EmmetInstall
 
 autocmd FileType repl
 			\  nmap <buffer> <silent> <enter> :call <SID>vimux_slime_line()<CR>
