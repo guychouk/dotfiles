@@ -1,5 +1,3 @@
-INPUT_FILE=
-
 # Convert video to GIF
 GIF_SETTINGS='fps=10,scale=860:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse'
 ffmpeg -i $INPUT_FILE.mov -vf $GIF_SETTINGS -loop 0 $INPUT_FILE.gif
