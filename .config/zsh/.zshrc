@@ -23,6 +23,9 @@ parse_kubectl_current_context() {
 	if [ ! "$kube_context" ]; then printf ""; else printf " [$kube_context]"; fi
 }
 
+# Remove annoying percent sign
+unsetopt PROMPT_SP
+
 PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 setopt PROMPT_SUBST
 
@@ -147,7 +150,7 @@ fi
 ## FZF
 
 if command -v fzf 1>/dev/null 2>&1; then
-	export FZF_DEFAULT_OPTS='--height 95% --layout=reverse'
+	export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
 
 	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
