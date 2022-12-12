@@ -74,10 +74,11 @@ path=($path "$GOPATH/bin" "$HOME/bin")
 typeset -aU path
 
 if [[ $(uname) = "Darwin" ]]; then
-	alias ll='ls -laGh'
+	alias ll='gls -lah --group-directories-first --color=always'
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 	ulimit -n 10240
 else
+	alias ll='ls -lah --color=always'
 fi
 
 # edit command line with $EDITOR
