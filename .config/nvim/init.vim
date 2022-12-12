@@ -249,7 +249,8 @@ autocmd FileType typescript,typescriptreact
 			\| EmmetInstall
 
 autocmd FileType repl
-			\  nmap <buffer> <silent> <enter> :call <SID>vimux_slime_line()<CR>
+			\  setlocal filetype=bash
+			\| nmap <buffer> <silent> <enter> :call <SID>vimux_slime_line()<CR>
 			\| vmap <buffer> <silent> <enter> :<c-u>call <SID>vimux_slime_selection()<CR>
 
 autocmd FileType netrw
