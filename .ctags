@@ -1,15 +1,3 @@
---langdef=json
---langmap=json:.json
---regex-json=/^[ \t]*"(.*)":/\1/k,key,keys/
-
---langdef=yaml
---langmap=yaml:.yml.yaml
---regex-yaml=/^[ \t]*(.*):/\1/k,key,keys/
-
---langdef=dockerfile
---langmap=dockerfile:+(Dockerfile)
---regex-dockerfile=/^(FROM|MAINTAINER|RUN|CMD|LABEL|EXPOSE|ENV|ADD|COPY|ENTRYPOINT|VOLUME|USER|WORKDIR|ARG|ONBUILD|STOPSIGNAL|HEALTHCHECK|SHELL)/\1/d,dockerfile,dockerfiles/
-
 --langmap=javascript:.js.es6.es.jsx.mjs
 --javascript-kinds=-c-f-m-p-v
 --regex-javascript=/^[ \t]*var[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\[/\1/A,Array,Arrays/b
@@ -155,7 +143,7 @@
 --exclude=*.spec.*
 --exclude=*.test.*
 --exclude=*.tar.*
---exclude=.*bundle.*
+--exclude=*.bundle.*
 --exclude=.bak
 --exclude=.cache
 --exclude=.class
@@ -172,12 +160,12 @@
 --exclude=cscope.*
 --exclude=dist
 --exclude=min
---exclude=node_modules
 --exclude=tags
 --exclude=test
 --exclude=tests
 --exclude=vendor
---exclude=dist
+--exclude=node_modules
+--exclude=package.json
 --exclude=package-lock.json
 
 --sort=no
