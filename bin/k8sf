@@ -2,9 +2,11 @@
 
 declare -A service_map
 
+NS="${NS:=`kubens -c`}"
+
 for svc in "$@"; do
-	port=`kubectl get svc $svc -o json | jq '.spec.ports[] | select(.name == "http") | .port'`
+	port=`kubectl -n $NS get svc $svc -o json | jq '.spec.ports[] | select(.name == "http" or .name == "mongodb") | .port'`
 	service_map[$svc]=$port
 done
 
-(trap 'kill 0' SIGINT; for key val in "${(@kv)service_map}"; do kubectl -n gval port-forward services/$key "$val:$val" &; done; wait)
+(trap 'kill 0' SIGINT; for svc port in "${(@kv)service_map}"; do kubectl -n $NS port-forward services/$svc "$port:$port" &; done; wait)
