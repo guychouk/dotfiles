@@ -1,3 +1,0 @@
-#!/bin/bash
-
-cat "$(find ~/Projects/helmer/envs -type f -name '*.yaml' | fzf)" | awk -v IGNORECASE=1 '$1 == "port:" { print "Port: " $2; exit; }'
