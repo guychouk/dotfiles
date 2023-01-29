@@ -164,7 +164,7 @@ inoremap <C-U> <C-G>u<C-U>
 nmap          R              :%s//g<Left><Left>
 nmap <silent> K              :call <SID>vim_help_cword()<CR>
 nmap <silent> yoz            :call <SID>zoom_pane_toggle()<CR>
-nmap          <leader>/      :Rg ""<Left>
+nmap          <leader>/      :Rg -g '!tags' ""<Left>
 nmap <silent> <leader>.      :GFiles<CR>
 nmap <silent> <leader>b      :Buffers<CR>
 nmap <silent> <leader>g      :Git<CR>
@@ -232,8 +232,8 @@ autocmd FileType yaml
 
 autocmd FileType javascript,javascriptreact
 			\  setlocal expandtab
-			\| setlocal tabstop=4
-			\| setlocal shiftwidth=4
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
 			\| setlocal foldlevel=99
 			\| setlocal makeprg=./node_modules/.bin/eslint
 			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
