@@ -151,7 +151,7 @@ fi
 ## FZF
 
 if command -v fzf 1>/dev/null 2>&1; then
-	export FZF_DEFAULT_OPTS='--height 50% --layout=reverse'
+	export FZF_DEFAULT_OPTS='--height 50% --layout=reverse --border=none'
 
 	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
 	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
