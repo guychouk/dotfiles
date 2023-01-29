@@ -5,7 +5,7 @@ declare -A service_map
 NS="${NS:=`kubens -c`}"
 
 for svc in "$@"; do
-	port=`kubectl -n $NS get svc $svc -o json | jq '.spec.ports[] | select(.name == "http" or .name == "mongodb") | .port'`
+	port=`kubectl -n $NS get svc $svc -o json | jq '.spec.ports[] | select(.name == "http" or .name == "mongodb" or .name == "redis") | .port'`
 	service_map[$svc]=$port
 done
 
