@@ -23,6 +23,7 @@
   psu      = push --set-upstream origin
   rs       = restore --staged
   rb       = rebase
+  reh      = reset --hard HEAD
   rba      = rebase --abort
   rbc      = rebase --continue
   rbi      = rebase -i
@@ -33,6 +34,6 @@
   sp       = stash pop
   sl       = stash list
   sa       = stash apply
-  # scripts
+  unstage  = restore --staged
   rbm      = !git checkout master && git pull && git checkout - && git rebase master
-  cub      = !git remote prune origin && git branch --merged master | grep -v '^[ *]*master$' | xargs git branch -d
+  cub      = !git remote prune origin && git branch --merged | grep -v \"\\*\" | grep -v \"master\" | grep -v \"main\" | xargs git branch -d
