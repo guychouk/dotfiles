@@ -1,0 +1,19 @@
+#!/usr/bin/env zsh
+
+countdown() {
+    start="$(( $(gdate '+%s') + $1))"
+    while [ $start -ge $(gdate +%s) ]; do
+        time="$(( $start - $(gdate +%s) ))"
+        printf '%s\r' "$(gdate -u -d "@$time" +%H:%M:%S)"
+        sleep 0.1
+    done
+}
+
+stopwatch() {
+    start=$(gdate +%s)
+    while true; do
+        time="$(( $(gdate +%s) - $start))"
+        printf '%s\r' "$(gdate -u -d "@$time" +%H:%M:%S)"
+        sleep 0.1
+    done
+}

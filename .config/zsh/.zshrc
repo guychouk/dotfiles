@@ -35,6 +35,7 @@ HISTSIZE=50000
 SAVEHIST=50000
 HISTFILE="$ZSH_CACHE_DIR/history"
 
+export GPG_TTY=$(tty)
 export KEYTIMEOUT=1
 export KUBECONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/kube/config"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
@@ -176,3 +177,8 @@ export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 [ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
 
 source "$ASDF_DIR/asdf.sh"
+
+## General Functions
+
+source "$ZDOTDIR/functions/time"
+
