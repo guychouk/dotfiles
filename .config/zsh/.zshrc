@@ -26,7 +26,7 @@ parse_kubectl_current_context() {
 # Remove annoying percent sign
 unsetopt PROMPT_SP
 
-PROMPT='%F{38}%1~%F{208}$(parse_git_branch) λ %f'
+PROMPT=$'%{\e[3 q%}%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 setopt PROMPT_SUBST
 
 ## Variables
