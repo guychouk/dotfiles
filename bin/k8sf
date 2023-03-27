@@ -5,8 +5,23 @@ declare -A service_map
 NS="${NS:=`kubens -c`}"
 
 for svc in "$@"; do
-	port=`kubectl -n $NS get svc $svc -o json | jq '.spec.ports[] | select(.name == "http" or .name == "mongodb" or .name == "redis") | .port'`
-	service_map[$svc]=$port
+	if [[ $svc =~ : ]]; then
+		local_port=
+		remote_port=
+		svc_conf_array=(${(s/:/)svc})
+		svc_name=${svc_conf_array[1]}
+		if (( ${#svc_conf_array[@]} > 2 )); then
+			local_port=${svc_conf_array[2]}
+			remote_port=${svc_conf_array[3]}
+		else
+			local_port=${svc_conf_array[2]}
+			remote_port=`kubectl -n $NS get svc $svc_name -o json | jq '.spec.ports[0].port'`
+		fi
+		service_map[$svc_name]="$local_port:$remote_port"
+	else
+		port=`kubectl -n $NS get svc $svc -o json | jq '.spec.ports[0].port'`
+		service_map[$svc]="$port:$port"
+	fi
 done
 
-(trap 'kill 0' SIGINT; for svc port in "${(@kv)service_map}"; do kubectl -n $NS port-forward services/$svc "$port:$port" &; done; wait)
+(trap 'kill 0' SIGINT; for svc pf in "${(@kv)service_map}"; do kubectl -n $NS port-forward --address 127.0.0.1 services/$svc "$pf" &; done; wait)
