@@ -28,10 +28,10 @@ hi LineNr              guibg=none
 hi SignColumn          guibg=none
 hi EndOfBuffer         guibg=none guifg=gray
 
-"" Plugin Settings
+"" Plugins Configuration
 
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6, 'relative': v:true } }
-let g:fzf_preview_window = ['down:50%:hidden', 'ctrl-]']
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7, 'relative': v:true } }
+let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
 let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
@@ -44,14 +44,14 @@ let g:vsnip_filetypes = {
 			\}
 let g:vsnip_snippet_dir = system('echo -n "${XDG_CONFIG_HOME:-$HOME/.config}/nvim/snippets"')
 
-let g:indentLine_fileType = ['yaml', 'yml']
-
 let g:gh_repo_map = '<leader><leader>go'
 let g:gh_line_map_default = 0
 let g:gh_line_blame_map_default = 0
 let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 
 let g:user_emmet_install_global = 0
+
+let g:indentLine_fileType = ['yaml', 'yml']
 
 "" Functions
 
@@ -70,7 +70,7 @@ function! s:tab_completion()
 	endif
 endfunction
 
-function! s:zoom_pane_toggle()
+function! s:toggle_pane_zoom()
 	if exists('t:zoomed') && t:zoomed
 		execute t:zoom_winrestcmd
 		let t:zoomed = 0
@@ -86,22 +86,6 @@ function! s:vim_help_cword()
 	if (index(['vim','help'], &filetype) >= 0)
 		exe 'h' expand('<cword>')
 	endif
-endfunction
-
-function! s:search_range(type, ...)
-	let sel_save = &selection
-	let &selection = 'inclusive'
-	let reg_save = @@
-	if a:0
-		silent exe 'normal! gvy'
-	elseif a:type == 'line'
-		silent exe "normal! '[V']y"
-	else
-		silent exe "normal! `[v`]y"
-	endif
-	exe 'Rg' @@
-	let &selection = sel_save
-	let @@ = reg_save
 endfunction
 
 function! s:remove_qf_item()
@@ -136,11 +120,7 @@ function! s:fzf_complete_snippet(...)
 endfunction
 
 function! s:vimux_slime_selection()
-	let lines = s:get_visual_selection()
-	for line in lines
-		sleep 50m
-		call VimuxRunCommand(line)
-	endfor
+	call VimuxRunCommand(@v)
 endfunction
 
 function! s:vimux_slime_line()
@@ -154,57 +134,53 @@ endfunction
 "" Mappings
 
 let mapleader = "\<Space>"
-let maplocalleader = "\<Space>"
 
 " Break undo before deleting a word
 inoremap <C-W> <C-G>u<C-W>
+
 " Break undo before deleting a line
 inoremap <C-U> <C-G>u<C-U>
 
-nmap          R              :%s//g<Left><Left>
-nmap <silent> K              :call <SID>vim_help_cword()<CR>
-nmap <silent> yoz            :call <SID>zoom_pane_toggle()<CR>
-nmap          <leader>/      :Rg -g '!tags' ""<Left>
-nmap <silent> <leader>.      :GFiles<CR>
-nmap <silent> <leader>b      :Buffers<CR>
-nmap <silent> <leader>g      :Git<CR>
-nmap <silent> <leader>j      :sp<CR>
-nmap <silent> <leader>l      :vsp<CR>
-nmap <silent> <leader>o      :Files<CR>
-nmap <silent> <leader>p      :Commands<CR>
-nmap <silent> <leader>q      :q<CR>
-nmap <silent> <leader>s      <plug>(statusline_toggle)
-nmap <silent> <leader>w      :w<CR>
-nmap <silent> <leader>tb     :BTags<CR>
-nmap <silent> <leader>tt     :Tags<CR>
-nmap <silent> <leader>ec     :e ~/.config/nvim/init.vim<CR>
-
-nmap <silent> <leader>=h     :exe "resize +5"<CR>
-nmap <silent> <leader>-h     :exe "resize -5"<CR>
-nmap <silent> <leader>=v     :exe "vertical resize +5"<CR>
-nmap <silent> <leader>-v     :exe "vertical resize -5"<CR>
-
-xmap <silent> <leader>ea     <plug>(EasyAlign)
-xmap <silent> <leader>ys     <plug>(VSurround)
-xmap <silent> <leader>/      :<c-u>call <SID>search_range(visualmode(), 1)<CR>
-
-nmap <silent> <leader><tab>  <plug>(fzf-maps-n)
-xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
-omap <silent> <leader><tab>  <plug>(fzf-maps-o)
+nmap          R                     :%s//g<Left><Left>
+nmap          <leader>/             :Rg -g '!tags' ""<Left>
+nmap <silent> K                     :call <SID>vim_help_cword()<CR>
+nmap <silent> yoz                   :call <SID>toggle_pane_zoom()<CR>
+nmap <silent> <leader>.             :GFiles<CR>
+nmap <silent> <leader>b             :Buffers<CR>
+nmap <silent> <leader>g             :Git<CR>
+nmap <silent> <leader>j             :sp<CR>
+nmap <silent> <leader>l             :vsp<CR>
+nmap <silent> <leader>o             :Files<CR>
+nmap <silent> <leader>p             :Commands<CR>
+nmap <silent> <leader>q             :q<CR>
+nmap <silent> <leader>s             <plug>(statusline_toggle)
+nmap <silent> <leader>w             :w<CR>
+nmap <silent> <leader>tb            :BTags<CR>
+nmap <silent> <leader>tt            :Tags<CR>
+nmap <silent> <leader>ec            :e ~/.config/nvim/init.vim<CR>
+nmap <silent> <leader>=h            :exe "resize +5"<CR>
+nmap <silent> <leader>-h            :exe "resize -5"<CR>
+nmap <silent> <leader>=v            :exe "vertical resize +5"<CR>
+nmap <silent> <leader>-v            :exe "vertical resize -5"<CR>
+nmap <silent> <leader><tab>         <plug>(fzf-maps-n)
 
 imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
 imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
-
 imap <silent> <expr> <c-x><c-x>     <SID>fzf_complete_snippet()
+imap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+imap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
+imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 
-imap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
-smap <silent> <expr> <C-j>   vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
+smap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
+smap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+smap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
-imap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
-smap <silent> <expr> <Tab>   vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
-imap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
-smap <silent> <expr> <S-Tab> vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
+xmap <silent> <leader>ea     <plug>(EasyAlign)
+xmap <silent> <leader>ys     <plug>(VSurround)
+xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
+
+omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
 "" Filetype Settings
 
@@ -228,15 +204,18 @@ autocmd FileType json
 			\| setlocal foldlevel=1
 
 autocmd FileType yaml
-			\ setlocal foldlevel=3
+			\ setlocal foldlevel=4
 
 autocmd FileType javascript,javascriptreact
 			\  setlocal expandtab
 			\| setlocal tabstop=2
 			\| setlocal shiftwidth=2
 			\| setlocal foldlevel=99
-			\| setlocal makeprg=./node_modules/.bin/eslint
+			\| setlocal makeprg=eslint
 			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
+			\| let maplocalleader="\\"
+			\| map <localleader>r :call VimuxRunCommand("node " . bufname("%"))<CR>
+			\| map <localleader>\ :VimuxRunLastCommand<CR>
 			\| EmmetInstall
 
 autocmd FileType typescript,typescriptreact
@@ -244,14 +223,17 @@ autocmd FileType typescript,typescriptreact
 			\| setlocal tabstop=4
 			\| setlocal shiftwidth=4
 			\| setlocal foldlevel=99
-			\| setlocal makeprg=./node_modules/.bin/tsc
+			\| setlocal makeprg=tsc
 			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
+			\| let maplocalleader="\\"
+			\| map <localleader>r :call VimuxRunCommand("ts-node " . bufname("%"))<CR>
+			\| map <localleader>\ :VimuxRunLastCommand<CR>
 			\| EmmetInstall
 
 autocmd FileType repl
 			\  setlocal filetype=bash
 			\| nmap <buffer> <silent> <enter> :call <SID>vimux_slime_line()<CR>
-			\| vmap <buffer> <silent> <enter> :<c-u>call <SID>vimux_slime_selection()<CR>
+			\| vmap <buffer> <silent> <enter> "vy :call <SID>vimux_slime_selection()<CR>
 
 autocmd FileType netrw
 			\  nmap <buffer> h -
