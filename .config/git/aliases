@@ -10,6 +10,7 @@
   can      = commit --amend --no-edit
   co       = checkout
   cl       = clone
+  fc       = log --follow --oneline
   d        = diff
   f        = fetch
   m        = merge
