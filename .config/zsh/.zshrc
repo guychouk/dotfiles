@@ -53,6 +53,7 @@ alias \
 	dcc='docker compose' \
 	ctx='kubectl config current-context' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
+	pfdb='k8sf mongodb mongodb4:27018:27017 kafka rabbitmq' \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 ## General
