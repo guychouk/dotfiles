@@ -69,6 +69,7 @@ setopt SHARE_HISTORY                # share history between different instances 
 setopt EXTENDED_HISTORY             # add timestamps to history
 setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that do nothing
 setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
+setopt HIST_IGNORE_SPACE            # ignore entries that start with space (for sensitive commands)
 
 path=($path "$GOPATH/bin" "$HOME/bin")
 
