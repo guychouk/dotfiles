@@ -54,6 +54,8 @@ alias \
 	ctx='kubectl config current-context' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
 	pfdb='k8sf mongodb mongodb4:27018:27017 kafka rabbitmq' \
+	vday="sed -I '' 's/^color.*/colorscheme tokyonight-day/' ~/.config/nvim/init.vim" \
+	vnight="sed -I '' 's/^color.*/colorscheme tokyonight-night/' ~/.config/nvim/init.vim" \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 ## General
@@ -79,12 +81,12 @@ typeset -aU path
 if [[ $(uname) = "Darwin" ]]; then
 	list_cmd='ls'
 	if command -v gls >/dev/null 2>&1; then
-		list_cmd='gls --group-directories-first'
+		list_cmd='gls -lah --group-directories-first'
 	fi
-	if command -v lsd >/dev/null 2>&1; then
-		list_cmd='lsd --group-directories-first'
+	if command -v exa >/dev/null 2>&1; then
+		list_cmd='exa -la --icons --time-style=long-iso --group-directories-first'
 	fi
-	alias ll="$list_cmd -lah --color=always"
+	alias ll="$list_cmd --color=always"
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 	ulimit -n 10240
 else
