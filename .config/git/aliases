@@ -22,6 +22,7 @@
   pso      = push origin
   psd      = push --delete origin
   psu      = push --set-upstream origin
+  r        = reset
   rs       = restore --staged
   rb       = rebase
   reh      = reset --hard HEAD
