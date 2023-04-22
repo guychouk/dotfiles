@@ -190,6 +190,7 @@ autocmd FileType markdown
 
 autocmd FileType html,css
 			\  setlocal shiftwidth=2
+			\| setlocal foldlevel=99
 			\| EmmetInstall
 
 autocmd FileType c,cpp
