@@ -173,6 +173,7 @@ nmap <silent> <leader>-h            :exe "resize -5"<CR>
 nmap <silent> <leader>=v            :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v            :exe "vertical resize -5"<CR>
 nmap <silent> <leader><tab>         <plug>(fzf-maps-n)
+nmap <silent> <leader><enter>       :call <SID>vimux_slime_line()<CR>
 
 imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
