@@ -55,6 +55,16 @@ let g:indentLine_fileType = ['yaml', 'yml']
 
 "" Functions
 
+function! s:insert_post_link(file)
+  if len(a:file) != 0
+    let ext = expand('%:e')
+    let new_ext = '.html'
+    let modified_file = substitute(substitute(a:file[0], '\.'.ext.'$', new_ext, ''), '\.', '', '')
+    return modified_file
+  endif
+endfunction
+
+
 function! s:tab_completion()
 	let line = getline('.')
 	let substr = strpart(line, 0, col('.') - 1)
@@ -168,6 +178,13 @@ imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
 imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
 imap <silent> <expr> <c-x><c-x>     <SID>fzf_complete_snippet()
+imap <silent> <expr> <c-x><c-o>     fzf#vim#complete({
+					\ 'source':  'find ./posts -name "*.md"',
+					\ 'reducer': function('<sid>insert_post_link'),
+					\ 'options': '--reverse',
+					\ 'window': { 'width': 0.4, 'height': 0.7 }
+					\ })
+
 imap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
 imap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
