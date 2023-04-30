@@ -18,6 +18,8 @@ let &smartcase      = 1
 let &swapfile       = 0
 let &termguicolors  = 1
 let &updatetime     = 300
+let &foldmethod     = "expr"
+let &foldexpr       = "nvim_treesitter#foldexpr()"
 
 "" Colors
 
@@ -221,7 +223,7 @@ autocmd FileType json
 			\  setlocal expandtab
 			\| setlocal tabstop=2
 			\| setlocal shiftwidth=2
-			\| setlocal foldlevel=1
+			\| setlocal foldlevel=2
 
 autocmd FileType yaml
 			\ setlocal foldlevel=4
@@ -280,20 +282,13 @@ command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-hea
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-"" Treesitter
-
+"" Lua Plugins
 lua <<EOF
-vim.opt.foldmethod = "expr"
-vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-
+require('colorizer').setup()
 require('nvim-treesitter.configs').setup {
 	ensure_installed = { "javascript", "typescript" },
 	sync_install = false,
 	auto_install = true,
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false,
-	},
+	highlight = { enable = true, additional_vim_regex_highlighting = false },
 }
-require('colorizer').setup()
 EOF
