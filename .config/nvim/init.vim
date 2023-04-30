@@ -30,6 +30,8 @@ hi EndOfBuffer         guibg=none guifg=gray
 
 "" Plugins Configuration
 
+" Add Homebrew installed fzf to runtimepath
+set rtp+=/usr/local/opt/fzf
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7, 'relative': v:true } }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
@@ -63,7 +65,6 @@ function! s:insert_post_link(file)
     return modified_file
   endif
 endfunction
-
 
 function! s:tab_completion()
 	let line = getline('.')
@@ -294,4 +295,5 @@ require('nvim-treesitter.configs').setup {
 		additional_vim_regex_highlighting = false,
 	},
 }
+require('colorizer').setup()
 EOF
