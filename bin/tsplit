@@ -1,5 +1,0 @@
-#!/bin/bash
-
-# Run command in a split tmux pane
-
-tmux split-pane "$* ; read"

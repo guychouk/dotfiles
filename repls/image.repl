@@ -1,9 +1,6 @@
 # resize
 convert $INPUT -resize $SIZE $OUTPUT
 
-# compress
-gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH  -dQUIET -sOutputFile=$OUTPUT $INPUT
-
 # scale
 convert $INPUT -filter point -resize $SIZE $OUTPUT
 
@@ -21,9 +18,3 @@ convert $INPUT -background none -gravity center -resize $SIZE -extent $SIZE $OUT
 
 # pdf2png
 convert -density 300 $INPUT -resize 35% $OUTPUT
-
-# pdfextract
-gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$firstPage -dLastPage=$lastPage -sOutputFile=$OUTPUT $INPUT
-
-# pdfmerge
-gs -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=$OUTPUT -dBATCH $INPUT

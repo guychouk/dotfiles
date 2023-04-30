@@ -1,0 +1,8 @@
+# compress PDF
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dBATCH  -dQUIET -sOutputFile=$OUTPUT $INPUT
+
+# split PDF
+gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=$FIRST -dLastPage=$LAST -sOutputFile=$OUTPUT $INPUT
+
+# merge PDFs
+gs -dNOPAUSE -sDEVICE=pdfwrite -sOutputFile=$OUTPUT -dBATCH $INPUT

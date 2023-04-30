@@ -1,6 +1,0 @@
-#!/bin/bash
-
-# Opens bash in k8s pod
-
-pod=`kubectl get pods --selector app.kubernetes.io/name=sentinel -o json | jq -r '.items[0].metadata.name'`
-kubectl exec -it $pod -- /bin/bash

@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Downloads file from Github repo
-
-curl -XGET \
-	-H "Authorization: token $(gh config get -h github.com oauth_token)" \
-	-H "Accept: application/vnd.github.v3.raw" \
-	'https://api.github.com/repos/'"$1"'/contents/'"$2"
