@@ -51,11 +51,7 @@ alias \
 	k=kubectl \
 	nv=nvim \
 	dcc='docker compose' \
-	ctx='kubectl config current-context' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
-	pfdb='k8sf mongodb mongodb4:27018:27017 kafka rabbitmq' \
-	vday="sed -I '' 's/^color.*/colorscheme tokyonight-day/' ~/.config/nvim/init.vim" \
-	vnight="sed -I '' 's/^color.*/colorscheme tokyonight-night/' ~/.config/nvim/init.vim" \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 ## General
