@@ -18,3 +18,14 @@ convert $INPUT -background none -gravity center -resize $SIZE -extent $SIZE $OUT
 
 # pdf2png
 convert -density 300 $INPUT -resize 35% $OUTPUT
+
+# Convert 1024x1024 PNG to multiple sizes of PNGs
+convert icon.png -strip -interlace Plane \
+	-resize "1024x>" -write Icon-1024.png \
+	-resize "180x>" -write Icon-180.png \
+	-resize "167x>" -write Icon-167.png \
+	-resize "152x>" -write Icon-152.png \
+	-resize "120x>" -write Icon-120.png \
+	-resize "80x>" -write Icon-80.png \
+	-resize "76x>" -write Icon-76.png \
+	-resize "40x>" Icon-40.png
