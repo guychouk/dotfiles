@@ -36,7 +36,7 @@ function! s:reset_colors()
 	hi Folded                  guifg=#f0f0f0
 endfunction
 
-colorscheme tokyonight-night
+colorscheme seoul256
 
 call <SID>reset_colors()
 
@@ -66,6 +66,16 @@ let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 let g:user_emmet_install_global = 0
 
 let g:indentLine_fileType = ['yaml', 'yml']
+
+" Color name (:help cterm-colors) or ANSI code
+let g:limelight_conceal_ctermfg = 'gray'
+let g:limelight_conceal_ctermfg = 240
+
+" Color name (:help gui-colors) or RGB color
+let g:limelight_conceal_guifg = 'DarkGray'
+let g:limelight_conceal_guifg = '#777777'
+
+let g:goyo_width = 120
 
 "" Functions
 
@@ -154,6 +164,19 @@ function! s:vimux_slime_line()
 	call setreg('"', rv, rt)
 endfunction
 
+function! s:goyo_enter()
+	silent !tmux set status off
+	silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+	Limelight
+endfunction
+
+function! s:goyo_leave()
+	silent !tmux set status on
+	silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+	Limelight!
+	call <SID>reset_colors()
+endfunction
+
 "" Mappings
 
 let mapleader = "\<Space>"
@@ -168,6 +191,7 @@ nmap          R                     :%s//g<Left><Left>
 nmap          <leader>/             :Rg -g '!tags' ""<Left>
 nmap <silent> K                     :call <SID>vim_help_cword()<CR>
 nmap <silent> yoz                   :call <SID>toggle_pane_zoom()<CR>
+nmap <silent> <F10>                 :Goyo<CR>
 nmap <silent> <leader>.             :GFiles<CR>
 nmap <silent> <leader>b             :Buffers<CR>
 nmap <silent> <leader>g             :Git<CR>
@@ -282,6 +306,8 @@ autocmd FileType gitcommit,gitrebase,gitconfig
 autocmd BufNewFile,BufRead init.vim
 			\ let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 "" Commands
 
