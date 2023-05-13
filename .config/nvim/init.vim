@@ -20,6 +20,7 @@ let &termguicolors  = 1
 let &updatetime     = 300
 let &foldmethod     = "expr"
 let &foldexpr       = "nvim_treesitter#foldexpr()"
+let &fillchars      = 'eob: '
 
 "" Colors
 
@@ -32,8 +33,7 @@ function! s:reset_colors()
 	hi GitGutterDelete         guibg=none
 	hi GitGutterChangeLine     guibg=none
 	hi GitGutterChangeDelete   guibg=none
-	hi EndOfBuffer             guibg=none guifg=gray
-	hi Folded                  guifg=#f0f0f0
+	hi Folded                  guifg=#bfbfbf
 endfunction
 
 colorscheme seoul256
