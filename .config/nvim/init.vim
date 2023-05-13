@@ -23,12 +23,22 @@ let &foldexpr       = "nvim_treesitter#foldexpr()"
 
 "" Colors
 
+function! s:reset_colors()
+	hi Normal                  guibg=none
+	hi LineNr                  guibg=none
+	hi SignColumn              guibg=none
+	hi GitGutterAdd            guibg=none
+	hi GitGutterChange         guibg=none
+	hi GitGutterDelete         guibg=none
+	hi GitGutterChangeLine     guibg=none
+	hi GitGutterChangeDelete   guibg=none
+	hi EndOfBuffer             guibg=none guifg=gray
+	hi Folded                  guifg=#f0f0f0
+endfunction
+
 colorscheme tokyonight-night
 
-hi Normal              guibg=none
-hi LineNr              guibg=none
-hi SignColumn          guibg=none
-hi EndOfBuffer         guibg=none guifg=gray
+call <SID>reset_colors()
 
 "" Plugins Configuration
 
@@ -263,11 +273,15 @@ autocmd FileType netrw
 			\| nmap <buffer> <ESC> <C-^>
 			\| nmap <buffer> ff %:w<CR>:buffer #<CR>
 
-autocmd FileType qf map <buffer> dd :RemoveQFItem<cr>
+autocmd FileType qf
+			\ map <buffer> dd :RemoveQFItem<cr>
 
-autocmd FileType gitcommit,gitrebase,gitconfig set bufhidden=delete
+autocmd FileType gitcommit,gitrebase,gitconfig
+			\ set bufhidden=delete
 
-autocmd BufNewFile,BufRead init.vim let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+autocmd BufNewFile,BufRead init.vim
+			\ let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
 
 "" Commands
 
@@ -282,7 +296,6 @@ command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-hea
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-"" Lua Plugins
 lua <<EOF
 require('colorizer').setup()
 require('nvim-treesitter.configs').setup {
