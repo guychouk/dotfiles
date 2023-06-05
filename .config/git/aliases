@@ -40,4 +40,3 @@
   assume   = update-index --assume-unchanged
   unassume = update-index --no-assume-unchanged
   rbm      = !git checkout master && git pull && git checkout - && git rebase master
-  cub      = !git remote prune origin && git branch --merged | grep -v \"\\*\" | grep -v \"master\" | grep -v \"main\" | xargs git branch -d

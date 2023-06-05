@@ -189,3 +189,6 @@ source "$ASDF_DIR/asdf.sh"
 
 source "$ZDOTDIR/functions/time"
 
+## Git scripts
+
+source "$ZDOTDIR/functions/git"
