@@ -3,10 +3,8 @@ mattn/emmet-vim
 junegunn/fzf.vim
 junegunn/goyo.vim
 Yggdroot/indentLine
-junegunn/limelight.vim
 norcalli/nvim-colorizer.lua
 nvim-treesitter/nvim-treesitter
-junegunn/seoul256.vim
 tpope/vim-characterize
 tpope/vim-commentary
 tpope/vim-dispatch
@@ -25,3 +23,4 @@ tpope/vim-unimpaired
 tpope/vim-vinegar
 hrsh7th/vim-vsnip
 preservim/vimux
+catppuccin/nvim

@@ -1,6 +1,7 @@
 "" Settings
 
 let &clipboard     .= "unnamedplus"
+let &cursorline     = 1
 let &completeopt    = "menu,preview"
 let &hlsearch       = 0
 let &laststatus     = 0
@@ -24,26 +25,13 @@ let &fillchars      = 'eob: '
 
 "" Colors
 
-function! s:reset_colors()
-	hi Normal                  guibg=none
-	hi LineNr                  guibg=none
-	hi SignColumn              guibg=none
-	hi GitGutterAdd            guibg=none
-	hi GitGutterChange         guibg=none
-	hi GitGutterDelete         guibg=none
-	hi GitGutterChangeLine     guibg=none
-	hi GitGutterChangeDelete   guibg=none
-	hi Folded                  guifg=#bfbfbf
-endfunction
-
-colorscheme seoul256
-
-call <SID>reset_colors()
+colorscheme catppuccin-mocha
 
 "" Plugins Configuration
 
 " Add Homebrew installed fzf to runtimepath
 set rtp+=/usr/local/opt/fzf
+
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7, 'relative': v:true } }
 let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
 
@@ -66,14 +54,6 @@ let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
 let g:user_emmet_install_global = 0
 
 let g:indentLine_fileType = ['yaml', 'yml']
-
-" Color name (:help cterm-colors) or ANSI code
-let g:limelight_conceal_ctermfg = 'gray'
-let g:limelight_conceal_ctermfg = 240
-
-" Color name (:help gui-colors) or RGB color
-let g:limelight_conceal_guifg = 'DarkGray'
-let g:limelight_conceal_guifg = '#777777'
 
 let g:goyo_width = 120
 
@@ -167,14 +147,11 @@ endfunction
 function! s:goyo_enter()
 	silent !tmux set status off
 	silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-	Limelight
 endfunction
 
 function! s:goyo_leave()
 	silent !tmux set status on
 	silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-	Limelight!
-	call <SID>reset_colors()
 endfunction
 
 "" Mappings
