@@ -217,7 +217,7 @@ imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
 imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
 imap <silent> <expr> <c-x><c-x>     <SID>fzf_complete_snippet()
 imap <silent> <expr> <c-x><c-o>     fzf#vim#complete({
-					\ 'source':  'find ./posts -name "*.md"',
+					\ 'source':  'find ./notes -name "*.md"',
 					\ 'reducer': function('<sid>insert_post_link'),
 					\ 'options': '--reverse',
 					\ 'window': { 'width': 0.4, 'height': 0.7 }
