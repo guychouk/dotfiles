@@ -284,6 +284,7 @@ autocmd FileType typescript,typescriptreact
 			\| let maplocalleader="\\"
 			\| map <localleader>r :call VimuxRunCommand("ts-node " . bufname("%"))<CR>
 			\| map <localleader>\ :VimuxRunLastCommand<CR>
+			\| map <localleader>e :Dispatch! -compiler=eslint eslint --ext "ts" --format compact .<CR>
 			\| EmmetInstall
 
 autocmd FileType repl
