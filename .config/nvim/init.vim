@@ -301,6 +301,7 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
 lua <<EOF
+require('leap').add_default_mappings()
 require('colorizer').setup()
 require('nvim-treesitter.configs').setup {
 	ensure_installed = { "javascript", "typescript" },

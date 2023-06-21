@@ -16,7 +16,6 @@ airblade/vim-gitgutter
 tpope/vim-repeat
 airblade/vim-rooter
 tpope/vim-rsi
-justinmk/vim-sneak
 tpope/vim-surround
 christoomey/vim-tmux-navigator
 tpope/vim-unimpaired
@@ -24,3 +23,4 @@ tpope/vim-vinegar
 hrsh7th/vim-vsnip
 preservim/vimux
 catppuccin/nvim
+ggandor/leap.nvim
