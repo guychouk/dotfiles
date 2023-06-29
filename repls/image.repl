@@ -19,6 +19,9 @@ convert $INPUT -background none -gravity center -resize $SIZE -extent $SIZE $OUT
 # pdf2png
 convert -density 300 $INPUT -resize 35% $OUTPUT
 
+# speed up GIF
+convert -delay 1x30 output.gif fast.gif
+
 # Convert 1024x1024 PNG to multiple sizes of PNGs
 convert icon.png -strip -interlace Plane \
 	-resize "1024x>" -write Icon-1024.png \

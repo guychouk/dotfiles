@@ -3,13 +3,10 @@ GIF_SETTINGS='fps=10,scale=860:-1:flags=lanczos,split[s0][s1];[s0]palettegen[p];
 ffmpeg -i $INPUT_FILE.mov -vf $GIF_SETTINGS -loop 0 $INPUT_FILE.gif
 
 # Cut video from (-ss) to (-t)
-ffmpeg -ss $FROM -to $TO -i $INPUT_FILE.mp4 -async 1 $INPUT_FILE-cut.mp4
+ffmpeg -i $INPUT_FILE.mp4 -ss $FROM -to $TO -c copy $INPUT_FILE-cut.mp4
 
 # Cut video from (-ss) to (-t) *with* subtitles
-ffmpeg -ss $FROM -to $TO -copyts -i $INPUT -vf subtitles=$SUBTITLE -c:a copy $OUTPUT
-
-# Speed up GIF
-convert -delay 1x30 output.gif fast.gif
+ffmpeg -i $INPUT -ss $FROM -to $TO -copyts -vf subtitles=$SUBTITLE -c:a copy $OUTPUT
 
 # Extract subtitles from video
 ffmpeg -i $INPUT -map 0:s:0 ex-sub.srt
