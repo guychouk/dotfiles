@@ -33,7 +33,7 @@ colorscheme catppuccin-mocha
 set rtp+=/usr/local/opt/fzf
 
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7, 'relative': v:true } }
-let g:fzf_preview_window = ['right:50%:hidden', 'ctrl-]']
+let g:fzf_preview_window = ['down:70%:hidden', 'ctrl-]']
 
 let g:rooter_silent_chdir = 1
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
