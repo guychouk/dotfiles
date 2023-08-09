@@ -27,7 +27,7 @@ let &fillchars      = 'eob: '
 
 colorscheme catppuccin-mocha
 
-"" Plugins Configuration
+"" Plugins
 
 " Add Homebrew installed fzf to runtimepath
 set rtp+=/usr/local/opt/fzf
@@ -189,6 +189,12 @@ nmap <silent> <leader>-v            :exe "vertical resize -5"<CR>
 nmap <silent> <leader><tab>         <plug>(fzf-maps-n)
 nmap <silent> <leader><enter>       :call <SID>vimux_slime_line()<CR>
 
+omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
+
+xmap <silent>        <leader>ea     <plug>(EasyAlign)
+xmap <silent>        <leader>ys     <plug>(VSurround)
+xmap <silent>        <leader><tab>  <plug>(fzf-maps-x)
+
 imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
 imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
@@ -200,6 +206,8 @@ imap <silent> <expr> <c-x><c-o>     fzf#vim#complete({
 					\ 'window': { 'width': 0.4, 'height': 0.7 }
 					\ })
 
+" Snippets and Tab completion
+
 imap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
 imap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
@@ -207,12 +215,6 @@ imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)' 
 smap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 smap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
 smap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
-
-xmap <silent> <leader>ea     <plug>(EasyAlign)
-xmap <silent> <leader>ys     <plug>(VSurround)
-xmap <silent> <leader><tab>  <plug>(fzf-maps-x)
-
-omap <silent> <leader><tab>  <plug>(fzf-maps-o)
 
 "" Filetype Settings
 
@@ -285,6 +287,7 @@ autocmd BufNewFile,BufRead init.vim
 			\ let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
+
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 "" Commands
@@ -296,9 +299,9 @@ command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:v
 " Exclude file names from Rg matches
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".<q-args>, 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
 
-" Triger `autoread` when files changes on disk
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+" Triger `autoread` when files change on disk
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
 
 lua <<EOF
 require('leap').add_default_mappings()
