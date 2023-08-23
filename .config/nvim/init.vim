@@ -22,6 +22,7 @@ let &updatetime     = 300
 let &foldmethod     = "expr"
 let &foldexpr       = "nvim_treesitter#foldexpr()"
 let &fillchars      = 'eob: '
+let &number         = 1
 
 "" Colors
 
