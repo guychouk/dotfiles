@@ -167,6 +167,7 @@ inoremap <C-U> <C-G>u<C-U>
 
 nmap          R                     :%s//g<Left><Left>
 nmap          <leader>/             :Rg -g '!tags' ""<Left>
+nmap          <leader>r             :History:<CR>
 nmap <silent> K                     :call <SID>vim_help_cword()<CR>
 nmap <silent> yoz                   :call <SID>toggle_pane_zoom()<CR>
 nmap <silent> <F10>                 :Goyo<CR>
