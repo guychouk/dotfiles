@@ -52,6 +52,7 @@ alias \
 	nv=nvim \
 	dcc='docker compose' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
+	godot=/Applications/Godot.app/Contents/MacOS/Godot \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 ## General
