@@ -196,6 +196,7 @@ omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
 xmap <silent>        <leader>ea     <plug>(EasyAlign)
 xmap <silent>        <leader>ys     <plug>(VSurround)
 xmap <silent>        <leader><tab>  <plug>(fzf-maps-x)
+xmap <silent>        <leader>/      "yy:Rg -g '!tags' "<C-R>y"<CR>
 
 imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
