@@ -317,7 +317,7 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 command! Gqf GitGutterQuickFix | copen
 command! RemoveQFItem call s:remove_qf_item()
-command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
+command! BuffersQf call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
 
 " Exclude file names from Rg matches
 command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".<q-args>, 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
