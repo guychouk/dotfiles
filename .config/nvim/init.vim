@@ -255,7 +255,7 @@ autocmd FileType c,cpp
 			\  setlocal tabstop=4
 			\| setlocal shiftwidth=4
 			\| setlocal foldlevel=99
-			\| setlocal errorformat+=%-Gmake:\ %.%# " Ignore make errors
+			\| compiler make
 
 autocmd FileType json
 			\  setlocal expandtab
@@ -271,8 +271,7 @@ autocmd FileType javascript,javascriptreact
 			\| setlocal tabstop=2
 			\| setlocal shiftwidth=2
 			\| setlocal foldlevel=99
-			\| setlocal makeprg=eslint
-			\| setlocal errorformat=%f:\ line\ %l\\,\ col\ %c\\,\ %m,%-G%.%#
+			\| compiler eslint
 			\| let maplocalleader="\\"
 			\| map <localleader>r :call VimuxRunCommand("node " . bufname("%"))<CR>
 			\| map <localleader>\ :VimuxRunLastCommand<CR>
@@ -283,12 +282,11 @@ autocmd FileType typescript,typescriptreact
 			\| setlocal tabstop=4
 			\| setlocal shiftwidth=4
 			\| setlocal foldlevel=99
-			\| setlocal makeprg=tsc
-			\| setlocal errorformat=%f\ %#(%l\\,%c):\ %trror\ TS%n:\ %m,%trror\ TS%n:\ %m,%-G%.%#
+			\| compiler tsc
 			\| let maplocalleader="\\"
 			\| map <localleader>r :call VimuxRunCommand("ts-node " . bufname("%"))<CR>
 			\| map <localleader>\ :VimuxRunLastCommand<CR>
-			\| map <localleader>e :Dispatch! -compiler=eslint eslint --ext "ts" --format compact .<CR>
+			\| map <localleader>e :Dispatch -compiler=eslint<CR>
 			\| EmmetInstall
 
 autocmd FileType repl
