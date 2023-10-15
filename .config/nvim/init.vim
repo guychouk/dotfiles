@@ -63,12 +63,12 @@ let g:undotree_DiffAutoOpen = 0
 "" Functions
 
 function! s:insert_post_link(file)
-  if len(a:file) != 0
-    let ext = expand('%:e')
-    let new_ext = '.html'
-    let modified_file = substitute(substitute(a:file[0], '\.'.ext.'$', new_ext, ''), '\.', '', '')
-    return modified_file
-  endif
+	if len(a:file) != 0
+		let ext = expand('%:e')
+		let new_ext = '.html'
+		let modified_file = substitute(substitute(a:file[0], '\.'.ext.'$', new_ext, ''), '\.', '', '')
+		return modified_file
+	endif
 endfunction
 
 function! s:tab_completion()
@@ -129,10 +129,30 @@ function! s:get_visual_selection()
 	return lines
 endfunction
 
+function! s:git_branch_create_or_checkout(branch)
+	let l:track = match(a:branch, 'origin') != -1 ? '--track' : ''
+	execute 'Git checkout ' . l:track . ' ' . a:branch
+endfunction
+
 function! s:fzf_complete_snippet(...)
-  return fzf#vim#complete(fzf#wrap({
-  \ 'source':  "cat " . $HOME . "/.config/nvim/snippets/" . &ft . ".json" . " | jq -r 'to_entries[] | \"\\(.key): \\(.value.prefix)\"'",
-  \ 'reducer': { lines -> trim(split(lines[0], ':')[1]) } }))
+	return fzf#vim#complete(fzf#wrap({
+				\ 'source':  "cat " . $HOME . "/.config/nvim/snippets/" . &ft . ".json" . " | jq -r 'to_entries[] | \"\\(.key): \\(.value.prefix)\"'",
+				\ 'reducer': { lines -> trim(split(lines[0], ':')[1]) } }))
+endfunction
+
+function! s:fzf_complete_post_link(...)
+	return fzf#vim#complete(fzf#wrap({
+				\ 'source':  'find ./notes -name "*.md"',
+				\ 'reducer': function('s:insert_post_link'),
+				\ 'options': '--reverse',
+				\ 'window': { 'width': 0.4, 'height': 0.7 } }))
+endfunction
+
+function! s:fzf_git_checkout_branch()
+	call fzf#run(fzf#wrap({
+				\ 'source':  'git branch -a --format "%(refname:short)"',
+				\ 'sink':    function('s:git_branch_create_or_checkout'),
+				\ 'options': '--prompt "Branch> "' }))
 endfunction
 
 function! s:vimux_slime_selection()
@@ -205,12 +225,7 @@ imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
 imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
 imap <silent> <expr> <c-x><c-x>     <SID>fzf_complete_snippet()
-imap <silent> <expr> <c-x><c-o>     fzf#vim#complete({
-					\ 'source':  'find ./notes -name "*.md"',
-					\ 'reducer': function('<sid>insert_post_link'),
-					\ 'options': '--reverse',
-					\ 'window': { 'width': 0.4, 'height': 0.7 }
-					\ })
+imap <silent> <expr> <c-x><c-o>     <SID>fzf_complete_post_link()
 
 " Snippets and Tab completion
 
@@ -223,6 +238,9 @@ smap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next
 smap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
 "" Filetype Settings
+
+autocmd FileType fugitive
+			\  nmap <buffer> <silent> gb :call <SID>fzf_git_checkout_branch()<CR>
 
 autocmd FileType markdown
 			\  setlocal shiftwidth=2
