@@ -58,6 +58,8 @@ let g:indentLine_fileType = ['yaml', 'yml']
 
 let g:goyo_width = 120
 
+let g:undotree_DiffAutoOpen = 0
+
 "" Functions
 
 function! s:insert_post_link(file)
@@ -170,6 +172,7 @@ nmap          <leader>/             :Rg -g '!tags' ""<Left>
 nmap          <leader>r             :History:<CR>
 nmap <silent> K                     :call <SID>vim_help_cword()<CR>
 nmap <silent> yoz                   :call <SID>toggle_pane_zoom()<CR>
+nmap <silent> <F5>                  :UndotreeToggle<CR>
 nmap <silent> <F10>                 :Goyo<CR>
 nmap <silent> <leader>.             :GFiles<CR>
 nmap <silent> <leader>b             :Buffers<CR>
@@ -234,6 +237,7 @@ autocmd FileType c,cpp
 			\  setlocal tabstop=4
 			\| setlocal shiftwidth=4
 			\| setlocal foldlevel=99
+			\| setlocal errorformat+=%-Gmake:\ %.%# " Ignore make errors
 
 autocmd FileType json
 			\  setlocal expandtab
