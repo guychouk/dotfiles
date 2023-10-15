@@ -318,7 +318,7 @@ autocmd! User GoyoLeave nested call <SID>goyo_leave()
 "" Commands
 
 command! Gqf GitGutterQuickFix | copen
-command! RemoveQFItem call <SID>remove_qf_item()
+command! RemoveQFItem call s:remove_qf_item()
 command! Qbuffers call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
 
 " Exclude file names from Rg matches
