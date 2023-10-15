@@ -13,12 +13,12 @@ mattn/emmet-vim
 mbbill/undotree
 norcalli/nvim-colorizer.lua
 nvim-treesitter/nvim-treesitter
+nvim-treesitter/nvim-treesitter-context
 preservim/vimux
 ruanyl/vim-gh-line
 tpope/vim-characterize
 tpope/vim-commentary
 tpope/vim-dispatch
-tpope/vim-endwise
 tpope/vim-fugitive
 tpope/vim-repeat
 tpope/vim-rsi
