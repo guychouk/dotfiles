@@ -1,4 +1,4 @@
-"" Settings
+" --== Settings --==
 
 let &clipboard     .= "unnamedplus"
 let &cursorline     = 1
@@ -24,11 +24,7 @@ let &foldexpr       = "nvim_treesitter#foldexpr()"
 let &fillchars      = 'eob: '
 let &number         = 1
 
-"" Colors
-
-colorscheme catppuccin-mocha
-
-"" Plugins
+" --== Plugin Settings --==
 
 " Add Homebrew installed fzf to runtimepath
 set rtp+=/usr/local/opt/fzf
@@ -60,124 +56,11 @@ let g:goyo_width = 120
 
 let g:undotree_DiffAutoOpen = 0
 
-"" Functions
+" --== Colors --==
 
-function! s:insert_post_link(file)
-	if len(a:file) != 0
-		let ext = expand('%:e')
-		let new_ext = '.html'
-		let modified_file = substitute(substitute(a:file[0], '\.'.ext.'$', new_ext, ''), '\.', '', '')
-		return modified_file
-	endif
-endfunction
+colorscheme catppuccin-mocha
 
-function! s:tab_completion()
-	let line = getline('.')
-	let substr = strpart(line, 0, col('.') - 1)
-	let is_preceded_by_dot = match(substr, '\.') != -1
-	let is_cursor_on_first_column = col('.') == 1
-	let has_preceding_whitespace = line[col('.') - 2]  =~# '\s'
-	if (is_cursor_on_first_column || has_preceding_whitespace)
-		return "\<Tab>"
-	elseif (vsnip#expandable())
-		return "\<C-j>"
-	else
-		return "\<C-N>"
-	endif
-endfunction
-
-function! s:toggle_pane_zoom()
-	if exists('t:zoomed') && t:zoomed
-		execute t:zoom_winrestcmd
-		let t:zoomed = 0
-	else
-		let t:zoom_winrestcmd = winrestcmd()
-		resize
-		vertical resize
-		let t:zoomed = 1
-	endif
-endfunction
-
-function! s:vim_help_cword()
-	if (index(['vim','help'], &filetype) >= 0)
-		exe 'h' expand('<cword>')
-	endif
-endfunction
-
-function! s:remove_qf_item()
-	let l:qf_list = getqflist()
-	if len(l:qf_list) <= 1
-		cclose
-		return
-	endif
-	let l:curqfidx = line('.') - 1
-	call remove(l:qf_list, curqfidx)
-	call setqflist(l:qf_list, 'r')
-	execute l:curqfidx + 1 . 'cfirst'
-	copen
-endfunction
-
-function! s:get_visual_selection()
-	let [line_start, column_start] = getpos("'<")[1:2]
-	let [line_end, column_end] = getpos("'>")[1:2]
-	let lines = getline(line_start, line_end)
-	if len(lines) == 0
-		return ''
-	endif
-	let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
-	let lines[0] = lines[0][column_start - 1:]
-	return lines
-endfunction
-
-function! s:git_branch_create_or_checkout(branch)
-	let l:track = match(a:branch, 'origin') != -1 ? '--track' : ''
-	execute 'Git checkout ' . l:track . ' ' . a:branch
-endfunction
-
-function! s:fzf_complete_snippet(...)
-	return fzf#vim#complete(fzf#wrap({
-				\ 'source':  "cat " . $HOME . "/.config/nvim/snippets/" . &ft . ".json" . " | jq -r 'to_entries[] | \"\\(.key): \\(.value.prefix)\"'",
-				\ 'reducer': { lines -> trim(split(lines[0], ':')[1]) } }))
-endfunction
-
-function! s:fzf_complete_post_link(...)
-	return fzf#vim#complete(fzf#wrap({
-				\ 'source':  'find ./notes -name "*.md"',
-				\ 'reducer': function('s:insert_post_link'),
-				\ 'options': '--reverse',
-				\ 'window': { 'width': 0.4, 'height': 0.7 } }))
-endfunction
-
-function! s:fzf_git_checkout_branch()
-	call fzf#run(fzf#wrap({
-				\ 'source':  'git branch -a --format "%(refname:short)"',
-				\ 'sink':    function('s:git_branch_create_or_checkout'),
-				\ 'options': '--prompt "Branch> "' }))
-endfunction
-
-function! s:vimux_slime_selection()
-	call VimuxRunCommand(@v)
-endfunction
-
-function! s:vimux_slime_line()
-	let rv = getreg('"')
-	let rt = getregtype('"')
-	execute "normal! yy"
-	call VimuxRunCommand(trim(@"))
-	call setreg('"', rv, rt)
-endfunction
-
-function! s:goyo_enter()
-	silent !tmux set status off
-	silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-endfunction
-
-function! s:goyo_leave()
-	silent !tmux set status on
-	silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-endfunction
-
-"" Mappings
+" --== Mappings --==
 
 let mapleader = "\<Space>"
 
@@ -190,8 +73,8 @@ inoremap <C-U> <C-G>u<C-U>
 nmap          R                     :%s//g<Left><Left>
 nmap          <leader>/             :Rg -g '!tags' ""<Left>
 nmap          <leader>r             :History:<CR>
-nmap <silent> K                     :call <SID>vim_help_cword()<CR>
-nmap <silent> yoz                   :call <SID>toggle_pane_zoom()<CR>
+nmap <silent> K                     :call utils#VimHelp()<CR>
+nmap <silent> yoz                   :call utils#ZoomPane()<CR>
 nmap <silent> <F5>                  :UndotreeToggle<CR>
 nmap <silent> <F10>                 :Goyo<CR>
 nmap <silent> <leader>.             :GFiles<CR>
@@ -212,35 +95,32 @@ nmap <silent> <leader>-h            :exe "resize -5"<CR>
 nmap <silent> <leader>=v            :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v            :exe "vertical resize -5"<CR>
 nmap <silent> <leader><tab>         <plug>(fzf-maps-n)
-nmap <silent> <leader><enter>       :call <SID>vimux_slime_line()<CR>
+nmap <silent> <leader><enter>       :call utils#VimuxSlimeLine()<CR>
 
-omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
+imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
+imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
+imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
+imap <silent> <expr> <c-x><c-x>     utils#FzfCompleteSnippet()
+imap <silent> <expr> <c-x><c-o>     notes#FzfCompleteNoteLink()
+imap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : utils#HandleTab())
+imap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
+imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
 
 xmap <silent>        <leader>ea     <plug>(EasyAlign)
 xmap <silent>        <leader>ys     <plug>(VSurround)
 xmap <silent>        <leader><tab>  <plug>(fzf-maps-x)
 xmap <silent>        <leader>/      "yy:Rg -g '!tags' "<C-R>y"<CR>
 
-imap <silent>        <c-x><c-k>     <plug>(fzf-complete-word)
-imap <silent>        <c-x><c-l>     <plug>(fzf-complete-line)
-imap <silent>        <c-x><c-f>     <plug>(fzf-complete-path)
-imap <silent> <expr> <c-x><c-x>     <SID>fzf_complete_snippet()
-imap <silent> <expr> <c-x><c-o>     <SID>fzf_complete_post_link()
-
-" Snippets and Tab completion
-
-imap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
-imap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
-imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
-
 smap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
-smap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : <SID>tab_completion())
+smap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : utils#HandleTab())
 smap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
 
-"" Filetype Settings
+omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
+
+" --== Autocommands --==
 
 autocmd FileType fugitive
-			\  nmap <buffer> <silent> gb :call <SID>fzf_git_checkout_branch()<CR>
+			\  nmap <buffer> <silent> gb :call utils#FzfGitCheckoutBranch()<CR>
 
 autocmd FileType markdown
 			\  setlocal shiftwidth=2
@@ -291,8 +171,8 @@ autocmd FileType typescript,typescriptreact
 
 autocmd FileType repl
 			\  setlocal filetype=bash
-			\| nmap <buffer> <silent> <enter> :call <SID>vimux_slime_line()<CR>
-			\| vmap <buffer> <silent> <enter> "vy :call <SID>vimux_slime_selection()<CR>
+			\| nmap <buffer> <silent> <enter> :call utils#VimuxSlimeLine()<CR>
+			\| vmap <buffer> <silent> <enter> "vy :call utils#VimuxSlimeSelection()<CR>
 
 autocmd FileType netrw
 			\  nmap <buffer> h -
@@ -301,7 +181,7 @@ autocmd FileType netrw
 			\| nmap <buffer> ff %:w<CR>:buffer #<CR>
 
 autocmd FileType qf
-			\ map <buffer> dd :RemoveQFItem<cr>
+			\ map <buffer> dd :call utils#RemoveQfItem()<CR>
 
 autocmd FileType gitcommit,gitrebase,gitconfig
 			\ set bufhidden=delete
@@ -309,22 +189,23 @@ autocmd FileType gitcommit,gitrebase,gitconfig
 autocmd BufNewFile,BufRead init.vim
 			\ let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoEnter nested 
+			\ call utils#GoyoEnter()
 
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
-"" Commands
-
-command! Gqf GitGutterQuickFix | copen
-command! RemoveQFItem call s:remove_qf_item()
-command! BuffersQf call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
-
-" Exclude file names from Rg matches
-command! -bang -nargs=* Rg call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case ".<q-args>, 1, {'options': '--delimiter : --nth 4..'}, <bang>0)
+autocmd! User GoyoLeave nested
+			\ call utils#GoyoLeave()
 
 " Triger `autoread` when files change on disk
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" --== Commands --==
+
+command!                Gqf GitGutterQuickFix | copen
+command!                BuffersQf call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
+command! -nargs=* -bang Rg call utils#FzfExcludeFilenamesFromRg(<q-args>, <bang>0)
+
+" --== Lua --==
 
 lua <<EOF
 require('leap').add_default_mappings()
