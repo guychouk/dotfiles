@@ -119,6 +119,9 @@ omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
 
 " --== Autocommands --==
 
+autocmd FileType gdscript
+			\  let b:start='/Applications/Godot.app/Contents/MacOS/Godot'
+
 autocmd FileType fugitive
 			\  nmap <buffer> <silent> gb :call utils#FzfGitCheckoutBranch()<CR>
 
