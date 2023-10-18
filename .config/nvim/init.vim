@@ -203,6 +203,7 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t
 
 command!                Gqf GitGutterQuickFix | copen
 command!                BuffersQf call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
+command! -nargs=1       ReadToQF call quickfix#ReadFileToQuickfix(<f-args>)
 command! -nargs=* -bang Rg call utils#FzfExcludeFilenamesFromRg(<q-args>, <bang>0)
 
 " --== Lua --==
