@@ -11,10 +11,12 @@ junegunn/goyo.vim
 junegunn/vim-easy-align
 mattn/emmet-vim
 mbbill/undotree
+mfussenegger/nvim-dap
 norcalli/nvim-colorizer.lua
 nvim-treesitter/nvim-treesitter
 nvim-treesitter/nvim-treesitter-context
 preservim/vimux
+rcarriga/nvim-dap-ui
 ruanyl/vim-gh-line
 tpope/vim-characterize
 tpope/vim-commentary

@@ -56,6 +56,10 @@ let g:goyo_width = 120
 
 let g:undotree_DiffAutoOpen = 0
 
+let g:copilot_filetypes = {
+			\ 'dap-repl': v:false,
+			\ }
+
 " --== Colors --==
 
 colorscheme catppuccin-mocha
@@ -75,8 +79,15 @@ nmap          <leader>/             :Rg -g '!tags' ""<Left>
 nmap          <leader>r             :History:<CR>
 nmap <silent> K                     :call utils#VimHelp()<CR>
 nmap <silent> yoz                   :call utils#ZoomPane()<CR>
+nmap <silent> <F3>                  :Goyo<CR>
 nmap <silent> <F5>                  :UndotreeToggle<CR>
-nmap <silent> <F10>                 :Goyo<CR>
+nmap <silent> <F8>                  :lua require('dap').continue()<CR>
+nmap <silent> <F10>                 :lua require('dap').step_over()<CR>
+nmap <silent> <F11>                 :lua require('dap').step_into()<CR>
+nmap <silent> <F12>                 :lua require('dap').step_out()<CR>
+nmap <silent> <leader>B             :lua require('dap').toggle_breakpoint()<CR>
+nmap <silent> <leader>dr            :lua require('dap').repl.open()<CR>
+nmap <silent> <leader>dui           :lua require('dapui').toggle()<CR>
 nmap <silent> <leader>.             :GFiles<CR>
 nmap <silent> <leader>b             :Buffers<CR>
 nmap <silent> <leader>g             :Git<CR>
@@ -118,6 +129,9 @@ smap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev
 omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
 
 " --== Autocommands --==
+
+autocmd FileType dap-repl
+			\ lua require('dap.ext.autocompl').attach()
 
 autocmd FileType gdscript
 			\  let b:start='/Applications/Godot.app/Contents/MacOS/Godot'
@@ -219,5 +233,53 @@ require('nvim-treesitter.configs').setup {
 	sync_install = false,
 	auto_install = true,
 	highlight = { enable = true, additional_vim_regex_highlighting = false },
+}
+require("dapui").setup({
+  layouts = {
+    {
+      elements = {
+        { id = "scopes",      size = 0.25 },
+        { id = "breakpoints", size = 0.25 },
+        { id = "stacks",      size = 0.25 },
+        { id = "watches",     size = 0.25 }
+      },
+      position = "left",
+      size = 60
+    },
+    {
+      elements = {
+        { id = "repl", size = 1.0 }
+      },
+      position = "bottom",
+      size = 10
+    }
+  }
+})
+require("dap").adapters["pwa-node"] = {
+  type = "server",
+  host = "localhost",
+  port = "${port}",
+  executable = {
+    command = "node",
+    args = {"/Users/gv/.local/share/nvim/js-debug/src/dapDebugServer.js", "${port}"},
+  }
+}
+require("dap").configurations.javascript = {
+  {
+    type = "pwa-node",
+    request = "launch",
+    name = "Launch file",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+    skipFiles = {'<node_internals>/**/*.js'},
+  },
+  {
+    type = "pwa-node",
+    request = "attach",
+    name = "Remote attach",
+    program = "${file}",
+    cwd = "${workspaceFolder}",
+    skipFiles = {'<node_internals>/**/*.js'},
+  },
 }
 EOF
