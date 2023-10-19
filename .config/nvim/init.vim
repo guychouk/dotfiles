@@ -60,10 +60,6 @@ let g:copilot_filetypes = {
 			\ 'dap-repl': v:false,
 			\ }
 
-" --== Colors --==
-
-colorscheme catppuccin-mocha
-
 " --== Mappings --==
 
 let mapleader = "\<Space>"
@@ -226,15 +222,35 @@ command! -nargs=* -bang Rg call utils#FzfExcludeFilenamesFromRg(<q-args>, <bang>
 " --== Lua --==
 
 lua <<EOF
-require('leap').add_default_mappings()
 require('colorizer').setup()
-require('nvim-treesitter.configs').setup {
-	ensure_installed = { "javascript", "typescript" },
-	sync_install = false,
-	auto_install = true,
-	highlight = { enable = true, additional_vim_regex_highlighting = false },
+
+require('catppuccin').setup {
+  term_colors = true,
+  color_overrides = {
+    mocha = {
+      base = "#1d1c1b",
+      mantle = "#1d1c1b",
+      crust = "#1d1c1b",
+    },
+  }
 }
-require("dapui").setup({
+vim.cmd.colorscheme "catppuccin-mocha"
+
+require('leap').add_default_mappings()
+
+require('nvim-treesitter.configs').setup {
+  sync_install = false,
+  auto_install = true,
+  indent = {
+    enable = true
+  },
+  highlight = {
+    enable = true,
+    additional_vim_regex_highlighting = false
+  },
+}
+
+require("dapui").setup {
   layouts = {
     {
       elements = {
@@ -254,7 +270,7 @@ require("dapui").setup({
       size = 10
     }
   }
-})
+}
 require("dap").adapters["pwa-node"] = {
   type = "server",
   host = "localhost",
