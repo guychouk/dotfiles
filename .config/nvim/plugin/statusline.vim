@@ -44,9 +44,9 @@ endfunction
 
 augroup statusline
 	autocmd!
-	autocmd VimEnter * set statusline=%!statusline#build(1)
-	autocmd WinEnter * set statusline=%!statusline#build(1)
-	autocmd WinLeave * set statusline=%!statusline#build(0)
+	autocmd VimEnter * setlocal statusline=%!statusline#build(1)
+	autocmd WinEnter * setlocal statusline=%!statusline#build(1)
+	autocmd WinLeave * setlocal statusline=%!statusline#build(0)
 augroup END
 
 nnoremap <plug>(statusline_toggle) :call statusline#toggle()<CR>
