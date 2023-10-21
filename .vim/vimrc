@@ -1,0 +1,222 @@
+" --== Settings --==
+
+set clipboard=unnamed
+set cursorline
+set fillchars=eob:\ 
+set laststatus=1
+set list
+set listchars=tab:⋮\ ,trail:·,extends:>,precedes:<,nbsp:+
+set mouse=a
+set nohlsearch
+set noruler
+set noshowcmd
+set noshowmode
+set noswapfile
+set number
+set scrolloff=1
+set shortmess+=IcF
+set signcolumn=yes
+set smartcase
+set termguicolors
+set updatetime=300
+
+" --== Colors --==
+
+syntax on
+colorscheme onedark
+
+hi Normal guibg=NONE ctermbg=NONE
+hi StatusLineSection guibg=#1e1e1e guifg=NONE
+hi StatusLineSep  guibg=#2C323C guifg=#1e1e1e
+
+" --== Plugin Settings --==
+
+" Add Homebrew installed fzf to runtimepath
+set rtp+=/usr/local/opt/fzf
+
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.7, 'relative': v:true } }
+let g:fzf_preview_window = ['down:70%:hidden', 'ctrl-]']
+
+let g:rooter_silent_chdir = 1
+let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
+let g:rooter_change_directory_for_non_project_files = 'current'
+
+let g:vsnip_filetypes = {
+     		\ 'typescript': ['javascript'],
+     		\ 'javascriptreact': ['javascript'],
+     		\ 'typescriptreact': ['javascript'],
+     		\}
+let g:vsnip_snippet_dir = system('echo -n $HOME/.vim/snippets')
+
+let g:gh_repo_map = '<leader><leader>go'
+let g:gh_line_map_default = 0
+let g:gh_line_blame_map_default = 0
+let g:gh_open_command = 'fn() { echo "$@" | pbcopy; }; fn '
+
+let g:user_emmet_install_global = 0
+
+let g:indentLine_fileType = ['yaml', 'yml']
+
+let g:goyo_width = 120
+
+let g:undotree_DiffAutoOpen = 0
+
+let g:copilot_filetypes = { 'dap-repl': v:false }
+
+" --== Mappings --==
+
+let mapleader = "\<Space>"
+
+" Break undo before deleting a word
+inoremap <C-W> <C-G>u<C-W>
+
+" Break undo before deleting a line
+inoremap <C-U> <C-G>u<C-U>
+
+nmap          R                     :%s//g<Left><Left>
+nmap          <leader>/             :Rg -g '!tags' ""<Left>
+nmap          <leader>r             :History:<CR>
+nmap <silent> K                     :call utils#VimHelp()<CR>
+nmap <silent> yoz                   :call utils#ZoomPane()<CR>
+nmap <silent> <F3>                  :Goyo<CR>
+nmap <silent> <F5>                  :UndotreeToggle<CR>
+nmap <silent> <F8>                  :echom 'continue()'<CR>
+nmap <silent> <F10>                 :echom 'step_over()'<CR>
+nmap <silent> <F11>                 :echom 'step_into()'<CR>
+nmap <silent> <F12>                 :echom 'step_out()'<CR>
+nmap <silent> <leader>B             :echom 'toggle_breakpoint()'<CR>
+nmap <silent> <leader>dr            :echom 'repl.open()'<CR>
+nmap <silent> <leader>dui           :echom 'dapui.toggle()'<CR>
+nmap <silent> <leader>.             :GFiles<CR>
+nmap <silent> <leader>b             :Buffers<CR>
+nmap <silent> <leader>g             :Git<CR>
+nmap <silent> <leader>j             :sp<CR>
+nmap <silent> <leader>l             :vsp<CR>
+nmap <silent> <leader>o             :Files<CR>
+nmap <silent> <leader>p             :Commands<CR>
+nmap <silent> <leader>q             :q<CR>
+nmap <silent> <leader>s             :StatusLineToggle<CR>
+nmap <silent> <leader>w             :w<CR>
+nmap <silent> <leader>tb            :BTags<CR>
+nmap <silent> <leader>tt            :Tags<CR>
+nmap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nmap <silent> <leader>=h            :exe "resize +5"<CR>
+nmap <silent> <leader>-h            :exe "resize -5"<CR>
+nmap <silent> <leader>=v            :exe "vertical resize +5"<CR>
+nmap <silent> <leader>-v            :exe "vertical resize -5"<CR>
+nmap <silent> <leader><tab>         <plug>(fzf-maps-n)
+
+imap <silent>        <c-x><c-k>     <plug>(fzf-completing-word)
+imap <silent>        <c-x><c-l>     <plug>(fzf-completing-line)
+imap <silent>        <c-x><c-f>     <plug>(fzf-completing-path)
+imap <silent> <expr> <c-x><c-x>     utils#FzfCompleteSnippet()
+imap <silent> <expr> <c-x><c-o>     utils#FzfCompleteNoteLink()
+imap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : utils#HandleTab())
+imap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
+imap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
+
+xmap <silent>        <leader>ea     <plug>(EasyAlign)
+xmap <silent>        <leader>ys     <plug>(VSurround)
+xmap <silent>        <leader><tab>  <plug>(fzf-maps-x)
+xmap <silent>        <leader>/      "yy:Rg -g '!tags' "<C-R>y"<CR>
+
+smap <silent> <expr> <C-j>          vsnip#expandable() ? '<plug>(vsnip-expand)'    : '<C-j>'
+smap <silent> <expr> <Tab>          vsnip#jumpable(1)  ? '<plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : utils#HandleTab())
+smap <silent> <expr> <S-Tab>        vsnip#jumpable(-1) ? '<plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
+
+omap <silent>        <leader><tab>  <plug>(fzf-maps-o)
+
+" --== Autocommands --==
+
+autocmd FileType gdscript
+			\  let b:start='/Applications/Godot.app/Contents/MacOS/Godot'
+
+autocmd FileType fugitive
+			\  nmap <buffer> <silent> gb :call utils#FzfGitCheckoutBranch()<CR>
+
+autocmd FileType markdown
+			\  setlocal shiftwidth=2
+			\| setlocal foldlevel=99
+
+autocmd FileType html,css
+			\  setlocal shiftwidth=2
+			\| setlocal foldlevel=99
+			\| EmmetInstall
+
+autocmd FileType c,cpp
+			\  setlocal tabstop=4
+			\| setlocal shiftwidth=4
+			\| setlocal foldlevel=99
+			\| compiler make
+
+autocmd FileType json
+			\  setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=2
+
+autocmd FileType yaml
+			\ setlocal foldlevel=4
+
+autocmd FileType javascript,javascriptreact
+			\  setlocal expandtab
+			\| setlocal tabstop=2
+			\| setlocal shiftwidth=2
+			\| setlocal foldlevel=99
+			\| compiler eslint
+			\| let maplocalleader="\\"
+			\| EmmetInstall
+
+autocmd FileType typescript,typescriptreact
+			\  setlocal expandtab
+			\| setlocal tabstop=4
+			\| setlocal shiftwidth=4
+			\| setlocal foldlevel=99
+			\| compiler tsc
+			\| let maplocalleader="\\"
+			\| map <localleader>e :Dispatch -compiler=eslint<CR>
+			\| EmmetInstall
+
+autocmd FileType repl
+			\  setlocal filetype=bash
+
+autocmd FileType netrw
+			\  nmap <buffer> h -
+			\| nmap <buffer> l <CR>
+			\| nmap <buffer> <ESC> <C-^>
+			\| nmap <buffer> ff %:w<CR>:buffer #<CR>
+
+autocmd FileType qf
+			\ map <buffer> dd :call utils#RemoveQfItem()<CR>
+
+autocmd FileType gitcommit,gitrebase,gitconfig
+			\ set bufhidden=delete
+
+autocmd BufNewFile,BufRead init.vim
+			\ let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
+autocmd! User GoyoEnter nested 
+			\ call utils#GoyoEnter()
+
+autocmd! User GoyoLeave nested
+			\ call utils#GoyoLeave()
+
+" Set Vim's curosr depending on the mode
+let &t_SI="\e[5 q" " INSERT blinking bar
+let &t_SR="\e[4 q" " REPLACE steady underline
+let &t_EI="\e[2 q" " NORMAL steady block
+autocmd VimEnter * call echoraw(&t_EI)
+autocmd CmdlineEnter * call echoraw(&t_SI)
+autocmd CmdlineLeave * call echoraw(&t_EI)
+
+" Triger `autoread` when files change on disk
+autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() !~ '\v(c|r.?|!|t)' && getcmdwintype() == '' | checktime | endif
+
+" --== Commands --==
+
+command!                Highlight call utils#Highlight()
+command!                Gqf GitGutterQuickFix | copen
+command!                BuffersQf call setqflist(map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr":v:val}')) | copen
+command! -nargs=1       ReadToQF call utils#ReadQfListFromFile(<f-args>)
+command! -nargs=* -bang Rg call utils#FzfExcludeFilenamesFromRg(<q-args>, <bang>0)
