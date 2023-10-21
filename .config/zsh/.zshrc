@@ -49,10 +49,10 @@ alias \
 	g=git \
 	d=docker \
 	k=kubectl \
-	nv=nvim \
+	v=$EDITOR \
 	dcc='docker compose' \
 	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
-	mdnv='nv "+Goyo 120" "+Tags" "+nmap <leader>q :qa<CR>"' \
+	mdnv='$EDITOR "+Goyo 120" "+Tags" "+nmap <leader>q :qa<CR>"' \
 	godot=/Applications/Godot.app/Contents/MacOS/Godot \
 	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
@@ -151,7 +151,7 @@ if command -v fasd 1>/dev/null 2>&1; then
 	alias \
 		f='fasd -f' \
 		j='fasd_cd -d' \
-		v='fasd -f -e nvim' \
+		fv='fasd -f -e $EDITOR' \
 		vf='fasd_fzf_edit'
 
 	export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
