@@ -63,6 +63,8 @@ let g:undotree_DiffAutoOpen = 0
 
 let g:copilot_filetypes = { 'dap-repl': v:false }
 
+let g:netrw_home=$XDG_CACHE_HOME.'/vim'
+
 " --== Mappings --==
 
 let mapleader = "\<Space>"
