@@ -26,8 +26,6 @@ syntax on
 colorscheme onedark
 
 hi Normal guibg=NONE ctermbg=NONE
-hi StatusLineSection guibg=#1e1e1e guifg=NONE
-hi StatusLineSep  guibg=#2C323C guifg=#1e1e1e
 
 " --== Plugin Settings --==
 
@@ -97,7 +95,7 @@ nmap <silent> <leader>l             :vsp<CR>
 nmap <silent> <leader>o             :Files<CR>
 nmap <silent> <leader>p             :Commands<CR>
 nmap <silent> <leader>q             :q<CR>
-nmap <silent> <leader>s             :StatusLineToggle<CR>
+nmap <silent> <leader>s             :MicrolineToggle<CR>
 nmap <silent> <leader>w             :w<CR>
 nmap <silent> <leader>tb            :BTags<CR>
 nmap <silent> <leader>tt            :Tags<CR>
