@@ -13,6 +13,7 @@ markonm/traces.vim
 mattn/emmet-vim
 mbbill/undotree
 pangloss/vim-javascript
+puremourning/vimspector
 ruanyl/vim-gh-line
 tpope/vim-characterize
 tpope/vim-commentary
