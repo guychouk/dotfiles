@@ -23,10 +23,7 @@ set updatetime=300
 " --== Appearance --==
 
 syntax on
-colorscheme onedark
-
-" Remove background color
-highlight Normal guibg=NONE ctermbg=NONE
+colorscheme lunaperche
 
 " Set terminal codes for cursor shapes per mode
 let &t_SI="\e[5 q" " [ INSERT ]  - blinking bar

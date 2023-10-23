@@ -5,7 +5,6 @@ airblade/vim-rooter
 christoomey/vim-tmux-navigator
 github/copilot.vim
 hrsh7th/vim-vsnip
-joshdick/onedark.vim
 junegunn/fzf.vim
 junegunn/goyo.vim
 junegunn/vim-easy-align

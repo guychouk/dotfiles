@@ -105,7 +105,6 @@ export def GoyoEnter(): void
 enddef
 
 export def GoyoLeave(): void
-	highlight Normal guibg=NONE ctermbg=NONE
 	silent !tmux set status on
 	silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
 enddef
