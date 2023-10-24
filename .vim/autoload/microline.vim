@@ -25,7 +25,7 @@ export def Build(active: bool): string
 		section_hlgroup .. ' ' .. current_mode .. ' ',
 		left_separator,
 		statusline_hlgroup,
-		' ' .. fnamemodify(getcwd(), ':t') .. ' ' .. '%{expand("%")} %m %r %h',
+		' ' .. fnamemodify(getcwd(), ':t') .. '    ' .. '%{expand("%")} %m %r %h',
 		'%=',
 		fugitive .. ' ' .. right_separator .. section_hlgroup,
 		' ' .. ft .. '  ' .. icon
