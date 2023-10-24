@@ -2,6 +2,7 @@ HerringtonDarkholme/yats.vim
 Yggdroot/indentLine
 airblade/vim-gitgutter
 airblade/vim-rooter
+ap/vim-css-color
 christoomey/vim-tmux-navigator
 github/copilot.vim
 hrsh7th/vim-vsnip

@@ -117,6 +117,7 @@ nmap <silent> <leader>=h            :exe "resize +5"<CR>
 nmap <silent> <leader>-h            :exe "resize -5"<CR>
 nmap <silent> <leader>=v            :exe "vertical resize +5"<CR>
 nmap <silent> <leader>-v            :exe "vertical resize -5"<CR>
+nmap <silent> <leader>tcc           :call css_color#toggle()<CR>
 nmap <silent> <leader><tab>         <Plug>(fzf-maps-n)
 
 omap <silent> <leader><tab>         <Plug>(fzf-maps-o)
