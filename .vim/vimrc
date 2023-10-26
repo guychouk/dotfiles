@@ -14,11 +14,12 @@ set noshowmode
 set noswapfile
 set number
 set scrolloff=1
-set shortmess+=IcF
+set shortmess=filnxtToOIcFs
 set signcolumn=yes
 set smartcase
 set termguicolors
 set updatetime=300
+set foldmethod=syntax
 
 " --== Appearance --==
 
@@ -178,6 +179,7 @@ autocmd FileType javascript,javascriptreact
 			\| setlocal tabstop=2
 			\| setlocal shiftwidth=2
 			\| setlocal foldlevel=99
+			\| setlocal suffixesadd=.js,.jsx,.ts,.tsx
 			\| compiler eslint
 			\| let maplocalleader="\\"
 			\| EmmetInstall
@@ -187,6 +189,7 @@ autocmd FileType typescript,typescriptreact
 			\| setlocal tabstop=4
 			\| setlocal shiftwidth=4
 			\| setlocal foldlevel=99
+			\| setlocal suffixesadd=.js,.jsx,.ts,.tsx
 			\| compiler tsc
 			\| let maplocalleader="\\"
 			\| map <localleader>e :Dispatch -compiler=eslint<CR>
