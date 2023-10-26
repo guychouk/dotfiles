@@ -1,0 +1,26 @@
+# Resize image
+convert $INPUT -resize $SIZE $OUTPUT
+
+# Scale image
+convert $INPUT -filter point -resize $SIZE $OUTPUT
+
+# Generate blank image
+convert -size $SIZE xc:white $INPUT
+
+# Generate spritesheet
+montage $INPUT -tile $TILE_SIZE -geometry $GEOMETRY -background transparent $OUTPUT
+
+# Generate icon from image
+convert $INPUT -define icon:auto-resize=64,48,32,16 $OUTPUT
+
+# Pad image
+convert $INPUT -background none -gravity center -resize $SIZE -extent $SIZE $OUTPUT
+
+# Convert PDF to PNG
+convert -density 300 $INPUT -resize 35% $OUTPUT
+
+# Speed up GIF
+convert -delay 1x30 output.gif fast.gif
+
+# Convert 1024x1024 PNG to multiple sizes
+convert icon.png -strip -interlace Plane -resize "1024x>" -write Icon-1024.png -resize "180x>" -write Icon-180.png -resize "167x>" -write Icon-167.png -resize "152x>" -write Icon-152.png -resize "120x>" -write Icon-120.png -resize "80x>" -write Icon-80.png -resize "76x>" -write Icon-76.png -resize "40x>" Icon-40.png
