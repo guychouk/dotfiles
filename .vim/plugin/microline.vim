@@ -25,12 +25,18 @@ enddef
 
 augroup Microline
 	autocmd!
-	autocmd ColorScheme                lunaperche call SetupMicrolineColors()
-	autocmd VimEnter,WinEnter,BufEnter * setlocal statusline=%!microline#Build(1)
-	autocmd WinLeave,BufLeave          * setlocal statusline=%!microline#Build(0)
+	autocmd ColorScheme   lunaperche  SetupMicrolineColors()
 
+	autocmd WinEnter,BufEnter  *      setlocal statusline=%!microline#Build(v:true)
+	autocmd WinLeave,BufLeave  *      setlocal statusline=%!microline#Build(v:false)
+	autocmd FileType           *      setlocal statusline=%!microline#Build(v:true)
+	autocmd BufFilePost        *      setlocal statusline=%!microline#Build(v:true)
+	autocmd BufWritePost       *      setlocal statusline=%!microline#Build(v:true)
+	autocmd OptionSet          buf*   setlocal statusline=%!microline#Build(v:true)
+	autocmd VimResized         *      setlocal statusline=%!microline#Build(v:true)
+	autocmd CmdWinEnter        *      setlocal statusline=\ Command\ Line\ %1*
 augroup END
 
-command! MicrolineToggle microline#Toggle()
+command! MicrolineToggle microline.Toggle()
 
 SetupMicrolineColors()
