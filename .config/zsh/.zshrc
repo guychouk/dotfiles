@@ -72,7 +72,7 @@ setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that 
 setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
 setopt HIST_IGNORE_SPACE            # ignore entries that start with space (for sensitive commands)
 
-path=($path "$GOPATH/bin" "$HOME/bin")
+path=($path "$GOPATH/bin" "$HOME/bin" "$HOME/scripts")
 
 # removes duplicate entries from $PATH
 typeset -aU path
