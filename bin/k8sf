@@ -2,7 +2,7 @@
 
 declare -A service_map
 
-NS="${NS:=`kubens -c`}"
+NS="${NS:=`kubectl config view --minify --output 'jsonpath={..namespace}'`}"
 
 for svc in "$@"; do
 	if [[ $svc =~ : ]]; then
