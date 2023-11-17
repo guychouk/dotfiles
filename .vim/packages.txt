@@ -6,6 +6,7 @@ ap/vim-css-color
 christoomey/vim-tmux-navigator
 github/copilot.vim
 hrsh7th/vim-vsnip
+jpalardy/vim-slime
 junegunn/fzf.vim
 junegunn/goyo.vim
 junegunn/vim-easy-align

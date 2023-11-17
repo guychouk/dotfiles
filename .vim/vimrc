@@ -231,6 +231,9 @@ let g:dirvish_mode = ':sort ,^.*[\/],'
 " Context.vim {{{
 let g:context_highlight_tag = '<hide>'
 " }}}
+" vim-slime {{{
+let g:slime_target = "tmux"
+" }}}
 " Vimspector {{{
 let g:vimspector_enable_winbar = 0
 let g:vimspector_sign_priority = {
