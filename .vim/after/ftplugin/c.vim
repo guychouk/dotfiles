@@ -3,3 +3,5 @@ setlocal shiftwidth=4
 setlocal foldlevel=99
 
 compiler make
+
+let maplocalleader="\\"
