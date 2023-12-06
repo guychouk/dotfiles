@@ -151,6 +151,9 @@ xnoremap <silent> <leader>/             "yy:Rg -g '!tags' "<C-R>y"<CR>
 " }}}
 
 " Plugins {{{
+" Man {{{
+runtime ftplugin/man.vim
+" }}}
 " MatchIt {{{
 packadd! matchit
 " }}}
