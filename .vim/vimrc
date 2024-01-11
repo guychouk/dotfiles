@@ -69,6 +69,8 @@ fun! s:CustomizeHighlight()
   highlight      VimspectorPC            guifg=#FFC7FC ctermfg=2   guibg=NONE ctermbg=NONE
   highlight      vimspectorCurrentThread guifg=#f09900 ctermfg=2   guibg=NONE ctermbg=NONE
   highlight      CursorLineNr  term=bold guifg=#fabd2f ctermfg=214 guibg=NONE ctermbg=NONE
+  highlight      Normal                  guibg=NONE    ctermbg=NONE
+  highlight      LineNr                  guibg=NONE    ctermbg=NONE
 endf
 
 fun! s:Highlight()

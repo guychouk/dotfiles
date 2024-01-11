@@ -11,6 +11,7 @@ junegunn/fzf.vim
 junegunn/goyo.vim
 junegunn/vim-easy-align
 justinmk/vim-dirvish
+liuchengxu/vista.vim
 ludovicchabant/vim-gutentags
 markonm/traces.vim
 mattn/emmet-vim
