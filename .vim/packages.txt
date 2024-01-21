@@ -10,6 +10,7 @@ jpalardy/vim-slime
 junegunn/fzf.vim
 junegunn/goyo.vim
 junegunn/vim-easy-align
+junegunn/vim-peekaboo
 justinmk/vim-dirvish
 liuchengxu/vista.vim
 ludovicchabant/vim-gutentags
