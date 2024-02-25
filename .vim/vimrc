@@ -95,6 +95,9 @@ set list
 set cmdheight=1
 set background=dark
 
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'hard'
+
 let &showbreak='└ '
 let &fillchars='eob: '
 let &listchars='tab:⋮ ,trail:·,extends:>,precedes:<,nbsp:+'

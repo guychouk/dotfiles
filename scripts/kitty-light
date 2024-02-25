@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+sed -I '' 's/# include/  include/' ~/.config/kitty/kitty.conf
+sed -I '' 's/set background=dark/set background=light/' ~/.vim/vimrc
+kill -SIGUSR1 $(pgrep kitty)
