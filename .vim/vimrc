@@ -287,6 +287,7 @@ nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>
 autocmd FileType gitrebase,gitconfig setlocal bufhidden=delete | setlocal spell
 autocmd BufNewFile,BufRead vimrc let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+autocmd BufRead,BufNewFile *.gdip set filetype=gdresource
 " }}}
 
 " Commands {{{

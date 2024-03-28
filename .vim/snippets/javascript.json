@@ -1,4 +1,8 @@
 {
+  "mongodb cursors": {
+    "prefix": "mdbc",
+    "body": "const cursor = db.collection('${1}').find({${2}})\nwhile (await cursor.hasNext()) {\n\tconst doc = await cursor.next()\n\t$0\n}"
+  },
   "setImmediate": {
     "prefix": "sim",
     "body": "setImmediate(() => {\n\t${0}\n})"
