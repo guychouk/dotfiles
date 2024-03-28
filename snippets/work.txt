@@ -1,0 +1,14 @@
+# Kafka: Create topic
+kafka-topics.sh --create --topic <topic> --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
+
+# MongoDB: Export collection by query
+mongoexport --quiet --uri="mongodb://localhost:27017" --collection=<collection> -q '' | jq '.'
+
+# RabbitMQ: Publish message to Exchange
+curl -u test:rabbitmq 'http://localhost:15672/api/exchanges/%2F/<exchange>/publish' --data-raw '{"vhost":"/","name":"<exchange>","properties":{"delivery_mode":2,"headers":{"consistent-hash":""}},"routing_key":"100","delivery_mode":"2","payload":"{}","headers":{"consistent-hash":""},"props":{},"payload_encoding":"string"}'
+
+# RabbitMQ: Download CLI
+curl -O http://localhost:15672/cli/rabbitmqadmin
+
+# Docker + RabbitMQ: Run RabbitMQ container
+FROM rabbitmq:3.9.12-management\nRUN rabbitmq-plugins enable rabbitmq_consistent_hash_exchange rabbitmq_delayed_message_exchange
