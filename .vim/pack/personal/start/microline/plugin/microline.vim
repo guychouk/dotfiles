@@ -11,6 +11,7 @@ enddef
 
 augroup Microline
   autocmd!
+  autocmd SigUSR1            *  SetupMicrolineColors()
   autocmd ColorScheme        *  SetupMicrolineColors()
   autocmd WinEnter,BufEnter  *  setlocal statusline=%!microline#Build(v:true)
   autocmd WinLeave,BufLeave  *  setlocal statusline=%!microline#Build(v:false)

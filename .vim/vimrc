@@ -58,11 +58,20 @@ filetype plugin indent on
 " }}}
 
 " Functions {{{
-fun! s:CustomizeHighlight()
+fun! s:RefreshColorscheme()
+  " Set background based on system appearance
+  if system("defaults read -g AppleInterfaceStyle") =~ '^Dark'
+    set background=dark
+  else
+    set background=light
+  endif
+
   highlight      SignColumn      guibg=NONE    ctermbg=NONE
   highlight      GitGutterAdd    guifg=#009900 ctermfg=2 guibg=NONE ctermbg=NONE
   highlight      GitGutterChange guifg=#bbbb00 ctermfg=3 guibg=NONE ctermbg=NONE
   highlight      GitGutterDelete guifg=#ff2222 ctermfg=1 guibg=NONE ctermbg=NONE
+  highlight      FzfBorder       guifg=#98971C
+
   highlight link GitGutterChangeDelete GitGutterChange
 
   highlight      VimspectorBP            guifg=#ff2222 ctermfg=1   guibg=NONE ctermbg=NONE
@@ -93,10 +102,6 @@ endif
 
 set list
 set cmdheight=1
-set background=dark
-
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_contrast_light = 'hard'
 
 let &showbreak='└ '
 let &fillchars='eob: '
@@ -108,9 +113,13 @@ let &t_EI="\e[2 q"
 autocmd VimEnter     * call echoraw(&t_EI)
 autocmd CmdlineEnter * call echoraw(&t_SI)
 autocmd CmdlineLeave * call echoraw(&t_EI)
-autocmd ColorScheme  * call <SID>CustomizeHighlight()
+autocmd ColorScheme  * call <SID>RefreshColorscheme()
 
+" Set up colorscheme
+let g:gruvbox_contrast_dark = 'hard'
+let g:gruvbox_contrast_light = 'hard'
 colorscheme gruvbox
+call <SID>RefreshColorscheme()
 " }}}
 
 " Mappings {{{
@@ -164,7 +173,6 @@ runtime ftplugin/man.vim
 packadd! matchit
 " }}}
 " FZF {{{
-highlight FzfBorder guifg=#98971C
 
 set rtp+=/usr/local/opt/fzf
 
@@ -288,6 +296,7 @@ autocmd FileType gitrebase,gitconfig setlocal bufhidden=delete | setlocal spell
 autocmd BufNewFile,BufRead vimrc let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 autocmd BufRead,BufNewFile *.gdip set filetype=gdresource
+autocmd SigUSR1 * call <SID>RefreshColorscheme()
 " }}}
 
 " Commands {{{
