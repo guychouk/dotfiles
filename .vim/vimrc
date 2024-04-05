@@ -124,6 +124,7 @@ call <SID>RefreshColorscheme()
 
 " Mappings {{{
 let mapleader = "\<Space>"
+let maplocalleader = "\\"
 
 " Turn off linewise keys
 nmap j gj
@@ -292,10 +293,8 @@ nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>
 " }}}
 
 " Autocommands {{{
-autocmd FileType gitrebase,gitconfig setlocal bufhidden=delete | setlocal spell
 autocmd BufNewFile,BufRead vimrc let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
-autocmd BufRead,BufNewFile *.gdip set filetype=gdresource
 autocmd SigUSR1 * call <SID>RefreshColorscheme()
 " }}}
 

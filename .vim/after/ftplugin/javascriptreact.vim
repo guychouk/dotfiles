@@ -3,6 +3,4 @@ setlocal suffixesadd=.js,.jsx,.ts,.tsx
 
 compiler eslint
 
-let maplocalleader="\\"
-
 EmmetInstall
