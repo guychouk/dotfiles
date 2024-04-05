@@ -156,6 +156,8 @@ nnoremap <silent> <leader>=h            :exe "resize +5"<CR>
 nnoremap <silent> <leader>-h            :exe "resize -5"<CR>
 nnoremap <silent> <leader>=v            :exe "vertical resize +5"<CR>
 nnoremap <silent> <leader>-v            :exe "vertical resize -5"<CR>
+" Localleader mappings
+nnoremap <silent> <localleader>q        :call quickfix#ToggleQuickfix()<CR>
 " Break undo before deleting words and lines
 inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
