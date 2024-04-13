@@ -31,16 +31,12 @@ setopt PROMPT_SUBST
 
 ## Autocmds
 update_tmux_window_name() {
-  # Check if inside tmux
   if [ -n "$TMUX" ]; then
-    # Get the current directory name
     local dir_name="${PWD##*/}"
-    # Rename the tmux window
     tmux rename-window "$dir_name"
   fi
 }
 
-# Hook the function to chpwd
 autoload -U add-zsh-hook
 add-zsh-hook chpwd update_tmux_window_name
 
@@ -67,10 +63,8 @@ alias \
 	k=kubectl \
 	v=$EDITOR \
 	dcc='docker compose' \
-	dfm='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME' \
 	mdnv='$EDITOR "+Goyo 120" "+Tags" "+nmap <leader>q :qa<CR>"' \
 	godot=/Applications/Godot.app/Contents/MacOS/Godot \
-	tmux='tmux -f "${XDG_CONFIG_HOME:-$HOME/.config}/tmux/tmux.config"'
 
 ## General
 
@@ -87,7 +81,7 @@ setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that 
 setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
 setopt HIST_IGNORE_SPACE            # ignore entries that start with space (for sensitive commands)
 
-path=($path "$GOPATH/bin" "$HOME/bin" "$HOME/scripts")
+path=($path "$GOPATH/bin" "$HOME/scripts")
 
 # removes duplicate entries from $PATH
 typeset -aU path

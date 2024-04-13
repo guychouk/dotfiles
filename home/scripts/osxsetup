@@ -96,8 +96,9 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
 
-# Set up my preferred keyboard shortcuts
-cp -r ~/.config/spectacle.json ~/Library/Application\ Support/Spectacle/Shortcuts.json 2> /dev/null
+# Set up my preferred keyboard shortcuts for Spectacle using GNU Stow
+cd ~/dotfiles
+stow spectacle
 
 # Map caps lock to Ctrl
 hidutil property --set '{"UserKeyMapping":[{"HIDKeyboardModifierMappingSrc":0x700000039,"HIDKeyboardModifierMappingDst":0x7000000E0}]}' 2> /dev/null
