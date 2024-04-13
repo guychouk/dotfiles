@@ -247,6 +247,7 @@ let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
 " }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
+call dirvish#add_icon_fn({p -> p[-1:]=='/'?'📂 ':'📄 '})
 " }}}
 " Context.vim {{{
 let g:context_highlight_tag = '<hide>'
