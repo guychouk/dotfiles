@@ -2,9 +2,9 @@
 
 # Check if DARKMODE is set to 1
 if [[ "$DARKMODE" = "1" ]]; then
-  sed -i '' 's/  include/# include/' ~/.config/kitty/kitty.conf
+  sed -i '' 's/  include/# include/' ~/dotfiles/kitty/.config/kitty/kitty.conf
 else
-  sed -i '' 's/# include/  include/' ~/.config/kitty/kitty.conf
+  sed -i '' 's/# include/  include/' ~/dotfiles/kitty/.config/kitty/kitty.conf
 fi
 
 # Restart Kitty
