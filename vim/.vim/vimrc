@@ -74,9 +74,6 @@ fun! s:RefreshColorscheme()
 
   highlight link GitGutterChangeDelete GitGutterChange
 
-  highlight      VimspectorBP            guifg=#ff2222 ctermfg=1   guibg=NONE ctermbg=NONE
-  highlight      VimspectorPC            guifg=#FFC7FC ctermfg=2   guibg=NONE ctermbg=NONE
-  highlight      vimspectorCurrentThread guifg=#f09900 ctermfg=2   guibg=NONE ctermbg=NONE
   highlight      CursorLineNr  term=bold guifg=#fabd2f ctermfg=214 guibg=NONE ctermbg=NONE
   highlight      Normal                  guibg=NONE    ctermbg=NONE
   highlight      LineNr                  guibg=NONE    ctermbg=NONE
@@ -156,7 +153,6 @@ nnoremap <silent> <leader>=h            :exe "resize +5"<CR>
 nnoremap <silent> <leader>-h            :exe "resize -5"<CR>
 nnoremap <silent> <leader>=v            :exe "vertical resize +5"<CR>
 nnoremap <silent> <leader>-v            :exe "vertical resize -5"<CR>
-" Localleader mappings
 nnoremap <silent> <localleader>q        :call quickfix#ToggleQuickfix()<CR>
 " Break undo before deleting words and lines
 inoremap <C-W> <C-G>u<C-W>
@@ -235,7 +231,6 @@ xmap <silent> <leader>ea <Plug>(EasyAlign)
 " }}}
 " Goyo {{{
 let g:goyo_width = 120
-
 autocmd! User GoyoEnter call custom#goyo#GoyoEnter()
 autocmd! User GoyoLeave call custom#goyo#GoyoLeave()
 " }}}
@@ -254,41 +249,6 @@ let g:context_highlight_tag = '<hide>'
 " }}}
 " vim-slime {{{
 let g:slime_target = "tmux"
-" }}}
-" Vimspector {{{
-let g:vimspector_enable_winbar = 0
-let g:vimspector_sign_priority = {
-    \    'vimspectorBP':          998,
-    \    'vimspectorBPCond':      998,
-    \    'vimspectorBPLog':       998,
-    \    'vimspectorBPDisabled':  998,
-    \    'vimspectorNonActivePC': 998,
-    \    'vimspectorPC':          999,
-    \    'vimspectorPCBP':        999,
-    \ }
-sign define vimspectorBP            text=● texthl=VimspectorBP
-sign define vimspectorBPCond        text=◆ texthl=VimspectorBP
-sign define vimspectorBPLog         text=◆ texthl=VimspectorBP
-sign define vimspectorBPDisabled    text=● texthl=LineNr
-sign define vimspectorPC            text=→ texthl=VimspectorPC linehl=CursorLine
-sign define vimspectorPCBP          text=→ texthl=VimspectorPC linehl=CursorLine
-sign define vimspectorNonActivePC   linehl=DiffAdd
-sign define vimspectorCurrentThread text=▶ texthl=VimspectorCurrentThread linehl=Normal
-sign define vimspectorCurrentFrame  text=→ texthl=VimspectorCurrentThread linehl=Normal
-
-nnoremap <silent> <F2>                  :call vimspector#Launch()<CR>
-nnoremap <silent> <leader><F2>          :call vimspector#Reset()<CR>
-nnoremap <silent> <F5>                  <Plug>VimspectorRestart
-nnoremap <silent> <F8>                  <Plug>VimspectorContinue
-nnoremap <silent> <leader><F8>          <Plug>VimspectorStop
-nnoremap <silent> <F9>                  <Plug>VimspectorToggleBreakpoint
-nnoremap <silent> <leader><F9>          <Plug>VimspectorToggleConditionalBreakpoint
-nnoremap <silent> <F10>                 <Plug>VimspectorStepOver
-nnoremap <silent> <F11>                 <Plug>VimspectorStepInto
-nnoremap <silent> <F12>                 <Plug>VimspectorStepOut
-
-autocmd! User VimspectorUICreated      call custom#vimspector#CustomiseUI()
-autocmd! User VimspectorTerminalOpened call custom#vimspector#CustomiseTerminal()
 " }}}
 " CSS Color {{{
 nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>

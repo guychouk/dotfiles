@@ -19,7 +19,6 @@ mattn/emmet-vim
 mbbill/undotree
 morhetz/gruvbox
 pangloss/vim-javascript
-puremourning/vimspector
 ruanyl/vim-gh-line
 tikhomirov/vim-glsl
 tpope/vim-characterize
