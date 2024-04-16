@@ -13,6 +13,7 @@
   fc       = log --follow --oneline
   d        = diff
   f        = fetch
+  ls       = ls-files
   m        = merge
   new      = checkout -b
   pl       = pull
