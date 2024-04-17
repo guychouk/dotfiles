@@ -987,5 +987,26 @@
       "main(minimist(process.argv.slice(2)));"
     ],
     "description": "CMD App Skeleton"
+  },
+  "pm2conf": {
+    "prefix": "pm2conf",
+    "body": [
+      "module.exports = {",
+      "  apps: [",
+      "    {",
+      "      name: 'my-app',",
+      "      script: 'node',",
+      "      args: ['--inspect', '-r', 'ts-node/register', 'src/app.ts'],",
+      "      merge_logs: true,",
+      "      output: '/var/log/app.log',",
+      "      error: '/var/log/app.log',",
+      "      instances: 1,",
+      "      autorestart: true,",
+      "      watch: true,",
+      "      max_memory_restart: '1G'",
+      "    }",
+      "  ]",
+      "};"
+    ]
   }
 }
