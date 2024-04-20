@@ -3,7 +3,7 @@ set autoindent
 set autoread
 set backspace=indent,eol,start
 set clipboard=unnamed
-set completeopt=menuone,noselect
+set completeopt=menuone
 set display=lastline
 set expandtab
 set foldmethod=syntax
@@ -14,7 +14,8 @@ set keywordprg=:help
 set laststatus=1
 set linebreak
 set mouse=a
-set nocursorline
+set cursorline
+set cursorlineopt=number
 set nohlsearch
 set nojoinspaces
 set noruler
@@ -23,7 +24,7 @@ set noshowmode
 set noswapfile
 set notitle
 set nowrap
-set nonumber
+set number
 set scrolloff=10
 set shiftround
 set shiftwidth=2
@@ -75,7 +76,7 @@ fun! s:RefreshColorscheme()
   highlight link GitGutterChangeDelete GitGutterChange
 
   highlight      CursorLineNr  term=bold guifg=#fabd2f ctermfg=214 guibg=NONE ctermbg=NONE
-  highlight      Normal                  guibg=NONE    ctermbg=NONE
+  " highlight      Normal                  guibg=NONE    ctermbg=NONE
   highlight      LineNr                  guibg=NONE    ctermbg=NONE
 endf
 
@@ -179,7 +180,6 @@ let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
 
-nmap <silent>        <leader><tab>  <Plug>(fzf-maps-n)
 omap <silent>        <leader><tab>  <Plug>(fzf-maps-o)
 xmap <silent>        <leader><tab>  <Plug>(fzf-maps-x)
 imap <silent>        <c-x><c-k>     <Plug>(fzf-complete-word)
@@ -239,6 +239,8 @@ let g:undotree_DiffAutoOpen = 0
 " }}}
 " Copilot {{{
 let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
+let g:copilot_enabled = 0
+imap <silent> <c-x><c-p> <Plug>(copilot-suggest)
 " }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
