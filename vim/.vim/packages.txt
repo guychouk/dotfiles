@@ -5,7 +5,6 @@ airblade/vim-rooter
 ap/vim-css-color
 christoomey/vim-tmux-navigator
 github/copilot.vim
-hrsh7th/vim-vsnip
 jpalardy/vim-slime
 junegunn/fzf.vim
 junegunn/goyo.vim
@@ -20,6 +19,7 @@ mbbill/undotree
 morhetz/gruvbox
 pangloss/vim-javascript
 ruanyl/vim-gh-line
+tckmn/vim-minisnip
 tikhomirov/vim-glsl
 tpope/vim-characterize
 tpope/vim-commentary

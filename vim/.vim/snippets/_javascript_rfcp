@@ -1,0 +1,15 @@
+import { PropTypes } from 'react'
+
+const {{++}} = props => {
+	return (
+		<div>
+			
+		</div>
+	)
+}
+
+{{++}}.propTypes = {
+	{{++}}
+}
+
+export default {{++}}

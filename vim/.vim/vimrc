@@ -191,21 +191,6 @@ imap <silent> <expr> <c-x><c-o>     custom#fzf#CompleteNoteLink()
 " Rooter {{{
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
 " }}}
-" VSnip {{{
-let g:vsnip_snippet_dir = '~/.vim/snippets'
-let g:vsnip_filetypes = {
-      \ 'typescript': ['javascript'],
-      \ 'javascriptreact': ['javascript'],
-      \ 'typescriptreact': ['javascript'],
-      \}
-
-imap <silent> <expr> <Tab>    vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : '<Tab>')
-imap <silent> <expr> <S-Tab>  vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
-imap <silent> <expr> <C-j>    vsnip#expandable() ? '<Plug>(vsnip-expand)'    : '<C-j>'
-smap <silent> <expr> <Tab>    vsnip#jumpable(1)  ? '<Plug>(vsnip-jump-next)' : (pumvisible() ? '<C-n>' : '<Tab>')
-smap <silent> <expr> <S-Tab>  vsnip#jumpable(-1) ? '<Plug>(vsnip-jump-prev)' : (pumvisible() ? '<C-p>' : '<S-Tab>')
-smap <silent> <expr> <C-j>    vsnip#expandable() ? '<Plug>(vsnip-expand)'    : '<C-j>'
-" }}}
 " GH-Line {{{
 let g:gh_line_map_default       = 0
 let g:gh_line_blame_map_default = 0
@@ -254,6 +239,10 @@ let g:slime_target = "tmux"
 " }}}
 " CSS Color {{{
 nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>
+" }}}
+" vim-minisnip {{{
+let g:minisnip_dir = '~/.vim/snippets'
+let g:minisnip_trigger = '<C-j>'
 " }}}
 " }}}
 

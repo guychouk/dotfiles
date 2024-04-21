@@ -1,0 +1,6 @@
+typedef struct _node * Link;
+typedef struct _node node;
+struct _node {
+	int value;
+	Link next;
+};
