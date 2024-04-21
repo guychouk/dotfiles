@@ -29,7 +29,7 @@ defaults write com.apple.dock autohide -bool true
 # Disable menu bar transparency
 defaults write NSGlobalDomain AppleEnableMenuBarTransparency -bool false
 
-# Show remaining battery time; hide percentage
+# Show remaining battery time and hide percentage
 defaults write com.apple.menuextra.battery ShowPercent -string "NO"
 defaults write com.apple.menuextra.battery ShowTime -string "YES"
 

@@ -9,6 +9,5 @@ selected_description=$(find -L "$SNIPPET_DIR" -type f -exec awk '/^#/ {print sub
 # Fetch the associated command for the selected description from the text files
 associated_command=$(find -L "$SNIPPET_DIR" -type f -exec awk -v desc="# $selected_description" '$0 == desc {getline; print}' {} +)
 
-# Copy the command to the tmux buffer and paste it
-tmux set-buffer "$associated_command"
-{ sleep .10; tmux paste-buffer; } &
+# Edit the command in Vim and on leave add it to the clipboard
+echo $associated_command | vim -c "set ft=sh" -c "nmap <leader>q :q!<CR>" -c "autocmd VimLeave * execute 'normal! ggVG\"*y'" -

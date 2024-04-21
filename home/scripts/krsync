@@ -13,7 +13,7 @@ namespace=''
 pod=$1
 shift
 
-# If use uses pod@namespace rsync passes as: {us} -l pod namespace ...
+# If user uses pod@namespace rsync passes as: {us} -l pod namespace ...
 if [ "X$pod" = "X-l" ]; then
     pod=$1
     shift
