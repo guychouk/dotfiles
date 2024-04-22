@@ -1,9 +1,0 @@
-# Compress iOS scanned PDFs
-gs -sDEVICE=pdfwrite -sPAPERSIZE=a4 -dPDFFitPage -dPDFSETTINGS=/ebook -o "$OUTPUT" -q "${INPUT[@]}"
-
-# Split PDF
-gs -sDEVICE=pdfwrite -dSAFER -dFirstPage=$FIRST -dLastPage=$LAST -o "$OUTPUT" -q $INPUT
-
-# Merge PDFs
-gs -sDEVICE=pdfwrite -o $OUTPUT -q "${INPUT[@]}"
-

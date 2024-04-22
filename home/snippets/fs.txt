@@ -1,2 +1,0 @@
-# Pack PNG files into ZIP
-find . -type f -name '*.png' -exec zip output.zip {} +

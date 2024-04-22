@@ -53,7 +53,7 @@ export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GNUPGHOME="${XDG_CACHE_HOME:-$HOME/.cache}/gnupg"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
-export SNIPPET_DIR="$HOME/snippets"
+export SNIPPET_DIR="$HOME"
 
 ## Aliases
 
