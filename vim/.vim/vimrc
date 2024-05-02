@@ -244,6 +244,10 @@ nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>
 let g:minisnip_dir = '~/.vim/snippets'
 let g:minisnip_trigger = '<C-j>'
 " }}}
+" vim-gutentags {{{
+let g:gutentags_enabled = 1
+let g:gutentags_project_root = ['.git', '.ctags']
+" }}}
 " }}}
 
 " Autocommands {{{
