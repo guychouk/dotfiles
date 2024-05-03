@@ -216,8 +216,6 @@ xmap <silent> <leader>ea <Plug>(EasyAlign)
 " }}}
 " Goyo {{{
 let g:goyo_width = 120
-autocmd! User GoyoEnter call custom#goyo#GoyoEnter()
-autocmd! User GoyoLeave call custom#goyo#GoyoLeave()
 " }}}
 " Undotree {{{
 let g:undotree_DiffAutoOpen = 0
