@@ -63,8 +63,23 @@ alias \
 	k=kubectl \
 	v=$EDITOR \
 	dcc='docker compose' \
-	mdnv='$EDITOR "+Goyo 120" "+Tags" "+nmap <leader>q :qa<CR>"' \
 	godot=/Applications/Godot.app/Contents/MacOS/Godot \
+
+# setup ll alias by which ls program is installed and if on macOS
+if [[ $(uname) = "Darwin" ]]; then
+	list_cmd='ls'
+	if command -v gls >/dev/null 2>&1; then
+		list_cmd='gls -lah --group-directories-first'
+	fi
+	if command -v exa >/dev/null 2>&1; then
+		list_cmd='exa -la --icons --time-style=long-iso --group-directories-first'
+	fi
+	alias ll="$list_cmd --color=always"
+	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+	ulimit -n 10240
+else
+	alias ll='ls -lah --color=always'
+fi
 
 ## General
 
@@ -86,21 +101,6 @@ path=($path "$GOPATH/bin" "$HOME/scripts")
 # removes duplicate entries from $PATH
 typeset -aU path
 
-if [[ $(uname) = "Darwin" ]]; then
-	list_cmd='ls'
-	if command -v gls >/dev/null 2>&1; then
-		list_cmd='gls -lah --group-directories-first'
-	fi
-	if command -v exa >/dev/null 2>&1; then
-		list_cmd='exa -la --icons --time-style=long-iso --group-directories-first'
-	fi
-	alias ll="$list_cmd --color=always"
-	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-	ulimit -n 10240
-else
-	alias ll='ls -lah --color=always'
-fi
-
 # edit command line with $EDITOR
 autoload -Uz edit-command-line
 zle -N edit-command-line
@@ -112,6 +112,7 @@ zmodload -i zsh/complist
 # The following lines were added by compinstall
 
 zstyle ':completion:*' completer _complete _ignored
+zstyle ':completion:*' list-dots yes
 zstyle ':completion:*' list-colors ''
 zstyle ':completion:*' list-prompt %SAt %p: Hit TAB for more, or the character to insert%s
 zstyle ':completion:*' matcher-list ''
