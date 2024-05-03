@@ -1,5 +1,8 @@
 #!/bin/zsh
 
+# This script is called by the dark-mode-notify utility:
+# https://github.com/bouk/dark-mode-notify
+
 # Check if DARKMODE is set to 1
 if [[ "$DARKMODE" = "1" ]]; then
   sed -i '' 's/  include/# include/' ~/dotfiles/kitty/.config/kitty/kitty.conf
