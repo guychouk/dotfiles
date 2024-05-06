@@ -29,17 +29,6 @@ unsetopt PROMPT_SP
 PROMPT=$'%{\e[3 q%}%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 setopt PROMPT_SUBST
 
-## Autocmds
-update_tmux_window_name() {
-  if [ -n "$TMUX" ]; then
-    local dir_name="${PWD##*/}"
-    tmux rename-window "$dir_name"
-  fi
-}
-
-autoload -U add-zsh-hook
-add-zsh-hook chpwd update_tmux_window_name
-
 ## Variables
 
 HISTSIZE=50000
