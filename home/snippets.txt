@@ -22,8 +22,8 @@ convert $INPUT -filter point -resize $SIZE $OUTPUT
 # Generate blank image
 convert -size $SIZE xc:white $INPUT
 
-# Generate spritesheet
-montage $INPUT -tile $TILE_SIZE -geometry $GEOMETRY -background transparent $OUTPUT
+# Pack images to spritesheet
+montage *.png -tile 4x -geometry +0+0 spritesheet.png
 
 # Generate icon from image
 convert $INPUT -define icon:auto-resize=64,48,32,16 $OUTPUT
