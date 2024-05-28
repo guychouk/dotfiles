@@ -37,16 +37,21 @@ My `.zshrc` is pretty short and well documented, so I'll only discuss some of th
 * Basic time functions: `countdown` and `stopwatch`
 * Other commands and aliases (mostly `git` helpers using `fzf` for listing)
 
-## Terminal - kitty + tmux
+## Terminal - kitty
 
-I found [kitty](https://sw.kovidgoyal.net/kitty/) to be awesome, with only one config file that's easy to backup. It has everything a modern (lol) terminal should have and I find it to be very light.
+I found [kitty](https://sw.kovidgoyal.net/kitty/) to be awesome, with only one config file that's easy to backup.
+
+It has everything a modern (lol) terminal should have and I find it to be very light.
 
 After setting up the shell, we need to review a few givens:
 * We need to have a way to split the current window of the terminal we're working on
 * We need to have multiple windows and an easy way to move between open sessions
-* We need it to be robust so if the terminal closes, the sessions stay open
 
-This can all be achieved by using [tmux](https://github.com/tmux/tmux/wiki).
+This can all be achieved by using kitty as well (see my config for more information).
+
+Previously I used `tmux` as a terminal multiplexer, but after following Kovid Goyal (creator of the kitty terminal) for quite some time, I've decided to drop `tmux` in favor of kitty, and the switch was so easy that I never looked back.
+
+Since I work exclusively locally and don't require session management, I really don't see any reason to use `tmux`, and removing one extra moving part from my setup sounded too good to pass.
 
 ## Editor - Vim
 
