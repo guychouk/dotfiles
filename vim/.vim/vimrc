@@ -76,7 +76,7 @@ fun! s:RefreshColorscheme()
   highlight link GitGutterChangeDelete GitGutterChange
 
   highlight      CursorLineNr  term=bold guifg=#fabd2f ctermfg=214 guibg=NONE ctermbg=NONE
-  " highlight      Normal                  guibg=NONE    ctermbg=NONE
+  highlight      Normal                  guibg=NONE    ctermbg=NONE
   highlight      LineNr                  guibg=NONE    ctermbg=NONE
 endf
 
@@ -155,6 +155,8 @@ nnoremap <silent> <leader>-h            :exe "resize -5"<CR>
 nnoremap <silent> <leader>=v            :exe "vertical resize +5"<CR>
 nnoremap <silent> <leader>-v            :exe "vertical resize -5"<CR>
 nnoremap <silent> <localleader>q        :call quickfix#ToggleQuickfix()<CR>
+" Right align word under cursor
+nnoremap <silent> <leader><tab>         mc80A <esc>080lDgelD`cP
 " Break undo before deleting words and lines
 inoremap <C-W> <C-G>u<C-W>
 inoremap <C-U> <C-G>u<C-U>
