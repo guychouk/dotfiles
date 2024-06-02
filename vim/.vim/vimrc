@@ -87,6 +87,17 @@ endf
 fun! s:CleanUndoFiles()
   !find ~/.vim/tmp/undo -type f -mtime +100d \! -name '.gitignore' -delete
 endf
+
+fun! ConvertTimestampToISO()
+  " Get the selected text
+  let l:timestamp = getline(".")[col("'<") - 1 : col("'>") - 1]
+  " Use Python to convert the timestamp to ISO 8601 with milliseconds
+  let l:iso_time = system("python3 -c 'from datetime import datetime; import sys; timestamp=int(sys.argv[1]); print(datetime.utcfromtimestamp(timestamp).strftime(\"%Y-%m-%dT%H:%M:%S.%f\")[:-3] + \"Z\")' " . l:timestamp)
+  " Remove any trailing newline
+  let l:iso_time = substitute(l:iso_time, '\n', '', 'g')
+  " Replace the timestamp with the ISO time
+  call setline(".", substitute(getline("."), l:timestamp, l:iso_time, ""))
+endf
 " }}}
 
 " Appearance {{{
@@ -165,6 +176,7 @@ xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 " Search visual selection with ripgrep
 xnoremap <silent> <leader>/             "yy:Rg -g '!tags' "<C-R>y"<CR>
+vnoremap <leader>t                      :<C-U>call ConvertTimestampToISO()<CR>
 " }}}
 
 " Plugins {{{
