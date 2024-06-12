@@ -41,7 +41,7 @@ My `.zshrc` is pretty short and well documented, so I'll only discuss some of th
 
 I found [kitty](https://sw.kovidgoyal.net/kitty/) to be awesome, with only one config file that's easy to backup.
 
-It has everything a modern (lol) terminal should have and I find it to be very light.
+It has everything a modern terminal should have and I find it to be very light.
 
 After setting up the shell, we need to review a few givens:
 * We need to have a way to split the current window of the terminal we're working on
