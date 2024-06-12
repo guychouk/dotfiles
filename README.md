@@ -74,7 +74,7 @@ I also wrote a very minimal `statusline` "plugin" of my own called `microline`.
 
 ### Universal Ctags
 
-My [ctags](https://github.com/universal-ctags/ctags) configuration includes some directories to exclude by default and some better TypeScript regex definitions. I dislike language servers, so I mostly get by on `ctags -R .` and use the generated tags to navigate or autocomplete from vim.
+My [ctags](https://github.com/universal-ctags/ctags) configuration includes some directories to exclude by default and some better TypeScript regex definitions. I'm not fond of language servers, so I mostly get by on `ctags -R .` and use the generated tags to navigate or autocomplete from vim.
 
 If there are local changes I want to make in the way the tags are generated, I can create a `.gutctags` file in the root of the project with specific rules to extract tags, and it's all thanks to the excellent [vim-gutentags](https://github.com/ludovicchabant/vim-gutentags) plugin. Here's an example of such a file to parse YAML OpenAPI files and generate tags for each operation:
 
