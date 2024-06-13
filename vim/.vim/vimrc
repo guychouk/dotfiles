@@ -66,18 +66,6 @@ fun! s:RefreshColorscheme()
   else
     set background=light
   endif
-
-  highlight      SignColumn      guibg=NONE    ctermbg=NONE
-  highlight      GitGutterAdd    guifg=#009900 ctermfg=2 guibg=NONE ctermbg=NONE
-  highlight      GitGutterChange guifg=#bbbb00 ctermfg=3 guibg=NONE ctermbg=NONE
-  highlight      GitGutterDelete guifg=#ff2222 ctermfg=1 guibg=NONE ctermbg=NONE
-  highlight      FzfBorder       guifg=#98971C
-
-  highlight link GitGutterChangeDelete GitGutterChange
-
-  highlight      CursorLineNr  term=bold guifg=#fabd2f ctermfg=214 guibg=NONE ctermbg=NONE
-  highlight      Normal                  guibg=NONE    ctermbg=NONE
-  highlight      LineNr                  guibg=NONE    ctermbg=NONE
 endf
 
 fun! s:Highlight()
@@ -97,6 +85,13 @@ fun! ConvertTimestampToISO()
   let l:iso_time = substitute(l:iso_time, '\n', '', 'g')
   " Replace the timestamp with the ISO time
   call setline(".", substitute(getline("."), l:timestamp, l:iso_time, ""))
+endf
+
+fun! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endf
 " }}}
 
@@ -125,9 +120,7 @@ autocmd CmdlineLeave * call echoraw(&t_EI)
 autocmd ColorScheme  * call <SID>RefreshColorscheme()
 
 " Set up colorscheme
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_contrast_light = 'hard'
-colorscheme gruvbox
+colorscheme busy-g
 call <SID>RefreshColorscheme()
 " }}}
 
@@ -263,7 +256,6 @@ let g:gutentags_project_root = ['.git', '.ctags']
 " }}}
 
 " Autocommands {{{
-autocmd BufNewFile,BufRead vimrc let g:gitgutter_git_args='--git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 autocmd SigUSR1 * call <SID>RefreshColorscheme()
 " }}}
