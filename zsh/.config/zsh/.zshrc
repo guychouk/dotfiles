@@ -84,6 +84,7 @@ setopt EXTENDED_HISTORY             # add timestamps to history
 setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that do nothing
 setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
 setopt HIST_IGNORE_SPACE            # ignore entries that start with space (for sensitive commands)
+setopt GLOBDOTS                     # autocomplete hidden files and folders (dotfiles)
 
 path=($path "$GOPATH/bin" "$HOME/scripts")
 
