@@ -1,4 +1,5 @@
 " Options {{{
+set nocompatible
 set autoindent
 set autoread
 set backspace=indent,eol,start
@@ -25,11 +26,12 @@ set noswapfile
 set notitle
 set nowrap
 set number
-set scrolloff=10
+set scrolloff=1
 set shiftround
 set shiftwidth=2
 set shortmess=filnxtToOIcFsm
-set sidescrolloff=5
+set sidescroll=1
+set sidescrolloff=2
 set signcolumn=yes
 set smartcase
 set smarttab
@@ -47,9 +49,15 @@ set wildmenu
 set grepformat^=%f:%l:%c:%m
 set encoding=utf-8
 set belloff=all
-if executable('rg')
-    set grepprg=rg\ -i\ --vimgrep
-endif
+set formatoptions+=j
+set history=1000
+set complete-=i
+set viewoptions-=options
+set sessionoptions-=options
+set nrformats-=octal
+set ttimeout
+set ttimeoutlen=100
+set nolangremap
 
 " Disable netrw before calling filetype
 let g:loaded_netrw = 1
@@ -98,14 +106,14 @@ endf
 " Appearance {{{
 syntax enable
 
+set list
+set cmdheight=1
+
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-
-set list
-set cmdheight=1
 
 let &showbreak='└ '
 let &fillchars='eob: '
@@ -114,14 +122,7 @@ let &t_SI="\e[5 q"
 let &t_SR="\e[4 q"
 let &t_EI="\e[2 q"
 
-autocmd VimEnter     * call echoraw(&t_EI)
-autocmd CmdlineEnter * call echoraw(&t_SI)
-autocmd CmdlineLeave * call echoraw(&t_EI)
-autocmd ColorScheme  * call <SID>RefreshColorscheme()
-
-" Set up colorscheme
 colorscheme busy-g
-call <SID>RefreshColorscheme()
 " }}}
 
 " Mappings {{{
@@ -160,8 +161,7 @@ inoremap <C-U> <C-G>u<C-U>
 " Move visual block up and down
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
-" Search visual selection with ripgrep
-xnoremap <silent> <leader>/             "yy:Rg -g '!tags' "<C-R>y"<CR>
+" Convert timestamp under cursor to ISO
 vnoremap <leader>t                      :<C-U>call ConvertTimestampToISO()<CR>
 " }}}
 
@@ -173,7 +173,6 @@ runtime ftplugin/man.vim
 packadd! matchit
 " }}}
 " FZF {{{
-
 set rtp+=/usr/local/opt/fzf
 
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
@@ -249,8 +248,14 @@ let g:gutentags_project_root = ['.git', '.ctags']
 " }}}
 
 " Autocommands {{{
-autocmd FileChangedShellPost * echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
-autocmd SigUSR1 * call <SID>RefreshColorscheme()
+augroup mygroup
+  autocmd!
+  autocmd VimEnter     * call echoraw(&t_EI)
+  autocmd CmdlineEnter * call echoraw(&t_SI)
+  autocmd CmdlineLeave * call echoraw(&t_EI)
+  autocmd ColorScheme  * call <SID>RefreshColorscheme()
+  autocmd SigUSR1      * call <SID>RefreshColorscheme()
+augroup END
 " }}}
 
 " Commands {{{
