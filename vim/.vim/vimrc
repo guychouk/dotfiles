@@ -135,29 +135,22 @@ nmap k gk
 nnoremap          <c-g>                 2<c-g>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
-nnoremap          <leader>/             :Rg -g '!tags' ""<Left>
+nnoremap          <leader>/             :Grep<Space>
 nnoremap          <leader>r             :History:<CR>
 nnoremap <silent> <C-e>                 :e#<CR>
 nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
+nnoremap <silent> <leader>o             :Files<CR>
+nnoremap <silent> <leader>t             :Tags<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
-nnoremap <silent> <leader>k             :Helptags<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
-nnoremap <silent> <leader>b             :Buffers<CR>
+nnoremap          <leader>b             :buffer<Space>
 nnoremap <silent> <leader>g             :Git<CR>
 nnoremap <silent> <leader>j             :sp<CR>
 nnoremap <silent> <leader>l             :vsp<CR>
-nnoremap <silent> <leader>o             :Files<CR>
-nnoremap <silent> <leader>p             :Commands<CR>
 nnoremap <silent> <leader>q             :q<CR>
 nnoremap <silent> <leader>s             :MicrolineToggle<CR>
 nnoremap <silent> <leader>w             :w<CR>
-nnoremap <silent> <leader>tb            :BTags<CR>
-nnoremap <silent> <leader>tt            :Tags<CR>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
-nnoremap <silent> <leader>=h            :exe "resize +5"<CR>
-nnoremap <silent> <leader>-h            :exe "resize -5"<CR>
-nnoremap <silent> <leader>=v            :exe "vertical resize +5"<CR>
-nnoremap <silent> <leader>-v            :exe "vertical resize -5"<CR>
 nnoremap <silent> <localleader>q        :call quickfix#ToggleQuickfix()<CR>
 " Right align word under cursor
 nnoremap <silent> <leader><tab>         mc80A <esc>080lDgelD`cP
@@ -269,5 +262,27 @@ command  -nargs=0        RemoveQfItem     call quickfix#RemoveItem()
 command  -nargs=0        FzfGitCheckout   call custom#fzf#GitCheckoutBranch()
 command! -nargs=* -bang  Rg               call custom#fzf#RgExcludeFilenames(<q-args>, <bang>0)
 " }}}
+
+" Grep {{{
+if executable('rg')
+    set grepprg=rg\ --vimgrep
+endif
+
+function! Grep(...)
+  return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
+endfunction
+
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
+
+cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
+cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
+
+augroup quickfix
+  autocmd!
+  autocmd QuickFixCmdPost cgetexpr cwindow
+  autocmd QuickFixCmdPost lgetexpr lwindow
+augroup END
+"}}}
 
 " vim: set sw=2 ts=2 sts=0 expandtab fdm=marker :nospell:
