@@ -1,5 +1,4 @@
 Yggdroot/indentLine
-airblade/vim-gitgutter
 airblade/vim-rooter
 ap/vim-css-color
 github/copilot.vim
@@ -13,6 +12,7 @@ ludovicchabant/vim-gutentags
 markonm/traces.vim
 mattn/emmet-vim
 mbbill/undotree
+mhinz/vim-signify
 ruanyl/vim-gh-line
 tckmn/vim-minisnip
 tikhomirov/vim-glsl

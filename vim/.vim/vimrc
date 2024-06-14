@@ -196,13 +196,11 @@ let g:gh_line_blame_map_default = 0
 let g:gh_repo_map               = '<leader><leader>go'
 let g:gh_open_command           = 'fn() { echo "$@" | pbcopy; }; fn '
 " }}}
-" GitGutter {{{
-let g:gitgutter_sign_added = '▌'
-let g:gitgutter_sign_modified = '▌'
-let g:gitgutter_sign_removed = '▌'
-let g:gitgutter_sign_modified_removed = '∙'
-nmap ]g :GitGutterNextHunk<CR>
-nmap [g :GitGutterPrevHunk<CR>
+" Signify {{{
+let g:signify_sign_add = '▌'
+let g:signify_sign_change = '▌'
+let g:signify_sign_delete = '▌'
+let g:signify_sign_change_delete = '∙'
 " }}}
 " Emmet {{{
 let g:user_emmet_install_global = 0
