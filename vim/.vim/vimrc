@@ -188,7 +188,7 @@ imap <silent> <expr> <c-x><c-x>     custom#fzf#CompleteSnippet()
 imap <silent> <expr> <c-x><c-o>     custom#fzf#CompleteNoteLink()
 " }}}
 " Rooter {{{
-let g:rooter_patterns = ['.git', 'Makefile', 'package.json', 'init.vim', '.envrc']
+let g:rooter_patterns = ['.git', 'Makefile', 'package.json', '.envrc']
 " }}}
 " GH-Line {{{
 let g:gh_line_map_default       = 0
@@ -230,9 +230,6 @@ call dirvish#add_icon_fn({p -> p[-1:]=='/'?'📂 ':'📄 '})
 " }}}
 " Context.vim {{{
 let g:context_highlight_tag = '<hide>'
-" }}}
-" vim-slime {{{
-let g:slime_target = "tmux"
 " }}}
 " CSS Color {{{
 nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>
