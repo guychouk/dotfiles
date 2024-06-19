@@ -58,6 +58,7 @@ set nrformats-=octal
 set ttimeout
 set ttimeoutlen=100
 set nolangremap
+set path+=**
 
 " Disable netrw before calling filetype
 let g:loaded_netrw = 1
@@ -138,10 +139,14 @@ nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
 nnoremap          <leader>/             :Grep<Space>
 nnoremap          <leader>r             :History:<CR>
+nnoremap <silent> <C-h>                 <C-w>h
+nnoremap <silent> <C-j>                 <C-w>j
+nnoremap <silent> <C-k>                 <C-w>k
+nnoremap <silent> <C-l>                 <C-w>l
 nnoremap <silent> <C-e>                 :e#<CR>
 nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
 nnoremap <silent> <leader>o             :Files<CR>
-nnoremap <silent> <leader>t             :Tags<CR>
+nnoremap <silent> <leader>t             :tjump<Space>
 nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap          <leader>b             :buffer<Space>
