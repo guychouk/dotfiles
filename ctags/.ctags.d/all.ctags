@@ -42,3 +42,11 @@
 --regex-TypeScript=/^[ \t]*var[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=.\{1,\}=>/\1/f,function,functions/b
 --regex-TypeScript=/^[ \t]*let[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=.\{1,\}=>/\1/f,function,functions/b
 --regex-TypeScript=/^[ \t]*const[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=.\{1,\}=>/\1/f,function,functions/b
+
+--regex-JavaScript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*function/\1/f,function/
+--regex-JavaScript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*\(/\1/f,function/
+--regex-JavaScript=/^[ \t]*function[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*\(/\1/f,function/
+--regex-JavaScript=/^[ \t]*const[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
+--regex-JavaScript=/^[ \t]*let[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
+--regex-JavaScript=/^[ \t]*var[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
+--regex-JavaScript=/^[ \t]*class[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)/\1/c,class/
