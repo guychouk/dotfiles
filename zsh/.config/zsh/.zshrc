@@ -37,12 +37,23 @@ HISTFILE="$ZSH_CACHE_DIR/history"
 
 export GPG_TTY=$(tty)
 export KEYTIMEOUT=1
+export SNIPPET_DIR="$HOME"
 export KUBECONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/kube/config"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
 export GNUPGHOME="${XDG_CACHE_HOME:-$HOME/.cache}/gnupg"
+export PARALLEL_HOME="${XDG_CACHE_HOME:-$HOME/.cache}/parallel"
+export GEM_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/gem"
+export GEM_PATH="$GEM_HOME"
+export DOCKER_CONFIG="${XDG_DATA_HOME:-$HOME/.local/share}/docker"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/.npmrc"
+export NPM_CONFIG_CACHE="${XDG_CACHE_HOME:-$HOME/.cache}/npm"
+export AMMONITE_HOME="${XDG_CONFIG_HOME:-$HOME/.config}/ammonite"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.node_repl_history"
-export SNIPPET_DIR="$HOME"
+export TS_NODE_HISTORY="${XDG_CACHE_HOME:-$HOME/.cache}/.ts_node_repl_history"
+export WGET_HSTS_FILE="${XDG_CONFIG_HOME:-$HOME/.cache}/.wget-hsts"
+export PYTHONHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/.python_history"
+export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/.lesshst"
 
 ## Aliases
 
@@ -86,7 +97,7 @@ setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimmi
 setopt HIST_IGNORE_SPACE            # ignore entries that start with space (for sensitive commands)
 setopt GLOBDOTS                     # autocomplete hidden files and folders (dotfiles)
 
-path=($path "$GOPATH/bin" "$HOME/scripts")
+path=("$GEM_HOME" $path "$GOPATH/bin" "$HOME/scripts")
 
 # removes duplicate entries from $PATH
 typeset -aU path
@@ -181,6 +192,7 @@ fi
 ## ASDF
 
 export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
+export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
 export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 
 [ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"

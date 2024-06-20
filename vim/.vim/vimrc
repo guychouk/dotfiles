@@ -23,6 +23,7 @@ set noruler
 set noshowcmd
 set noshowmode
 set noswapfile
+set viminfofile=$XDG_CACHE_HOME/viminfo
 set notitle
 set nowrap
 set number
