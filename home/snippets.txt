@@ -87,3 +87,6 @@ curl -s $1 | hxwls | grep -E "(jpg|png)" | grep -v thumb | xargs -I{} curl -s -O
 
 # Curl Kubernetes API Server from a Pod
 curl -k -X GET -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://$KUBERNETES_PORT_443_TCP_ADDR:$KUBERNETES_SERVICE_PORT_HTTPS
+
+# Push new tag to Github
+git tag -a $TAG -m $TAG && g push origin refs/tags/$TAG
