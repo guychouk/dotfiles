@@ -31,6 +31,7 @@
 
 --regex-TypeScript=/^[ \t]*function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function,functions/b
 --regex-TypeScript=/^[ \t]*[(]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function,functions/b
+--regex-TypeScript=/^[ \t]*async[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function,functions/b
 --regex-TypeScript=/^[ \t]*async[ \t]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function,functions/b
 --regex-TypeScript=/^[ \t]*[(]async[ \t]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function,functions/b
 --regex-TypeScript=/^[ \t]*var[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]\{1,\}\)*function[^\*][^\*]/\1/f,function,functions/b
