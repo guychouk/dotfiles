@@ -138,6 +138,8 @@ nmap k gk
 nnoremap          <c-g>                 2<c-g>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
+nnoremap          <C-W><C-V>f           :exec "vert norm <C-V><C-W>f"<CR>
+nnoremap          <C-W><C-V>[           :exec "vert norm <C-V><C-W>["<CR>
 nnoremap          <leader>/             :Grep<Space>
 nnoremap          <leader>r             :History:<CR>
 nnoremap <silent> <C-h>                 <C-w>h
@@ -256,6 +258,7 @@ augroup mygroup
   autocmd CmdlineLeave * call echoraw(&t_EI)
   autocmd ColorScheme  * call <SID>RefreshColorscheme()
   autocmd SigUSR1      * call <SID>RefreshColorscheme()
+  autocmd FileType     fugitive normal zR
 augroup END
 " }}}
 

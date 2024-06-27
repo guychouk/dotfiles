@@ -35,6 +35,7 @@ hi SpecialKey      guifg=#808080 guibg=NONE    gui=none   ctermfg=244 ctermbg=23
 hi QuickFixLine    guifg=#202020 guibg=#ffdd00 gui=bold
 hi qfFileName      guifg=#b1d631 guibg=NONE
 hi qfLineNr        guifg=#808080 guibg=NONE
+hi DiffText        guifg=NONE    guibg=#aa0000
 hi DiffDelete      guifg=#ff0000 guibg=NONE gui=none ctermbg=NONE ctermfg=1
 hi DiffAdd         guifg=#00ff00 guibg=NONE gui=none ctermbg=NONE ctermfg=2
 hi DiffChange      guifg=#ffff00 guibg=NONE gui=none ctermbg=NONE ctermfg=3
