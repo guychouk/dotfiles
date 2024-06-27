@@ -40,7 +40,8 @@
 --regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*([^)]*$/\1/f,function,functions/b
 --regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=.\{1,\}=>/\1/f,function,functions/b
 --regex-typescript=/^[ \t]*(export([ \t]+abstract)?([ \t]+default)?)?[ \t]*class[ \t]+([a-zA-Z0-9_]+)/\4/c,classes/
---regex-typescript=/^[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*async[ \t]*[(]/\1/m,method,methods/b
+--regex-typescript=/^[ \t]*\([A-Za-z0-9_$]\+\)[ \t]*:[ \t]*\(async[ \t]*\)\?[ \t]*[(]/\1/m,method,methods/b
+--regex-typescript=/^[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]*\)\?[ \t]*[(]/\1/m,method,methods/b
 --regex-typescript=/^[ \t]*(declare)?[ \t]*namespace[ \t]+([a-zA-Z0-9_]+)/\2/n,modules/
 --regex-typescript=/^[ \t]*(export)?[ \t]*module[ \t]+([a-zA-Z0-9_]+)/\2/M,modules/
 --regex-typescript=/^[ \t]*(export)?[ \t]*function[ \t]+([a-zA-Z0-9_]+)/\2/f,functions/
@@ -54,7 +55,7 @@
 --regex-typescript=/^[ \t]*@([A-Za-z0-9._$]+)[ \t]*/\1/d,decorator/
 
 --regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*function/\1/f,function/
---regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*\(/\1/f,function/
+--regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*\(async[ \t]*\)\?(/\1/f,function/
 --regex-javascript=/^[ \t]*function[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*\(/\1/f,function/
 --regex-javascript=/^[ \t]*const[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
 --regex-javascript=/^[ \t]*let[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
