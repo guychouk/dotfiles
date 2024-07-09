@@ -140,7 +140,6 @@ nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
 nnoremap          <C-W><C-V>f           :exec "vert norm <C-V><C-W>f"<CR>
 nnoremap          <C-W><C-V>[           :exec "vert norm <C-V><C-W>["<CR>
-nnoremap          <leader>/             :Grep<Space>
 nnoremap          <leader>r             :History:<CR>
 nnoremap <silent> <C-h>                 <C-w>h
 nnoremap <silent> <C-j>                 <C-w>j
@@ -260,6 +259,12 @@ augroup mygroup
   autocmd SigUSR1      * call <SID>RefreshColorscheme()
   autocmd FileType     fugitive normal zR
 augroup END
+
+augroup quickfix
+  autocmd!
+  autocmd QuickFixCmdPost cgetexpr cwindow
+  autocmd QuickFixCmdPost lgetexpr lwindow
+augroup END
 " }}}
 
 " Commands {{{
@@ -277,21 +282,19 @@ if executable('rg')
     set grepprg=rg\ --vimgrep
 endif
 
-function! Grep(...)
-  return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
-endfunction
+fun! Grep(...)
+  let l:args = join(map(copy(a:000), 'shellescape(v:val)'), ' ')
+  return system(join([&grepprg] + [expandcmd(l:args)], ' '))
+endf
+
+nnoremap <leader>/ :Grep<Space>
+vnoremap <leader>/ y:Grep <C-r>"<CR>
 
 command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
 command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
 
 cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
 cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
-
-augroup quickfix
-  autocmd!
-  autocmd QuickFixCmdPost cgetexpr cwindow
-  autocmd QuickFixCmdPost lgetexpr lwindow
-augroup END
 "}}}
 
 " vim: set sw=2 ts=2 sts=0 expandtab fdm=marker :nospell:
