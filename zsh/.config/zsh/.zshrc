@@ -1,5 +1,9 @@
 ## Setup
 
+_has() {
+  return $( whence $1 &>/dev/null )
+}
+
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 [[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir "$ZSH_CACHE_DIR"
 
@@ -23,11 +27,8 @@ parse_kubectl_current_context() {
 	if [ ! "$kube_context" ]; then printf ""; else printf " [$kube_context]"; fi
 }
 
-# Remove annoying percent sign
-unsetopt PROMPT_SP
-
-PROMPT=$'%{\e[3 q%}%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 setopt PROMPT_SUBST
+PROMPT=$'%{\e[3 q%}%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 
 ## Variables
 
@@ -85,16 +86,30 @@ fi
 bindkey -e                          # selects keymap `emacs` & set as main keymap
 bindkey "^U" backward-kill-line     # kill backwards from cursor to the beginning of the line
 
-setopt AUTO_CD                      # jump to path without using `cd`
-setopt HIST_REDUCE_BLANKS           # remove superfluous blanks from history items
-setopt HIST_IGNORE_ALL_DUPS         # remove older duplicate entries from history
-setopt INC_APPEND_HISTORY           # save commands to history as soon as they are entered
-setopt SHARE_HISTORY                # share history between different instances of the shell
-setopt EXTENDED_HISTORY             # add timestamps to history
-setopt INTERACTIVE_COMMENTS         # enable entering comments as commands that do nothing
-setopt HIST_EXPIRE_DUPS_FIRST       # expire duplicate entries first when trimming history
-setopt HIST_IGNORE_SPACE            # ignore entries that start with space (for sensitive commands)
-setopt GLOBDOTS                     # autocomplete hidden files and folders (dotfiles)
+# Let ^W delete to slashes (taken from statico's dotfiles)
+# https://github.com/statico/dotfiles/blob/633664e2c59a7bbac0d42f8bbec0cb1843e18dea/.zshrc#L617
+backward-delete-to-slash() {
+  local WORDCHARS=${WORDCHARS//\//}
+  zle .backward-delete-word
+}
+zle -N backward-delete-to-slash
+bindkey "^W" backward-delete-to-slash
+
+unsetopt auto_cd              # disable jump to path without using `cd`
+setopt hist_reduce_blanks     # remove superfluous blanks from history items
+setopt hist_ignore_all_dups   # remove older duplicate entries from history
+setopt inc_append_history     # save commands to history as soon as they are entered
+setopt share_history          # share history between different instances of the shell
+setopt extended_history       # add timestamps to history
+setopt interactive_comments   # enable entering comments as commands that do nothing
+setopt hist_expire_dups_first # expire duplicate entries first when trimming history
+setopt hist_ignore_space      # ignore entries that start with space (for sensitive commands)
+setopt globdots               # autocomplete hidden files and folders (dotfiles)
+setopt auto_param_slash       # automatically adds a trailing slash to directory names during completion
+setopt complete_in_word       # allow completion within a word
+setopt glob_complete          # completes based on glob patterns
+setopt list_rows_first        # lists completion options row-wise instead of column-wise
+setopt no_beep                # disable beeping for errors and completion
 
 path=("$GEM_HOME" $path "$GOPATH/bin" "$HOME/scripts")
 
@@ -131,33 +146,44 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 
+# import useful functions
+source "$ZDOTDIR/functions/time"
+source "$ZDOTDIR/functions/git"
+
 ## Syntax highlighting
 
 function () {
   local fsh_cache_dir="$ZSH_CACHE_DIR/zsh-syntax-highlighting"
   local fsh_plugin="$fsh_cache_dir/zsh-syntax-highlighting.zsh"
-
   [ -d "$fsh_cache_dir" ] || git clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$fsh_cache_dir"
   [ -f "$fsh_plugin" ] && source "$fsh_plugin"
 }
 
 ## FZF
 
-if command -v fzf 1>/dev/null 2>&1; then
-	export FZF_DEFAULT_OPTS='--height 50%'
+if _has fzf; then
+  export FZF_DEFAULT_OPTS='--height 50%'
+  if _has rg; then
+    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
+  fi
+  [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+  [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
-	[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-	source "/usr/local/opt/fzf/shell/key-bindings.zsh"
-
-	source "$ZDOTDIR/functions/fzf-git"
-	source "$ZDOTDIR/functions/fzf-tmux"
+  # useful fzf + git functions
+  source "$ZDOTDIR/functions/fzf-git"
 fi
 
 ## Direnv
 
-if command -v direnv 1>/dev/null 2>&1; then
+if _has direnv; then
 	export DIRENV_LOG_FORMAT=
 	eval "$(direnv hook zsh)"
+fi
+
+## Zoxide
+
+if _has zoxide; then
+  eval "$(zoxide init --cmd j zsh)"
 fi
 
 ## ASDF
@@ -170,15 +196,3 @@ export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
 [ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
 
 source "$ASDF_DIR/asdf.sh"
-
-## General Functions
-
-source "$ZDOTDIR/functions/time"
-
-## Git scripts
-
-source "$ZDOTDIR/functions/git"
-
-## Zoxide
-
-eval "$(zoxide init --cmd j zsh)"
