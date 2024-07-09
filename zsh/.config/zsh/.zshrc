@@ -141,34 +141,6 @@ function () {
   [ -f "$fsh_plugin" ] && source "$fsh_plugin"
 }
 
-## FASD
-
-if command -v fasd 1>/dev/null 2>&1; then
-	fasd_cd() {
-		if [ $# -le 1 ]; then
-			fasd "$@"
-		else
-			local _fasd_ret="$(fasd -e 'printf %s' "$@")"
-			[ -z "$_fasd_ret" ] && return
-			[ -d "$_fasd_ret" ] && cd "$_fasd_ret" || printf %s\\n "$_fasd_ret"
-		fi
-	}
-
-	fasd_fzf_edit() {
-		local _files=`fasd -fs "$@" | awk '{print $2}' | fzf -m`
-		[ ! -z "$_files" ] && $EDITOR $(echo $_files)
-	}
-
-	alias \
-		f='fasd -f' \
-		j='fasd_cd -d' \
-		fv='fasd -f -e $EDITOR' \
-		vf='fasd_fzf_edit'
-
-	export _FASD_DATA="${XDG_CACHE_HOME:-$HOME/.cache}/.fasd"
-	eval "$(fasd --init zsh-hook zsh-wcomp-install zsh-wcomp)"
-fi
-
 ## FZF
 
 if command -v fzf 1>/dev/null 2>&1; then
@@ -206,3 +178,7 @@ source "$ZDOTDIR/functions/time"
 ## Git scripts
 
 source "$ZDOTDIR/functions/git"
+
+## Zoxide
+
+eval "$(zoxide init --cmd j zsh)"
