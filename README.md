@@ -30,8 +30,8 @@ brew bundle install
 
 My `.zshrc` is pretty short and well documented, so I'll only discuss some of the tools I use to make it a bit more usable:
 
-* [FASD](https://github.com/clvv/fasd) for better navigation in the terminal
-* [FZF](https://github.com/junegunn/fzf) for pretty much anything
+* [zoxide](https://github.com/ajeetdsouza/zoxide) for better terminal navigation (can't live without `j`)
+* [fzf](https://github.com/junegunn/fzf) for pretty much anything
 * [direnv](https://direnv.net/) for setting up environment variables in projects
 * [asdf](https://github.com/asdf-vm/asdf) for managing runtime versions
 * Basic time functions: `countdown` and `stopwatch`
