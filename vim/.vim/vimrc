@@ -127,9 +127,6 @@ let &t_EI="\e[2 q"
 colorscheme busy-g
 
 if has("gui_running")
-  " Start GVim maximized
-  au GUIEnter * simalt ~x
-
   " Remove all toolbars
   set guioptions-=m  " Remove menu bar
   set guioptions-=T  " Remove toolbar
@@ -138,6 +135,14 @@ if has("gui_running")
 
   " Set font
   set guifont=JetBrains_Mono:h12
+
+  " Set some background
+  hi Normal guibg=#000000
+endif
+
+if has("win32") || has("win64")
+  set shell=powershell.exe
+  set shellslash
 endif
 " }}}
 
