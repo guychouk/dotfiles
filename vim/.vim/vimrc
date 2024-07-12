@@ -125,6 +125,20 @@ let &t_SR="\e[4 q"
 let &t_EI="\e[2 q"
 
 colorscheme busy-g
+
+if has("gui_running")
+  " Start GVim maximized
+  au GUIEnter * simalt ~x
+
+  " Remove all toolbars
+  set guioptions-=m  " Remove menu bar
+  set guioptions-=T  " Remove toolbar
+  set guioptions-=r  " Remove right-hand scrollbar
+  set guioptions-=L  " Remove left-hand scrollbar
+
+  " Set font
+  set guifont=JetBrains_Mono:h12
+endif
 " }}}
 
 " Mappings {{{
