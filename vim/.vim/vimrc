@@ -12,7 +12,7 @@ set ignorecase
 set incsearch
 set infercase
 set keywordprg=:help
-set laststatus=1
+set laststatus=2
 set linebreak
 set mouse=a
 set cursorline

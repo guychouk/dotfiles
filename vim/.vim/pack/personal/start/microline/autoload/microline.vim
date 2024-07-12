@@ -17,7 +17,7 @@ export def Build(active: bool): string
   var ft = empty(&filetype) ? '?' : '%{&filetype}'
   var fugitive = active && exists('*g:FugitiveHead') == 1 ? '%{FugitiveHead()}' : ''
   var gutentags = active && exists('*gutentags#statusline') == 1 ? '%{gutentags#statusline()}' : ''
-  var current_mode = statusline_mode_map[mode()]
+  var current_mode = active ? statusline_mode_map[mode()] : '      '
   var left_separator = active ? '%#MicrolineSep#' : ' '
   var right_separator = active ? '%#MicrolineSep#' : ' '
   var section_hlgroup = active ? '%#MicrolineSection#' : '%#StatusLineNC#'
