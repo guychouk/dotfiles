@@ -35,13 +35,3 @@ export def ReadListFromFile(filepath: string): void
   call setqflist(qf_list)
   copen
 enddef
-
-export def ToggleQuickfix()
-  for win in range(1, winnr('$'))
-    if getwinvar(win, '&buftype') ==# 'quickfix'
-      cclose
-      return
-    endif
-  endfor
-  copen
-enddef

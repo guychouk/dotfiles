@@ -1,20 +1,5 @@
 vim9script
 
-export def RgExcludeFilenames(qargs: string, fullscreen: bool): void
-  var rg_cmd = 'rg --column --line-number --no-heading --color=always --smart-case ' .. qargs
-  call fzf#vim#grep(rg_cmd, 1, { 'options': '--delimiter : --nth 4..' }, fullscreen)
-enddef
-
-export def CompleteSnippet(): string
-  var vimdir = fnamemodify(expand("$MYVIMRC"), ":p:h")
-  return fzf#vim#complete(
-    fzf#wrap({
-      'source':  "cat " .. vimdir .. "/snippets/" .. &filetype .. ".json" .. " | jq -r 'to_entries[] | \"\\(.key): \\(.value.prefix)\"'",
-      'reducer': (lines) => trim(split(lines[0], ':')[1])
-    })
-  )
-enddef
-
 def FugitiveCheckout(branch: string): void
   var track = match(branch, 'origin') != -1 ? '--track' : ''
   execute 'Git checkout ' .. track .. ' ' .. branch
