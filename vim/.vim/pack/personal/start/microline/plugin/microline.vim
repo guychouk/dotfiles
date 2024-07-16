@@ -3,8 +3,12 @@ vim9script
 import autoload 'microline.vim'
 
 def SetupMicrolineColors()
-  var sl_bg = synIDattr(synIDtrans(hlID('StatusLine')), 'bg', 'gui')
-  var sl_fg = synIDattr(synIDtrans(hlID('StatusLine')), 'fg', 'gui')
+  var sl_bg = synIDattr(synIDtrans(hlID('StatusLine')), 'fg', 'gui')
+  var sl_fg = synIDattr(synIDtrans(hlID('StatusLine')), 'bg', 'gui')
+  if has('gui_running')
+    sl_bg = synIDattr(synIDtrans(hlID('StatusLine')), 'bg', 'gui')
+    sl_fg = synIDattr(synIDtrans(hlID('StatusLine')), 'fg', 'gui')
+  endif
   var sl_nc_bg = synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg', 'gui')
   var sl_nc_fg = synIDattr(synIDtrans(hlID('StatusLineNC')), 'fg', 'gui')
   exe "highlight MicrolineSep " .. "guibg=" .. sl_bg .. " guifg=" .. sl_nc_bg

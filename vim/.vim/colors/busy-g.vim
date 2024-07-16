@@ -25,8 +25,14 @@ hi Cursor          guifg=NONE    guibg=#626262 gui=none               ctermbg=24
 hi Normal          guifg=#e2e2e5 guibg=NONE    gui=none   ctermfg=253 ctermbg=NONE
 hi NonText         guifg=#808080 guibg=NONE    gui=none   ctermfg=244 ctermbg=NONE
 hi LineNr          guifg=#303030 guibg=NONE    gui=none   ctermfg=244 ctermbg=NONE
-hi StatusLine      guifg=#303030 guibg=#c0c0c0 gui=none   ctermfg=253 ctermbg=238
-hi StatusLineNC    guifg=#939393 guibg=#303030 gui=none   ctermfg=246 ctermbg=238
+
+if has('gui_running')
+  hi StatusLine    guifg=#000000 guibg=#909090 gui=none   ctermfg=244 ctermbg=238
+else
+  hi StatusLine    guifg=#909090 guibg=#000000 gui=none   ctermfg=253 ctermbg=238
+endif
+
+hi StatusLineNC    guifg=#808080 guibg=#303030 gui=none   ctermfg=246 ctermbg=238
 hi VertSplit       guifg=#444444 guibg=#303030 gui=none   ctermfg=238 ctermbg=238
 hi Folded          guifg=#a0a8b0 guibg=#384048 gui=none   ctermfg=248 ctermbg=4
 hi Title           guifg=#f6f3e8 guibg=NONE    gui=bold   ctermfg=254            cterm=bold

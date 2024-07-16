@@ -245,7 +245,7 @@ let g:undotree_DiffAutoOpen = 0
 " }}}
 " Copilot {{{
 let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
-let g:copilot_enabled = 0
+let g:copilot_enabled = 1
 imap <silent> <c-x><c-p> <Plug>(copilot-suggest)
 " }}}
 " Dirvish {{{
@@ -298,7 +298,7 @@ command! -nargs=* -bang  Rg               call custom#fzf#RgExcludeFilenames(<q-
 
 " Grep {{{
 if executable('rg')
-    set grepprg=rg\ --vimgrep
+    set grepprg=rg\ --vimgrep\ -g\ '!tags'
 endif
 
 fun! Grep(...)
