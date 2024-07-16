@@ -121,6 +121,18 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M emacs '^v' edit-command-line
 
+## ASDF
+
+export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
+export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
+
+[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
+[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
+
+source "$ASDF_DIR/asdf.sh"
+fpath=(${ASDF_DIR}/completions $fpath)
+
 ## Completion
 
 zmodload -i zsh/complist
@@ -186,13 +198,3 @@ if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
 
-## ASDF
-
-export ASDF_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
-export ASDF_DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/asdf"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME:-$HOME/.config}/asdf/.asdfrc"
-
-[ -d "${XDG_CONFIG_HOME:-$HOME/.config}/asdf" ] || mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/asdf"
-[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
-
-source "$ASDF_DIR/asdf.sh"
