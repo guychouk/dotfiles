@@ -11,8 +11,9 @@ def SetupMicrolineColors()
   endif
   var sl_nc_bg = synIDattr(synIDtrans(hlID('StatusLineNC')), 'bg', 'gui')
   var sl_nc_fg = synIDattr(synIDtrans(hlID('StatusLineNC')), 'fg', 'gui')
-  exe "highlight MicrolineSep " .. "guibg=" .. sl_bg .. " guifg=" .. sl_nc_bg
-  exe "highlight MicrolineSection " .. "guibg=" .. sl_nc_bg .. " guifg=" .. sl_nc_fg
+  exe "highlight MicrolineLeftSep "  .. "guibg=" .. sl_bg    .. " guifg=" .. sl_nc_bg
+  exe "highlight MicrolineRightSep " .. "guibg=" .. sl_nc_bg .. " guifg=" .. sl_bg
+  exe "highlight MicrolineSection "  .. "guibg=" .. sl_nc_bg .. " guifg=" .. sl_nc_fg
 enddef
 
 augroup Microline
