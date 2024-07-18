@@ -296,7 +296,7 @@ command  -nargs=0        FzfGitCheckout   call custom#fzf#GitCheckoutBranch()
 
 " Grep {{{
 if executable('rg')
-    set grepprg=rg\ --vimgrep\ -g\ '!tags'\ --hidden
+    set grepprg=rg\ --vimgrep\ -g\ '!tags'\ -g\ '!.git'\ --hidden
 endif
 
 fun! Grep(...)
