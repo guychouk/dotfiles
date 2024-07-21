@@ -90,3 +90,6 @@ curl -k -X GET -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/se
 
 # Push new tag to Github
 git tag -a $TAG -m $TAG && g push origin refs/tags/$TAG
+
+# Run Kafka UI in Kubernetes
+kubectl run kafka-ui --image=provectuslabs/kafka-ui --env="KAFKA_CLUSTERS_0_NAME=local" --env="KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092" --env="DYNAMIC_CONFIG_ENABLED=true" --restart=Never -- java -jar ./kafka-ui-api.jar
