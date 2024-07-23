@@ -111,6 +111,24 @@ setopt glob_complete          # completes based on glob patterns
 setopt list_rows_first        # lists completion options row-wise instead of column-wise
 setopt no_beep                # disable beeping for errors and completion
 
+function update_path_for_node_modules() {
+  local node_bin="$PWD/node_modules/.bin"
+  # Remove any existing node_modules/.bin from PATH
+  PATH=$(echo "$PATH" | awk -v RS=: -v ORS=: '/node_modules\/.bin/ {next} {print}' | sed 's/:$//')
+  # If node_modules/.bin exists in the current directory, prepend it to PATH
+  if [[ -d "$node_bin" ]]; then
+    export PATH="$node_bin:$PATH"
+  fi
+}
+
+# This function is called whenever the current directory changes
+chpwd() {
+    update_path_for_node_modules
+}
+
+# Initialize the function for the current directory
+update_path_for_node_modules
+
 path=("$GEM_HOME" $path "$GOPATH/bin" "$HOME/scripts")
 
 # removes duplicate entries from $PATH
