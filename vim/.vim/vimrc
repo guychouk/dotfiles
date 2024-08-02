@@ -126,6 +126,38 @@ let &t_EI="\e[2 q"
 
 colorscheme busy-g
 
+" Thank you, kind soul for the following code:
+" https://vi.stackexchange.com/a/3104/49667
+if has("unix")
+    function! FontSizePlus ()
+      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole + 1
+      let l:new_font_size = ' '.l:gf_size_whole
+      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
+    endfunction
+
+    function! FontSizeMinus ()
+      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole - 1
+      let l:new_font_size = ' '.l:gf_size_whole
+      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
+    endfunction
+else
+    function! FontSizePlus ()
+      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole + 1
+      let l:new_font_size = ':h'.l:gf_size_whole
+      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+    endfunction
+
+    function! FontSizeMinus ()
+      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
+      let l:gf_size_whole = l:gf_size_whole - 1
+      let l:new_font_size = ':h'.l:gf_size_whole
+      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
+    endfunction
+endif
+
 if has("gui_running")
   " Remove all toolbars
   set guioptions-=m  " Remove menu bar
@@ -138,12 +170,11 @@ if has("gui_running")
 
   " Set some background
   hi Normal guibg=#000000
+
+  nmap <F11> :call FontSizeMinus()<CR>
+  nmap <F12> :call FontSizePlus()<CR>
 endif
 
-if has("win32") || has("win64")
-  set shell=powershell.exe
-  set shellslash
-endif
 " }}}
 
 " Mappings {{{
