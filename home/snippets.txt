@@ -93,3 +93,6 @@ git tag -a $TAG -m $TAG && g push origin refs/tags/$TAG
 
 # Run Kafka UI in Kubernetes
 kubectl run kafka-ui --image=provectuslabs/kafka-ui --env="KAFKA_CLUSTERS_0_NAME=local" --env="KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092" --env="DYNAMIC_CONFIG_ENABLED=true" --restart=Never -- java -jar ./kafka-ui-api.jar
+
+# Spreadsheets formula for calculating monthly expenses based on my Finances sheet
+=ArrayFormula({ { unique(text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM")) }, { sumif( text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM"), unique(text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM")), '2022'!B2:B) } })
