@@ -209,6 +209,7 @@ nnoremap <silent> <leader>q             :q<CR>
 nnoremap <silent> <leader>s             :MicrolineToggle<CR>
 nnoremap <silent> <leader>w             :w<CR>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nnoremap          <leader>a             :Neural<Space>
 " Right align word under cursor
 nnoremap <silent> <leader><tab>         mc80A <esc>080lDgelD`cP
 " Break undo before deleting words and lines
@@ -295,6 +296,16 @@ let g:minisnip_trigger = '<C-j>'
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
 let g:gutentags_project_root = ['.git', '.ctags']
+" }}}
+" Neural {{{
+let g:neural = {
+\   'source': {
+\       'openai': {
+\           'api_key': $OPENAI_API_KEY,
+\           'model': 'gpt-3.5-turbo-instruct',
+\       },
+\   },
+\}
 " }}}
 " }}}
 

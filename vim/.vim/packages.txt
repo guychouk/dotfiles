@@ -1,6 +1,7 @@
 Yggdroot/indentLine
 airblade/vim-rooter
 ap/vim-css-color
+dense-analysis/neural
 github/copilot.vim
 junegunn/fzf.vim
 junegunn/goyo.vim

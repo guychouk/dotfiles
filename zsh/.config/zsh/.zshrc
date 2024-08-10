@@ -216,3 +216,8 @@ if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
 
+## Environment
+
+if [ -f ~/.env ]; then
+    source ~/.env
+fi
