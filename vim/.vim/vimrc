@@ -188,41 +188,36 @@ nmap k gk
 nnoremap          <c-g>                 2<c-g>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
-nnoremap          <C-W><C-V>f           :exec "vert norm <C-V><C-W>f"<CR>
-nnoremap          <C-W><C-V>[           :exec "vert norm <C-V><C-W>["<CR>
-nnoremap          <leader>r             :History:<CR>
 nnoremap <silent> <C-h>                 <C-w>h
 nnoremap <silent> <C-j>                 <C-w>j
 nnoremap <silent> <C-k>                 <C-w>k
 nnoremap <silent> <C-l>                 <C-w>l
 nnoremap <silent> <C-e>                 :e#<CR>
-nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
-nnoremap <silent> <leader>o             :Files<CR>
 nnoremap          <leader>t             :tjump<Space>
-nnoremap <silent> <leader>.             :GFiles<CR>
-nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap          <leader>b             :buffer<Space>
-nnoremap <silent> <leader>g             :Git<CR>
 nnoremap <silent> <leader>j             :sp<CR>
 nnoremap <silent> <leader>l             :vsp<CR>
 nnoremap <silent> <leader>q             :q<CR>
-nnoremap <silent> <leader>s             :MicrolineToggle<CR>
 nnoremap <silent> <leader>w             :w<CR>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
-nnoremap          <leader>a             :Neural<Space>
-" Right align word under cursor
-nnoremap <silent> <leader><tab>         mc80A <esc>080lDgelD`cP
-" Break undo before deleting words and lines
-inoremap <C-W> <C-G>u<C-W>
-inoremap <C-U> <C-G>u<C-U>
-" Move visual block up and down
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
-" Convert timestamp under cursor to ISO
-vnoremap <leader>t                      :<C-U>call ConvertTimestampToISO()<CR>
+vnoremap          <leader>t             :<C-U>call ConvertTimestampToISO()<CR>
+inoremap          <C-W>                 <C-G>u<C-W>
+inoremap          <C-U>                 <C-G>u<C-U>
 " }}}
 
 " Plugins {{{
+" Bindings {{{
+nnoremap <silent> <leader>g             :Git<CR>
+nnoremap <silent> <leader>o             :Files<CR>
+nnoremap <silent> <leader>.             :GFiles<CR>
+nnoremap          <leader>r             :History:<CR>
+nnoremap          <leader>a             :Neural<Space>
+nnoremap <silent> <leader>u             :UndotreeToggle<CR>
+nnoremap <silent> <leader>s             :MicrolineToggle<CR>
+nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
+" }}}
 " Man {{{
 runtime ftplugin/man.vim
 " }}}
