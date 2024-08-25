@@ -71,8 +71,8 @@ if [[ $(uname) = "Darwin" ]]; then
 	if command -v gls >/dev/null 2>&1; then
 		list_cmd='gls -lah --group-directories-first'
 	fi
-	if command -v exa >/dev/null 2>&1; then
-		list_cmd='exa -la --icons --time-style=long-iso --group-directories-first'
+	if command -v eza >/dev/null 2>&1; then
+		list_cmd='eza -la --icons --time-style=long-iso --group-directories-first'
 	fi
 	alias ll="$list_cmd --color=always"
 	export HOMEBREW_CASK_OPTS="--appdir=/Applications"
