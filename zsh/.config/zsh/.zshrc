@@ -207,7 +207,7 @@ fi
 
 if _has direnv; then
 	export DIRENV_LOG_FORMAT=
-	eval "$(direnv hook zsh)"
+	# eval "$(direnv hook zsh)"
 fi
 
 ## Zoxide
