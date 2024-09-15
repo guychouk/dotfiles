@@ -213,7 +213,6 @@ nnoremap <silent> <leader>g             :Git<CR>
 nnoremap <silent> <leader>o             :Files<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap          <leader>r             :History:<CR>
-nnoremap          <leader>a             :Neural<Space>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :MicrolineToggle<CR>
 nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
@@ -291,16 +290,6 @@ let g:minisnip_trigger = '<C-j>'
 " vim-gutentags {{{
 let g:gutentags_enabled = 1
 let g:gutentags_project_root = ['.git', '.ctags']
-" }}}
-" Neural {{{
-let g:neural = {
-\   'source': {
-\       'openai': {
-\           'api_key': $OPENAI_API_KEY,
-\           'model': 'gpt-3.5-turbo-instruct',
-\       },
-\   },
-\}
 " }}}
 " }}}
 
