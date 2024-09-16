@@ -55,16 +55,6 @@ export WGET_HSTS_FILE="${XDG_CONFIG_HOME:-$HOME/.cache}/.wget-hsts"
 export PYTHONHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/.python_history"
 export LESSHISTFILE="${XDG_CACHE_HOME:-$HOME/.cache}/.lesshst"
 
-## Aliases
-
-alias \
-	g=git \
-	d=docker \
-	k=kubectl \
-	v=$EDITOR \
-	dcc='docker compose' \
-	godot=/Applications/Godot.app/Contents/MacOS/Godot \
-
 # setup ll alias by which ls program is installed and if on macOS
 if [[ $(uname) = "Darwin" ]]; then
 	list_cmd='ls'
@@ -219,5 +209,11 @@ fi
 ## Environment
 
 if [ -f ~/.env ]; then
-    source ~/.env
+  source ~/.env
+fi
+
+## Zsh-Abbr
+
+if [ -f /usr/local/share/zsh-abbr/zsh-abbr.zsh ]; then
+  source /usr/local/share/zsh-abbr/zsh-abbr.zsh
 fi
