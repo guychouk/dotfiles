@@ -1,4 +1,4 @@
-# $HOME sweet $HOME
+# $HOME sweet $HOME 🏠
 
 This repo is used to store the configuration files of all of the software I use on a daily basis.
 
@@ -13,35 +13,44 @@ cd dotfiles
 stow vim
 ```
 
-That's it really, from here on out I try to go over what my work environment setup is if you're interested.
+From here on out, I go over what my work environment setup is if you're interested.
 
-## macOS Setup
+## MacOS
 
-I do most of my work on macOS, so there's a specific `osxsetup` script in the `home/scripts` directory.
+I do most of my work on macOS, so that's why there's a specific `osxsetup` script in the `home/scripts` directory.
 
-There's also a `Brewfile` with a list of all of the programs I need, which I can reinstall on a fresh machine using:
+There's also a `Brewfile` with a list of all of my bare essentials, which I can reinstall on a fresh machine using:
 
 ```shell
 cd ~/dotfiles
 brew bundle install
 ```
 
-## Shell - ZSH
+I'm not a fan of "spaces" or whatchamacallits on macOS, I prefer my ⌘-Tab to move between windows, an old bad habit from my Windows days I guess (what can I say I miss Alt-Tab). Since I like to work on only one desktop, I use [Rectangle](https://rectangleapp.com/) for window tiling.
+
+## ZSH (The Shell...)
 
 My `.zshrc` is pretty short and well documented, so I'll only discuss some of the tools I use to make it a bit more usable:
 
 * [zoxide](https://github.com/ajeetdsouza/zoxide) for better terminal navigation (can't live without `j`)
-* [fzf](https://github.com/junegunn/fzf) for pretty much anything
+* [fzf](https://github.com/junegunn/fzf) for pretty much anything that involves filtering
 * [direnv](https://direnv.net/) for setting up environment variables in projects
 * [asdf](https://github.com/asdf-vm/asdf) for managing runtime versions
+* [zsh-abbr](https://zsh-abbr.olets.dev/) for abbreviations
 * Basic time functions: `countdown` and `stopwatch`
-* Other commands and aliases (mostly `git` helpers using `fzf` for listing)
+* Git helpers using `fzf` for listing branches, commits, and tags
 
-## Terminal - kitty
+### Snippets
+
+I tend to forget a lot, so I rely on my own solution for snippets.
+
+In my scripts directory I have the `snip` script which parses the `home/snippets.txt` file, pipes them to `fzf` for easy search and when a snippet is selected, it pipes it to vim for further editing if needed. When done, it copies the edited snippet so it's available in my clipboard.
+
+## kitty (The Terminal...)
 
 I found [kitty](https://sw.kovidgoyal.net/kitty/) to be awesome, with only one config file that's easy to backup.
 
-It has everything a modern terminal should have and I find it to be very light.
+It has everything a modern terminal should have and I find it to be very light and stable.
 
 After setting up the shell, we need to review a few givens:
 * We need to have a way to split the current window of the terminal we're working on
@@ -49,28 +58,35 @@ After setting up the shell, we need to review a few givens:
 
 This can all be achieved by using kitty as well (see my config for more information).
 
-Previously I used `tmux` as a terminal multiplexer, but after following Kovid Goyal (creator of the kitty terminal) for quite some time, I've decided to drop `tmux` in favor of kitty, and the switch was so easy that I never looked back.
+Previously I used `tmux` as a terminal multiplexer, but after following [Kovid Goyal](https://www.kovidgoyal.net/) (creator of the kitty terminal) for quite some time, I've decided to drop `tmux` in favor of kitty, and the switch was so easy that I never looked back.
 
 Since I work exclusively locally and don't require session management, I really don't see any reason to use `tmux`, and removing one extra moving part from my setup sounded too good to pass.
 
-## Editor - Vim
+## Vim (...And the Holy Editor)
 
-Vim to me is a text editor and an interface to my work environment.
+Too much has already been said on Vim that I don't think I can add anything new to the conversation.
 
-The rest of how I use it can only be described by my `vimrc`, but some noteable things would be:
+What I _can_ say is that I've used both Emacs AND Vim [for quite some time now](https://github.com/guychouk/dotfiles/commit/e53aa5c7ee1c796ce78e74b49a8cb6c185c633c6), and lord knows I've tried so many distros and plugins over the years, but what _really_ stuck is the most minimal Vim setup possible.
 
-* Filetype specifics configuration in the `after/ftplugin` directory, and filetype specific compiler setup in the `compiler` directory
-* Some custom filetype setup in the `ftdetect` directory
-* Some syntax highlighting for some filetypes in the `syntax` directory
-* Various helper functions divided to namespaces written in Vim9 scripts
-    * quickfix helpers
+That's because I now see Vim for what it truely is: an *interface* to my work environment, _not_ a tool that should have everything but the kitchen sink (I'm looking at you emacs).
+
+My point is that these days I never see the need to add a plugin to Vim to do something that I can do with a simple shell command, a script or a full blown program (which I can always *call* from Vim!).
+
+Keeping it light is a true delight, so I recommend you take a look at my `vimrc` to see how I've set it up. How I use Vim can only be really described by my `vimrc`, but here are some highlights:
+
+* Filetype specifics configuration in the `after/ftplugin` directory
+* Filetype specific compiler setup in the `compiler` directory
+* Custom filetype setup in the `ftdetect` directory
+* Custom filetype-specific syntax highlighting in the `syntax` directory
+* My own colorscheme called `busy-g` in the `colors` directory
+* Various helper functions written in Vim9 in the `autoload` directory:
+    * Quickfix helpers
     * The zoompane helper
-    * Other custom functionality divided by plugin
-    * To use these helpers, I can call them from the main `vimrc` (e.g. `:call zoompane#Toggle()`)
+    * Fzf helpers
 
-For the plugins, I use vim's built in plugin system (`:h packages`) and a custom `setup.sh` script to install all of the packages in the `packages.txt` file.
+For plugin management, I use Vim's built in plugin system (`:h packages`) and a custom `setup.sh` script to install all of the packages written in the `packages.txt` file.
 
-I also wrote a very minimal `statusline` "plugin" of my own called `microline`.
+I also wrote a my very own minimal `statusline` plugin [`microline`](./vim/.vim/pack/personal/start/microline).
 
 ### Universal Ctags
 
@@ -92,18 +108,10 @@ If there are local changes I want to make in the way the tags are generated, I c
 --regex-YAML=/operationId:[ \t]*['"]?([^'"\n]+)['"]?$/\1/o,operation/
 ```
 
-## Snippets
-
-To handle snippets, I use the `home/scripts/snip` script to parse the `home/snippets.txt` file, pipe them to `fzf` for easy search and when a snippet is selected, it pipes it to vim for further editing if needed. When done, it copies the edited snippet so it's available in my clipboard.
-
-## Window Tiling
-
-I'm not a fan of "spaces" or whatchamacallit on macOS, I prefer my ⌘-Tab to move between windows, an old bad habit from my Windows days I guess (what can I say I miss Alt-Tab). Since I like to work on only one desktop, I use [spectacle](https://github.com/eczarny/spectacle) for window tiling.
-
 ## That's it really
 
-This pretty much concludes the most critical pieces of software, the rest are my configurations for programs such as `curl`, `git`, [`yazi`](https://github.com/sxyazi/yazi) which is a terminal file manager, and various others.
+This pretty much concludes the most critical pieces of software, the rest are my configurations for programs such as `curl`, `git`, [`yazi`](https://github.com/sxyazi/yazi), and various others.
 
 There's also my `home/scripts` directory with various documented scripts to check out.
 
-Thanks for sticking with me this far! I hope you find something useful in this repo. And if not, well here's a consolation cookie 🍪.
+Thanks for sticking with me this far! I hope you find something useful in this repo. And if not, well, here's a consolation cookie 🍪.
