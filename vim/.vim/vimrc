@@ -312,8 +312,9 @@ augroup END
 
 augroup quickfix
   autocmd!
-  autocmd QuickFixCmdPost cgetexpr cwindow
-  autocmd QuickFixCmdPost lgetexpr lwindow
+  autocmd QuickFixCmdPost [^l]* cwindow
+  autocmd QuickFixCmdPost l*    lwindow
+  autocmd VimEnter        *     cwindow
 augroup END
 " }}}
 
