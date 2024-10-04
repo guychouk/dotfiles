@@ -124,7 +124,12 @@ let &t_SI="\e[5 q"
 let &t_SR="\e[4 q"
 let &t_EI="\e[2 q"
 
-colorscheme busy-g
+" Set background based on system appearance
+if system("defaults read -g AppleInterfaceStyle") =~ '^Dark'
+  colorscheme busy-g
+else
+  colorscheme shine
+endif
 
 " Thank you, kind soul for the following code:
 " https://vi.stackexchange.com/a/3104/49667
