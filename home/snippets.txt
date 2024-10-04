@@ -96,3 +96,6 @@ kubectl run kafka-ui --image=provectuslabs/kafka-ui --env="KAFKA_CLUSTERS_0_NAME
 
 # Spreadsheets formula for calculating monthly expenses based on my Finances sheet
 =ArrayFormula({ { unique(text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM")) }, { sumif( text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM"), unique(text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM")), '2022'!B2:B) } })
+
+# Reset Kafka topic offset to latest
+kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group <group> --topic <topic> --reset-offsets --to-latest
