@@ -74,11 +74,8 @@ My point is that these days I never see the need to add a plugin to Vim to do so
 
 Keeping it light is a true delight, so I recommend you take a look at my `vimrc` to see how I've set it up. How I use Vim can only be really described by my `vimrc`, but here are some highlights:
 
-* Filetype specifics configuration in the `after/ftplugin` directory
-* Filetype specific compiler setup in the `compiler` directory
-* Custom filetype setup in the `ftdetect` directory
-* Custom filetype-specific syntax highlighting in the `syntax` directory
-* My own colorscheme called `busy-g` in the `colors` directory
+* Compiler setup in the `compiler` directory
+* My own colorscheme called [`busy-g`](./vim/colors/busy-g.vim)
 * Various helper functions written in Vim9 in the `autoload` directory:
     * Quickfix helpers
     * The zoompane helper

@@ -300,25 +300,94 @@ let g:gutentags_project_root = ['.git', '.ctags']
 " }}}
 
 " Autocommands {{{
-augroup mygroup
+augroup appearance_settings
   autocmd!
   autocmd VimEnter     * call echoraw(&t_EI)
   autocmd CmdlineEnter * call echoraw(&t_SI)
   autocmd CmdlineLeave * call echoraw(&t_EI)
   autocmd ColorScheme  * call <SID>RefreshColorscheme()
   autocmd SigUSR1      * call <SID>RefreshColorscheme()
-  autocmd FileType     fugitive normal zR
-  autocmd Syntax       gdscript syn keyword gdscriptKeyword and or not is in as
-
-  autocmd BufRead,BufNewFile *.gdip   set filetype=gdresource
-  autocmd BufRead,BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
 augroup END
 
 augroup quickfix
   autocmd!
-  autocmd QuickFixCmdPost [^l]* cwindow
-  autocmd QuickFixCmdPost l*    lwindow
   autocmd VimEnter        *     cwindow
+  autocmd QuickFixCmdPost l*    lwindow
+  autocmd QuickFixCmdPost [^l]* cwindow
+  autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
+augroup END
+
+augroup filetype_settings
+  autocmd!
+
+  " C/C++
+  autocmd FileType c,cpp setlocal tabstop=4
+  autocmd FileType c,cpp setlocal shiftwidth=4
+  autocmd FileType c,cpp setlocal foldlevel=99
+  autocmd FileType c,cpp compiler clang
+
+  " HTML + CSS
+  autocmd FileType html,css setlocal foldlevel=99
+  autocmd FileType html,css EmmetInstall
+
+  " Fugitive
+  autocmd FileType fugitive normal zR
+  autocmd FileType fugitive nmap <buffer> <silent> gb :FzfGitCheckout<CR>
+
+  " GDScript
+  autocmd FileType   gdscript setlocal noexpandtab
+  autocmd FileType   gdscript setlocal comments=:#
+  autocmd FileType   gdscript setlocal commentstring=#\ %s
+  autocmd FileType   gdscript setlocal formatoptions+=croql formatoptions-=t
+  autocmd FileType   gdscript setlocal include=\\v^[^#]*([^#A-Za-z0-9_]\|^)((pre)?load\\s*\\(\\s*\|extends\\s*)[\"\'](res\\:\/\/)?
+  autocmd FileType   gdscript setlocal foldlevel=99
+  autocmd FileType   gdscript setlocal foldmethod=syntax
+  autocmd FileType   gdscript let b:start='/Applications/Godot.app/Contents/MacOS/Godot'
+  autocmd Syntax     gdscript syn keyword gdscriptKeyword and or not is in as
+  autocmd BufRead    *.gdip setlocal filetype=gdresource
+  autocmd BufNewFile *.gdip setlocal filetype=gdresource
+
+  " Git Commit
+  autocmd FileType gitcommit setlocal bufhidden=delete
+  autocmd FileType gitcommit setlocal spell
+  autocmd FileType gitcommit iabbrev <buffer> bps bp_skip_tests
+
+  " Git Rebase
+  autocmd FileType gitrebase setlocal bufhidden=delete
+  autocmd FileType gitrebase setlocal spell
+
+  " GLSL
+  autocmd BufRead    *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
+  autocmd BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
+
+  " Javascript
+  autocmd FileType javascript,javascriptreact setlocal foldlevel=99
+  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
+  autocmd FileType javascript,javascriptreact setlocal path+=src/**,static/,config/
+  autocmd FileType javascript,javascriptreact compiler eslint
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
+  autocmd FileType javascript,javascriptreact EmmetInstall
+
+  " JSON
+  autocmd FileType json setlocal foldlevel=3
+  autocmd FileType json setlocal conceallevel=2
+
+  " Markdown
+  autocmd FileType markdown setlocal foldlevel=99
+
+  " TypeScript
+  autocmd FileType typescript,typescriptreact setlocal tabstop=4
+  autocmd FileType typescript,typescriptreact setlocal shiftwidth=4
+  autocmd FileType typescript,typescriptreact setlocal foldlevel=99
+  autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
+  autocmd FileType typescript,typescriptreact setlocal path+=src/**,static/,config/
+  autocmd FileType typescript,typescriptreact compiler tsc
+  autocmd FileType typescript,typescriptreact map <buffer> <localleader>e :Dispatch -compiler=eslint<CR>
+  autocmd FileType typescript,typescriptreact EmmetInstall
+
+  " YAML
+  autocmd FileType yaml setlocal foldlevel=99
+
 augroup END
 " }}}
 

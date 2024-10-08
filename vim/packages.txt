@@ -14,6 +14,7 @@ markonm/traces.vim
 mattn/emmet-vim
 mbbill/undotree
 mhinz/vim-signify
+pedrohdz/vim-yaml-folds
 ruanyl/vim-gh-line
 tckmn/vim-minisnip
 tikhomirov/vim-glsl
