@@ -1,5 +1,5 @@
 .DS_Store
 tags
-vim/.vim/tmp/
-zsh/.config/zsh/.zsh_history
-zsh/.config/zsh/.zcompcache
+vim/tmp/
+.zsh_history
+.zcompcache

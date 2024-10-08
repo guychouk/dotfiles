@@ -2,7 +2,7 @@
 
 This repo is used to store the configuration files of all of the software I use on a daily basis.
 
-Each program's directory essentially mirrors my `$HOME` directory. This is so I can install the configuration of a chosen program by using [GNU Stow](https://www.gnu.org/software/stow/).
+Every directory in this repo is configuration directory for a specific piece of software, and I use my own `link.sh` script & `LINKS` file to symlink the configuration files to their respective locations.
 
 Here's an example of how I'd use it to restore my vim configuration on a fresh machine:
 
@@ -10,14 +10,14 @@ Here's an example of how I'd use it to restore my vim configuration on a fresh m
 cd ~
 git clone https://github.com/guychouk/dotfiles
 cd dotfiles
-stow vim
+./link.sh
 ```
 
 From here on out, I go over what my work environment setup is if you're interested.
 
 ## MacOS
 
-I do most of my work on macOS, so that's why there's a specific `osxsetup` script in the `home/scripts` directory.
+I do most of my work on macOS, so that's why there's a specific `osxsetup` script in the [`scripts`](./scripts) directory.
 
 There's also a `Brewfile` with a list of all of my bare essentials, which I can reinstall on a fresh machine using:
 
@@ -28,7 +28,7 @@ brew bundle install
 
 I'm not a fan of "spaces" or whatchamacallits on macOS, I prefer my ⌘-Tab to move between windows, an old bad habit from my Windows days I guess (what can I say I miss Alt-Tab). Since I like to work on only one desktop, I use [Rectangle](https://rectangleapp.com/) for window tiling.
 
-## ZSH (The Shell...)
+## ZSH
 
 My `.zshrc` is pretty short and well documented, so I'll only discuss some of the tools I use to make it a bit more usable:
 
@@ -44,9 +44,9 @@ My `.zshrc` is pretty short and well documented, so I'll only discuss some of th
 
 I tend to forget a lot, so I rely on my own solution for snippets.
 
-In my scripts directory I have the `snip` script which parses the `home/snippets.txt` file, pipes them to `fzf` for easy search and when a snippet is selected, it pipes it to vim for further editing if needed. When done, it copies the edited snippet so it's available in my clipboard.
+In my scripts directory I have the `snip` script which parses the [`SNIPPETS`](./SNIPPETS) file, pipes them to `fzf` for easy search and when a snippet is selected, it pipes it to vim for further editing if needed. When done, it copies the edited snippet so it's available in my clipboard.
 
-## kitty (The Terminal...)
+## kitty
 
 I found [kitty](https://sw.kovidgoyal.net/kitty/) to be awesome, with only one config file that's easy to backup.
 
@@ -58,11 +58,11 @@ After setting up the shell, we need to review a few givens:
 
 This can all be achieved by using kitty as well (see my config for more information).
 
-Previously I used `tmux` as a terminal multiplexer, but after following [Kovid Goyal](https://www.kovidgoyal.net/) (creator of the kitty terminal) for quite some time, I've decided to drop `tmux` in favor of kitty, and the switch was so easy that I never looked back.
+Previously I used `tmux` as a terminal multiplexer, but after following [Kovid Goyal](https://www.kovidgoyal.net/) (creator of the kitty terminal) for quite some time, he convinced me to drop `tmux` in favor of kitty, and the switch was so easy that I never looked back.
 
 Since I work exclusively locally and don't require session management, I really don't see any reason to use `tmux`, and removing one extra moving part from my setup sounded too good to pass.
 
-## Vim (...And the Holy Editor)
+## Vim
 
 Too much has already been said on Vim that I don't think I can add anything new to the conversation.
 
@@ -86,7 +86,7 @@ Keeping it light is a true delight, so I recommend you take a look at my `vimrc`
 
 For plugin management, I use Vim's built in plugin system (`:h packages`) and a custom `setup.sh` script to install all of the packages written in the `packages.txt` file.
 
-I also wrote a my very own minimal `statusline` plugin [`microline`](./vim/.vim/pack/personal/start/microline).
+I also wrote a my very own minimal `statusline` plugin [`microline`](./vim/pack/personal/start/microline).
 
 ### Universal Ctags
 

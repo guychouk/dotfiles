@@ -38,7 +38,6 @@ HISTFILE="$ZSH_CACHE_DIR/history"
 
 export GPG_TTY=$(tty)
 export KEYTIMEOUT=1
-export SNIPPET_DIR="$HOME"
 export KUBECONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/kube/config"
 export GOPATH="${XDG_DATA_HOME:-$HOME/.local/share}/go"
 export CARGO_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/cargo"
