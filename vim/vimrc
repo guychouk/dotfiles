@@ -308,6 +308,7 @@ augroup mygroup
   autocmd ColorScheme  * call <SID>RefreshColorscheme()
   autocmd SigUSR1      * call <SID>RefreshColorscheme()
   autocmd FileType     fugitive normal zR
+  autocmd Syntax       gdscript syn keyword gdscriptKeyword and or not is in as
 
   autocmd BufRead,BufNewFile *.gdip   set filetype=gdresource
   autocmd BufRead,BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
