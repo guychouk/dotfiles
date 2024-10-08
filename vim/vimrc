@@ -308,6 +308,9 @@ augroup mygroup
   autocmd ColorScheme  * call <SID>RefreshColorscheme()
   autocmd SigUSR1      * call <SID>RefreshColorscheme()
   autocmd FileType     fugitive normal zR
+
+  autocmd BufRead,BufNewFile *.gdip   set filetype=gdresource
+  autocmd BufRead,BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
 augroup END
 
 augroup quickfix
