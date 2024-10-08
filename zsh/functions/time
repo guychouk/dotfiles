@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-countdown() {
+function countdown() {
     start="$(( $(gdate '+%s') + $1))"
     while [ $start -ge $(gdate +%s) ]; do
         time="$(( $start - $(gdate +%s) ))"
@@ -9,7 +9,7 @@ countdown() {
     done
 }
 
-stopwatch() {
+function stopwatch() {
     start=$(gdate +%s)
     while true; do
         time="$(( $(gdate +%s) - $start))"
