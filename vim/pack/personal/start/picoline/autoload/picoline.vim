@@ -18,9 +18,9 @@ export def Build(active: bool): string
   var fugitive = active && exists('*g:FugitiveHead') == 1 ? '%{FugitiveHead()}' : ''
   var gutentags = active && exists('*gutentags#statusline') == 1 ? '%{gutentags#statusline()}' : ''
   var current_mode = active ? statusline_mode_map[mode()] : '      '
-  var left_separator = active ? '%#MicrolineLeftSep#' : ' '
-  var right_separator = active ? '%#MicrolineRightSep#' : ' '
-  var section_hlgroup = active ? '%#MicrolineSection#' : '%#StatusLineNC#'
+  var left_separator = active ? '%#PicolineLeftSep#' : ' '
+  var right_separator = active ? '%#PicolineRightSep#' : ' '
+  var section_hlgroup = active ? '%#PicolineSection#' : '%#StatusLineNC#'
   var statusline_hlgroup = active ? '%#StatusLine#' : '%#StatusLineNC#'
   var statusline_segments = [
     section_hlgroup .. ' ' .. current_mode .. ' ',

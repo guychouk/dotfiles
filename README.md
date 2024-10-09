@@ -83,7 +83,7 @@ Keeping it light is a true delight, so I recommend you take a look at my `vimrc`
 
 For plugin management, I use Vim's built in plugin system (`:h packages`) and a custom `setup.sh` script to install all of the packages written in the `packages.txt` file.
 
-I also wrote a my very own minimal `statusline` plugin [`microline`](./vim/pack/personal/start/microline).
+I also wrote a my own minimal `statusline` plugin called [`picoline`](./vim/pack/personal/start/picoline).
 
 ### Universal Ctags
 

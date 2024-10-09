@@ -220,7 +220,7 @@ nnoremap <silent> <leader>o             :Files<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap          <leader>r             :History:<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
-nnoremap <silent> <leader>s             :MicrolineToggle<CR>
+nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
 " }}}
 " Man {{{
