@@ -2,7 +2,7 @@
 
 This repo is used to store the configuration files of all of the software I use on a daily basis.
 
-Every directory in this repo is configuration directory for a specific piece of software, and I use my own `link.sh` script & `LINKS` file to symlink the configuration files to their respective locations.
+Every directory in this repo is a configuration directory for a specific piece of software, and I use my own [`link.sh`](./link.sh) script to symlink the configuration files as stated in the [`LINKS`](./LINKS) file.
 
 Here's an example of how I'd use it to restore my vim configuration on a fresh machine:
 
@@ -80,10 +80,8 @@ Keeping it light is a true delight, so I recommend you take a look at my `vimrc`
     * Quickfix helpers
     * The zoompane helper
     * Fzf helpers
-
-For plugin management, I use Vim's built in plugin system (`:h packages`) and a custom `setup.sh` script to install all of the packages written in the `packages.txt` file.
-
-I also wrote a my own minimal `statusline` plugin called [`picoline`](./vim/pack/personal/start/picoline).
+* A custom `statusline` setup using my own plugin called [`picoline`](./vim/pack/personal/start/picoline).
+* I use Vim's built in plugin system (`:h packages`) and a custom [`setup.sh`](./vim/setup.sh) script to install all of the packages in the [`packages.txt`](./vim/packages.txt) file.
 
 ### Universal Ctags
 
@@ -111,4 +109,4 @@ This pretty much concludes the most critical pieces of software, the rest are my
 
 There's also my `home/scripts` directory with various documented scripts to check out.
 
-Thanks for sticking with me this far! I hope you find something useful in this repo. And if not, well, here's a consolation cookie 🍪.
+Thanks for sticking around! I hope you find something useful in this repo. And if not, well, here's a consolation cookie 🍪.
