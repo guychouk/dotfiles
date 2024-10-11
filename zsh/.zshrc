@@ -11,6 +11,7 @@ export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 
 autoload -U colors
 colors
+export LS_COLORS="di=36:fi=37:ln=34:ex=32:pi=33:so=35:bd=46:cd=43"
 
 ## Prompt
 
