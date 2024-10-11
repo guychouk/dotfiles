@@ -2,6 +2,11 @@
 
 SNIPPETS_FILE=~/dotfiles/SNIPPETS
 
+if [ "$1" = "add" ]; then
+  vim $SNIPPETS_FILE
+  exit 0
+fi
+
 # Use fzf to select a description and fetch the associated command
 selected_description=$(
   awk '/^#/ {print substr($0, 3)}' $SNIPPETS_FILE | \
