@@ -49,6 +49,7 @@ brew "yazi"
 brew "zoxide"
 brew "dotenvx/brew/dotenvx"
 brew "jakehilborn/jakehilborn/displayplacer"
+brew "olets/tap/zsh-abbr"
 
 cask "appcleaner"
 cask "basictex"
