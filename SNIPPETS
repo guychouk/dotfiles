@@ -105,3 +105,6 @@ displayplacer "id:69734272 enabled:false"
 
 # Set environment variable with secret from pass (with error redirection)
 export SECRET=$(pass show secret 2>/dev/null)
+
+# Export PCK of Godot project
+./Godot.app/Contents/MacOS/Godot --no-window --path ./godot-project --export-pack "EXPORT_TEMPLATE" "../relative/path/to/project/some.pck"
