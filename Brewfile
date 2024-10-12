@@ -2,6 +2,7 @@ tap "adoptopenjdk/openjdk"
 tap "dotenvx/brew"
 tap "jakehilborn/jakehilborn"
 
+brew "aichat"
 brew "awscli"
 brew "bash"
 brew "bat"

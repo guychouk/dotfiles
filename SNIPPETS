@@ -102,3 +102,6 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group <group> --top
 
 # Focus on single screen with displayplacer
 displayplacer "id:69734272 enabled:false"
+
+# Set environment variable with secret from pass (with error redirection)
+export SECRET=$(pass show secret 2>/dev/null)
