@@ -8,4 +8,4 @@ while IFS=' ' read -r repo dir; do
   if [ ! -d "pack/bundle/start/$dir" ]; then
     git -C "pack/bundle/start" clone "git@github.com:$repo.git" "$dir"
   fi
-done < packages.txt
+done < PACKAGES

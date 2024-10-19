@@ -317,6 +317,9 @@ augroup END
 augroup filetype_settings
   autocmd!
 
+  " Shell
+  autocmd FileType sh,bash,zsh compiler shellcheck
+
   " C/C++
   autocmd FileType c,cpp setlocal tabstop=4
   autocmd FileType c,cpp setlocal shiftwidth=4
