@@ -10,7 +10,7 @@ gs -sDEVICE=pdfwrite -dSAFER -dFirstPage=$FIRST -dLastPage=$LAST -o "$OUTPUT" -q
 # Merge PDFs
 gs -sDEVICE=pdfwrite -o $OUTPUT -q "${INPUT[@]}"
 
-# Pack PNG files into ZIP
+# Pack files into ZIP
 find . -type f -name '*.png' -exec zip output.zip {} +
 
 # Resize image
@@ -64,16 +64,16 @@ ffmpeg -f avfoundation -list_devices true -i ""
 # Record whole screen
 ffmpeg -f avfoundation -i "1" -framerate 30 "screen-recording-$(date +"%m-%d-%y").mkv"
 
-# Kafka: Create topic
+# Create Kafka topic
 kafka-topics.sh --create --topic <topic> --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
 
 # Export MongoDB collection by query
 mongoexport --quiet --uri="mongodb://localhost:27017" --collection=<collection> -q '' | jq '.'
 
-# RabbitMQ API call to Publish message to Exchange
+# Publish message to exchange using RabbitMQ API
 curl -u test:rabbitmq 'http://localhost:15672/api/exchanges/%2F/<exchange>/publish' --data-raw '{"vhost":"/","name":"<exchange>","properties":{"delivery_mode":2,"headers":{"consistent-hash":""}},"routing_key":"100","delivery_mode":"2","payload":"{}","headers":{"consistent-hash":""},"props":{},"payload_encoding":"string"}'
 
-# RabbitMQ Download CLI
+# Download RabbitMQ CLI from local instance
 curl -O http://localhost:15672/cli/rabbitmqadmin
 
 # Run RabbitMQ DOCKER container
@@ -82,14 +82,14 @@ FROM rabbitmq:3.9.12-management\nRUN rabbitmq-plugins enable rabbitmq_consistent
 # Run nodemon with ts-node and debugging
 nodemon --watch src --exec 'node --require ts-node/register --inspect' src/app.ts
 
-# 🌄 Scrape IMGs from HTML page using html-xml-utils.
+# Scrape IMGs from HTML page using html-xml-utils.
 curl -s $1 | hxwls | grep -E "(jpg|png)" | grep -v thumb | xargs -I{} curl -s -O {}
 
 # Curl Kubernetes API Server from a Pod
 curl -k -X GET -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/serviceaccount/token)" https://$KUBERNETES_PORT_443_TCP_ADDR:$KUBERNETES_SERVICE_PORT_HTTPS
 
 # Push new tag to Github
-git tag -a $TAG -m $TAG && g push origin refs/tags/$TAG
+git tag -a $TAG -m $TAG && git push origin refs/tags/$TAG
 
 # Run Kafka UI in Kubernetes
 kubectl run kafka-ui --image=provectuslabs/kafka-ui --env="KAFKA_CLUSTERS_0_NAME=local" --env="KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092" --env="DYNAMIC_CONFIG_ENABLED=true" --restart=Never -- java -jar ./kafka-ui-api.jar

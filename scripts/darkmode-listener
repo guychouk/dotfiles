@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # This script is called by the dark-mode-notify utility:
 # https://github.com/bouk/dark-mode-notify
@@ -17,5 +17,5 @@ kill -SIGUSR1 $(pgrep kitty)
 
 # Refresh Colors in Vim
 for pid in $(pgrep Vim); do
-  kill -SIGUSR1 $pid
+  kill -SIGUSR1 "$pid"
 done

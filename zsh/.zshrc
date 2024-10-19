@@ -7,6 +7,12 @@ _has() {
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
 [[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir "$ZSH_CACHE_DIR"
 
+## Environment
+
+if [ -f ~/.env ]; then
+  source ~/.env
+fi
+
 ## Colors
 
 autoload -U colors
@@ -166,10 +172,6 @@ bindkey -M menuselect 'k' vi-up-line-or-history
 bindkey -M menuselect 'l' vi-forward-char
 bindkey -M menuselect 'j' vi-down-line-or-history
 
-# import useful functions
-source "$ZDOTDIR/functions/time"
-source "$ZDOTDIR/functions/git"
-
 ## Syntax highlighting
 
 function () {
@@ -189,7 +191,7 @@ if _has fzf; then
   [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
   [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/key-bindings.zsh"
 
-  # useful fzf + git functions
+  # Useful fzf + git functions
   source "$ZDOTDIR/functions/fzf-git"
 fi
 
@@ -206,14 +208,12 @@ if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
 
-## Environment
-
-if [ -f ~/.env ]; then
-  source ~/.env
-fi
-
 ## Zsh-Abbr
 
 if [ -f /usr/local/share/zsh-abbr/zsh-abbr.zsh ]; then
   source /usr/local/share/zsh-abbr/zsh-abbr.zsh
 fi
+
+## Functions
+source "$ZDOTDIR/functions/git"
+source "$ZDOTDIR/functions/time"

@@ -1,10 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # This script is a wrapper around stern with some customizations.
 # It will colorize the output and filter out health checks by default.
 # If you pass -j as the first argument, it will attempt to parse stern's JSON output and colorize it.
 
-if [ "$1" == "-j" ]; then
+if [ "$1" = "-j" ]; then
   shift
   stern --output extjson "$@" | \
   jq --argjson levelmap '{ "info":"\u001b[32mINFO\u001b[0m", "debug":"\u001b[37mDEBUG\u001b[0m", "error":"\u001b[31mERROR\u001b[0m" }' \
