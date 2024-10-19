@@ -1,9 +1,7 @@
-# Create directories if they don't exist
 New-Item -ItemType Directory -Path "tmp/undo" -Force
 New-Item -ItemType Directory -Path "pack/bundle/start" -Force
 
-# Read the packages.txt file and process each line
-Get-Content -Path "packages.txt" | ForEach-Object {
+Get-Content -Path "PACKAGES" | ForEach-Object {
     $line = $_.Trim()
     if ($line -ne "") {
         $parts = $line -split ' '
