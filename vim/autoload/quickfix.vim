@@ -1,11 +1,13 @@
 vim9script
 
+# Add all open buffers to the quickfix list
 export def AddOpenBuffersToList(): void
   var qf_list = map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr": v:val}')
   setqflist(qf_list)
   copen
 enddef
 
+# Remove the current quickfix item from the list
 export def RemoveItem(): void
   var qf_list = getqflist()
   if len(qf_list) <= 1
@@ -20,6 +22,9 @@ export def RemoveItem(): void
   copen
 enddef
 
+# Read a list of quickfix items from a file and open the quickfix window
+# The file should have the following format:
+#  filename:line:column:message
 export def ReadListFromFile(filepath: string): void
   var qf_list = []
   for line in readfile(filepath)
