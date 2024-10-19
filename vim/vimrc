@@ -274,7 +274,7 @@ let g:undotree_DiffAutoOpen = 0
 " }}}
 " Copilot {{{
 let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
-let g:copilot_enabled = 1
+let g:copilot_enabled = 0
 imap <silent> <c-x><c-p> <Plug>(copilot-suggest)
 " }}}
 " Dirvish {{{
