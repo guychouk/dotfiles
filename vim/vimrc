@@ -241,8 +241,6 @@ xmap <silent>        <leader><tab>  <Plug>(fzf-maps-x)
 imap <silent>        <c-x><c-k>     <Plug>(fzf-complete-word)
 imap <silent>        <c-x><c-l>     <Plug>(fzf-complete-line)
 imap <silent>        <c-x><c-f>     <Plug>(fzf-complete-path)
-imap <silent> <expr> <c-x><c-x>     custom#fzf#CompleteSnippet()
-imap <silent> <expr> <c-x><c-o>     custom#fzf#CompleteNoteLink()
 " }}}
 " Rooter {{{
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', '.envrc']
@@ -396,7 +394,6 @@ command  -nargs=0        CleanUndoFiles   call <SID>CleanUndoFiles()
 command  -nargs=0        QfBuffers        call quickfix#AddOpenBuffersToList()
 command  -nargs=1        QfReadFromFile   call quickfix#ReadListFromFile(<f-args>)
 command  -nargs=0        RemoveQfItem     call quickfix#RemoveItem()
-command  -nargs=0        FzfGitCheckout   call custom#fzf#GitCheckoutBranch()
 " }}}
 
 " Grep {{{
