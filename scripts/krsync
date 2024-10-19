@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env zsh
 
 # Taken from this StackOverflow answer:
 # https://serverfault.com/a/887402
@@ -21,4 +21,4 @@ if [ "X$pod" = "X-l" ]; then
     shift
 fi
 
-exec kubectl $namespace exec -i $pod -- "$@"
+exec kubectl "$namespace" exec -i "$pod" -- "$@"

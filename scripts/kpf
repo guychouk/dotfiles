@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env zsh
 
 # ==============================================================================
 #  kpf - Kubernetes Service Port Forwarder
@@ -36,29 +36,38 @@
 declare -A service_map
 
 for svc in "$@"; do
-	if [[ $svc =~ : ]]; then
-		local_port=
-		remote_port=
-		svc_conf_array=(${(s/:/)svc})
-		svc_name=${svc_conf_array[1]}
-		if (( ${#svc_conf_array[@]} > 2 )); then
-			local_port=${svc_conf_array[2]}
-			remote_port=${svc_conf_array[3]}
-		else
-			local_port=${svc_conf_array[2]}
-			remote_port=`kubectl get svc -l "app.kubernetes.io/name=$svc_name" -o json | jq '.spec.ports[0].port'`
-		fi
+  if [[ $svc =~ : ]]; then
+    local_port=
+    remote_port=
+    IFS=':' read -r svc_name local_port remote_port <<< "$svc"
+    if [[ -z $remote_port ]]; then
+      remote_port=$(kubectl get svc -l "app.kubernetes.io/name=$svc_name" -o json | jq '.spec.ports[0].port')
+    fi
     service_map["$svc_name:$local_port"]="$local_port:$remote_port"
-	else
-		port=`kubectl get svc $svc -o json | jq '.spec.ports[0].port'`
+  else
+    port=$(kubectl get svc $svc -o json | jq '.spec.ports[0].port')
     service_map["$svc:$port"]="$port:$port"
-	fi
+  fi
 done
 
-(trap 'kill 0' SIGINT; for key pf in "${(@kv)service_map}"; do
-  # For some reason, zsh adds quotes to map keys ¯\_(ツ)_/¯
-  key=${key//\"/}
-  # Extract service name from the key
-  svc=${key%%:*}
-  kubectl port-forward --address 127.0.0.1 services/$svc $pf &
-done; wait)
+trap 'kill 0' SIGINT
+
+# Check which shell is being used
+if [ -n "$BASH_VERSION" ]; then
+  # Bash-specific associative array handling
+  for key in "${!service_map[@]}"; do
+    pf="${service_map[$key]}"
+    svc="${key%%:*}"
+    kubectl port-forward --address 127.0.0.1 services/$svc $pf &
+  done
+elif [ -n "$ZSH_VERSION" ]; then
+  # Zsh-specific associative array handling
+  # zsh adds quotes to map keys so we need to remove them ¯\_(ツ)_/¯
+  for key pf in "${(@kv)service_map}"; do
+    key=${(Q)key}
+    svc=${key%%:*}
+    kubectl port-forward --address 127.0.0.1 services/$svc $pf &
+  done
+fi
+
+wait
