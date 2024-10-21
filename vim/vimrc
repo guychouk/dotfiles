@@ -86,15 +86,40 @@ fun! s:CleanUndoFiles()
   !find ~/.vim/tmp/undo -type f -mtime +100d \! -name '.gitignore' -delete
 endf
 
-fun! ConvertTimestampToISO()
-  " Get the selected text
-  let l:timestamp = getline(".")[col("'<") - 1 : col("'>") - 1]
-  " Use Python to convert the timestamp to ISO 8601 with milliseconds
-  let l:iso_time = system("python3 -c 'from datetime import datetime; import sys; timestamp=int(sys.argv[1]); print(datetime.utcfromtimestamp(timestamp).strftime(\"%Y-%m-%dT%H:%M:%S.%f\")[:-3] + \"Z\")' " . l:timestamp)
-  " Remove any trailing newline
-  let l:iso_time = substitute(l:iso_time, '\n', '', 'g')
-  " Replace the timestamp with the ISO time
-  call setline(".", substitute(getline("."), l:timestamp, l:iso_time, ""))
+fun! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endf
+
+fun! s:AddOpenBuffersToList()
+  let qf_list = map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr": v:val}')
+  call setqflist(qf_list)
+  copen
+endf
+
+fun! s:RemoveQfItem()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endf
+
+" http://ddrscott.github.io/blog/2016/vim-toggle-movement/
+fun! s:ToggleMovement(firstOp, thenOp)
+  let pos = getpos('.')
+  execute "normal! " . a:firstOp
+  if pos == getpos('.')
+    execute "normal! " . a:thenOp
+  endif
 endf
 
 fun! SynStack()
@@ -130,56 +155,6 @@ if system("defaults read -g AppleInterfaceStyle") =~ '^Dark'
 else
   colorscheme shine
 endif
-
-" Thank you, kind soul for the following code:
-" https://vi.stackexchange.com/a/3104/49667
-if has("unix")
-    function! FontSizePlus ()
-      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
-      let l:gf_size_whole = l:gf_size_whole + 1
-      let l:new_font_size = ' '.l:gf_size_whole
-      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
-    endfunction
-
-    function! FontSizeMinus ()
-      let l:gf_size_whole = matchstr(&guifont, '\( \)\@<=\d\+$')
-      let l:gf_size_whole = l:gf_size_whole - 1
-      let l:new_font_size = ' '.l:gf_size_whole
-      let &guifont = substitute(&guifont, ' \d\+$', l:new_font_size, '')
-    endfunction
-else
-    function! FontSizePlus ()
-      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
-      let l:gf_size_whole = l:gf_size_whole + 1
-      let l:new_font_size = ':h'.l:gf_size_whole
-      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
-    endfunction
-
-    function! FontSizeMinus ()
-      let l:gf_size_whole = matchstr(&guifont, '\(:h\)\@<=\d\+$')
-      let l:gf_size_whole = l:gf_size_whole - 1
-      let l:new_font_size = ':h'.l:gf_size_whole
-      let &guifont = substitute(&guifont, ':h\d\+$', l:new_font_size, '')
-    endfunction
-endif
-
-if has("gui_running")
-  " Remove all toolbars
-  set guioptions-=m  " Remove menu bar
-  set guioptions-=T  " Remove toolbar
-  set guioptions-=r  " Remove right-hand scrollbar
-  set guioptions-=L  " Remove left-hand scrollbar
-
-  " Set font
-  set guifont=JetBrains_Mono:h12
-
-  " Set some background
-  hi Normal guibg=#000000
-
-  nmap <F11> :call FontSizeMinus()<CR>
-  nmap <F12> :call FontSizePlus()<CR>
-endif
-
 " }}}
 
 " Mappings {{{
@@ -190,25 +165,29 @@ let maplocalleader = "\\"
 nmap j gj
 nmap k gk
 
+nnoremap          c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap          c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap          d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap          d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 nnoremap          <c-g>                 2<c-g>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
-nnoremap <silent> <C-h>                 <C-w>h
-nnoremap <silent> <C-j>                 <C-w>j
-nnoremap <silent> <C-k>                 <C-w>k
-nnoremap <silent> <C-l>                 <C-w>l
 nnoremap <silent> <C-e>                 :e#<CR>
+nnoremap <silent> <leader>q             :q<CR>
+nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>t             :tjump<Space>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
-nnoremap <silent> <leader>j             :sp<CR>
-nnoremap <silent> <leader>l             :vsp<CR>
-nnoremap <silent> <leader>q             :q<CR>
-nnoremap <silent> <leader>w             :w<CR>
+nnoremap          <leader>/             :grep<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
+nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
+nnoremap <silent> <C-A-j>               :resize +5<CR>
+nnoremap <silent> <C-A-k>               :resize -5<CR>
+nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
+nnoremap <silent> yoz                   :ZoomToggle<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
-vnoremap          <leader>t             :<C-U>call ConvertTimestampToISO()<CR>
 inoremap          <C-W>                 <C-G>u<C-W>
 inoremap          <C-U>                 <C-G>u<C-U>
 " }}}
@@ -221,7 +200,14 @@ nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap          <leader>r             :History:<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
-nnoremap <silent> yoz                   :call zoompane#Toggle()<CR>
+nnoremap <silent> <leader>tcc           :call css_color#toggle()<CR>
+xmap     <silent> <leader>ea            <Plug>(EasyAlign)
+omap     <silent> <leader><tab>         <Plug>(fzf-maps-o)
+xmap     <silent> <leader><tab>         <Plug>(fzf-maps-x)
+imap     <silent> <c-x><c-k>            <Plug>(fzf-complete-word)
+imap     <silent> <c-x><c-l>            <Plug>(fzf-complete-line)
+imap     <silent> <c-x><c-f>            <Plug>(fzf-complete-path)
+imap     <silent> <c-x><c-p>            <Plug>(copilot-suggest)
 " }}}
 " Man {{{
 runtime ftplugin/man.vim
@@ -229,18 +215,14 @@ runtime ftplugin/man.vim
 " MatchIt {{{
 packadd! matchit
 " }}}
+" cfilter {{{
+packadd! cfilter
+" }}}
 " FZF {{{
 set rtp+=/usr/local/opt/fzf
-
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
-
-omap <silent>        <leader><tab>  <Plug>(fzf-maps-o)
-xmap <silent>        <leader><tab>  <Plug>(fzf-maps-x)
-imap <silent>        <c-x><c-k>     <Plug>(fzf-complete-word)
-imap <silent>        <c-x><c-l>     <Plug>(fzf-complete-line)
-imap <silent>        <c-x><c-f>     <Plug>(fzf-complete-path)
 " }}}
 " Rooter {{{
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', '.envrc']
@@ -263,9 +245,6 @@ let g:user_emmet_install_global = 0
 " indentLine {{{
 let g:indentLine_fileType = ['yaml', 'yml']
 " }}}
-" EasyAlign {{{
-xmap <silent> <leader>ea <Plug>(EasyAlign)
-" }}}
 " Goyo {{{
 let g:goyo_width = 120
 " }}}
@@ -273,18 +252,14 @@ let g:goyo_width = 120
 let g:undotree_DiffAutoOpen = 0
 " }}}
 " Copilot {{{
-let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
 let g:copilot_enabled = 0
-imap <silent> <c-x><c-p> <Plug>(copilot-suggest)
+let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
 " }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
 " }}}
 " Context.vim {{{
 let g:context_highlight_tag = '<hide>'
-" }}}
-" CSS Color {{{
-nnoremap <silent> <leader>tcc :call css_color#toggle()<CR>
 " }}}
 " vim-minisnip {{{
 let g:minisnip_dir = '~/.vim/snippets'
@@ -294,6 +269,20 @@ let g:minisnip_trigger = '<C-j>'
 let g:gutentags_enabled = 1
 let g:gutentags_project_root = ['.git', '.ctags']
 " }}}
+" }}}
+
+" Grep {{{
+if executable('rg')
+    set grepprg=rg\ --vimgrep\ -g\ '!tags'\ -g\ '!.git'\ --hidden
+endif
+"}}}
+
+" Commands {{{
+command -nargs=0 Highlight      call <SID>Highlight()
+command -nargs=0 CleanUndoFiles call <SID>CleanUndoFiles()
+command -nargs=0 QfBuffers      call <SID>AddOpenBuffersToList()
+command -nargs=0 RemoveQfItem   call <SID>RemoveQfItem()
+command -nargs=0 ZoomToggle     call <SID>ZoomToggle()
 " }}}
 
 " Autocommands {{{
@@ -332,7 +321,6 @@ augroup filetype_settings
 
   " Fugitive
   autocmd FileType fugitive normal zR
-  autocmd FileType fugitive nmap <buffer> <silent> gb :FzfGitCheckout<CR>
 
   " GDScript
   autocmd FileType   gdscript setlocal noexpandtab
@@ -390,33 +378,5 @@ augroup filetype_settings
 
 augroup END
 " }}}
-
-" Commands {{{
-command  -nargs=0        Highlight        call <SID>Highlight()
-command  -nargs=0        CleanUndoFiles   call <SID>CleanUndoFiles()
-command  -nargs=0        QfBuffers        call quickfix#AddOpenBuffersToList()
-command  -nargs=1        QfReadFromFile   call quickfix#ReadListFromFile(<f-args>)
-command  -nargs=0        RemoveQfItem     call quickfix#RemoveItem()
-" }}}
-
-" Grep {{{
-if executable('rg')
-    set grepprg=rg\ --vimgrep\ -g\ '!tags'\ -g\ '!.git'\ --hidden
-endif
-
-fun! Grep(...)
-  let l:args = join(map(copy(a:000), 'shellescape(v:val)'), ' ')
-  return system(join([&grepprg] + [expandcmd(l:args)], ' '))
-endf
-
-nnoremap <leader>/ :Grep<Space>
-vnoremap <leader>/ y:Grep <C-r>"<CR>
-
-command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr Grep(<f-args>)
-command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr Grep(<f-args>)
-
-cnoreabbrev <expr> grep  (getcmdtype() ==# ':' && getcmdline() ==# 'grep')  ? 'Grep'  : 'grep'
-cnoreabbrev <expr> lgrep (getcmdtype() ==# ':' && getcmdline() ==# 'lgrep') ? 'LGrep' : 'lgrep'
-"}}}
 
 " vim: set sw=2 ts=2 sts=0 expandtab fdm=marker :nospell:
