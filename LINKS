@@ -9,5 +9,5 @@ kitty               ~/.config/kitty
 scripts             ~/scripts
 vim                 ~/.vim
 yazi                ~/.config/yazi
+zsh/.zshrc          ~/.zshrc
 zsh                 ~/.config/zsh
-zsh/.zprofile       ~/.zprofile

@@ -11,7 +11,7 @@ _fzf-down() {
 }
 
 # Changed files
-function fgf() {
+fgf() {
   _is_in_git_repo || return
   git -c color.status=always status --short |
   _fzf-down -m --ansi --nth 2..,.. \
@@ -21,7 +21,7 @@ function fgf() {
 
 
 # Branches
-function fgb() {
+fgb() {
   _is_in_git_repo || return
   git branch -a --color=always | grep -v '/HEAD\s' | sort |
   _fzf-down --ansi --multi --tac --preview-window right:70% \
@@ -31,7 +31,7 @@ function fgb() {
 }
 
 # Tags
-function fgt() {
+fgt() {
   _is_in_git_repo || return
   git tag --sort -version:refname |
   _fzf-down --multi --preview-window right:70% \
@@ -39,7 +39,7 @@ function fgt() {
 }
 
 # Commits
-function fgc() {
+fgc() {
   _is_in_git_repo || return
   git log --date=short --format="%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)" --graph --color=always |
   _fzf-down --ansi --no-sort --reverse --multi --bind 'ctrl-s:toggle-sort' \
@@ -49,7 +49,7 @@ function fgc() {
 }
 
 # Remotes
-function fgr() {
+fgr() {
   _is_in_git_repo || return
   git remote -v | awk '{print $1 "\t" $2}' | uniq |
   _fzf-down --tac \
@@ -58,7 +58,7 @@ function fgr() {
 }
 
 # Commits + Open in browser
-function fghc() {
+fghc() {
   local repo
   _is_in_git_repo || return
   repo=$(git config --get remote.origin.url | sed 's/[^:]*://' | sed 's/\.git//')
@@ -66,7 +66,7 @@ function fghc() {
 }
 
 # Remote + Open in browser
-function fghr() {
+fghr() {
   pushd ~/Projects > /dev/null || exit
   find . -type d -maxdepth 1 \
         | parallel 'cd {}; git remote get-url origin 2> /dev/null' \
