@@ -1,0 +1,18 @@
+# https://kubernetes.io/docs/concepts/services-networking/service/
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{++}}
+  namespace: {{++}}
+spec:
+  selector:
+    app: {{++}}
+  type: {{++}}
+  ports:
+  - name: {{++}}
+    protocol: {{++}}
+    port: {{++}}
+    targetPort: {{++}}
+    nodePort: {{++}}
+---
+{{++}}

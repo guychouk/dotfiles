@@ -1,0 +1,14 @@
+# agents             ~/Library/LaunchAgents/
+asdf                 ~/.config/asdf
+asdf/.tool-versions  ~/.tool-versions
+ctags                ~/.ctags.d
+curl/.curlrc         ~/.config/.curlrc
+git                  ~/.config/git
+gnupg/gpg-agent.conf ~/.gnupg/gpg-agent.conf
+karabiner            ~/.config/karabiner
+kitty                ~/.config/kitty
+scripts              ~/scripts
+vim                  ~/.vim
+yazi                 ~/.config/yazi
+zsh/.zshrc           ~/.zshrc
+zsh                  ~/.config/zsh
