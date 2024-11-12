@@ -1,0 +1,33 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/job/
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{++}}
+  namespace: {{++}}
+  labels:
+    app: {{++}}
+spec:
+  template:
+    metadata:
+      name: {{++}}
+      labels:
+        app: {{++}}
+    spec:
+      containers:
+      - name: {{++}}
+        image: {{++}}
+        command: ['sh', '-c', '{{++}}']
+        env:
+        - name: ENV_NAME
+          value: ENV_VALUE
+        volumeMounts:
+        - name: localtime
+          mountPath: /etc/localtime
+      volumes:
+      - name: localtime
+        hostPath:
+          path: /usr/share/zoneinfo/Asia/Taipei
+      restartPolicy: OnFailure
+      dnsPolicy: ClusterFirst
+---
+{{++}}

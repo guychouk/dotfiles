@@ -1,0 +1,401 @@
+" Options {{{
+set nocompatible
+set encoding=utf-8
+set autoindent
+set autoread
+set backspace=indent,eol,start
+set completeopt=menuone
+set display=lastline
+set expandtab
+set foldmethod=syntax
+set ignorecase
+set noinfercase
+set incsearch
+set smartcase
+set keywordprg=:help
+set laststatus=2
+set linebreak
+set mouse=a
+set cursorline
+set cursorlineopt=number
+set nohlsearch
+set nojoinspaces
+set noruler
+set noshowcmd
+set noshowmode
+set noswapfile
+set viminfofile=$XDG_CACHE_HOME/viminfo
+set title
+set titlestring=%<%F
+set nowrap
+set number
+set scrolloff=999
+set shiftround
+set shiftwidth=2
+set shortmess=aoOstTIcF
+set sidescroll=1
+set sidescrolloff=2
+set signcolumn=yes
+set smarttab
+set softtabstop=2
+set tabstop=2
+set tags=./tags;,tags;
+set undodir=~/.vim/tmp/undo
+set undofile
+set undolevels=10000
+set updatetime=100
+set history=1000
+set wildmenu
+set wildignorecase
+set wildignore+=.DS_Store,Icon\?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip
+set belloff=all
+set formatoptions+=j
+set complete-=i
+set viewoptions-=options
+set sessionoptions-=options
+set nrformats-=octal
+set ttimeout
+set ttimeoutlen=100
+set nolangremap
+set path+=**
+if has('macunix')
+  set clipboard=unnamed
+elseif has('unix')
+  set clipboard=unnamedplus
+endif
+
+" Disable netrw before calling filetype
+let g:loaded_netrw = 1
+let g:loaded_netrwPlugin = 1
+
+filetype plugin indent on
+" }}}
+
+" Functions {{{
+fun! s:RefreshColorscheme()
+  " Set background based on system appearance (OSX or GENOME)
+  if system("defaults read -g AppleInterfaceStyle") =~ '^Dark' || system("gsettings get org.gnome.desktop.interface color-scheme") =~ 'prefer-dark'
+    set background=dark
+  else
+    set background=light
+  endif
+endf
+
+fun! s:Highlight()
+  redir @a | highlight | redir END | new | put a
+endf
+
+fun! s:CleanUndoFiles()
+  !find ~/.vim/tmp/undo -type f -mtime +100d \! -name '.gitignore' -delete
+endf
+
+fun! s:ZoomToggle() abort
+  if exists('t:zoomed') && t:zoomed
+    execute t:zoom_winrestcmd
+    let t:zoomed = 0
+  else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
+  endif
+endf
+
+fun! s:AddOpenBuffersToList()
+  let qf_list = map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr": v:val}')
+  call setqflist(qf_list)
+  copen
+endf
+
+fun! s:RemoveQfItem()
+  let curqfidx = line('.') - 1
+  let qfall = getqflist()
+  call remove(qfall, curqfidx)
+  call setqflist(qfall, 'r')
+  execute curqfidx + 1 . "cfirst"
+  :copen
+endf
+
+" http://ddrscott.github.io/blog/2016/vim-toggle-movement/
+fun! s:ToggleMovement(firstOp, thenOp)
+  let pos = getpos('.')
+  execute "normal! " . a:firstOp
+  if pos == getpos('.')
+    execute "normal! " . a:thenOp
+  endif
+endf
+
+function! s:WinMoveOrSplit(key)
+  let t:curwin = winnr()
+  exec "wincmd ".a:key
+  if (t:curwin == winnr())
+    if (match(a:key,'[jk]'))
+      wincmd v
+    else
+      wincmd s
+    endif
+    exec "wincmd ".a:key
+  endif
+endfunction
+
+fun! SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endf
+" }}}
+
+" Appearance {{{
+syntax enable
+
+set list
+set cmdheight=1
+
+if has('termguicolors') && $COLORTERM ==# 'truecolor'
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+  set termguicolors
+endif
+
+let &showbreak='└ '
+let &fillchars='eob: '
+let &listchars='tab:⋮ ,trail:·,extends:>,precedes:<,nbsp:+'
+let &t_SI="\e[5 q"
+let &t_SR="\e[4 q"
+let &t_EI="\e[2 q"
+
+" Set background based on system appearance (OSX or GENOME)
+if system("defaults read -g AppleInterfaceStyle") =~ '^Dark' || system("gsettings get org.gnome.desktop.interface color-scheme") =~ 'prefer-dark'
+  colorscheme busy-g
+else
+  colorscheme shine
+endif
+" }}}
+
+" Mappings {{{
+let mapleader = "\<Space>"
+let maplocalleader = ","
+
+" Turn off linewise keys
+nmap j gj
+nmap k gk
+
+nnoremap          Y                     y$
+nnoremap          R                     :%s//g<Left><Left>
+nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+nnoremap <silent> <C-g>                 2<C-g>
+nnoremap <silent> <C-e>                 :e#<CR>
+nnoremap <silent> <C-w>h                :call <SID>WinMoveOrSplit('h')<CR>
+nnoremap <silent> <C-w>j                :call <SID>WinMoveOrSplit('j')<CR>
+nnoremap <silent> <C-w>k                :call <SID>WinMoveOrSplit('k')<CR>
+nnoremap <silent> <C-w>l                :call <SID>WinMoveOrSplit('l')<CR>
+nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
+nnoremap <silent> <C-A-j>               :resize +5<CR>
+nnoremap <silent> <C-A-k>               :resize -5<CR>
+nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
+nnoremap <silent> <leader>q             :bd<CR>
+nnoremap <silent> <leader>w             :w<CR>
+nnoremap          <leader>t             :tjump<Space>
+nnoremap          <leader>b             :buffer<Space>
+nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
+nnoremap          <leader>/             :grep<Space>
+nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
+nnoremap <silent> yoz                   :ZoomToggle<CR>
+xnoremap <silent> K                     :m '<-2<CR>gv=gv
+xnoremap <silent> J                     :m '>+1<CR>gv=gv
+inoremap          <C-w>                 <C-g>u<C-w>
+inoremap          <C-u>                 <C-g>u<C-u>
+" }}}
+
+" Plugins {{{
+" Bindings {{{
+nnoremap <silent> <leader>g             :Git<CR>
+nnoremap <silent> <leader>o             :Files<CR>
+nnoremap <silent> <leader>.             :GFiles<CR>
+nnoremap <silent> <leader>r             :History:<CR>
+nnoremap <silent> <leader>u             :UndotreeToggle<CR>
+nnoremap <silent> <leader>s             :PicolineToggle<CR>
+nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
+xnoremap <silent> <leader>ea            <Plug>(EasyAlign)
+xnoremap <silent> <leader><Tab>         <Plug>(fzf-maps-x)
+onoremap <silent> <leader><Tab>         <Plug>(fzf-maps-o)
+inoremap <silent> <C-x><C-k>            <Plug>(fzf-complete-word)
+inoremap <silent> <C-x><C-l>            <Plug>(fzf-complete-line)
+inoremap <silent> <C-x><C-f>            <Plug>(fzf-complete-path)
+inoremap <silent> <C-x><C-p>            <Plug>(copilot-suggest)
+" }}}
+" Man {{{
+runtime ftplugin/man.vim
+" }}}
+" MatchIt {{{
+packadd! matchit
+" }}}
+" cfilter {{{
+packadd! cfilter
+" }}}
+" FZF {{{
+let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
+let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
+" }}}
+" Rooter {{{
+let g:rooter_patterns = ['.git', 'Makefile', 'package.json', '.envrc']
+" }}}
+" GH-Line {{{
+let g:gh_line_map_default       = 0
+let g:gh_line_blame_map_default = 0
+let g:gh_repo_map               = '<leader><leader>go'
+let g:gh_open_command           = 'fn() { echo "$@" | pbcopy; }; fn '
+" }}}
+" Signify {{{
+let g:signify_sign_add = '▌'
+let g:signify_sign_change = '▌'
+let g:signify_sign_delete = '▌'
+let g:signify_sign_change_delete = '∙'
+" }}}
+" Emmet {{{
+let g:user_emmet_install_global = 0
+" }}}
+" indentLine {{{
+let g:indentLine_fileType = ['yaml', 'yml']
+" }}}
+" Goyo {{{
+let g:goyo_width = 120
+" }}}
+" Undotree {{{
+let g:undotree_DiffAutoOpen = 0
+" }}}
+" Copilot {{{
+let g:copilot_enabled = 0
+let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
+" }}}
+" Dirvish {{{
+let g:dirvish_mode = ':sort ,^.*[\/],'
+" }}}
+" Context.vim {{{
+let g:context_highlight_tag = '<hide>'
+" }}}
+" vim-minisnip {{{
+let g:minisnip_dir = '~/.vim/snippets'
+let g:minisnip_trigger = '<C-j>'
+" }}}
+" vim-gutentags {{{
+let g:gutentags_enabled = 1
+let g:gutentags_project_root = ['.git', '.ctags']
+" }}}
+" }}}
+
+" Grep {{{
+if executable('rg')
+  set grepprg=rg\ --vimgrep\ -g\ '!tags'\ -g\ '!.git'\ --hidden
+endif
+"}}}
+
+" Commands {{{
+command -nargs=0 Highlight      call <SID>Highlight()
+command -nargs=0 CleanUndoFiles call <SID>CleanUndoFiles()
+command -nargs=0 QfBuffers      call <SID>AddOpenBuffersToList()
+command -nargs=0 RemoveQfItem   call <SID>RemoveQfItem()
+command -nargs=0 ZoomToggle     call <SID>ZoomToggle()
+" }}}
+
+" Autocommands {{{
+augroup appearance_settings
+  autocmd!
+  autocmd VimEnter     * call echoraw(&t_EI)
+  autocmd CmdlineEnter * call echoraw(&t_SI)
+  autocmd CmdlineLeave * call echoraw(&t_EI)
+  autocmd ColorScheme  * call <SID>RefreshColorscheme()
+  autocmd SigUSR1      * call <SID>RefreshColorscheme()
+augroup END
+
+augroup quickfix
+  autocmd!
+  autocmd VimEnter        *     cwindow
+  autocmd QuickFixCmdPost l*    lwindow
+  autocmd QuickFixCmdPost [^l]* cwindow
+  autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
+augroup END
+
+augroup filetype_settings
+  autocmd!
+
+  " Shell
+  autocmd FileType sh,bash,zsh compiler shellcheck
+
+  " C/C++
+  autocmd FileType c,cpp setlocal tabstop=4
+  autocmd FileType c,cpp setlocal shiftwidth=4
+  autocmd FileType c,cpp setlocal foldlevel=99
+  autocmd FileType c,cpp compiler clang
+
+  " HTML + CSS
+  autocmd FileType html,css setlocal foldlevel=99
+  autocmd FileType html,css EmmetInstall
+
+  " Fugitive
+  autocmd FileType fugitive normal zR
+
+  " GDScript
+  autocmd FileType   gdscript setlocal noexpandtab
+  autocmd FileType   gdscript setlocal comments=:#
+  autocmd FileType   gdscript setlocal commentstring=#\ %s
+  autocmd FileType   gdscript setlocal formatoptions+=croql formatoptions-=t
+  autocmd FileType   gdscript setlocal include=\\v^[^#]*([^#A-Za-z0-9_]\|^)((pre)?load\\s*\\(\\s*\|extends\\s*)[\"\'](res\\:\/\/)?
+  autocmd FileType   gdscript setlocal foldlevel=99
+  autocmd FileType   gdscript setlocal foldmethod=syntax
+  autocmd FileType   gdscript let b:start='/Applications/Godot.app/Contents/MacOS/Godot'
+  autocmd Syntax     gdscript syn keyword gdscriptKeyword and or not is in as
+  autocmd BufRead    *.gdip setlocal filetype=gdresource
+  autocmd BufNewFile *.gdip setlocal filetype=gdresource
+
+  " Git Commit
+  autocmd FileType gitcommit setlocal bufhidden=delete
+  autocmd FileType gitcommit setlocal spell
+  autocmd FileType gitcommit iabbrev <buffer> bps bp_skip_tests
+
+  " Git Rebase
+  autocmd FileType gitrebase setlocal bufhidden=delete
+  autocmd FileType gitrebase setlocal spell
+
+  " GLSL
+  autocmd BufRead    *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
+  autocmd BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
+
+  " Javascript
+  autocmd FileType javascript,javascriptreact setlocal foldlevel=99
+  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
+  autocmd FileType javascript,javascriptreact setlocal path+=src/**,static/,config/
+  autocmd FileType javascript,javascriptreact compiler eslint
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
+  autocmd FileType javascript,javascriptreact EmmetInstall
+
+  " JSON
+  autocmd FileType json setlocal foldlevel=3
+  autocmd FileType json setlocal conceallevel=2
+
+  " Markdown
+  autocmd FileType markdown setlocal foldlevel=99
+
+  " TypeScript
+  autocmd FileType typescript,typescriptreact setlocal tabstop=4
+  autocmd FileType typescript,typescriptreact setlocal shiftwidth=4
+  autocmd FileType typescript,typescriptreact setlocal foldlevel=99
+  autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
+  autocmd FileType typescript,typescriptreact setlocal path+=src/**,static/,config/
+  autocmd FileType typescript,typescriptreact compiler tsc
+  autocmd FileType typescript,typescriptreact map <buffer> <localleader>e :Dispatch -compiler=eslint<CR>
+  autocmd FileType typescript,typescriptreact EmmetInstall
+
+  " YAML
+  autocmd FileType yaml setlocal foldlevel=99
+
+augroup END
+" }}}
+
+" vim: set sw=2 ts=2 sts=0 expandtab fdm=marker :nospell:

@@ -1,0 +1,13 @@
+const minimist = require("minimist")
+
+async function main(argv) {
+  const { _: args } = argv;
+  if (args.length === 0) {
+    console.log(`Usage: node deploy.js <cmd> <args>`);
+    process.exit();
+  }
+  const cmd = args[0];
+  {{++}}
+}
+
+main(minimist(process.argv.slice(2)));

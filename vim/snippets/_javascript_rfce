@@ -1,0 +1,9 @@
+import { css } from '@emotion/core'
+
+export const {{++}} = () => {
+	return (
+		<div css={css``}>
+			{{++}}
+		</div>
+	)
+}

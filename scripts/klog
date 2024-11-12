@@ -1,0 +1,16 @@
+#!/usr/bin/env zsh
+
+# This script is a wrapper around stern with some customizations.
+# It will colorize the output and filter out health checks by default.
+# If you pass -j as the first argument, it will attempt to parse stern's JSON output and colorize it.
+
+if [ "$1" = "-j" ]; then
+  shift
+  stern --output extjson "$@" | \
+  jq --argjson levelmap '{ "info":"\u001b[32mINFO\u001b[0m", "debug":"\u001b[37mDEBUG\u001b[0m", "error":"\u001b[31mERROR\u001b[0m" }' \
+  -Rr '. as $line | try (fromjson | "\u001b[1;35m\(.container)\u001b[0m: [\($levelmap[.message.level])] \u001b[0;44m\(.message.messageData.message)\u001b[0m (\(.message.messageData.parameters))") catch $line' | grep -v 'DEBUG'
+  exit 0
+else
+  stern --color always --template '{{color .PodColor .ContainerName}}: {{printf "%s\n" .Message}}' "$@" | grep -v 'health'
+  exit 0
+fi
