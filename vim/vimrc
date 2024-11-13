@@ -72,15 +72,6 @@ filetype plugin indent on
 " }}}
 
 " Functions {{{
-fun! s:RefreshColorscheme()
-  " Set background based on system appearance (OSX or GENOME)
-  if system("defaults read -g AppleInterfaceStyle") =~ '^Dark' || system("gsettings get org.gnome.desktop.interface color-scheme") =~ 'prefer-dark'
-    set background=dark
-  else
-    set background=light
-  endif
-endf
-
 fun! s:Highlight()
   redir @a | highlight | redir END | new | put a
 endf
@@ -165,12 +156,7 @@ let &t_SI="\e[5 q"
 let &t_SR="\e[4 q"
 let &t_EI="\e[2 q"
 
-" Set background based on system appearance (OSX or GENOME)
-if system("defaults read -g AppleInterfaceStyle") =~ '^Dark' || system("gsettings get org.gnome.desktop.interface color-scheme") =~ 'prefer-dark'
-  colorscheme busy-g
-else
-  colorscheme shine
-endif
+colorscheme busy-g
 " }}}
 
 " Mappings {{{
@@ -311,8 +297,6 @@ augroup appearance_settings
   autocmd VimEnter     * call echoraw(&t_EI)
   autocmd CmdlineEnter * call echoraw(&t_SI)
   autocmd CmdlineLeave * call echoraw(&t_EI)
-  autocmd ColorScheme  * call <SID>RefreshColorscheme()
-  autocmd SigUSR1      * call <SID>RefreshColorscheme()
 augroup END
 
 augroup quickfix
