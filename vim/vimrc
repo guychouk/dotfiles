@@ -181,6 +181,7 @@ let maplocalleader = ","
 nmap j gj
 nmap k gk
 
+nnoremap          Q                     :qa<CR>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
