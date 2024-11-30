@@ -1,6 +1,6 @@
 nodejs 20.9.0
 sbt 1.5.5
-golang 1.23.1
+golang 1.23.3
 bun 1.0.1
 ruby 3.2.2
 python 3.11.0
