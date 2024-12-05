@@ -5,6 +5,7 @@ export EDITOR="${VISUAL}"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export SHELL_SESSIONS_DISABLE=1
+export MANPAGER="vim +MANPAGER --not-a-term -"
 
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
