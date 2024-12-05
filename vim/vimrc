@@ -310,6 +310,10 @@ augroup END
 augroup filetype_settings
   autocmd!
 
+  " Man
+  autocmd FileType man setlocal hlsearch
+  autocmd FileType man nmap <leader>q :q<CR>
+
   " Shell
   autocmd FileType sh,bash,zsh compiler shellcheck
 
