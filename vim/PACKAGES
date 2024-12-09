@@ -7,6 +7,7 @@ jjo/vim-cue
 junegunn/fzf
 junegunn/fzf.vim
 junegunn/goyo.vim
+junegunn/gv.vim
 junegunn/vim-easy-align
 junegunn/vim-peekaboo
 justinmk/vim-dirvish

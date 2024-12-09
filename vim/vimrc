@@ -337,7 +337,8 @@ augroup filetype_settings
   autocmd BufRead    *.gdip setlocal filetype=gdresource
   autocmd BufNewFile *.gdip setlocal filetype=gdresource
 
-  " Git Commit
+  " Git
+  autocmd FileType git       setlocal foldlevel=99
   autocmd FileType gitcommit setlocal bufhidden=delete
   autocmd FileType gitcommit setlocal spell
   autocmd FileType gitcommit iabbrev <buffer> bps bp_skip_tests
