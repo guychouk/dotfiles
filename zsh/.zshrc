@@ -183,6 +183,10 @@ if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
+if _has process-compose; then
+  source <(process-compose completion zsh)
+fi
+
 if _has eza; then
   alias ll='eza -lag --time-style=long-iso --group-directories-first --color=always'
 elif _has gls; then
