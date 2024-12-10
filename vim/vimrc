@@ -163,17 +163,18 @@ colorscheme busy-g
 let mapleader = "\<Space>"
 let maplocalleader = ","
 
-" Turn off linewise keys
-nmap j gj
-nmap k gk
-
+nnoremap          j                     gj
+nnoremap          k                     gk
 nnoremap          Q                     :qa<CR>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
+nnoremap          H                     gT
+nnoremap          L                     gt
 nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <C-e>                 :e#<CR>
 nnoremap <silent> <C-w>h                :call <SID>WinMoveOrSplit('h')<CR>
@@ -191,6 +192,7 @@ nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
 nnoremap <silent> yoz                   :ZoomToggle<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
@@ -265,6 +267,7 @@ let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
 let g:dirvish_mode = ':sort ,^.*[\/],'
 " }}}
 " Context.vim {{{
+let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
 " vim-minisnip {{{
