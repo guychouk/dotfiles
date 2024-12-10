@@ -1,5 +1,6 @@
 abbr "d"="docker"
 abbr "dcc"="docker compose"
+abbr "dgd"="/Applications/Brave\ Browser.app/Contents/MacOS/Brave\ Browser \$(find ~/opt/godot-docs/classes | fzf)"
 abbr "g"="git"
 abbr "ga"="git add"
 abbr "gaa"="git add ."
