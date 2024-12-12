@@ -4,7 +4,7 @@ set encoding=utf-8
 set autoindent
 set autoread
 set backspace=indent,eol,start
-set completeopt=menuone
+set completeopt=menuone,preview,fuzzy
 set display=lastline
 set expandtab
 set foldmethod=syntax
@@ -53,7 +53,7 @@ set formatoptions+=j
 set complete-=i
 set viewoptions-=options
 set sessionoptions-=options
-set nrformats-=octal
+set nrformats=bin,hex,blank
 set ttimeout
 set ttimeoutlen=100
 set nolangremap
@@ -334,19 +334,16 @@ augroup filetype_settings
   autocmd FileType fugitive normal zR
 
   " Godot
-  "
   autocmd FileType   gdscript setlocal foldmethod=expr
-  autocmd FileType   gdscript let g:godot_executable = '/Users/gv/Personal/Godot.app/Contents/MacOS/Godot'
-  autocmd BufRead    *.gdip setlocal filetype=gdresource
-  autocmd BufNewFile *.gdip setlocal filetype=gdresource
+  autocmd FileType   gdscript let      g:godot_executable = '/Users/gv/Applications/Godot.app/Contents/MacOS/Godot'
+  autocmd BufRead    *.gdip   setlocal filetype=gdresource
+  autocmd BufNewFile *.gdip   setlocal filetype=gdresource
 
   " Git
   autocmd FileType git       setlocal foldlevel=99
   autocmd FileType gitcommit setlocal bufhidden=delete
   autocmd FileType gitcommit setlocal spell
-  autocmd FileType gitcommit iabbrev <buffer> bps bp_skip_tests
-
-  " Git Rebase
+  autocmd FileType gitcommit iabbrev  <buffer> bps bp_skip_tests
   autocmd FileType gitrebase setlocal bufhidden=delete
   autocmd FileType gitrebase setlocal spell
 
@@ -357,7 +354,6 @@ augroup filetype_settings
   " Javascript
   autocmd FileType javascript,javascriptreact setlocal foldlevel=99
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType javascript,javascriptreact setlocal path+=src/**,static/,config/
   autocmd FileType javascript,javascriptreact compiler eslint
   autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
   autocmd FileType javascript,javascriptreact EmmetInstall
@@ -370,11 +366,10 @@ augroup filetype_settings
   autocmd FileType markdown setlocal foldlevel=99
 
   " TypeScript
-  autocmd FileType typescript,typescriptreact setlocal tabstop=4
-  autocmd FileType typescript,typescriptreact setlocal shiftwidth=4
+  autocmd FileType typescript,typescriptreact setlocal tabstop=2
+  autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal foldlevel=99
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType typescript,typescriptreact setlocal path+=src/**,static/,config/
   autocmd FileType typescript,typescriptreact compiler tsc
   autocmd FileType typescript,typescriptreact map <buffer> <localleader>e :Dispatch -compiler=eslint<CR>
   autocmd FileType typescript,typescriptreact EmmetInstall
