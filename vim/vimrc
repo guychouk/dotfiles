@@ -210,6 +210,8 @@ nnoremap <silent> <leader>r     :History:<CR>
 nnoremap <silent> <leader>u     :UndotreeToggle<CR>
 nnoremap <silent> <leader>s     :PicolineToggle<CR>
 nnoremap <silent> <leader>cs    :call css_color#toggle()<CR>
+nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
+nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
 nnoremap          ga            <Plug>(EasyAlign)
 xnoremap          ga            <Plug>(EasyAlign)
 xnoremap <silent> <leader><Tab> <Plug>(fzf-maps-x)
@@ -296,6 +298,9 @@ command -nargs=0 ZoomToggle     call <SID>ZoomToggle()
 " }}}
 
 " Autocommands {{{
+" forces refresh of vim buffer when autoread is set
+au CursorHold * checktime
+
 augroup appearance_settings
   autocmd!
   autocmd VimEnter     * call echoraw(&t_EI)
