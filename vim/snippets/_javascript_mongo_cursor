@@ -1,0 +1,19 @@
+const { MongoClient, ObjectId } = require("mongodb");
+
+const MONGO_USER = {{++}}
+const MONGO_PASS = {{++}}
+const MONGO_URI = {{++}}
+
+const mongoClient = new MongoClient(`mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_URI}?authSource=admin`);
+
+async function main() {
+  await mongoClient.connect();
+  const db = mongoClient.db({{++}});
+  const collection = db.collection({{++}});
+  const cursor = collection.find({{++}}, {{++}});
+  while (await cursor.hasNext()) {
+    const doc = await cursor.next();
+  }
+}
+
+main().catch(e => console.error(e))
