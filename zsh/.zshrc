@@ -33,7 +33,7 @@ export PYTHONHISTFILE="${XDG_CACHE_HOME}/.python_history"
 export LESSHISTFILE="${XDG_CACHE_HOME}/.lesshst"
 
 if [[ "$(uname)" == "Linux" ]]; then
-  export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/gnupg/S.gpg-agent.ssh"
+  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 fi
 
 # Override any of the above with .env
