@@ -12,7 +12,6 @@ junegunn/vim-easy-align
 junegunn/vim-peekaboo
 justinmk/vim-dirvish
 liuchengxu/vista.vim
-ludovicchabant/vim-gutentags
 markonm/traces.vim
 mattn/emmet-vim
 mbbill/undotree
