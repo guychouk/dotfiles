@@ -3,7 +3,6 @@ airblade/vim-rooter
 ap/vim-css-color
 github/copilot.vim
 habamax/vim-godot
-jjo/vim-cue
 junegunn/fzf
 junegunn/fzf.vim
 junegunn/goyo.vim
@@ -11,7 +10,6 @@ junegunn/gv.vim
 junegunn/vim-easy-align
 junegunn/vim-peekaboo
 justinmk/vim-dirvish
-liuchengxu/vista.vim
 markonm/traces.vim
 mattn/emmet-vim
 mbbill/undotree
@@ -27,6 +25,7 @@ tpope/vim-eunuch
 tpope/vim-fugitive
 tpope/vim-repeat
 tpope/vim-rsi
+tpope/vim-speeddating
 tpope/vim-surround
 tpope/vim-unimpaired
 wellle/context.vim

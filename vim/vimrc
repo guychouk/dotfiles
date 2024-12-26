@@ -212,6 +212,7 @@ nnoremap <silent> <leader>s     :PicolineToggle<CR>
 nnoremap <silent> <leader>cs    :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
+nnoremap          gz            <Plug>(characterize)
 nnoremap          ga            <Plug>(EasyAlign)
 xnoremap          ga            <Plug>(EasyAlign)
 xnoremap <silent> <leader><Tab> <Plug>(fzf-maps-x)
