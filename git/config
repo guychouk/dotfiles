@@ -8,16 +8,16 @@
 	diffFilter = delta --color-only
 
 [delta]
-	light = false
+	dark = true
 	navigate = true
-	line-numbers = true
-	side-by-side = true
+	line-numbers = false
+	side-by-side = false
 	plus-style = "syntax #012800"
 	minus-style = "syntax #340001"
 	syntax-theme = Monokai Extended
 
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 
 [init]
 	defaultBranch = main
@@ -26,3 +26,5 @@
 [alias]
 	ctags = !.git/hooks/ctags
 
+[include]
+	path = ./git-user
