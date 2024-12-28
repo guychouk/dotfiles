@@ -197,7 +197,7 @@ fi
 
 if _has fzf; then
   source "${ZDOTDIR}/functions/fzf-git"
-  export FZF_DEFAULT_OPTS='--height 50%'
+  export FZF_DEFAULT_OPTS='--height 75%'
 
   if _has rg; then
     export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'

@@ -3,10 +3,10 @@
 <plist version="1.0">
 <dict>
     <key>Label</key>
-    <string>com.gv.clear-agent-caches</string>
+    <string>com.gv.clear-gpg-cache</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/usr/local/bin/clear-agent-caches</string>
+        <string>/Users/gv/scripts/clear-gpg-cache</string>
     </array>
     <key>WatchPaths</key>
     <array>
