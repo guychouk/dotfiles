@@ -295,8 +295,6 @@ command -nargs=0 ZoomToggle     call <SID>ZoomToggle()
 " }}}
 
 " Autocommands {{{
-" forces refresh of vim buffer when autoread is set
-au CursorHold * checktime
 
 augroup appearance_settings
   autocmd!
@@ -326,10 +324,10 @@ augroup filetype_settings
   " Shell
   autocmd FileType sh,bash,zsh compiler shellcheck
 
-  " C/C++
-  autocmd FileType c,cpp setlocal tabstop=4
-  autocmd FileType c,cpp setlocal shiftwidth=4
-  autocmd FileType c,cpp setlocal foldlevel=99
+  " C
+  autocmd FileType c setlocal tabstop=4
+  autocmd FileType c setlocal shiftwidth=4
+  autocmd FileType c setlocal foldlevel=99
 
   " HTML + CSS
   autocmd FileType html,css setlocal foldlevel=99
