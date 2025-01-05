@@ -4,4 +4,4 @@ Xft.hinting: true
 Xft.hintstyle: hintslight
 Xft.rgba: rgb
 Xft.lcdfilter: lcddefault
-Xft.font: "Noto Sans:size=10"
+Xft.font: "Noto Sans:size=10, Noto Color Emoji:size=10"
