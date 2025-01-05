@@ -1,2 +1,2 @@
-xsetroot -solid "#222222" &
+xsetroot -solid "#2e2e2e" &
 exec dwm
