@@ -130,7 +130,7 @@ PROMPT=$'%{\e[3 q%}%F{8}[%m] %f%F{38}%1~%F{208}$(parse_git_branch) λ %f'
 
 ## PATH
 
-export PATH="${GEM_HOME}:${GOPATH}/bin:${HOME}/bin:${HOME}/scripts:${PATH}"
+export PATH="${GEM_HOME}:${GOPATH}/bin:${HOME}/bin:${HOME}/scripts:${HOME}/.local/bin:${PATH}"
 
 update_path_for_node_modules() {
   local node_bin="${PWD}/node_modules/.bin"
