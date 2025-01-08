@@ -1,1 +1,2 @@
+· Check if node has to wait for debugger to disconnect
 · Connect vim-dispatch with kitty panes
