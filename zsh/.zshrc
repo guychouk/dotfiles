@@ -5,7 +5,7 @@ export EDITOR="${VISUAL}"
 export LANG="en_US.UTF-8"
 export LC_ALL="en_US.UTF-8"
 export SHELL_SESSIONS_DISABLE=1
-export MANPAGER="vim +MANPAGER --not-a-term -"
+export MANPAGER="vim +MANPAGER +Goyo --not-a-term -"
 
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -197,7 +197,7 @@ fi
 
 if _has fzf; then
   source "${ZDOTDIR}/functions/fzf-git"
-  export FZF_DEFAULT_OPTS='--height 75%'
+  export FZF_DEFAULT_OPTS="--prompt='λ ' --margin 5%,15% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
 
   if _has rg; then
     export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
