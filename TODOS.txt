@@ -1,2 +1,12 @@
+· write a script that accepts a file, converts it to base64 and sends it to llava:7b for OCR
+· if there's more than one tag choice, hit <c-]> to open an fzf search between all options with a preview screen
+· use fzf to search through tags file and jump to chosen tag with vim
+· Find a way to make an LLM do something as a command to a specific file on your computer (e.g. estimiate the time each todo takes and sort them by ascending)
+· Check if there's something like dmenu for OSX
+· Rename TODOS.txt to TODO.txt
+· Create todo zsh alias that opens vim on TODO.txt
+· Check if aider has an api and if it does add a vim command that updates files via curl call
+· Run aider as watch service and use only editor capabilities
+· Close split without closing buffer (something like <c-w>c if there's two buffers that are the same and :bd if it is the last one)
 · Check if node has to wait for debugger to disconnect
 · Connect vim-dispatch with kitty panes
