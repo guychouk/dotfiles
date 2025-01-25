@@ -1,3 +1,4 @@
+NOTES.txt                           ~/NOTES.txt
 TODOS.txt                           ~/TODOS.txt
 agents/com.gv.clear-gpg-cache.plist ~/Library/LaunchAgents/com.gv.clear-gpg-cache.plist
 aider/.aider.conf.yml               ~/.aider/.aider.conf.yml
