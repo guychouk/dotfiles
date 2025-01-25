@@ -197,7 +197,7 @@ fi
 
 if _has fzf; then
   source "${ZDOTDIR}/functions/fzf-git"
-  export FZF_DEFAULT_OPTS="--prompt='λ ' --margin 5%,15% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
+  export FZF_DEFAULT_OPTS="--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
 
   if _has rg; then
     export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'

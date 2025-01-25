@@ -1,3 +1,7 @@
+· write a blog post on using rooter with package.json and grep for a live documentation flow
+· make this into a global zsh env var OLLAMA_API_BASE=http://127.0.0.1:11434
+· script that translates a word to spanish from english
+· kitty update tab name with number prefix
 · write a script that accepts a file, converts it to base64 and sends it to llava:7b for OCR
 · if there's more than one tag choice, hit <c-]> to open an fzf search between all options with a preview screen
 · use fzf to search through tags file and jump to chosen tag with vim
