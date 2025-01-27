@@ -173,6 +173,33 @@ fun! s:add_mappings() abort
   11copen
   wincmd p
 endf
+
+fun! MyTabLine()
+  let s = ''
+  for i in range(tabpagenr('$'))
+    " Select the highlighting
+    if i + 1 == tabpagenr()
+      let s .= '%#TabLineSel#'
+    else
+      let s .= '%#TabLine#'
+    endif
+    " Set the tab page number (for mouse clicks)
+    let s .= '%' . (i + 1) . 'T'
+    " Get the buffer list and window number for the tab page
+    let buflist = tabpagebuflist(i + 1)
+    let winnr = tabpagewinnr(i + 1)
+    " Append the filename (without path)
+    let name = fnamemodify(bufname(buflist[winnr - 1]), ':t')
+    if empty(name)
+      let s .= ' ? '
+    else
+      let s .= ' ' . name . ' '
+    endif
+  endfor
+  " Fill the rest of the tabline
+  let s .= '%#TabLineFill#%T'
+  return s
+endf
 " }}}
 
 " Appearance {{{
@@ -180,6 +207,7 @@ syntax enable
 
 set list
 set cmdheight=1
+set tabline=%!MyTabLine()
 
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -238,7 +266,6 @@ xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
-
 
 " Plugins {{{
 " Bindings {{{

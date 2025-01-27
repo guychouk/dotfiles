@@ -8,17 +8,18 @@ endif
 
 let colors_name = "gman"
 
-if has('gui_running')
-  hi StatusLine    guifg=#C3C3C3 guibg=#3D3D3D gui=none   ctermfg=244 ctermbg=238
-else
-  hi StatusLine    guifg=#3D3D3D guibg=#C3C3C3 gui=none   ctermfg=253 ctermbg=238
-endif
+hi StatusLine   guifg=#3D3D3D guibg=#C3C3C3 gui=none ctermfg=253 ctermbg=238
+hi StatusLineNC guifg=#3D3D3D guibg=#7A7A7A gui=none ctermfg=246 ctermbg=238
+
+hi TabLine      guifg=#C3C3C3 guibg=#3D3D3D gui=none ctermfg=253 ctermbg=238 cterm=none
+hi TabLineSel   guifg=#3D3D3D guibg=#C3C3C3 gui=none ctermfg=253 ctermbg=238 cterm=none
+hi TabLineFill  guifg=#3D3D3D guibg=#3D3D3D gui=none ctermfg=253 ctermbg=238 cterm=none
 
 hi Cursor       guifg=NONE    guibg=#5C5C5C gui=none ctermfg=253 ctermbg=241
 hi CursorColumn guifg=NONE    guibg=#151515 gui=none ctermbg=234
 hi CursorLine   guifg=NONE    guibg=#151515 gui=none ctermbg=234
 hi CursorLineNr guifg=#FF8133 guibg=NONE    gui=bold ctermfg=214 ctermbg=NONE cterm=bold
-hi FoldColumn   guibg=NONE    ctermbg=NONE
+hi FoldColumn                 guibg=NONE    ctermbg=NONE
 hi Folded       guifg=#A0A8B0 guibg=NONE    gui=none ctermfg=248 ctermbg=4
 hi LineNr       guifg=#303030 guibg=NONE    gui=none ctermfg=244 ctermbg=NONE
 hi MatchParen   guifg=#D0FFC0 guibg=#151515 gui=bold ctermfg=157 ctermbg=237  cterm=bold
@@ -27,9 +28,8 @@ hi Normal       guifg=#F4F4F5 guibg=NONE    gui=none ctermfg=253 ctermbg=NONE
 hi Pmenu        guifg=#FFFFFF guibg=#151515 gui=none ctermfg=255 ctermbg=238
 hi PmenuSel     guifg=#000000 guibg=#B1D631 gui=none ctermfg=0   ctermbg=148
 hi QuickFixLine guifg=#151515 guibg=#DACF62 gui=bold
-hi SignColumn   guibg=NONE    ctermbg=NONE
+hi SignColumn                 guibg=NONE    ctermbg=NONE
 hi SpecialKey   guifg=#808080 guibg=NONE    gui=none ctermfg=244 ctermbg=236
-hi StatusLineNC guifg=#3D3D3D guibg=#7A7A7A gui=none ctermfg=246 ctermbg=238
 hi Title        guifg=#F6F3E8 guibg=NONE    gui=bold ctermfg=254 cterm=bold
 hi VertSplit    guifg=#3D3D3D guibg=#3D3D3D gui=none ctermfg=238 ctermbg=238
 hi Visual       guifg=#FAF4C6 guibg=#3D3D3D gui=none ctermfg=254 ctermbg=4
