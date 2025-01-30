@@ -425,6 +425,8 @@ augroup filetype_settings
   autocmd BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
 
   " Javascript
+  autocmd FileType javascript,javascriptreact setlocal tabstop=4
+  autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
   autocmd FileType javascript,javascriptreact setlocal foldlevel=99
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType javascript,javascriptreact compiler eslint
@@ -439,8 +441,8 @@ augroup filetype_settings
   autocmd FileType markdown setlocal foldlevel=99
 
   " TypeScript
-  autocmd FileType typescript,typescriptreact setlocal tabstop=2
-  autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
+  autocmd FileType typescript,typescriptreact setlocal tabstop=4
+  autocmd FileType typescript,typescriptreact setlocal shiftwidth=4
   autocmd FileType typescript,typescriptreact setlocal foldlevel=99
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType typescript,typescriptreact compiler tsc

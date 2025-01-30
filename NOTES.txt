@@ -1,9 +1,4 @@
 MS Teams:
-· Write a postIncidentReportGeneration function which calls the imageUpload for slack if it exists in GenerateIncidentReport
-· pull all app installed teams channels
-· pull all app installed group chats
-· only pull for the relevant type
-· no report HTML only a link to app
 · Permissions:
   · ProfilePhoto.Read.All - profile picture permission
   · TeamsAppInstallation.Read.Chat - get installed apps in group chat permission -
