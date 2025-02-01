@@ -68,6 +68,10 @@ hi String     guifg=#A0CC70 guibg=NONE gui=none   ctermfg=148
 hi Todo       guifg=#FF8133 guibg=NONE gui=none   ctermfg=208
 hi Type       guifg=#C1C1C3 guibg=NONE gui=none   ctermfg=103
 
+" jsx/tsx tags highlighting
+hi def link htmlTag     Comment
+hi def link htmlTagName Identifier
+
 " Plugins
 hi DirvishPathTail guifg=#93C6D6 guibg=NONE gui=bold
 hi FzfBorder       guifg=#A0CC70 guibg=NONE gui=none
