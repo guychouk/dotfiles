@@ -1,7 +1,4 @@
 MS Teams:
-· Permissions:
-  · ProfilePhoto.Read.All - profile picture permission
-  · TeamsAppInstallation.Read.Chat - get installed apps in group chat permission -
 
 Strata:
 · Setup a call with Sean Onion

@@ -58,6 +58,8 @@ set ttimeout
 set ttimeoutlen=100
 set nolangremap
 set path+=**
+set t_vb=
+set noerrorbells
 if has('macunix')
   set clipboard=unnamed
 elseif has('unix')
@@ -72,6 +74,19 @@ filetype plugin indent on
 " }}}
 
 " Functions {{{
+function! s:FzfSelectNodeModulesDir()
+  let l:cmd = 'find node_modules -mindepth 1 -maxdepth 1 -type d'
+  call fzf#run(fzf#wrap({
+        \ 'source': l:cmd,
+        \ 'sink': function('s:OpenDirInNewTab'),
+        \ 'options': '--prompt="node_modules> "'
+        \ }))
+endfunction
+
+function! s:OpenDirInNewTab(selected)
+  execute 'tabnew | edit ' . fnameescape(a:selected)
+endfunction
+
 fun! s:Highlight()
   redir @a | highlight | redir END | new | put a
 endf
@@ -278,6 +293,7 @@ nnoremap <silent> <leader>s     :PicolineToggle<CR>
 nnoremap <silent> <leader>cs    :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
+nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
 nnoremap          gz            <Plug>(characterize)
 nnoremap          ga            <Plug>(EasyAlign)
 xnoremap          ga            <Plug>(EasyAlign)
@@ -356,15 +372,21 @@ endif
 "}}}
 
 " Commands {{{
-command  -nargs=0    Highlight      call <SID>Highlight()
-command  -nargs=0    CleanUndoFiles call <SID>CleanUndoFiles()
-command  -nargs=0    QfBuffers      call <SID>AddOpenBuffersToList()
-command  -nargs=0    RemoveQfItem   call <SID>RemoveQfItem()
-command  -nargs=0    ZoomToggle     call <SID>ZoomToggle()
-command! DiffHistory call           s:view_git_history()
+command -nargs=0 Highlight               call <SID>Highlight()
+command -nargs=0 CleanUndoFiles          call <SID>CleanUndoFiles()
+command -nargs=0 QfBuffers               call <SID>AddOpenBuffersToList()
+command -nargs=0 RemoveQfItem            call <SID>RemoveQfItem()
+command -nargs=0 ZoomToggle              call <SID>ZoomToggle()
+command -nargs=0 FzfSelectNodeModulesDir call <SID>FzfSelectNodeModulesDir()
+command -nargs=0 DiffHistory             call s:view_git_history()
 " }}}
 
 " Autocommands {{{
+
+augroup AutoReload
+  autocmd!
+  autocmd FocusGained,BufEnter,CursorHold * checktime
+augroup END
 
 augroup appearance_settings
   autocmd!
