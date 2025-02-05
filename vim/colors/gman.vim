@@ -37,21 +37,10 @@ hi qfFileName   guifg=#A0CC70 guibg=NONE
 hi qfLineNr     guifg=#808080 guibg=NONE
 
 " Diffs
-function DiffMode()
-  if &diff
-    hi DiffAdd      guifg=#3D3D3D guibg=#A0CC70 gui=none ctermfg=2   ctermbg=NONE
-    hi DiffChange   guifg=#3D3D3D guibg=#DACF62 gui=none ctermfg=3   ctermbg=NONE
-    hi DiffDelete   guifg=#3D3D3D guibg=#DB6A61 gui=none ctermfg=1   ctermbg=NONE
-    hi DiffText     guifg=NONE    guibg=#626DDA
-  else
-    hi DiffAdd      guifg=#A0CC70 guibg=NONE gui=none ctermfg=2   ctermbg=NONE
-    hi DiffChange   guifg=#DACF62 guibg=NONE gui=none ctermfg=3   ctermbg=NONE
-    hi DiffDelete   guifg=#DB6A61 guibg=NONE gui=none ctermfg=1   ctermbg=NONE
-    hi DiffText     guifg=NONE    guibg=#626DDA
-  endif
-endfunction
-
-autocmd BufEnter * call DiffMode()
+hi DiffAdd    guifg=#A0CC70 guibg=NONE    gui=none ctermfg=2 ctermbg=NONE
+hi DiffChange guifg=#DACF62 guibg=NONE    gui=none ctermfg=3 ctermbg=NONE
+hi DiffDelete guifg=#DB6A61 guibg=NONE    gui=none ctermfg=1 ctermbg=NONE
+hi DiffText   guifg=NONE    guibg=#3D3D3D gui=none ctermfg=4 ctermbg=NONE
 
 " Syntax highlighting
 hi Boolean    guifg=#FF8133 guibg=NONE gui=none   ctermfg=148
