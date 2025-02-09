@@ -455,9 +455,9 @@ augroup filetype_settings
   autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
   autocmd FileType javascript,javascriptreact EmmetInstall
 
-  " JSON
-  autocmd FileType json setlocal foldlevel=3
-  autocmd FileType json setlocal conceallevel=2
+  " JSON/JSONC
+  autocmd FileType json,jsonc setlocal foldlevel=99
+  autocmd FileType json,jsonc setlocal conceallevel=2
 
   " Markdown
   autocmd FileType markdown setlocal foldlevel=99

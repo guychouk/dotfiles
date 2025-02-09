@@ -5,3 +5,10 @@ Strata:
 
 Links:
 · OpenSearch - https://vpc-aiops-copilot-c4jeqzvnwvqgc2mte7kfa2qrgi.us-east-2.es.amazonaws.com/_dashboards/app/login
+
+Incident Report:
+· who resolved the incident?
+· raise to the top the (in a banner) the users who resolved the incident (raise important info to the top)
+· use the reports as context data (from mongo to opensearch)
+· slice by service and summarize top action items
+· incident learning - learn from reports
