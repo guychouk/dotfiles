@@ -4,7 +4,7 @@ set encoding=utf-8
 set autoindent
 set autoread
 set backspace=indent,eol,start
-set completeopt=menuone,preview,fuzzy
+set completeopt=menuone,preview
 set display=lastline
 set expandtab
 set foldmethod=syntax
@@ -383,11 +383,6 @@ command -nargs=0 DiffHistory             call s:view_git_history()
 
 " Autocommands {{{
 
-augroup AutoReload
-  autocmd!
-  autocmd FocusGained,BufEnter,CursorHold * checktime
-augroup END
-
 augroup appearance_settings
   autocmd!
   autocmd VimEnter     * call echoraw(&t_EI)
@@ -431,6 +426,7 @@ augroup filetype_settings
   " Godot
   autocmd FileType   gdscript setlocal foldmethod=expr
   autocmd FileType   gdscript let      g:godot_executable = '/Users/gv/Applications/Godot.app/Contents/MacOS/Godot'
+  autocmd FileType   gdscript map <buffer> <F8> :GodotRun<CR>
   autocmd BufRead    *.gdip   setlocal filetype=gdresource
   autocmd BufNewFile *.gdip   setlocal filetype=gdresource
 

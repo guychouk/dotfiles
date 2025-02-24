@@ -62,12 +62,6 @@
 --regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]\{1,\}\)*function[^\*][^\*]/\1/f,function/b
 # const myFunc = async function (...) { ... }
 
---regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*([^)]*$/\1/f,function/b
-# var myFunc = function (...) or partial lines referencing assignments
-
---regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=.\{1,\}=>/\1/f,function/b
-# let myFunc = (...) => { ... } (arrow function)
-
 #------------------------------------------------------------------------------
 # Class declarations
 #------------------------------------------------------------------------------
@@ -107,9 +101,6 @@
 --regex-typescript=/^[ \t]*export[ \t]+(var|let|const)[ \t]+([a-zA-Z0-9_]+)/\2/v,variable/
 # export const MY_VAR = 123
 
---regex-typescript=/^[ \t]*(var|let|const)[ \t]+([a-zA-Z0-9_]+)[ \t]*=[ \t]*function[ \t]*\(\)/\2/V,varlambdas/
-# let doSomething = function(...) { ... }
-
 #------------------------------------------------------------------------------
 # Interfaces
 #------------------------------------------------------------------------------
@@ -127,19 +118,6 @@
 #------------------------------------------------------------------------------
 --regex-typescript=/^[ \t]*(export)?[ \t]*enum[ \t]+([a-zA-Z0-9_]+)/\2/e,enumerator/
 # export enum MyEnum { ... }
-
-#------------------------------------------------------------------------------
-# Imports
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*import[ \t]+([a-zA-Z0-9_]+)/\1/I,imports/
-# import SomeModule from ...
-
-#------------------------------------------------------------------------------
-# Decorators
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*@([A-Za-z0-9._$]+)[ \t]*/\1/d,decorator/
-# @MyDecorator()
-# (Captures the identifier after '@')
 
 ###############################################################################
 #                   J A V A S C R I P T   R E G E X E S
