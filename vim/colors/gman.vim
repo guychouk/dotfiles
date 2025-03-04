@@ -1,66 +1,62 @@
 set background=dark
-
 hi clear
-
 if exists("syntax_on")
   syntax reset
 endif
-
 let colors_name = "gman"
 
-hi StatusLine   guifg=#3D3D3D guibg=#C3C3C3 gui=none ctermfg=253 ctermbg=238
-hi StatusLineNC guifg=#3D3D3D guibg=#7A7A7A gui=none ctermfg=246 ctermbg=238
-
-hi TabLine      guifg=#C3C3C3 guibg=#3D3D3D gui=none ctermfg=253 ctermbg=238 cterm=none
-hi TabLineSel   guifg=#3D3D3D guibg=#C3C3C3 gui=none ctermfg=253 ctermbg=238 cterm=none
-hi TabLineFill  guifg=#3D3D3D guibg=#3D3D3D gui=none ctermfg=253 ctermbg=238 cterm=none
-
-hi Cursor       guifg=NONE    guibg=#5C5C5C gui=none ctermfg=253 ctermbg=241
-hi CursorColumn guifg=NONE    guibg=#151515 gui=none ctermbg=234
-hi CursorLine   guifg=NONE    guibg=#151515 gui=none ctermbg=234
-hi CursorLineNr guifg=#FF8133 guibg=NONE    gui=bold ctermfg=214 ctermbg=NONE cterm=bold
+" General UI Elements
+hi StatusLine   guifg=#4F5E62 guibg=#DDDECF gui=none ctermfg=188 ctermbg=240
+hi StatusLineNC guifg=#4F5E62 guibg=#738A8B gui=none ctermfg=246 ctermbg=240
+hi TabLine      guifg=#DDDECF guibg=#4F5E62 gui=none ctermfg=188 ctermbg=240 cterm=none
+hi TabLineSel   guifg=#4F5E62 guibg=#DDDECF gui=none ctermfg=188 ctermbg=240 cterm=none
+hi TabLineFill  guifg=#4F5E62 guibg=#4F5E62 gui=none ctermfg=188 ctermbg=240 cterm=none
+hi Cursor       guifg=NONE    guibg=#738A8B gui=none ctermfg=253 ctermbg=246
+hi CursorColumn guifg=NONE    guibg=#313B40 gui=none ctermbg=235
+hi CursorLine   guifg=NONE    guibg=#313B40 gui=none ctermbg=235
+hi CursorLineNr guifg=#E67E80 guibg=NONE    gui=bold ctermfg=203 ctermbg=NONE cterm=bold
 hi FoldColumn                 guibg=NONE    ctermbg=NONE
-hi Folded       guifg=#A0A8B0 guibg=NONE    gui=none ctermfg=248 ctermbg=4
-hi LineNr       guifg=#303030 guibg=NONE    gui=none ctermfg=244 ctermbg=NONE
-hi MatchParen   guifg=#D0FFC0 guibg=#151515 gui=bold ctermfg=157 ctermbg=237  cterm=bold
-hi NonText      guifg=#808080 guibg=NONE    gui=none ctermfg=244 ctermbg=NONE
-hi Normal       guifg=#F4F4F5 guibg=NONE    gui=none ctermfg=253 ctermbg=NONE
-hi Pmenu        guifg=#FFFFFF guibg=#151515 gui=none ctermfg=255 ctermbg=238
-hi PmenuSel     guifg=#000000 guibg=#B1D631 gui=none ctermfg=0   ctermbg=148
-hi QuickFixLine guifg=#151515 guibg=#DACF62 gui=bold
+hi Folded       guifg=#D6A0D1 guibg=NONE    gui=none ctermfg=176 ctermbg=4
+hi LineNr       guifg=#617377 guibg=NONE    gui=none ctermfg=240 ctermbg=NONE
+hi MatchParen   guifg=#B2C98F guibg=#313B40 gui=bold ctermfg=107 ctermbg=235 cterm=bold
+hi NonText      guifg=#94AAA0 guibg=NONE    gui=none ctermfg=246 ctermbg=NONE
+hi Normal       guifg=#DDDECF guibg=NONE    gui=none ctermfg=250 ctermbg=NONE
+hi Pmenu        guifg=#DDDECF guibg=#232A2E gui=none ctermfg=250 ctermbg=235
+hi PmenuSel     guifg=#000000 guibg=#B2C98F gui=none ctermfg=0 ctermbg=107
+hi QuickFixLine guifg=#232A2E guibg=#DBBC7F gui=bold
 hi SignColumn                 guibg=NONE    ctermbg=NONE
-hi SpecialKey   guifg=#808080 guibg=NONE    gui=none ctermfg=244 ctermbg=236
-hi Title        guifg=#F6F3E8 guibg=NONE    gui=bold ctermfg=254 cterm=bold
-hi VertSplit    guifg=#3D3D3D guibg=#3D3D3D gui=none ctermfg=238 ctermbg=238
-hi Visual       guifg=#FAF4C6 guibg=#3D3D3D gui=none ctermfg=254 ctermbg=4
-hi qfFileName   guifg=#A0CC70 guibg=NONE
-hi qfLineNr     guifg=#808080 guibg=NONE
+hi SpecialKey   guifg=#94AAA0 guibg=NONE    gui=none ctermfg=246 ctermbg=236
+hi Title        guifg=#DDDECF guibg=NONE    gui=bold ctermfg=250 cterm=bold
+hi VertSplit    guifg=#4F5E62 guibg=#4F5E62 gui=none ctermfg=240 ctermbg=240
+hi Visual       guifg=#DBBC7F guibg=#4F5E62 gui=none ctermfg=179 ctermbg=4
+hi qfFileName   guifg=#B2C98F guibg=NONE
+hi qfLineNr     guifg=#94AAA0 guibg=NONE
 
-" Diffs
-hi DiffAdd    guifg=#A0CC70 guibg=NONE    gui=none ctermfg=2 ctermbg=NONE
-hi DiffChange guifg=#DACF62 guibg=NONE    gui=none ctermfg=3 ctermbg=NONE
-hi DiffDelete guifg=#DB6A61 guibg=NONE    gui=none ctermfg=1 ctermbg=NONE
-hi DiffText   guifg=NONE    guibg=#3D3D3D gui=none ctermfg=4 ctermbg=NONE
+" Diff Colors
+hi DiffAdd      guifg=#B2C98F guibg=NONE gui=none ctermfg=107 ctermbg=22
+hi DiffChange   guifg=#DBBC7F guibg=NONE gui=none ctermfg=179 ctermbg=54
+hi DiffDelete   guifg=#E67E80 guibg=NONE gui=none ctermfg=203 ctermbg=52
+hi DiffText     guifg=NONE    guibg=#4F5E62 gui=none ctermfg=240 ctermbg=237
 
-" Syntax highlighting
-hi Boolean    guifg=#FF8133 guibg=NONE gui=none   ctermfg=148
-hi Comment    guifg=#707070 guibg=NONE gui=italic ctermfg=244
-hi Constant   guifg=#FF8133 guibg=NONE gui=none   ctermfg=208
-hi Function   guifg=#FFF2EB guibg=NONE gui=none   ctermfg=255
-hi Identifier guifg=#FF8133 guibg=NONE gui=none   ctermfg=148
-hi Keyword    guifg=#FF8133 guibg=NONE gui=none   ctermfg=208
-hi Number     guifg=#FF8133 guibg=NONE gui=none   ctermfg=208
-hi PreProc    guifg=#FAF4C6 guibg=NONE gui=none   ctermfg=230
-hi Special    guifg=#FF8133 guibg=NONE gui=none   ctermfg=208
-hi Statement  guifg=#C1C1C3 guibg=NONE gui=none   ctermfg=103
-hi String     guifg=#A0CC70 guibg=NONE gui=none   ctermfg=148
-hi Todo       guifg=#FF8133 guibg=NONE gui=none   ctermfg=208
-hi Type       guifg=#C1C1C3 guibg=NONE gui=none   ctermfg=103
+" Syntax Highlighting
+hi Boolean      guifg=#E67E80 guibg=NONE gui=none   ctermfg=203
+hi Comment      guifg=#738A8B guibg=NONE gui=italic ctermfg=240
+hi Constant     guifg=#E67E80 guibg=NONE gui=none   ctermfg=203
+hi Function     guifg=#DDDECF guibg=NONE gui=none   ctermfg=250
+hi Identifier   guifg=#E69875 guibg=NONE gui=none   ctermfg=203
+hi Keyword      guifg=#E67E80 guibg=NONE gui=none   ctermfg=203
+hi Number       guifg=#E67E80 guibg=NONE gui=none   ctermfg=203
+hi PreProc      guifg=#DBBC7F guibg=NONE gui=none   ctermfg=179
+hi Special      guifg=#E67E80 guibg=NONE gui=none   ctermfg=203
+hi Statement    guifg=#D6A0D1 guibg=NONE gui=none   ctermfg=176
+hi String       guifg=#B2C98F guibg=NONE gui=none   ctermfg=107
+hi Todo         guifg=#E67E80 guibg=NONE gui=none   ctermfg=203
+hi Type         guifg=#D6A0D1 guibg=NONE gui=none   ctermfg=176
 
-" jsx/tsx tags highlighting
+" JSX/TSX tags highlighting
 hi def link htmlTag     Comment
 hi def link htmlTagName Identifier
 
 " Plugins
-hi DirvishPathTail guifg=#93C6D6 guibg=NONE gui=bold
-hi FzfBorder       guifg=#A0CC70 guibg=NONE gui=none
+hi DirvishPathTail guifg=#9BB5CF guibg=NONE gui=bold
+hi FzfBorder       guifg=#B2C98F guibg=NONE gui=none
