@@ -427,6 +427,7 @@ augroup filetype_settings
   autocmd FileType   gdscript setlocal foldmethod=expr
   autocmd FileType   gdscript let      g:godot_executable = '/Users/gv/Applications/Godot.app/Contents/MacOS/Godot'
   autocmd FileType   gdscript map <buffer> <F8> :GodotRun<CR>
+  autocmd FileType   gdscript map <buffer> <F9> :GodotRunCurrent<CR>
   autocmd BufRead    *.gdip   setlocal filetype=gdresource
   autocmd BufNewFile *.gdip   setlocal filetype=gdresource
 
