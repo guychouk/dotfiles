@@ -125,7 +125,7 @@ parse_kubectl_current_context() {
 }
 
 setopt PROMPT_SUBST
-PROMPT=$'%{\e[3 q%}%F{8}[%m] %f%F{38}%1~%F{208}$(parse_git_branch) λ %f'
+PROMPT=$'%{\e[3 q%}%F{8}[%m] %f%F{4}%1~%F{16}$(parse_git_branch) λ %f'
 
 ## PATH
 
