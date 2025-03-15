@@ -291,6 +291,7 @@ nnoremap <silent> <leader>r     :History:<CR>
 nnoremap <silent> <leader>u     :UndotreeToggle<CR>
 nnoremap <silent> <leader>s     :PicolineToggle<CR>
 nnoremap <silent> <leader>cs    :call css_color#toggle()<CR>
+nnoremap <silent> <leader>yf    :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
 nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
