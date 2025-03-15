@@ -79,6 +79,15 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
 
+# Set hostname
+MY_HOSTNAME=bpmbp
+scutil --set HostName $MY_HOSTNAME
+scutil --set LocalHostName $MY_HOSTNAME
+scutil --set ComputerName $MY_HOSTNAME
+
+# flush cache
+dscacheutil -flushcache
+
 # Kill affected applications
 for app in "Safari" \
   "Finder" \
