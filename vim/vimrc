@@ -396,11 +396,15 @@ augroup quickfix
   autocmd VimEnter        *     cwindow
   autocmd QuickFixCmdPost l*    lwindow
   autocmd QuickFixCmdPost [^l]* cwindow
+  autocmd QuickFixCmdPost *     setlocal nonumber norelativenumber
   autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
 augroup END
 
 augroup filetype_settings
   autocmd!
+
+  " Go
+  autocmd FileType go compiler
 
   " Dirvish
   autocmd FileType dirvish nmap <leader>v .kitty icat<CR>
