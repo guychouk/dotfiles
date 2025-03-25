@@ -276,6 +276,7 @@ nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
 nnoremap <silent> yoz                   :ZoomToggle<CR>
+nnoremap <silent> yoc                   :ContextToggle<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
