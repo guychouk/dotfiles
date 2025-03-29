@@ -278,6 +278,8 @@ nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
 nnoremap <silent> yoz                   :ZoomToggle<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yol                   :IndentLinesToggle<CR>
+nnoremap <silent> [oa                   :Copilot enable<CR>
+nnoremap <silent> ]oa                   :Copilot disable<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
@@ -398,7 +400,6 @@ augroup quickfix
   autocmd VimEnter        *     cwindow
   autocmd QuickFixCmdPost l*    lwindow
   autocmd QuickFixCmdPost [^l]* cwindow
-  autocmd QuickFixCmdPost *     setlocal nonumber norelativenumber
   autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
 augroup END
 
@@ -407,6 +408,7 @@ augroup filetype_settings
 
   " Go
   autocmd FileType go compiler
+  autocmd FileType go setlocal foldlevel=99
 
   " Dirvish
   autocmd FileType dirvish nmap <leader>v .kitty icat<CR>
@@ -467,8 +469,8 @@ augroup filetype_settings
   autocmd FileType markdown setlocal foldlevel=99
 
   " TypeScript
-  autocmd FileType typescript,typescriptreact setlocal tabstop=4
-  autocmd FileType typescript,typescriptreact setlocal shiftwidth=4
+  autocmd FileType typescript,typescriptreact setlocal tabstop=2
+  autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal foldlevel=99
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType typescript,typescriptreact compiler tsc
