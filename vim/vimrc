@@ -215,6 +215,20 @@ fun! MyTabLine()
   let s .= '%#TabLineFill#%T'
   return s
 endf
+
+fun! s:OpenGodotDocs()
+  let l:cmd = 'find ~/opt/godot-docs -type f -name "*.html"'
+  call fzf#run(fzf#wrap({
+        \ 'source': l:cmd,
+        \ 'sink': function('s:OsOpenSelection'),
+        \ 'options': '--prompt="Godot Docs> "'
+        \ }))
+endfunction
+
+fun! s:OsOpenSelection(selected)
+  let l:cmd = 'open ' . fnameescape(a:selected)
+  call system(l:cmd)
+endfunction
 " }}}
 
 " Appearance {{{
@@ -384,6 +398,7 @@ command -nargs=0 RemoveQfItem            call <SID>RemoveQfItem()
 command -nargs=0 ZoomToggle              call <SID>ZoomToggle()
 command -nargs=0 FzfSelectNodeModulesDir call <SID>FzfSelectNodeModulesDir()
 command -nargs=0 DiffHistory             call s:view_git_history()
+command -nargs=0 GodotDocs               call <SID>OpenGodotDocs()
 " }}}
 
 " Autocommands {{{
