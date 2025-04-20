@@ -1,5 +1,6 @@
 abbr -g "pai"="OPENAI_API_KEY=\$(pass personal_openai 2>/dev/null)"
 abbr -g "wai"="OPENAI_API_KEY=\$(pass work_openai 2>/dev/null)"
+abbr "acc"="source .venv/bin/activate"
 abbr "d"="docker"
 abbr "dcc"="docker compose"
 abbr "g"="git"
