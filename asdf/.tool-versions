@@ -1,7 +1,8 @@
-nodejs 22.13.0
+nodejs 22.14.0
 sbt 1.5.5
 golang 1.23.3
 bun 1.0.1
 ruby 3.2.2
-python 3.11.0
+python 3.12.10
 rust 1.83.0
+just 1.40.0
