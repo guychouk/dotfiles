@@ -229,6 +229,18 @@ fun! s:OsOpenSelection(selected)
   let l:cmd = 'open ' . fnameescape(a:selected)
   call system(l:cmd)
 endfunction
+
+function! GrepMotion(type)
+    if a:type ==# 'char'
+        normal! `[v`]y
+    elseif a:type ==# 'line'
+        normal! `[V`]y
+    elseif a:type ==# 'block'
+        normal! `[\<C-v>`]y
+    endif
+    let text = escape(@", '"\')
+    execute 'grep "' . text . '"'
+endfunction
 " }}}
 
 " Appearance {{{
@@ -298,6 +310,8 @@ xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
+xnoremap <silent> <localleader>/        :<C-u>call GrepMotion(visualmode())<CR>
+nnoremap <silent> <localleader>/        :set opfunc=GrepMotion<CR>g@
 " }}}
 
 " Plugins {{{
