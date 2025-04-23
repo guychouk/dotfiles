@@ -127,25 +127,6 @@ parse_kubectl_current_context() {
 setopt PROMPT_SUBST
 PROMPT=$'%{\e[3 q%}%F{8}[%m] %f%F{4}%1~%F{16}$(parse_git_branch) λ %f'
 
-## PATH
-
-export PATH="${GEM_HOME}:${GOPATH}/bin:${HOME}/bin:${HOME}/scripts:${HOME}/.local/bin:${PATH}"
-
-update_path_for_node_modules() {
-  local node_bin="${PWD}/node_modules/.bin"
-  # Remove any existing node_modules/.bin from PATH
-  PATH=$(echo "${PATH}" | awk -v RS=: -v ORS=: '/node_modules\/.bin/ {next} {print}' | sed 's/:$//')
-  if [[ -d "${node_bin}" ]]; then
-    export PATH="${node_bin}:${PATH}"
-  fi
-}
-
-chpwd() {
-  update_path_for_node_modules
-}
-
-update_path_for_node_modules
-
 ## Syntax highlighting
 
 function () {
@@ -169,14 +150,6 @@ function () {
 _has() {
   return $(whence $1 &>/dev/null)
 }
-
-export ASDF_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_DATA_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
-[ -d "${XDG_CONFIG_HOME}/asdf" ] || mkdir -p "${XDG_CONFIG_HOME}/asdf"
-[ -d "${ASDF_DIR}" ] || git clone https://github.com/asdf-vm/asdf.git $ASDF_DIR --branch v0.10.0
-source "${ASDF_DIR}/asdf.sh"
-fpath=("${ASDF_DIR}/completions" $fpath)
 
 if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
   export HOMEBREW_CASK_OPTS="--appdir=/Applications"
@@ -234,3 +207,21 @@ if _has sgpt; then
   zle -N _sgpt_zsh
   bindkey ^] _sgpt_zsh
 fi
+
+## PATH
+
+export ASDF_DIR="${XDG_DATA_HOME}/asdf"
+export ASDF_DATA_DIR="${ASDF_DIR}"
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
+mkdir -p "$XDG_CONFIG_HOME/asdf"
+[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch v0.10.0
+source "$ASDF_DIR/asdf.sh"
+
+update_path_for_node_modules() {
+  PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
+  [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
+}
+chpwd() { update_path_for_node_modules; }
+update_path_for_node_modules
+
+export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$GOPATH/bin:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
