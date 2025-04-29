@@ -1,3 +1,4 @@
+· add to docs the rules for a git commit message
 · check what the opposite of gpg --sign command is
 · organize gman.vim
 · write a blog post on using rooter with package.json and grep for a live documentation flow
