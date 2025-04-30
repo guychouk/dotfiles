@@ -436,7 +436,7 @@ augroup filetype_settings
   autocmd!
 
   " Go
-  autocmd FileType go compiler
+  autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
 
   " Dirvish
