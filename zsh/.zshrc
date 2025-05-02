@@ -1,5 +1,3 @@
-## Environment Variables
-
 export VISUAL=vim
 export EDITOR="${VISUAL}"
 export LANG="en_US.UTF-8"
@@ -91,7 +89,7 @@ bindkey -e                          # selects keymap `emacs` & set as main keyma
 bindkey "^U" backward-kill-line     # kill backwards from cursor to the beginning of the line
 
 # Let ^W delete to slashes (taken from statico's dotfiles)
-backward-delete-to-slash() {
+function backward-delete-to-slash() {
   local WORDCHARS=${WORDCHARS//\//}
   zle .backward-delete-word
 }
@@ -112,16 +110,16 @@ export LS_COLORS="di=36:fi=37:ln=34:ex=32:pi=33:so=35:bd=46:cd=43"
 ## Prompt
 
 parse_git_branch() {
-	case "${PWD}" in
-		/net/*|/Volumes/*) return ;;
-	esac
-	git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
-	if [ ! "${git_branch}" ]; then printf ""; else printf " [${git_branch}]"; fi
+  case "${PWD}" in
+    /net/*|/Volumes/*) return ;;
+  esac
+  git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
+  if [ ! "${git_branch}" ]; then printf ""; else printf " [${git_branch}]"; fi
 }
 
 parse_kubectl_current_context() {
-	kube_context=$(kubectl config current-context 2> /dev/null)
-	if [ ! "${kube_context}" ]; then printf ""; else printf " [${kube_context}]"; fi
+  kube_context=$(kubectl config current-context 2> /dev/null)
+  if [ ! "${kube_context}" ]; then printf ""; else printf " [${kube_context}]"; fi
 }
 
 setopt PROMPT_SUBST
@@ -145,20 +143,45 @@ function () {
   [ -f "${zsh_abbr_plugin}" ] && source "${zsh_abbr_plugin}"
 }
 
-## Programs
+## Hooks
 
-_has() {
-  return $(whence $1 &>/dev/null)
+function update_path_for_node_modules() {
+  PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
+  [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
 }
+function auto_activate_venv() {
+  if [ -e ".venv/bin/activate" ]; then
+    source .venv/bin/activate
+  fi
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd auto_activate_venv
+add-zsh-hook chpwd update_path_for_node_modules
+auto_activate_venv
+update_path_for_node_modules
+
+## PATH
+
+export ASDF_DIR="${XDG_DATA_HOME}/asdf"
+export ASDF_DATA_DIR="${ASDF_DIR}"
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+mkdir -p "$XDG_CONFIG_HOME/asdf"
+[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch v0.10.0
+source "$ASDF_DIR/asdf.sh"
 
 if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
   export HOMEBREW_CASK_OPTS="--appdir=/Applications"
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-if _has process-compose; then
-  source <(process-compose completion zsh)
-fi
+export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$(go env GOBIN):$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
+
+## Programs
+
+_has() {
+  return $(whence $1 &>/dev/null)
+}
 
 if _has eza; then
   alias ll='eza -lag --time-style=long-iso --group-directories-first --color=always'
@@ -186,8 +209,8 @@ if _has fzf; then
 fi
 
 if _has direnv; then
-	export DIRENV_LOG_FORMAT=
-	eval "$(direnv hook zsh)"
+  export DIRENV_LOG_FORMAT=
+  eval "$(direnv hook zsh)"
 fi
 
 if _has zoxide; then
@@ -206,23 +229,5 @@ if _has sgpt; then
   }
   zle -N _sgpt_zsh
   bindkey ^] _sgpt_zsh
+  export OPENAI_API_KEY=$(pass show openai)
 fi
-
-## PATH
-
-export ASDF_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_DATA_DIR="${ASDF_DIR}"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
-export ASDF_GOLANG_MOD_VERSION_ENABLED=true
-mkdir -p "$XDG_CONFIG_HOME/asdf"
-[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch v0.10.0
-source "$ASDF_DIR/asdf.sh"
-
-update_path_for_node_modules() {
-  PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
-  [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
-}
-chpwd() { update_path_for_node_modules; }
-update_path_for_node_modules
-
-export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$(go env GOBIN):$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
