@@ -298,6 +298,7 @@ nnoremap          <leader>t             :tjump<Space>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
+nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
@@ -373,7 +374,7 @@ let g:signify_sign_change_delete = '∙'
 let g:user_emmet_install_global = 0
 " }}}
 " indentLine {{{
-let g:indentLine_fileType = ['yaml', 'yml']
+let g:indentLine_fileType = ['yaml', 'yml', 'python', 'gdscript']
 " }}}
 " Goyo {{{
 let g:goyo_width = 120
