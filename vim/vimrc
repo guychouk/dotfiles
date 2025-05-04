@@ -74,6 +74,15 @@ filetype plugin indent on
 " }}}
 
 " Functions {{{
+function! s:FzfSelectSitePackagesDir()
+  let l:cmd = 'find $(python -c "import site; print(site.getsitepackages()[0])") -mindepth 1 -maxdepth 1 -type d'
+  call fzf#run(fzf#wrap({
+        \ 'source': l:cmd,
+        \ 'sink': function('s:OpenDirInNewTab'),
+        \ 'options': '--prompt="site_packages> "'
+        \ }))
+endfunction
+
 function! s:FzfSelectNodeModulesDir()
   let l:cmd = 'find node_modules -mindepth 1 -maxdepth 1 -type d'
   call fzf#run(fzf#wrap({
@@ -84,7 +93,9 @@ function! s:FzfSelectNodeModulesDir()
 endfunction
 
 function! s:OpenDirInNewTab(selected)
-  execute 'tabnew | edit ' . fnameescape(a:selected)
+  execute 'tabnew'
+  execute 'edit ' . fnameescape(a:selected)
+  execute 'tcd '  . fnameescape(a:selected)
 endfunction
 
 fun! s:Highlight()
@@ -328,6 +339,8 @@ nnoremap <silent> <leader>yf    :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
 nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
+nnoremap          <leader>sp    :call <SID>FzfSelectSitePackagesDir()<CR>
+nnoremap          <leader>pp    :Rooter<CR>
 nnoremap          gz            <Plug>(characterize)
 nnoremap          ga            <Plug>(EasyAlign)
 xnoremap          ga            <Plug>(EasyAlign)
@@ -357,6 +370,7 @@ let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
 " }}}
 " Rooter {{{
 let g:rooter_patterns = ['.git', 'Makefile', 'package.json', '.envrc']
+let g:rooter_manual_only = 1
 " }}}
 " GH-Line {{{
 let g:gh_line_map_default       = 0
@@ -406,14 +420,15 @@ endif
 "}}}
 
 " Commands {{{
-command -nargs=0 Highlight               call <SID>Highlight()
-command -nargs=0 CleanUndoFiles          call <SID>CleanUndoFiles()
-command -nargs=0 QfBuffers               call <SID>AddOpenBuffersToList()
-command -nargs=0 RemoveQfItem            call <SID>RemoveQfItem()
-command -nargs=0 ZoomToggle              call <SID>ZoomToggle()
-command -nargs=0 FzfSelectNodeModulesDir call <SID>FzfSelectNodeModulesDir()
-command -nargs=0 DiffHistory             call s:view_git_history()
-command -nargs=0 GodotDocs               call <SID>OpenGodotDocs()
+command -nargs=0 Highlight                call <SID>Highlight()
+command -nargs=0 CleanUndoFiles           call <SID>CleanUndoFiles()
+command -nargs=0 QfBuffers                call <SID>AddOpenBuffersToList()
+command -nargs=0 RemoveQfItem             call <SID>RemoveQfItem()
+command -nargs=0 ZoomToggle               call <SID>ZoomToggle()
+command -nargs=0 FzfSelectNodeModulesDir  call <SID>FzfSelectNodeModulesDir()
+command -nargs=0 FzfSelectSitePackagesDir call <SID>FzfSelectSitePackagesDir()
+command -nargs=0 DiffHistory              call s:view_git_history()
+command -nargs=0 GodotDocs                call <SID>OpenGodotDocs()
 " }}}
 
 " Autocommands {{{
