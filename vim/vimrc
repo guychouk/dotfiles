@@ -96,6 +96,7 @@ function! s:OpenDirInNewTab(selected)
   execute 'tabnew'
   execute 'edit ' . fnameescape(a:selected)
   execute 'tcd '  . fnameescape(a:selected)
+  execute '!ctags -R .'
 endfunction
 
 fun! s:Highlight()

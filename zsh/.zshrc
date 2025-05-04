@@ -143,23 +143,6 @@ function () {
   [ -f "${zsh_abbr_plugin}" ] && source "${zsh_abbr_plugin}"
 }
 
-## Hooks
-
-function update_path_for_node_modules() {
-  PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
-  [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
-}
-function auto_activate_venv() {
-  if [ -e ".venv/bin/activate" ]; then
-    source .venv/bin/activate
-  fi
-}
-autoload -U add-zsh-hook
-add-zsh-hook chpwd auto_activate_venv
-add-zsh-hook chpwd update_path_for_node_modules
-auto_activate_venv
-update_path_for_node_modules
-
 ## PATH
 
 export ASDF_DIR="${XDG_DATA_HOME}/asdf"
@@ -216,3 +199,31 @@ fi
 if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
+
+## Hooks
+
+function update_path_for_node_modules() {
+  PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
+  [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
+}
+function auto_virtualenv() {
+  # If already in the desired virtualenv, do nothing
+  if [[ -n "$VIRTUAL_ENV" && "$PWD" == "$VIRTUAL_ENV"* ]]; then
+    return
+  fi
+  # Deactivate if leaving the virtualenv directory
+  if [[ -n "$VIRTUAL_ENV" && "$PWD" != "$VIRTUAL_ENV_WORKDIR"* ]]; then
+    deactivate
+    unset VIRTUAL_ENV_WORKDIR
+  fi
+  # Activate if .venv exists in the current directory
+  if [[ -e ".venv/bin/activate" ]]; then
+    source .venv/bin/activate
+    export VIRTUAL_ENV_WORKDIR="$PWD"
+  fi
+}
+autoload -U add-zsh-hook
+add-zsh-hook chpwd auto_virtualenv
+add-zsh-hook chpwd update_path_for_node_modules
+auto_virtualenv
+update_path_for_node_modules
