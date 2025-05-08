@@ -306,7 +306,7 @@ nnoremap <silent> <C-A-k>               :resize -5<CR>
 nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
 nnoremap <silent> <leader>q             :bd<CR>
 nnoremap <silent> <leader>w             :w<CR>
-nnoremap          <leader>t             :tjump<Space>
+nnoremap          <leader>tj            :tjump<Space>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
@@ -342,6 +342,7 @@ nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
 nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
 nnoremap          <leader>sp    :call <SID>FzfSelectSitePackagesDir()<CR>
 nnoremap          <leader>pp    :Rooter<CR>
+nnoremap          <leader>tb    :Tagbar<CR>
 nnoremap          gz            <Plug>(characterize)
 nnoremap          ga            <Plug>(EasyAlign)
 xnoremap          ga            <Plug>(EasyAlign)
@@ -480,7 +481,7 @@ augroup filetype_settings
 
   " Godot
   autocmd FileType   gdscript setlocal foldmethod=expr
-  autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 0,0'
+  autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 500,0'
   autocmd FileType   gdscript map <buffer> <F8> :GodotRun<CR>
   autocmd FileType   gdscript map <buffer> <F9> :GodotRunCurrent<CR>
   autocmd FileType   gdscript map <buffer> <leader>d :GodotDocs<CR>
