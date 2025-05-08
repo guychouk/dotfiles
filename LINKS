@@ -14,3 +14,4 @@ yazi                                ~/.config/yazi
 zsh                                 ~/.config/zsh
 zsh/.zshrc                          ~/.zshrc
 newsboat                            ~/.config/newsboat
+aichat                              ~/.config/aichat
