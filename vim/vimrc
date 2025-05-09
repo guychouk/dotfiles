@@ -74,135 +74,13 @@ let g:loaded_netrwPlugin = 1
 filetype plugin indent on
 " }}}
 
-" Functions {{{
-function! s:FzfSelectSitePackagesDir()
-  let l:cmd = 'find $(python -c "import site; print(site.getsitepackages()[0])") -mindepth 1 -maxdepth 1 -type d'
-  call fzf#run(fzf#wrap({
-        \ 'source': l:cmd,
-        \ 'sink': function('s:OpenDirInNewTab'),
-        \ 'options': '--prompt="site_packages> "'
-        \ }))
-endfunction
+" Appearance {{{
+syntax enable
 
-function! s:FzfSelectNodeModulesDir()
-  let l:cmd = 'find node_modules -mindepth 1 -maxdepth 1 -type d'
-  call fzf#run(fzf#wrap({
-        \ 'source': l:cmd,
-        \ 'sink': function('s:OpenDirInNewTab'),
-        \ 'options': '--prompt="node_modules> "'
-        \ }))
-endfunction
+set list
+set cmdheight=1
 
-function! s:OpenDirInNewTab(selected)
-  execute 'tabnew'
-  execute 'edit ' . fnameescape(a:selected)
-  execute 'tcd '  . fnameescape(a:selected)
-  execute '!ctags -R .'
-endfunction
-
-fun! s:Highlight()
-  redir @a | highlight | redir END | new | put a
-endf
-
-fun! s:CleanUndoFiles()
-  !find ~/.vim/tmp/undo -type f -mtime +100d \! -name '.gitignore' -delete
-endf
-
-fun! s:ZoomToggle() abort
-  if exists('t:zoomed') && t:zoomed
-    execute t:zoom_winrestcmd
-    let t:zoomed = 0
-  else
-    let t:zoom_winrestcmd = winrestcmd()
-    resize
-    vertical resize
-    let t:zoomed = 1
-  endif
-endf
-
-fun! s:AddOpenBuffersToList()
-  let qf_list = map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr": v:val}')
-  call setqflist(qf_list)
-  copen
-endf
-
-fun! s:RemoveQfItem()
-  let curqfidx = line('.') - 1
-  let qfall = getqflist()
-  call remove(qfall, curqfidx)
-  call setqflist(qfall, 'r')
-  execute curqfidx + 1 . "cfirst"
-  :copen
-endf
-
-" http://ddrscott.github.io/blog/2016/vim-toggle-movement/
-fun! s:ToggleMovement(firstOp, thenOp)
-  let pos = getpos('.')
-  execute "normal! " . a:firstOp
-  if pos == getpos('.')
-    execute "normal! " . a:thenOp
-  endif
-endf
-
-function! s:WinMoveOrSplit(key)
-  let t:curwin = winnr()
-  exec "wincmd ".a:key
-  if (t:curwin == winnr())
-    if (match(a:key,'[jk]'))
-      wincmd v
-    else
-      wincmd s
-    endif
-    exec "wincmd ".a:key
-  endif
-endfunction
-
-fun! SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endf
-
-fun! s:view_git_history() abort
-  Git difftool --name-only ! !^@
-  call s:diff_current_quickfix_entry()
-  " Bind <CR> for current quickfix window to properly set up diff split layout after selecting an item
-  " There's probably a better way to map this without changing the window
-  copen
-  nnoremap <buffer> <CR> <CR><BAR>:call <sid>diff_current_quickfix_entry()<CR>
-  wincmd p
-endf
-
-fun! s:diff_current_quickfix_entry() abort
-  " Cleanup windows
-  for window in getwininfo()
-    if window.winnr !=? winnr() && bufname(window.bufnr) =~? '^fugitive:'
-      exe 'bdelete' window.bufnr
-    endif
-  endfor
-  cc
-  call s:add_mappings()
-  let qf = getqflist({'context': 0, 'idx': 0})
-  if get(qf, 'idx') && type(get(qf, 'context')) == type({}) && type(get(qf.context, 'items')) == type([])
-    let diff = get(qf.context.items[qf.idx - 1], 'diff', [])
-    echom string(reverse(range(len(diff))))
-    for i in reverse(range(len(diff)))
-      exe (i ? 'leftabove' : 'rightbelow') 'vert diffsplit' fnameescape(diff[i].filename)
-      call s:add_mappings()
-    endfor
-  endif
-endf
-
-fun! s:add_mappings() abort
-  nnoremap <buffer>]q :cnext <BAR> :call <sid>diff_current_quickfix_entry()<CR>
-  nnoremap <buffer>[q :cprevious <BAR> :call <sid>diff_current_quickfix_entry()<CR>
-  " Reset quickfix height. Sometimes it messes up after selecting another item
-  11copen
-  wincmd p
-endf
-
-fun! MyTabLine()
+function! MyTabLine()
   let s = ''
   for i in range(tabpagenr('$'))
     " Select the highlighting
@@ -227,40 +105,7 @@ fun! MyTabLine()
   " Fill the rest of the tabline
   let s .= '%#TabLineFill#%T'
   return s
-endf
-
-fun! s:OpenGodotDocs()
-  let l:cmd = 'find ~/opt/godot-docs -type f -name "*.html"'
-  call fzf#run(fzf#wrap({
-        \ 'source': l:cmd,
-        \ 'sink': function('s:OsOpenSelection'),
-        \ 'options': '--prompt="Godot Docs> "'
-        \ }))
 endfunction
-
-fun! s:OsOpenSelection(selected)
-  let l:cmd = 'open ' . fnameescape(a:selected)
-  call system(l:cmd)
-endfunction
-
-function! GrepMotion(type)
-    if a:type ==# 'char'
-        normal! `[v`]y
-    elseif a:type ==# 'line'
-        normal! `[V`]y
-    elseif a:type ==# 'block'
-        normal! `[\<C-v>`]y
-    endif
-    let text = escape(@", '"\')
-    execute 'grep "' . text . '"'
-endfunction
-" }}}
-
-" Appearance {{{
-syntax enable
-
-set list
-set cmdheight=1
 set tabline=%!MyTabLine()
 
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
@@ -284,15 +129,15 @@ let mapleader = "\<Space>"
 let maplocalleader = ","
 
 " Tab & Window Management
-nnoremap <silent> <C-w>h                :call <SID>WinMoveOrSplit('h')<CR>
-nnoremap <silent> <C-w>j                :call <SID>WinMoveOrSplit('j')<CR>
-nnoremap <silent> <C-w>k                :call <SID>WinMoveOrSplit('k')<CR>
-nnoremap <silent> <C-w>l                :call <SID>WinMoveOrSplit('l')<CR>
+nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
+nnoremap <silent> <C-w>j                :WinMoveOrSplit j<CR>
+nnoremap <silent> <C-w>k                :WinMoveOrSplit k<CR>
+nnoremap <silent> <C-w>l                :WinMoveOrSplit l<CR>
 nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
 nnoremap <silent> <C-A-j>               :resize +5<CR>
 nnoremap <silent> <C-A-k>               :resize -5<CR>
 nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
-nnoremap <silent> yoz                   :ZoomToggle<CR>
+nnoremap <silent> yoz                   <Plug>ZoomToggle
 nnoremap          H                     gT
 nnoremap          L                     gt
 
@@ -322,41 +167,37 @@ nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
-nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
+nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
-xnoremap <silent> <localleader>/        :<C-u>call GrepMotion(visualmode())<CR>
-nnoremap <silent> <localleader>/        :set opfunc=GrepMotion<CR>g@
 " }}}
 
 " Plugins {{{
-" Bindings {{{
-nnoremap <silent> <leader>g     :Git<CR>
-nnoremap <silent> <leader>o     :Files<CR>
-nnoremap <silent> <leader>.     :GFiles<CR>
-nnoremap <silent> <leader>r     :History:<CR>
-nnoremap <silent> <leader>u     :UndotreeToggle<CR>
-nnoremap <silent> <leader>s     :PicolineToggle<CR>
-nnoremap <silent> <leader>cs    :call css_color#toggle()<CR>
-nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
-nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
-nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
-nnoremap          <leader>sp    :call <SID>FzfSelectSitePackagesDir()<CR>
-nnoremap          <leader>pp    :Rooter<CR>
-nnoremap          <leader>tb    :Tagbar<CR>
-nnoremap <silent> yoc           :ContextToggle<CR>
-nnoremap <silent> yol           :IndentLinesToggle<CR>
-nnoremap          gz            <Plug>(characterize)
-nnoremap          ga            <Plug>(EasyAlign)
-xnoremap          ga            <Plug>(EasyAlign)
-xnoremap <silent> <leader><Tab> <Plug>(fzf-maps-x)
-onoremap <silent> <leader><Tab> <Plug>(fzf-maps-o)
-inoremap <silent> <C-x><C-k>    <Plug>(fzf-complete-word)
-inoremap <silent> <C-x><C-l>    <Plug>(fzf-complete-line)
-inoremap <silent> <C-x><C-f>    <Plug>(fzf-complete-path)
-" }}}
+nnoremap <silent> <leader>g             :Git<CR>
+nnoremap <silent> <leader>o             :Files<CR>
+nnoremap <silent> <leader>.             :GFiles<CR>
+nnoremap <silent> <leader>r             :History:<CR>
+nnoremap <silent> <leader>u             :UndotreeToggle<CR>
+nnoremap <silent> <leader>s             :PicolineToggle<CR>
+nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
+nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
+nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
+nnoremap          <leader>pp            :Rooter<CR>
+nnoremap          <leader>tb            :Tagbar<CR>
+nnoremap          <leader>nm            <Plug>FzfNodeModules
+nnoremap          <leader>sp            <Plug>FzfSitePackages
+nnoremap <silent> yoc                   :ContextToggle<CR>
+nnoremap <silent> yol                   :IndentLinesToggle<CR>
+nnoremap          gz                    <Plug>(characterize)
+nnoremap          ga                    <Plug>(EasyAlign)
+xnoremap          ga                    <Plug>(EasyAlign)
+xnoremap <silent> <leader><Tab>         <Plug>(fzf-maps-x)
+onoremap <silent> <leader><Tab>         <Plug>(fzf-maps-o)
+inoremap <silent> <C-x><C-k>            <Plug>(fzf-complete-word)
+inoremap <silent> <C-x><C-l>            <Plug>(fzf-complete-line)
+inoremap <silent> <C-x><C-f>            <Plug>(fzf-complete-path)
 " Man {{{
 runtime ftplugin/man.vim
 " }}}
@@ -416,19 +257,13 @@ let g:minisnip_trigger = '<C-j>'
 if executable('rg')
   set grepprg=rg\ --vimgrep\ -g\ '!tags'\ -g\ '!.git'\ --hidden
 endif
+" vim expects opfuncs to already be loaded so autoload is no bueno
+function! GrepMotionWrapper(type) abort
+  return utils#GrepMotion(a:type)
+endfunction
+xnoremap <silent> <localleader>/        :<C-u>call GrepMotionWrapper(visualmode())<CR>
+nnoremap <silent> <localleader>/        :set opfunc=GrepMotionWrapper<CR>g@
 "}}}
-
-" Commands {{{
-command -nargs=0 Highlight                call <SID>Highlight()
-command -nargs=0 CleanUndoFiles           call <SID>CleanUndoFiles()
-command -nargs=0 QfBuffers                call <SID>AddOpenBuffersToList()
-command -nargs=0 RemoveQfItem             call <SID>RemoveQfItem()
-command -nargs=0 ZoomToggle               call <SID>ZoomToggle()
-command -nargs=0 FzfSelectNodeModulesDir  call <SID>FzfSelectNodeModulesDir()
-command -nargs=0 FzfSelectSitePackagesDir call <SID>FzfSelectSitePackagesDir()
-command -nargs=0 DiffHistory              call s:view_git_history()
-command -nargs=0 GodotDocs                call <SID>OpenGodotDocs()
-" }}}
 
 " Autocommands {{{
 
