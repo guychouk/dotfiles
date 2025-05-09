@@ -60,6 +60,7 @@ set nolangremap
 set path+=**
 set t_vb=
 set noerrorbells
+set noequalalways
 if has('macunix')
   set clipboard=unnamed
 elseif has('unix')
@@ -282,6 +283,18 @@ colorscheme gman
 let mapleader = "\<Space>"
 let maplocalleader = ","
 
+" Window Management
+nnoremap <silent> <C-w>h                :call <SID>WinMoveOrSplit('h')<CR>
+nnoremap <silent> <C-w>j                :call <SID>WinMoveOrSplit('j')<CR>
+nnoremap <silent> <C-w>k                :call <SID>WinMoveOrSplit('k')<CR>
+nnoremap <silent> <C-w>l                :call <SID>WinMoveOrSplit('l')<CR>
+nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
+nnoremap <silent> <C-A-j>               :resize +5<CR>
+nnoremap <silent> <C-A-k>               :resize -5<CR>
+nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
+nnoremap <silent> yoz                   :ZoomToggle<CR>
+
+" The rest
 nnoremap          j                     gj
 nnoremap          k                     gk
 nnoremap          Q                     :qa<CR>
@@ -296,17 +309,8 @@ nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <C-e>                 :e#<CR>
-nnoremap <silent> <C-w>h                :call <SID>WinMoveOrSplit('h')<CR>
-nnoremap <silent> <C-w>j                :call <SID>WinMoveOrSplit('j')<CR>
-nnoremap <silent> <C-w>k                :call <SID>WinMoveOrSplit('k')<CR>
-nnoremap <silent> <C-w>l                :call <SID>WinMoveOrSplit('l')<CR>
-nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
-nnoremap <silent> <C-A-j>               :resize +5<CR>
-nnoremap <silent> <C-A-k>               :resize -5<CR>
-nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
 nnoremap <silent> <leader>q             :bd<CR>
 nnoremap <silent> <leader>w             :w<CR>
-nnoremap          <leader>tj            :tjump<Space>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
@@ -314,11 +318,6 @@ nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
-nnoremap <silent> yoz                   :ZoomToggle<CR>
-nnoremap <silent> yoc                   :ContextToggle<CR>
-nnoremap <silent> yol                   :IndentLinesToggle<CR>
-nnoremap <silent> [oa                   :Copilot enable<CR>
-nnoremap <silent> ]oa                   :Copilot disable<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
@@ -343,6 +342,8 @@ nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
 nnoremap          <leader>sp    :call <SID>FzfSelectSitePackagesDir()<CR>
 nnoremap          <leader>pp    :Rooter<CR>
 nnoremap          <leader>tb    :Tagbar<CR>
+nnoremap <silent> yoc           :ContextToggle<CR>
+nnoremap <silent> yol           :IndentLinesToggle<CR>
 nnoremap          gz            <Plug>(characterize)
 nnoremap          ga            <Plug>(EasyAlign)
 xnoremap          ga            <Plug>(EasyAlign)
@@ -351,7 +352,6 @@ onoremap <silent> <leader><Tab> <Plug>(fzf-maps-o)
 inoremap <silent> <C-x><C-k>    <Plug>(fzf-complete-word)
 inoremap <silent> <C-x><C-l>    <Plug>(fzf-complete-line)
 inoremap <silent> <C-x><C-f>    <Plug>(fzf-complete-path)
-inoremap <silent> <C-x><C-p>    <Plug>(copilot-suggest)
 " }}}
 " Man {{{
 runtime ftplugin/man.vim
@@ -392,15 +392,8 @@ let g:user_emmet_install_global = 0
 " indentLine {{{
 let g:indentLine_fileType = ['yaml', 'yml', 'python', 'gdscript']
 " }}}
-" Goyo {{{
-let g:goyo_width = 120
-" }}}
 " Undotree {{{
 let g:undotree_DiffAutoOpen = 0
-" }}}
-" Copilot {{{
-let g:copilot_enabled = 0
-let g:copilot_filetypes = { 'fzf': v:false, 'dirvish': v:false }
 " }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
