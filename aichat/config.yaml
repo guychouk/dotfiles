@@ -1,3 +1,4 @@
+wrap: 120
 clients:
   - type: openai-compatible
     name: ollama
