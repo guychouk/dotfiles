@@ -283,7 +283,7 @@ colorscheme gman
 let mapleader = "\<Space>"
 let maplocalleader = ","
 
-" Window Management
+" Tab & Window Management
 nnoremap <silent> <C-w>h                :call <SID>WinMoveOrSplit('h')<CR>
 nnoremap <silent> <C-w>j                :call <SID>WinMoveOrSplit('j')<CR>
 nnoremap <silent> <C-w>k                :call <SID>WinMoveOrSplit('k')<CR>
@@ -293,29 +293,34 @@ nnoremap <silent> <C-A-j>               :resize +5<CR>
 nnoremap <silent> <C-A-k>               :resize -5<CR>
 nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
 nnoremap <silent> yoz                   :ZoomToggle<CR>
-
-" The rest
-nnoremap          j                     gj
-nnoremap          k                     gk
-nnoremap          Q                     :qa<CR>
-nnoremap          Y                     y$
-nnoremap          R                     :%s//g<Left><Left>
 nnoremap          H                     gT
 nnoremap          L                     gt
+
+" close buffer but keep the split
+nnoremap <silent> <leader>q             :b#<bar>bd#<CR>
+" allows navigating wrapped lines with j,k
+nnoremap          j                     gj
+nnoremap          k                     gk
+" delete/change the word under cursor and enables more
+" deletes/changes by hitting (n)ext followed by . (dot)
 nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+
+nnoremap          Q                     :qa<CR>
+nnoremap          Y                     y$
+nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <C-e>                 :e#<CR>
-nnoremap <silent> <leader>q             :bd<CR>
 nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
 nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> 0                     :call <SID>ToggleMovement('^', '0')<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
@@ -335,7 +340,6 @@ nnoremap <silent> <leader>r     :History:<CR>
 nnoremap <silent> <leader>u     :UndotreeToggle<CR>
 nnoremap <silent> <leader>s     :PicolineToggle<CR>
 nnoremap <silent> <leader>cs    :call css_color#toggle()<CR>
-nnoremap <silent> <leader>yf    :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader>hd    :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu    :SignifyHunkUndo<CR>
 nnoremap          <leader>nm    :call <SID>FzfSelectNodeModulesDir()<CR>
@@ -485,7 +489,6 @@ augroup filetype_settings
   autocmd FileType git       setlocal foldlevel=99
   autocmd FileType gitcommit setlocal bufhidden=delete
   autocmd FileType gitcommit setlocal spell
-  autocmd FileType gitcommit iabbrev  <buffer> bps bp_skip_tests
   autocmd FileType gitrebase setlocal bufhidden=delete
   autocmd FileType gitrebase setlocal spell
 
