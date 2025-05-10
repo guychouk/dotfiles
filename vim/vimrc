@@ -188,6 +188,7 @@ nnoremap          <leader>an            :Rooter<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>nm            <Plug>FzfNodeModules
 nnoremap          <leader>pp            <Plug>FzfSitePackages
+nnoremap          <leader>go            <Plug>FzfGoModules
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yol                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)

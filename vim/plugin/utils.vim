@@ -1,3 +1,15 @@
+function! s:FzfGoModules()
+  let l:gopath = system('go env GOPATH')
+  let l:gopath = substitute(l:gopath, '\n', '', '')
+  let l:mod_cache = l:gopath . '/pkg/mod'
+  let l:cmd = 'find ' . shellescape(l:mod_cache) . ' -mindepth 1 -maxdepth 3 -type d'
+  call fzf#run(fzf#wrap({
+        \ 'source': l:cmd,
+        \ 'sink': function('s:OpenDirInNewTab'),
+        \ 'options': '--prompt="go_mod_cache> "'
+        \ }))
+endfunction
+
 function! s:FzfSitePackages()
   let l:cmd = 'find $(python -c "import site; print(site.getsitepackages()[0])") -mindepth 1 -maxdepth 1 -type d'
   call fzf#run(fzf#wrap({
@@ -155,3 +167,4 @@ command! -bar -nargs=0 SynStack          call <sid>SynStack()
 nnoremap <Plug>ZoomToggle                :call <sid>ZoomToggle()<cr>
 nnoremap <Plug>FzfNodeModules            :call <sid>FzfNodeModules()<cr>
 nnoremap <Plug>FzfSitePackages           :call <sid>FzfSitePackages()<cr>
+nnoremap <Plug>FzfGoModules              :call <sid>FzfGoModules()<cr>
