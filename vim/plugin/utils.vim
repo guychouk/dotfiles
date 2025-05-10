@@ -10,7 +10,7 @@ function! s:FzfGoModules()
         \ }))
 endfunction
 
-function! s:FzfSitePackages()
+function! s:FzfPythonPackages()
   let l:cmd = 'find $(python -c "import site; print(site.getsitepackages()[0])") -mindepth 1 -maxdepth 1 -type d'
   call fzf#run(fzf#wrap({
         \ 'source': l:cmd,
@@ -166,5 +166,5 @@ command! -bar -nargs=0 SynStack          call <sid>SynStack()
 
 nnoremap <Plug>ZoomToggle                :call <sid>ZoomToggle()<cr>
 nnoremap <Plug>FzfNodeModules            :call <sid>FzfNodeModules()<cr>
-nnoremap <Plug>FzfSitePackages           :call <sid>FzfSitePackages()<cr>
+nnoremap <Plug>FzfPythonPackages         :call <sid>FzfPythonPackages()<cr>
 nnoremap <Plug>FzfGoModules              :call <sid>FzfGoModules()<cr>
