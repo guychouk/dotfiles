@@ -150,6 +150,7 @@ command! -bar -nargs=0 Highlight         call <sid>Highlight()
 command! -bar -nargs=0 CleanUndoFiles    call <sid>CleanUndoFiles()
 command! -bar -nargs=0 QfBuffers         call <sid>AddOpenBuffersToList()
 command! -bar -nargs=0 GodotDocs         call <sid>OpenGodotDocs()
+command! -bar -nargs=0 SynStack          call <sid>SynStack()
 
 nnoremap <Plug>ZoomToggle                :call <sid>ZoomToggle()<cr>
 nnoremap <Plug>FzfNodeModules            :call <sid>FzfNodeModules()<cr>

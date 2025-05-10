@@ -184,10 +184,10 @@ nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
-nnoremap          <leader>pp            :Rooter<CR>
+nnoremap          <leader>an            :Rooter<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>nm            <Plug>FzfNodeModules
-nnoremap          <leader>sp            <Plug>FzfSitePackages
+nnoremap          <leader>pp            <Plug>FzfSitePackages
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yol                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
