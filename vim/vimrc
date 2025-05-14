@@ -184,7 +184,6 @@ nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
-nnoremap          <leader>an            :Rooter<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>nm            <Plug>FzfNodeModules
 nnoremap          <leader>pp            <Plug>FzfPythonPackages
@@ -215,10 +214,6 @@ packadd comment
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
-" }}}
-" Rooter {{{
-let g:rooter_patterns = ['.git', 'Makefile', 'package.json', '.envrc']
-let g:rooter_manual_only = 1
 " }}}
 " GH-Line {{{
 let g:gh_line_map_default       = 0
