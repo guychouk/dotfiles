@@ -199,6 +199,10 @@ if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
 
+if _has trash; then
+  alias rm=trash
+fi
+
 ## Hooks
 
 function update_path_for_node_modules() {
