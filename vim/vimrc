@@ -305,6 +305,10 @@ augroup filetype_settings
 
   " Dirvish
   autocmd FileType dirvish nmap <leader>v .kitty icat<CR>
+  "" Map `t` to open in new tab.
+  autocmd FileType dirvish
+    \  nnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
+    \ |xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
 
   " Man
   autocmd FileType man setlocal hlsearch
