@@ -1,5 +1,5 @@
 [commit]
-	gpgsign = true
+	gpgSign = true
 
 [core]
 	pager = delta
