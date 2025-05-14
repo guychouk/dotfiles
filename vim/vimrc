@@ -205,7 +205,7 @@ nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>tt            :Tags<CR>
 nnoremap          <leader>nm            <Plug>FzfNodeModules
 nnoremap          <leader>pp            <Plug>FzfPythonPackages
-nnoremap          <leader>og            <Plug>FzfGoModules
+nnoremap          <leader>mg            <Plug>FzfGoModules
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yol                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
