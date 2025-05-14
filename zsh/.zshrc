@@ -15,7 +15,6 @@ export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export GPG_TTY=$(tty)
 export HISTFILE="${ZSH_CACHE_DIR}/history"
 export KUBECONFIG="${XDG_CONFIG_HOME}/kube/config"
-export GOPATH="${XDG_DATA_HOME}/go"
 export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 export PARALLEL_HOME="${XDG_CACHE_HOME}/parallel"
 export GEM_HOME="${XDG_DATA_HOME}/gem"
@@ -158,7 +157,7 @@ if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$(go env GOBIN):$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
+export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
 
 ## Programs
 

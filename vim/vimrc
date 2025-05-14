@@ -185,9 +185,10 @@ nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
+nnoremap          <leader>tt            :Tags<CR>
 nnoremap          <leader>nm            <Plug>FzfNodeModules
 nnoremap          <leader>pp            <Plug>FzfPythonPackages
-nnoremap          <leader>go            <Plug>FzfGoModules
+nnoremap          <leader>og            <Plug>FzfGoModules
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yol                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
