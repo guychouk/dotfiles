@@ -316,6 +316,7 @@ augroup filetype_settings
 
   " Shell
   autocmd FileType sh,bash,zsh compiler shellcheck
+  autocmd FileType sh,bash,zsh setlocal foldlevel=99
 
   " C
   autocmd FileType c setlocal tabstop=4
