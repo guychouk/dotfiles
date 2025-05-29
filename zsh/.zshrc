@@ -13,16 +13,13 @@ export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 
 export GPG_TTY=$(tty)
-export HISTFILE="${ZSH_CACHE_DIR}/history"
 export KUBECONFIG="${XDG_CONFIG_HOME}/kube/config"
-export CARGO_HOME="${XDG_DATA_HOME}/cargo"
 export PARALLEL_HOME="${XDG_CACHE_HOME}/parallel"
 export GEM_HOME="${XDG_DATA_HOME}/gem"
 export GEM_PATH="${GEM_HOME}"
 export DOCKER_CONFIG="${XDG_DATA_HOME}/docker"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/.npmrc"
 export NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm"
-export AMMONITE_HOME="${XDG_CONFIG_HOME}/ammonite"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME}/.node_repl_history"
 export TS_NODE_HISTORY="${XDG_CACHE_HOME}/.ts_node_repl_history"
 export WGET_HSTS_FILE="${XDG_CONFIG_HOME}/.wget-hsts"
@@ -42,8 +39,9 @@ fi
 
 [[ ! -d "${ZSH_CACHE_DIR}" ]] && mkdir "${ZSH_CACHE_DIR}"
 
-HISTSIZE=50000
-SAVEHIST=50000
+export HISTSIZE=50000
+export SAVEHIST=50000
+export HISTFILE="${ZSH_CACHE_DIR}/history"
 
 unsetopt auto_cd              # disable jump to path without using `cd`
 setopt hist_reduce_blanks     # remove superfluous blanks from history items
