@@ -1,3 +1,6 @@
+# add s3 bucket to localstack
+aws --endpoint-url=http://localhost:4566 s3 mb s3://BUCKET
+
 # Mongo shell query to fetch specific element from an array in a document
 db.organizations.aggregate([ { $match:{} }, { $project: { nameOfField: { $filter: { input: "$nameOfField", as:"tmp", cond: { $eq: [ "$$tmp.prop", "query" ] } } } } } ])
 
