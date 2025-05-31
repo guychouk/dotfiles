@@ -85,13 +85,18 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -e                          # selects keymap `emacs` & set as main keymap
 bindkey "^U" backward-kill-line     # kill backwards from cursor to the beginning of the line
 
-# Let ^W delete to slashes (taken from statico's dotfiles)
-function backward-delete-to-slash() {
-  local WORDCHARS=${WORDCHARS//\//}
+# Let ^W delete to slashes and dots
+function backward-delete-to-slash-or-dot() {
+  local WORDCHARS=${WORDCHARS//[\/.]/}
   zle .backward-delete-word
+  # If we just deleted *past* a dot or slash, restore the dot/slash
+  if [[ -n $CUTBUFFER && ($CUTBUFFER[1] == '.' || $CUTBUFFER[1] == '/') ]]; then
+    LBUFFER+=$CUTBUFFER[1]
+    CUTBUFFER=${CUTBUFFER:1}
+  fi
 }
-zle -N backward-delete-to-slash
-bindkey "^W" backward-delete-to-slash
+zle -N backward-delete-to-slash-or-dot
+bindkey "^W" backward-delete-to-slash-or-dot
 
 # edit command line with $EDITOR
 autoload -Uz edit-command-line
