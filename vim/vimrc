@@ -143,7 +143,7 @@ colorscheme gman
 
 " Mappings {{{
 let mapleader = "\<Space>"
-let maplocalleader = ","
+let maplocalleader = "\\"
 
 " Tab & Window Management
 nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
@@ -203,9 +203,6 @@ nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>tt            :Tags<CR>
-nnoremap          <leader>nm            <Plug>FzfNodeModules
-nnoremap          <leader>pp            <Plug>FzfPythonPackages
-nnoremap          <leader>mg            <Plug>FzfGoModules
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yol                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
@@ -299,65 +296,57 @@ augroup END
 augroup filetype_settings
   autocmd!
 
-  " Go
-  autocmd FileType go compiler go
-  autocmd FileType go setlocal foldlevel=99
-
   " Dirvish
-  autocmd FileType dirvish nmap <leader>v .kitty icat<CR>
-  "" Map `t` to open in new tab.
+  autocmd FileType dirvish nmap <localleader>v .kitty icat<CR>
   autocmd FileType dirvish
     \  nnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
     \ |xnoremap <silent><buffer> t :call dirvish#open('tabedit', 0)<CR>
 
+  " Fugitive
+  autocmd FileType fugitive normal zR
+
   " Man
   autocmd FileType man setlocal hlsearch
-  autocmd FileType man nmap <leader>q :q<CR>
+  autocmd FileType man nmap q :q<CR>
 
   " Shell
   autocmd FileType sh,bash,zsh compiler shellcheck
   autocmd FileType sh,bash,zsh setlocal foldlevel=99
+
+  " YAML
+  autocmd FileType yaml setlocal foldlevel=99
+
+  " HTML + CSS
+  autocmd FileType html,css setlocal foldlevel=99
+  autocmd FileType html,css EmmetInstall
 
   " C
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
   autocmd FileType c setlocal foldlevel=99
 
-  " HTML + CSS
-  autocmd FileType html,css setlocal foldlevel=99
-  autocmd FileType html,css EmmetInstall
-
-  " Fugitive
-  autocmd FileType fugitive normal zR
+  " Go
+  autocmd FileType go compiler go
+  autocmd FileType go setlocal foldlevel=99
+  autocmd FileType go map <buffer> <localleader>b :Dispatch go build %
+  autocmd FileType go map <buffer> <localleader>m <Plug>FzfGoModules
 
   " Godot
   autocmd FileType   gdscript setlocal foldmethod=expr
   autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
-  autocmd FileType   gdscript map <buffer> <leader>rr :GodotRun<CR>
-  autocmd FileType   gdscript map <buffer> <leader>rc :GodotRunCurrent<CR>
-  autocmd FileType   gdscript map <buffer> <leader>d :GodotDocs<CR>
+  autocmd FileType   gdscript map <buffer> <localleader>r :GodotRun<CR>
+  autocmd FileType   gdscript map <buffer> <localleader>c :GodotRunCurrent<CR>
+  autocmd FileType   gdscript map <buffer> <localleader>d :GodotDocs<CR>
   autocmd BufRead    *.gdip   setlocal filetype=gdresource
   autocmd BufNewFile *.gdip   setlocal filetype=gdresource
 
   " Git
-  autocmd FileType git       setlocal foldlevel=99
-  autocmd FileType gitcommit setlocal bufhidden=delete
-  autocmd FileType gitcommit setlocal spell
-  autocmd FileType gitrebase setlocal bufhidden=delete
-  autocmd FileType gitrebase setlocal spell
+  autocmd FileType gitcommit, gitrebase setlocal spell
+  autocmd FileType gitcommit, gitrebase setlocal bufhidden=delete
 
   " GLSL
   autocmd BufRead    *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
   autocmd BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
-
-  " Javascript
-  autocmd FileType javascript,javascriptreact setlocal tabstop=4
-  autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
-  autocmd FileType javascript,javascriptreact setlocal foldlevel=99
-  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType javascript,javascriptreact compiler eslint
-  autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
-  autocmd FileType javascript,javascriptreact EmmetInstall
 
   " JSON/JSONC
   autocmd FileType json,jsonc setlocal foldlevel=99
@@ -366,17 +355,30 @@ augroup filetype_settings
   " Markdown
   autocmd FileType markdown setlocal foldlevel=99
 
+  " Python
+  autocmd FileType python map <buffer> <localleader>m <Plug>FzfPythonPackages
+
+  " JavaScript
+  autocmd FileType javascript,javascriptreact setlocal tabstop=4
+  autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
+  autocmd FileType javascript,javascriptreact setlocal foldlevel=99
+  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>m <Plug>FzfNodeModules
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>b :Dispatch tsc %<CR>
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>l :Dispatch eslint %<CR>
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
+  autocmd FileType javascript,javascriptreact EmmetInstall
+
   " TypeScript
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal foldlevel=99
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType typescript,typescriptreact compiler tsc
-  autocmd FileType typescript,typescriptreact map <buffer> <localleader>e :Dispatch -compiler=eslint<CR>
+  autocmd FileType typescript,typescriptreact map <buffer> <localleader>m <Plug>FzfNodeModules
+  autocmd FileType typescript,typescriptreact map <buffer> <localleader>b :Dispatch tsc %<CR>
+  autocmd FileType typescript,typescriptreact map <buffer> <localleader>l :Dispatch eslint %<CR>
+  autocmd FileType javascript,javascriptreact map <buffer> <localleader>r :Dispatch -compiler=make ts-node %<CR>
   autocmd FileType typescript,typescriptreact EmmetInstall
-
-  " YAML
-  autocmd FileType yaml setlocal foldlevel=99
 
 augroup END
 " }}}
