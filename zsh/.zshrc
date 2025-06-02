@@ -161,6 +161,7 @@ if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
 fi
 
 export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
+export PATH="$(go env GOBIN | tr -d '\n'):$PATH"
 
 ## Programs
 
@@ -212,6 +213,7 @@ function update_path_for_node_modules() {
   PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
   [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
 }
+
 function auto_virtualenv() {
   # If already in the desired virtualenv, do nothing
   if [[ -n "$VIRTUAL_ENV" && "$PWD" == "$VIRTUAL_ENV"* ]]; then
@@ -228,6 +230,7 @@ function auto_virtualenv() {
     export VIRTUAL_ENV_WORKDIR="$PWD"
   fi
 }
+
 autoload -U add-zsh-hook
 add-zsh-hook chpwd auto_virtualenv
 add-zsh-hook chpwd update_path_for_node_modules
