@@ -133,7 +133,7 @@ endif
 
 let &showbreak='└ '
 let &fillchars='eob: '
-let &listchars='tab:⋮ ,trail:·,extends:>,precedes:<,nbsp:+'
+let &listchars='tab:▏ ,trail:·,extends:>,precedes:<,nbsp:+'
 let &t_SI="\e[5 q"
 let &t_SR="\e[4 q"
 let &t_EI="\e[2 q"
