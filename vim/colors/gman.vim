@@ -16,7 +16,7 @@ hi CursorColumn guifg=NONE    guibg=#313b40 gui=none ctermbg=235
 hi CursorLine   guifg=NONE    guibg=#313b40 gui=none ctermbg=235
 hi CursorLineNr guifg=#e67e80 guibg=NONE    gui=bold ctermfg=203 ctermbg=NONE cterm=bold
 hi FoldColumn                 guibg=NONE    ctermbg=NONE
-hi Folded       guifg=#d6a0d1 guibg=NONE    gui=none ctermfg=176 ctermbg=4
+hi Folded       guifg=#e67e80 guibg=NONE    gui=none ctermfg=176 ctermbg=4
 hi LineNr       guifg=#617377 guibg=NONE    gui=none ctermfg=240 ctermbg=NONE
 hi MatchParen   guifg=#b2c98f guibg=#313b40 gui=bold ctermfg=107 ctermbg=235 cterm=bold
 hi NonText      guifg=#4b5952 guibg=NONE    gui=none ctermfg=246 ctermbg=NONE
