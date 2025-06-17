@@ -184,6 +184,7 @@ nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
+nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
 nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
@@ -204,7 +205,7 @@ nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>tt            :Tags<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
-nnoremap <silent> yol                   :IndentLinesToggle<CR>
+nnoremap <silent> yop                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
 nnoremap          ga                    <Plug>(EasyAlign)
 xnoremap          ga                    <Plug>(EasyAlign)
@@ -324,11 +325,19 @@ augroup filetype_settings
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
   autocmd FileType c setlocal foldlevel=99
+  autocmd FileType c map <buffer> <localleader>n :Dispatch nob
+
+  " SQL
+  autocmd FileType sql let g:stage_api = $STAGE_API_DB
+  autocmd FileType sql let g:stage_dal = $STAGE_DAL_DB
+  autocmd FileType sql map <buffer> <localleader>d :%DB g:local_dal
 
   " Go
   autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
   autocmd FileType go map <buffer> <localleader>b :Dispatch go build %
+  autocmd FileType go map <buffer> <localleader>t :Dispatch go test %
+  " or use: b:dispatch = go build %
   autocmd FileType go map <buffer> <localleader>m <Plug>FzfGoModules
 
   " Godot
@@ -341,8 +350,8 @@ augroup filetype_settings
   autocmd BufNewFile *.gdip   setlocal filetype=gdresource
 
   " Git
-  autocmd FileType gitcommit, gitrebase setlocal spell
-  autocmd FileType gitcommit, gitrebase setlocal bufhidden=delete
+  autocmd FileType gitcommit,gitrebase setlocal spell
+  autocmd FileType gitcommit,gitrebase setlocal bufhidden=delete
 
   " GLSL
   autocmd BufRead    *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
