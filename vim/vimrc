@@ -84,6 +84,19 @@ if !exists('g:tabline_custom_names')
     let g:tabline_custom_names = {}
 endif
 
+function! InsertRelativeFilePath()
+  let l:cwd = getcwd()
+  let l:file = expand('%:p')
+  if l:file == ''
+    echo "No file associated with this buffer"
+    return
+  endif
+  let l:relative_path = substitute(l:file, l:cwd . '/', '', '')
+  execute "normal! i" . "[" . l:relative_path . "] \<ESC>"
+endfunction
+
+nnoremap <localleader>f :call InsertRelativeFilePath()<CR>
+
 function! MyTabLine()
   let s = ''
   for i in range(tabpagenr('$'))
@@ -182,6 +195,7 @@ nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
 nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
+nnoremap <silent> <leader>so            :so ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
@@ -336,7 +350,7 @@ augroup filetype_settings
   autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
   autocmd FileType go map <buffer> <localleader>b :Dispatch go build %
-  autocmd FileType go map <buffer> <localleader>t :Dispatch go test %
+  autocmd FileType go map <buffer> <localleader>t :Dispatch ctags --language-force=Go -R .<CR>
   " or use: b:dispatch = go build %
   autocmd FileType go map <buffer> <localleader>m <Plug>FzfGoModules
 
