@@ -5,58 +5,104 @@ if exists("syntax_on")
 endif
 let colors_name = "gman"
 
-" General UI Elements
-hi StatusLine   guifg=#4f5e62 guibg=#dddecf gui=none ctermfg=188 ctermbg=240
-hi StatusLineNC guifg=#4f5e62 guibg=#738a8b gui=none ctermfg=246 ctermbg=240
-hi TabLine      guifg=#dddecf guibg=#4f5e62 gui=none ctermfg=188 ctermbg=240 cterm=none
-hi TabLineSel   guifg=#4f5e62 guibg=#dddecf gui=none ctermfg=188 ctermbg=240 cterm=none
-hi TabLineFill  guifg=#4f5e62 guibg=#4f5e62 gui=none ctermfg=188 ctermbg=240 cterm=none
-hi Cursor       guifg=NONE    guibg=#738a8b gui=none ctermfg=253 ctermbg=246
-hi CursorColumn guifg=NONE    guibg=#313b40 gui=none ctermbg=235
-hi CursorLine   guifg=NONE    guibg=#313b40 gui=none ctermbg=235
-hi CursorLineNr guifg=#e67e80 guibg=NONE    gui=bold ctermfg=203 ctermbg=NONE cterm=bold
-hi FoldColumn                 guibg=NONE    ctermbg=NONE
-hi Folded       guifg=#e67e80 guibg=NONE    gui=none ctermfg=176 ctermbg=4
-hi LineNr       guifg=#617377 guibg=NONE    gui=none ctermfg=240 ctermbg=NONE
-hi MatchParen   guifg=#b2c98f guibg=#313b40 gui=bold ctermfg=107 ctermbg=235 cterm=bold
-hi NonText      guifg=#4b5952 guibg=NONE    gui=none ctermfg=246 ctermbg=NONE
-hi SpecialKey   guifg=#4b5952 guibg=NONE    gui=none ctermfg=246 ctermbg=236
-hi Normal       guifg=#dddecf guibg=NONE    gui=none ctermfg=250 ctermbg=NONE
-hi Pmenu        guifg=#dddecf guibg=#232a2e gui=none ctermfg=250 ctermbg=235
-hi PmenuSel     guifg=#000000 guibg=#b2c98f gui=none ctermfg=0 ctermbg=107
-hi QuickFixLine guifg=#232a2e guibg=#dbbc7f gui=bold
-hi SignColumn                 guibg=NONE    ctermbg=NONE
-hi Title        guifg=#dddecf guibg=NONE    gui=bold ctermfg=250 cterm=bold
-hi VertSplit    guifg=#4f5e62 guibg=#4f5e62 gui=none ctermfg=240 ctermbg=240
-hi Visual       guifg=#dbbc7f guibg=#4f5e62 gui=none ctermfg=179 ctermbg=4
-hi qfFileName   guifg=#b2c98f guibg=NONE
-hi qfLineNr     guifg=#94aaa0 guibg=NONE
+" ===== Palette Map =====
+" bg0 main canvas
+" bg1 panels
+" bg2 selection/cursor line
+" border splits & borders
+" fg0 primary text
+" fg1 secondary text
+" muted comments
+" disabled line numbers/disabled
+" red errors / booleans
+" orange identifiers
+" yellow warnings / macros
+" green strings / success
+" cyan diffs added / info
+" blue links / types
+" magenta statements / keywords
+let s:palette = {
+      \ 'bg0':      '#141414',
+      \ 'bg1':      '#232A2E',
+      \ 'bg2':      '#313B40',
+      \ 'border':   '#4F5E62',
+      \ 'fg0':      '#DDDECF',
+      \ 'fg1':      '#94AAA0',
+      \ 'muted':    '#738A8B',
+      \ 'disabled': '#617377',
+      \ 'red':      '#E67E80',
+      \ 'orange':   '#E69875',
+      \ 'yellow':   '#DBBC7F',
+      \ 'green':    '#B2C98F',
+      \ 'cyan':     '#93C9A1',
+      \ 'blue':     '#9BB5CF',
+      \ 'magenta':  '#D6A0D1',
+      \ }
 
-" Diff Colors
-hi DiffAdd      guifg=#b2c98f guibg=NONE gui=none ctermfg=107 ctermbg=22
-hi DiffChange   guifg=#dbbc7f guibg=NONE gui=none ctermfg=179 ctermbg=54
-hi DiffDelete   guifg=#e67e80 guibg=NONE gui=none ctermfg=203 ctermbg=52
-hi DiffText     guifg=NONE    guibg=#4f5e62 gui=none ctermfg=240 ctermbg=237
+" ===== Helper =====
+function! s:HL(group, fg, bg, attr)
 
-" Syntax Highlighting
-hi Boolean      guifg=#e67e80 guibg=NONE gui=none   ctermfg=203
-hi Comment      guifg=#738a8b guibg=NONE gui=italic ctermfg=240
-hi Constant     guifg=#e67e80 guibg=NONE gui=none   ctermfg=203
-hi Function     guifg=#dddecf guibg=NONE gui=none   ctermfg=250
-hi Identifier   guifg=#e69875 guibg=NONE gui=none   ctermfg=203
-hi Keyword      guifg=#e67e80 guibg=NONE gui=none   ctermfg=203
-hi Number       guifg=#e67e80 guibg=NONE gui=none   ctermfg=203
-hi PreProc      guifg=#dbbc7f guibg=NONE gui=none   ctermfg=179
-hi Special      guifg=#e67e80 guibg=NONE gui=none   ctermfg=203
-hi Statement    guifg=#d6a0d1 guibg=NONE gui=none   ctermfg=176
-hi String       guifg=#b2c98f guibg=NONE gui=none   ctermfg=107
-hi Todo         guifg=#e67e80 guibg=NONE gui=none   ctermfg=203
-hi Type         guifg=#d6a0d1 guibg=NONE gui=none   ctermfg=176
+  execute 'hi' a:group
+        \ 'guifg=' . (a:fg ==# '' ? 'NONE' : s:palette[a:fg])
+        \ 'guibg=' . (a:bg ==# '' ? 'NONE' : s:palette[a:bg])
+        \ 'gui='   . (a:attr ==# '' ? 'NONE' : a:attr)
+        \ 'cterm=' . (a:attr ==# '' ? 'NONE' : a:attr)
+endfunction
 
-" JSX/TSX tags highlighting
+" ===== General UI Elements =====
+call s:HL('StatusLine',   'fg0',  'bg1',   '')
+call s:HL('StatusLineNC', 'bg1',   'border',   '')
+call s:HL('TabLine',      'fg0',     'bg0',   '')
+call s:HL('TabLineSel',   'border',  'fg0',   '')
+call s:HL('TabLineFill',  '',  'border','')
+call s:HL('Cursor',       '',        'muted', '')
+call s:HL('CursorColumn', '',        'bg2',   '')
+call s:HL('CursorLine',   '',        'bg2',   '')
+call s:HL('CursorLineNr', 'red',     'bg0',   'bold')
+call s:HL('FoldColumn',   '',        '',      '')
+call s:HL('Folded',       'red',     '',      '')
+call s:HL('LineNr',       'disabled','',      '')
+call s:HL('MatchParen',   'green',   'bg2',   'bold')
+call s:HL('NonText',      'muted',   '',      '')
+call s:HL('SpecialKey',   'muted',   '',      '')
+call s:HL('Normal',       'fg0',     '',      '')
+call s:HL('Pmenu',        'fg0',     'bg1',   '')
+call s:HL('PmenuSel',     'bg0',     'magenta', '')
+call s:HL('QuickFixLine', 'bg1',     'orange','bold')
+call s:HL('SignColumn',   'bg0',     '',      '')
+call s:HL('Title',        'fg0',     '',      'bold')
+call s:HL('VertSplit',    'border',  'border','')
+call s:HL('Visual',       'yellow',  'border','')
+call s:HL('qfFileName',   'green',   '',      '')
+call s:HL('qfLineNr',     'fg1',     '',      '')
+
+" ===== Diff Colors =====
+call s:HL('DiffAdd',      'green',   '',      '')
+call s:HL('DiffChange',   'yellow',  '',      '')
+call s:HL('DiffDelete',   'red',     '',      '')
+call s:HL('DiffText',     '',        'border','')
+
+" ===== Syntax Highlighting =====
+call s:HL('Boolean',      'red',     '',      '')
+call s:HL('Comment',      'muted',   '',      'italic')
+call s:HL('Constant',     'red',     '',      '')
+call s:HL('Function',     'fg0',     '',      '')
+call s:HL('Identifier',   'orange',  '',      '')
+call s:HL('Keyword',      'red',     '',      '')
+call s:HL('Number',       'red',     '',      '')
+call s:HL('PreProc',      'yellow',  '',      '')
+call s:HL('Special',      'red',     '',      '')
+call s:HL('Statement',    'magenta', '',      '')
+call s:HL('String',       'green',   '',      '')
+call s:HL('Todo',         'red',     '',      '')
+call s:HL('Type',         'magenta', '',      '')
+
+" ===== JSX/TSX tags =====
 hi def link htmlTag     Comment
 hi def link htmlTagName Identifier
 
-" Plugins
-hi DirvishPathTail guifg=#9bb5cf guibg=NONE gui=bold
-hi FzfBorder       guifg=#b2c98f guibg=NONE gui=none
+" ===== Plugins =====
+call s:HL('DirvishPathTail', 'blue', '', 'bold')
+call s:HL('FzfBorder',       'green','', '')
+
+" vim: sw=2 ts=2 et
