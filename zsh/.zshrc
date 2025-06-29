@@ -108,6 +108,7 @@ bindkey -M emacs '^v' edit-command-line
 autoload -U colors
 colors
 export LS_COLORS="di=36:fi=37:ln=34:ex=32:pi=33:so=35:bd=46:cd=43"
+export COLORTERM=truecolor
 
 ## Prompt
 

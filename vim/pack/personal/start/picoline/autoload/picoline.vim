@@ -13,24 +13,34 @@ var statusline_mode_map = {
 }
 
 export def Build(active: bool): string
+  var separator = "┊"
   var icon = active ? '(•◡•)' : '(ᴗ˳ᴗ)'
-  var ft = empty(&filetype) ? '?' : '%{&filetype}'
-  var fugitive = active && exists('*g:FugitiveHead') == 1 ? '%{FugitiveHead()}' : ''
-  var gutentags = active && exists('*gutentags#statusline') == 1 ? '%{gutentags#statusline()}' : ''
-  var current_mode = active ? statusline_mode_map[mode()] : '      '
-  var left_separator = active ? '%#PicolineLeftSep#' : ' '
-  var right_separator = active ? '%#PicolineRightSep#' : ' '
-  var section_hlgroup = active ? '%#PicolineSection#' : '%#StatusLineNC#'
+
+  var fugitive = active && exists('*g:FugitiveHead') == 1
+    ? separator .. ' ' .. '%{FugitiveHead()}' 
+    : ''
+  var gutentags = active && exists('*gutentags#statusline') == 1
+    ? separator .. ' ' .. '%{gutentags#statusline()}'
+    : ''
+
   var statusline_hlgroup = active ? '%#StatusLine#' : '%#StatusLineNC#'
+  var current_ft = empty(&filetype) ? '?' : '%{&filetype}'
+
   var statusline_segments = [
-    section_hlgroup .. ' ' .. current_mode .. ' ',
-    left_separator,
     statusline_hlgroup,
-    ' ' .. fnamemodify(getcwd(), ':t') .. '    ' .. '%{expand("%")} %m %r %h',
+    active ? statusline_mode_map[mode()] : ' Zzz ',
+    separator,
+    fnamemodify(getcwd(), ':t'),
+    separator,
     '%=',
-    gutentags .. ' ',
-    fugitive .. ' ' .. right_separator .. section_hlgroup,
-    ' ' .. ft .. '  ' .. icon
+    '%{expand("%")} %m %r %h',
+    '%=',
+    gutentags,
+    fugitive,
+    separator,
+    current_ft,
+    separator,
+    icon,
   ]
   return join(statusline_segments)
 enddef

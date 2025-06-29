@@ -22,4 +22,4 @@ selected_description=$(
 associated_command=$(awk -v desc="# $selected_description" '$0 == desc {getline; print}' $SNIPPETS_FILE )
 
 # Edit the command in Vim and add it to the clipboard before quitting
-echo "$associated_command" | vim -c "set ft=sh" -c "nmap <leader>q :q!<CR>" -c "autocmd VimLeave * execute 'normal! 0v\$\"*y'" -
+echo "$associated_command" | pbcopy

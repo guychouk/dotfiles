@@ -1,7 +1,3 @@
-· make fzf file search relative to directory set with chpwd in vim
-· add to docs the rules for a git commit message
-· check what the opposite of gpg --sign command is
-· organize gman.vim
 · write a blog post on using rooter with package.json and grep for a live documentation flow
 · make this into a global zsh env var OLLAMA_API_BASE=http://127.0.0.1:11434
 · script that translates a word to spanish from english
