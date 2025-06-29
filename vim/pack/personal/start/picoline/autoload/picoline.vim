@@ -1,20 +1,30 @@
 vim9script
 
 var statusline_mode_map = {
-  'i': 'INSERT',
-  '!': 'EXTERNAL',
-  't': 'TERMINAL',
-  'n': 'NORMAL',  'no': 'NORMAL',
-  'R': 'REPLACE', 'Rv': 'REPLACE',
-  'c': 'COMMAND', 'cv': 'COMMAND', 'ce': 'COMMAND',
-  'r': 'PROMPT',  'rm': 'PROMPT',  'r?': 'PROMPT',
-  'v': 'VISUAL',  'V':  'VISUAL',  "\<C-V>": 'VISUAL',
-  's': 'SELECT',  'S':  'SELECT',  "<\C-S>": 'SELECT',
+  'i':      'INS',
+  '!':      'EXT',
+  't':      'TRM',
+  'n':      'NRM',
+  'no':     'NRM',
+  'R':      'RPL',
+  'Rv':     'RPL',
+  'c':      'CMD',
+  'cv':     'CMD',
+  'ce':     'CMD',
+  'r':      'PRO',
+  'rm':     'PRO',
+  'r?':     'PRO',
+  'v':      'VIS',
+  'V':      'VIS',
+  "\<C-V>": 'VIS',
+  's':      'SEL',
+  'S':      'SEL',
+  "<\C-S>": 'SEL',
 }
 
 export def Build(active: bool): string
   var separator = "┊"
-  var icon = active ? '(•◡•)' : '(ᴗ˳ᴗ)'
+  var icon = active ? '(ᵔ◡ᵔ)' : '(∪｡∪)'
 
   var fugitive = active && exists('*g:FugitiveHead') == 1
     ? separator .. ' ' .. '%{FugitiveHead()}' 
@@ -27,8 +37,9 @@ export def Build(active: bool): string
   var current_ft = empty(&filetype) ? '?' : '%{&filetype}'
 
   var statusline_segments = [
+    active ? '%#StatusLine' .. statusline_mode_map[mode()] .. '#' : '',
+    active ? statusline_mode_map[mode()] : 'ZZZ',
     statusline_hlgroup,
-    active ? statusline_mode_map[mode()] : ' Zzz ',
     separator,
     fnamemodify(getcwd(), ':t'),
     separator,
