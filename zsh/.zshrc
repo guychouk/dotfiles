@@ -117,7 +117,7 @@ parse_git_branch() {
     /net/*|/Volumes/*) return ;;
   esac
   git_branch=$(git symbolic-ref --short HEAD 2> /dev/null)
-  if [ ! "${git_branch}" ]; then printf ""; else printf " [${git_branch}]"; fi
+  if [ ! "${git_branch}" ]; then printf ""; else printf " ${git_branch}"; fi
 }
 
 parse_kubectl_current_context() {
@@ -126,7 +126,12 @@ parse_kubectl_current_context() {
 }
 
 setopt PROMPT_SUBST
-PROMPT=$'%{\e[3 q%}%F{8}[%m] %f%F{4}%1~%F{16}$(parse_git_branch) λ %f'
+# %{ ... %} - this is used to enclose non-printing chars (like escape sequences)
+# \e - escape character which controls terminal behavior
+# [3 q - Device Control String (DCS) that selects a blinking underline cursor
+# %F{8} - choose color 8
+# %1~ - displays the last 1 component after the ~ dir substitution
+PROMPT=$'%{\e[3 q%}%F{8}%m %f%F{4}%2~%F{180}$(parse_git_branch) %F{16}λ %f'
 
 ## Syntax highlighting
 
