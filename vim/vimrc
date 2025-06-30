@@ -313,6 +313,9 @@ augroup filetype_settings
   " Fugitive
   autocmd FileType fugitive normal zR
 
+  " zed (spicedb)
+  autocmd FileType zed setlocal noexpandtab
+
   " Man
   autocmd FileType man setlocal hlsearch
   autocmd FileType man nmap <buffer> q :q<CR>
