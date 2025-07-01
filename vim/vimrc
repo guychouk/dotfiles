@@ -29,7 +29,6 @@ set title
 set titlestring=%<%F
 set nowrap
 set number
-set scrolloff=999
 set shiftround
 set shiftwidth=2
 set shortmess=aoOstTIcF
