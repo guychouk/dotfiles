@@ -312,6 +312,9 @@ augroup filetype_settings
   " Fugitive
   autocmd FileType fugitive normal zR
 
+  " Scratchpad
+  autocmd FileType scratchpad nmap <buffer> <localleader>r :execute 'r !' . getline('.')<CR>
+
   " zed (spicedb)
   autocmd FileType zed setlocal noexpandtab
 
