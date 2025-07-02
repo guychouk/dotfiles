@@ -19,8 +19,8 @@ psliwka/vim-smoothie
 ruanyl/vim-gh-line
 tckmn/vim-minisnip
 tikhomirov/vim-glsl
+tpope/vim-abolish
 tpope/vim-characterize
-tpope/vim-dadbod
 tpope/vim-dispatch
 tpope/vim-eunuch
 tpope/vim-fugitive
