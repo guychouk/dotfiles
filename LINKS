@@ -13,5 +13,6 @@ vim                                      ~/.vim
 yazi                                     ~/.config/yazi
 zsh                                      ~/.config/zsh
 zsh/.zshrc                               ~/.zshrc
+zsh/.zshenv                              ~/.zshenv
 newsboat                                 ~/.config/newsboat
 aichat                                   ~/.config/aichat
