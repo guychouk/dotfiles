@@ -312,8 +312,8 @@ augroup filetype_settings
   " Fugitive
   autocmd FileType fugitive normal zR
 
-  " Scratchpad
-  autocmd FileType scratchpad nmap <buffer> <localleader>r :execute 'r !' . getline('.')<CR>
+  " HTTP
+  autocmd FileType http nmap <buffer> <localleader>r :execute 'read !'.getline('.')<CR>
 
   " zed (spicedb)
   autocmd FileType zed setlocal noexpandtab
@@ -356,6 +356,7 @@ augroup filetype_settings
   autocmd FileType   gdscript setlocal foldmethod=expr
   autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
   autocmd FileType   gdscript nmap <buffer> <localleader>r :GodotRun<CR>
+  autocmd FileType   gdscript nmap <buffer> <localleader>b :Dispatch ./build.sh<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>c :GodotRunCurrent<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>d :GodotDocs<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>t :Dispatch ctags --language-force=GDScript -R .<CR>

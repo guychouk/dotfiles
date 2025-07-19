@@ -1,23 +1,8 @@
-export VISUAL=vim
-export EDITOR="${VISUAL}"
-export LANG="en_US.UTF-8"
-export LC_ALL="en_US.UTF-8"
-export SHELL_SESSIONS_DISABLE=1
-export MANPAGER="vim +MANPAGER --not-a-term -"
-
-export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_DATA_HOME="${HOME}/.local/share"
-export XDG_STATE_HOME="${HOME}/.local/state"
-export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
-export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
-
 export GPG_TTY=$(tty)
-export KUBECONFIG="${XDG_CONFIG_HOME}/kube/config"
-export PARALLEL_HOME="${XDG_CACHE_HOME}/parallel"
 export GEM_HOME="${XDG_DATA_HOME}/gem"
 export GEM_PATH="${GEM_HOME}"
 export DOCKER_CONFIG="${XDG_DATA_HOME}/docker"
+export PARALLEL_HOME="${XDG_CACHE_HOME}/parallel"
 export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/.npmrc"
 export NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME}/.node_repl_history"
@@ -26,16 +11,12 @@ export WGET_HSTS_FILE="${XDG_CONFIG_HOME}/.wget-hsts"
 export PYTHONHISTFILE="${XDG_CACHE_HOME}/.python_history"
 export LESSHISTFILE="${XDG_CACHE_HOME}/.lesshst"
 
+# fix ssh auth socket on linux
 if [[ "$(uname)" == "Linux" ]]; then
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 fi
 
-# Override any of the above with .env
-if [ -f ~/.env ]; then
-  source ~/.env
-fi
-
-## ZSH Setup
+## zsh setup
 
 [[ ! -d "${ZSH_CACHE_DIR}" ]] && mkdir "${ZSH_CACHE_DIR}"
 
@@ -59,7 +40,7 @@ setopt glob_complete          # completes based on glob patterns
 setopt list_rows_first        # lists completion options row-wise instead of column-wise
 setopt no_beep                # disable beeping for errors and completion
 
-# Completion setup
+# completion setup
 
 zmodload -i zsh/complist
 # The following lines were added by compinstall
@@ -85,11 +66,11 @@ bindkey -M menuselect 'j' vi-down-line-or-history
 bindkey -e                          # selects keymap `emacs` & set as main keymap
 bindkey "^U" backward-kill-line     # kill backwards from cursor to the beginning of the line
 
-# Let ^W delete to slashes and dots
+# let ^W delete to slashes and dots
 function backward-delete-to-slash-or-dot() {
   local WORDCHARS=${WORDCHARS//[\/.]/}
   zle .backward-delete-word
-  # If we just deleted *past* a dot or slash, restore the dot/slash
+  # if we just deleted *past* a dot or slash, restore the dot/slash
   if [[ -n $CUTBUFFER && ($CUTBUFFER[1] == '.' || $CUTBUFFER[1] == '/') ]]; then
     LBUFFER+=$CUTBUFFER[1]
     CUTBUFFER=${CUTBUFFER:1}
@@ -103,14 +84,12 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M emacs '^v' edit-command-line
 
-## Colors
-
 autoload -U colors
 colors
 export LS_COLORS="di=36:fi=37:ln=34:ex=32:pi=33:so=35:bd=46:cd=43"
 export COLORTERM=truecolor
 
-## Prompt
+## prompt
 
 parse_git_branch() {
   case "${PWD}" in
@@ -126,14 +105,14 @@ parse_kubectl_current_context() {
 }
 
 setopt PROMPT_SUBST
-# %{ ... %} - this is used to enclose non-printing chars (like escape sequences)
-# \e - escape character which controls terminal behavior
-# [3 q - Device Control String (DCS) that selects a blinking underline cursor
-# %F{8} - choose color 8
-# %1~ - displays the last 1 component after the ~ dir substitution
+#   %{ ... %} - this is used to enclose non-printing chars (like escape sequences)
+#   \e        - escape character which controls terminal behavior
+#   [3 q      - Device Control String (DCS) that selects a blinking underline cursor
+#   %F{8}     - choose colors (in this case color 8)
+#   %1~       - displays the last 1 component after the ~ dir substitution
 PROMPT=$'%{\e[3 q%}%F{8}%m %f%F{4}%2~%F{180}$(parse_git_branch) %F{16}λ %f'
 
-## Syntax highlighting
+## syntax highlighting
 
 function () {
   local fsh_cache_dir="${ZSH_CACHE_DIR}/zsh-syntax-highlighting"
@@ -142,7 +121,7 @@ function () {
   [ -f "${fsh_plugin}" ] && source "${fsh_plugin}"
 }
 
-## ZSH Abbreviations
+## abbreviations
 
 function () {
   local zsh_abbr_cache_dir="${ZSH_CACHE_DIR}/zsh-abbr"
@@ -167,9 +146,8 @@ if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
 fi
 
 export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
-export PATH="$(go env GOBIN | tr -d '\n'):$PATH"
 
-## Programs
+## programs
 
 _has() {
   return $(whence $1 &>/dev/null)
@@ -213,7 +191,7 @@ if _has trash; then
   alias rm=trash
 fi
 
-## Hooks
+## shell hooks
 
 function update_path_for_node_modules() {
   PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
@@ -254,6 +232,7 @@ add-zsh-hook chpwd auto_virtualenv
 add-zsh-hook chpwd update_path_for_node_modules
 add-zsh-hook chpwd set_kitty_tab_title
 
+# call all hooks directly on shell initialization
 auto_virtualenv
 update_path_for_node_modules
 set_kitty_tab_title
