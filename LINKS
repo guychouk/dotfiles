@@ -16,3 +16,4 @@ zsh/.zshrc                               ~/.zshrc
 zsh/.zshenv                              ~/.zshenv
 newsboat                                 ~/.config/newsboat
 aichat                                   ~/.config/aichat
+skhd                                     ~/.config/skhd

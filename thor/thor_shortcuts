@@ -1,0 +1,17 @@
+[
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/kitty.app\/",
+    "appDisplayName" : "kitty.app",
+    "shortcut" : "shift+cmd+j"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/Brave%20Browser.app\/",
+    "appDisplayName" : "Brave Browser.app",
+    "shortcut" : "shift+cmd+h"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/KeePassXC.app\/",
+    "appDisplayName" : "KeePassXC.app",
+    "shortcut" : "shift+cmd+k"
+  }
+]
