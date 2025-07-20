@@ -15,3 +15,4 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
+export OLLAMA_API_BASE="http://127.0.0.1:11434"
