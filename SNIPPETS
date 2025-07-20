@@ -17,7 +17,7 @@ db.organizations.aggregate([ { $match:{} }, { $project: { nameOfField: { $filter
 cat /dev/urandom | LC_ALL=C tr -dc 'a-z0-9' | fold -w 32 | head -n 1
 
 # compress iOS scanned PDFs
-gs -sDEVICE=pdfwrite -sPAPERSIZE=a4 -dPDFFitPage -dPDFSETTINGS=/ebook -o output.pdf -q input.pdf
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
 
 # split PDF
 gs -sDEVICE=pdfwrite -dSAFER -dFirstPage=1 -dLastPage=3 -o output.pdf -q input.pdf
