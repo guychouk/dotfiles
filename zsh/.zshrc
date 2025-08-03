@@ -165,10 +165,6 @@ if _has fzf; then
   source "${ZDOTDIR}/functions/fzf-git"
   export FZF_DEFAULT_OPTS="--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
 
-  if _has rg; then
-    export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!.git/*"'
-  fi
-
   if [[ "$(uname)" == "Darwin" ]]; then
     [[ $- == *i* ]] && source "$(brew --prefix)/opt/fzf/shell/completion.zsh" 2> /dev/null
     [[ $- == *i* ]] && source "$(brew --prefix)/opt/fzf/shell/key-bindings.zsh"
@@ -185,10 +181,6 @@ fi
 
 if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
-fi
-
-if _has trash; then
-  alias rm=trash
 fi
 
 ## shell hooks

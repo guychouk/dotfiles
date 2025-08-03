@@ -192,7 +192,6 @@ nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :grep<Space>
-nnoremap          <leader>?             :grep<Space>--no-ignore-vcs<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>re            :so ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
@@ -278,12 +277,6 @@ let g:minisnip_trigger = '<C-j>'
 " }}}
 " }}}
 
-" Grep {{{
-if executable('rg')
-  set grepprg=rg\ --vimgrep\ -g\ '!tags'\ -g\ '!.git'\ --hidden
-endif
-"}}}
-
 " Autocommands {{{
 
 augroup appearance_settings
@@ -356,7 +349,7 @@ augroup filetype_settings
   autocmd FileType   gdscript setlocal foldmethod=expr
   autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
   autocmd FileType   gdscript nmap <buffer> <localleader>r :GodotRun<CR>
-  autocmd FileType   gdscript nmap <buffer> <localleader>b :Dispatch ./build.sh<CR>
+  autocmd FileType   gdscript nmap <buffer> <localleader>b :Start! ./build.sh<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>c :GodotRunCurrent<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>d :GodotDocs<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>t :Dispatch ctags --language-force=GDScript -R .<CR>
