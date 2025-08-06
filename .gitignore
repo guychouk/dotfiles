@@ -4,5 +4,4 @@ vim/tmp/
 git/git-user
 .zsh_history
 .zcompcache
-aichat/sessions
-aichat/rags
+kitty/theme.conf
