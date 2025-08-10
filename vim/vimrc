@@ -185,13 +185,16 @@ nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``
 nnoremap          Q                     :qa<CR>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
+" Clear spaces on empty lines
+nnoremap <silent> <leader>]             :%s/^[ ]\+$//<CR>
+
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <C-e>                 :e#<CR>
 nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
-nnoremap          <leader>/             :grep<Space>
+nnoremap          <leader>/             :Rg<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>re            :so ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
