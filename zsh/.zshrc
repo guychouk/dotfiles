@@ -208,23 +208,25 @@ function auto_virtualenv() {
 }
 
 function set_kitty_tab_title() {
-    # only set title if we're in kitty
-    if [[ "$TERM" == "xterm-kitty" ]]; then
-        local dir_name=${PWD##*/}
-        if [[ "$PWD" == "$HOME" ]]; then
-            dir_name="~"
-        fi
-        # use kitty remote control to set tab title
-        kitten @ set-tab-title "$dir_name" 2>/dev/null
+  # only set title if we're in kitty
+  if [[ "$TERM" == "xterm-kitty" ]]; then
+    local title="$1"
+    # If no title was passed, use the current directory name
+    if [[ -z "$title" ]]; then
+      title=${PWD##*/}
+      if [[ "$PWD" == "$HOME" ]]; then
+        title="~"
+      fi
     fi
+    # use kitty remote control to set tab title
+    kitten @ set-tab-title "$title" 2>/dev/null
+  fi
 }
 
 autoload -U add-zsh-hook
 add-zsh-hook chpwd auto_virtualenv
 add-zsh-hook chpwd update_path_for_node_modules
-add-zsh-hook chpwd set_kitty_tab_title
 
 # call all hooks directly on shell initialization
 auto_virtualenv
 update_path_for_node_modules
-set_kitty_tab_title
