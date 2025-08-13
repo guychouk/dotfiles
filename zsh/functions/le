@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+le() {
+  ln -sf "$LE_ENVS_DIR/.env.$1" .env.current
+}
