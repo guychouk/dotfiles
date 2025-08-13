@@ -230,3 +230,7 @@ add-zsh-hook chpwd update_path_for_node_modules
 # call all hooks directly on shell initialization
 auto_virtualenv
 update_path_for_node_modules
+
+# switch env with LE_ENVS_DIR and direnv
+# .envrc: dotenv_if_exists .env.current
+source "${ZDOTDIR}/functions/le"
