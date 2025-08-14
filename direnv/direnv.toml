@@ -1,0 +1,7 @@
+[global]
+hide_env_diff = true
+log_format = "-"
+warn_timeout = 0
+
+[whitelist]
+prefix = [ "/home/guychouk/Projects/factify-inc" ]
