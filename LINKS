@@ -17,3 +17,4 @@ zsh/.zshenv                              ~/.zshenv
 newsboat                                 ~/.config/newsboat
 aichat                                   ~/.config/aichat
 skhd                                     ~/.config/skhd
+direnv                                   ~/.config/direnv
