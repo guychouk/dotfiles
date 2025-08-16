@@ -13,5 +13,25 @@
     "appBundleURL" : "file:\/\/\/Applications\/KeePassXC.app\/",
     "appDisplayName" : "KeePassXC.app",
     "shortcut" : "shift+cmd+k"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/ChatGPT.app\/",
+    "appDisplayName" : "ChatGPT.app",
+    "shortcut" : "shift+cmd+l"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/Godot.app\/",
+    "appDisplayName" : "Godot.app",
+    "shortcut" : "shift+cmd+g"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/Xcode.app\/",
+    "appDisplayName" : "Xcode.app",
+    "shortcut" : "shift+cmd+b"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/System\/Applications\/Utilities\/Screen%20Sharing.app\/",
+    "appDisplayName" : "Screen Sharing.app",
+    "shortcut" : "shift+cmd+s"
   }
 ]
