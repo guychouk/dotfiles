@@ -197,9 +197,13 @@ nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :Rg<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>re            :so ~/.vim/vimrc<CR>
-nnoremap <silent> <leader>yf            :let @+ = expand('%:p')<CR>
+nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
+nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
+" increment/decrement all numbers in visually selected lines
+xnoremap <silent> <localleader>d        :s/\d\+/\=submatch(0)-1/g<CR>
+xnoremap <silent> <localleader>i        :s/\d\+/\=submatch(0)+1/g<CR>
 nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
@@ -340,11 +344,15 @@ augroup filetype_settings
   autocmd FileType sql let g:stage_dal = $STAGE_DAL_DB
   autocmd FileType sql nmap <buffer> <localleader>d :%DB g:local_dal
 
+  " Proto
+  autocmd FileType proto nmap <buffer> <localleader>l :Dispatch buf format -w<CR>
+
   " Go
   autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
   autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %
   autocmd FileType go nmap <buffer> <localleader>t :Dispatch ctags --language-force=Go -R .<CR>
+  autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %
   " or use: b:dispatch = go build %
   autocmd FileType go nmap <buffer> <localleader>m <Plug>FzfGoModules
 
