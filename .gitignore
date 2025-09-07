@@ -2,6 +2,7 @@
 tags
 vim/tmp/
 git/git-user
+git/ignore
 .zsh_history
 .zcompcache
 kitty/theme.conf
