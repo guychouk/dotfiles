@@ -14,7 +14,7 @@ let s:palette = {
       \ 'fg0':      '#DDDECF',
       \ 'fg1':      '#94AAA0',
       \ 'muted':    '#738A8B',
-      \ 'disabled': '#617377',
+      \ 'disabled': '#424447',
       \ 'red':      '#E67E80',
       \ 'orange':   '#E69875',
       \ 'yellow':   '#DBBC7F',
