@@ -130,7 +130,7 @@ function () {
   [ -f "${zsh_abbr_plugin}" ] && source "${zsh_abbr_plugin}"
 }
 
-## PATH
+## asdf-vm
 
 export ASDF_DIR="${XDG_DATA_HOME}/asdf"
 export ASDF_DATA_DIR="${ASDF_DIR}"
@@ -144,6 +144,8 @@ if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
   export HOMEBREW_CASK_OPTS="--appdir=/Applications"
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+## PATH
 
 export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
 
@@ -175,6 +177,7 @@ if _has fzf; then
 fi
 
 if _has direnv; then
+  # silence direnv
   export DIRENV_LOG_FORMAT=
   eval "$(direnv hook zsh)"
 fi
@@ -183,29 +186,7 @@ if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
 
-## shell hooks
-
-function update_path_for_node_modules() {
-  PATH=$(awk -v RS=: -v ORS=: '!/node_modules\/.bin/' <<< "$PATH" | sed 's/:$//')
-  [[ -d "$PWD/node_modules/.bin" ]] && PATH="$PWD/node_modules/.bin:$PATH"
-}
-
-function auto_virtualenv() {
-  # If already in the desired virtualenv, do nothing
-  if [[ -n "$VIRTUAL_ENV" && "$PWD" == "$VIRTUAL_ENV"* ]]; then
-    return
-  fi
-  # Deactivate if leaving the virtualenv directory
-  if [[ -n "$VIRTUAL_ENV" && "$PWD" != "$VIRTUAL_ENV_WORKDIR"* ]]; then
-    deactivate
-    unset VIRTUAL_ENV_WORKDIR
-  fi
-  # Activate if .venv exists in the current directory
-  if [[ -e ".venv/bin/activate" ]]; then
-    source .venv/bin/activate
-    export VIRTUAL_ENV_WORKDIR="$PWD"
-  fi
-}
+## functions
 
 function set_kitty_tab_title() {
   # only set title if we're in kitty
@@ -222,14 +203,6 @@ function set_kitty_tab_title() {
     kitten @ set-tab-title "$title" 2>/dev/null
   fi
 }
-
-autoload -U add-zsh-hook
-add-zsh-hook chpwd auto_virtualenv
-add-zsh-hook chpwd update_path_for_node_modules
-
-# call all hooks directly on shell initialization
-auto_virtualenv
-update_path_for_node_modules
 
 # switch env with LE_ENVS_DIR and direnv
 # .envrc: dotenv_if_exists .env.current
