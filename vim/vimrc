@@ -275,6 +275,7 @@ let g:undotree_DiffAutoOpen = 0
 let g:dirvish_mode = ':sort ,^.*[\/],'
 " }}}
 " Context.vim {{{
+let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
@@ -337,7 +338,8 @@ augroup filetype_settings
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
   autocmd FileType c setlocal foldlevel=99
-  autocmd FileType c nmap <buffer> <localleader>n :Dispatch nob
+  autocmd FileType c nmap <buffer> <localleader>b :Dispatch! nob<CR>
+  autocmd FileType c nmap <buffer> <localleader>t :Dispatch! ctags -R .<CR>
 
   " SQL
   autocmd FileType sql let g:stage_api = $STAGE_API_DB
@@ -347,12 +349,15 @@ augroup filetype_settings
   " Proto
   autocmd FileType proto nmap <buffer> <localleader>l :Dispatch buf format -w<CR>
 
+  " Nix
+  autocmd FileType nix nmap <buffer> <localleader>r :Dispatch nix-instantiate --eval %<CR>
+
   " Go
   autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
-  autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %
+  autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
   autocmd FileType go nmap <buffer> <localleader>t :Dispatch ctags --language-force=Go -R .<CR>
-  autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %
+  autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
   " or use: b:dispatch = go build %
   autocmd FileType go nmap <buffer> <localleader>m <Plug>FzfGoModules
 
