@@ -1,6 +1,7 @@
 abbr "acc"="source .venv/bin/activate"
 abbr "ask"="ollama run llama3.1:8b"
 abbr "bufl"="buf push --label"
+abbr "cmnts"="gh api repos/factify-inc/mono/pulls/69/comments 2>/dev/null | jq -r '.[] | \"\(.user.login) @\(.path)#L\(.line):\n\(.body)\n---\"'"
 abbr "d"="docker"
 abbr "dc"="docker compose"
 abbr "dcc"="docker compose"
