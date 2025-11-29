@@ -16,3 +16,22 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
 export OLLAMA_API_BASE="http://127.0.0.1:11434"
+
+# Homebrew (needed for fzf and other tools)
+if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
+  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+fi
+
+# asdf-vm
+export ASDF_DIR="${XDG_DATA_HOME}/asdf"
+export ASDF_DATA_DIR="${ASDF_DIR}"
+export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
+export ASDF_GOLANG_MOD_VERSION_ENABLED=true
+if [[ -f "$ASDF_DIR/asdf.sh" ]]; then
+  source "$ASDF_DIR/asdf.sh"
+fi
+
+# PATH
+export GEM_HOME="${XDG_DATA_HOME}/gem"
+export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
