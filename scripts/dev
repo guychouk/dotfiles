@@ -1,0 +1,23 @@
+#!/usr/bin/env zsh
+# Launch dev session: vim left (70%), agent right (30%)
+# Usage: dev [directory]
+
+DIR="${1:-$(pwd)}"
+
+# Resolve to absolute path
+DIR="$(cd "$DIR" 2>/dev/null && pwd)" || {
+  echo "Error: Directory '$1' does not exist"
+  exit 1
+}
+
+# Extract directory name for tab title
+DIR_NAME="$(basename "$DIR")"
+
+# If already in kitty, create the layout in a new tab
+if [ -n "$KITTY_WINDOW_ID" ]; then
+  kitten @ launch --type=tab --tab-title="$DIR_NAME" --cwd="$DIR" zsh -l -c 'vim .'
+  kitten @ launch --location=vsplit --bias=30 --cwd="$DIR" zsh -l -c claude
+  kitten @ launch --location=hsplit --bias=-20 --cwd="$HOME/Documents" zsh -l -c 'vim .'
+else
+  echo "run this inside an existing kitty window"
+fi

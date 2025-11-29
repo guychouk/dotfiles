@@ -130,24 +130,10 @@ function () {
   [ -f "${zsh_abbr_plugin}" ] && source "${zsh_abbr_plugin}"
 }
 
-## asdf-vm
+## asdf-vm (PATH and exports moved to .zshenv)
 
-export ASDF_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_DATA_DIR="${ASDF_DIR}"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
-export ASDF_GOLANG_MOD_VERSION_ENABLED=true
 mkdir -p "$XDG_CONFIG_HOME/asdf"
 [ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch v0.10.0
-source "$ASDF_DIR/asdf.sh"
-
-if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
-  export HOMEBREW_CASK_OPTS="--appdir=/Applications"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-fi
-
-## PATH
-
-export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
 
 ## programs
 
