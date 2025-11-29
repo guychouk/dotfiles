@@ -246,6 +246,7 @@ packadd! cfilter
 packadd comment
 " }}}
 " FZF {{{
+" Add fzf to runtime path based on OS
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
@@ -386,6 +387,9 @@ augroup filetype_settings
 
   " Markdown
   autocmd FileType markdown setlocal foldlevel=99
+  autocmd FileType markdown setlocal textwidth=80
+  autocmd FileType markdown setlocal nonumber
+  autocmd FileType markdown let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf']
 
   " Python
   autocmd FileType python nmap <buffer> <localleader>m <Plug>FzfPythonPackages
