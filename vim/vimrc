@@ -255,7 +255,6 @@ let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
 let g:gh_line_map_default       = 0
 let g:gh_line_blame_map_default = 0
 let g:gh_repo_map               = '<leader><leader>go'
-let g:gh_open_command           = 'fn() { echo "$@" | pbcopy; }; fn '
 " }}}
 " Signify {{{
 let g:signify_sign_add = '▌'

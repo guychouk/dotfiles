@@ -35,6 +35,11 @@ if test (uname) = "Darwin" -a -f /opt/homebrew/bin/brew
     eval (/opt/homebrew/bin/brew shellenv)
 end
 
+# Nix
+if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+    source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+end
+
 # asdf-vm
 set -gx ASDF_DIR "$XDG_DATA_HOME/asdf"
 set -gx ASDF_DATA_DIR "$ASDF_DIR"
@@ -50,6 +55,8 @@ if test -f "$ASDF_DIR/asdf.fish"
 end
 
 # PATH
+fish_add_path -p "$HOME/.nix-profile/bin"
+fish_add_path -p "/nix/var/nix/profiles/default/bin"
 fish_add_path -p "$ASDF_DIR/shims"
 fish_add_path -p "$ASDF_DIR/completions"
 fish_add_path -p "$GEM_HOME"
