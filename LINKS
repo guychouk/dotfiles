@@ -17,3 +17,4 @@ zsh/.zshenv                              ~/.zshenv
 newsboat                                 ~/.config/newsboat
 skhd                                     ~/.config/skhd
 direnv                                   ~/.config/direnv
+fish                                     ~/.config/fish

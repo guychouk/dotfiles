@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/usr/bin/env bash
 
 # Paths to the files
 SFTP_FILE="/srv/sftp/files/gv.kdbx"
