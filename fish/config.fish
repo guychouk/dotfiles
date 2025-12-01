@@ -89,10 +89,4 @@ end
 # fzf
 if command -q fzf
     set -gx FZF_DEFAULT_OPTS "--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
-
-    if test (uname) = "Darwin"
-        if test -f (brew --prefix)/opt/fzf/shell/key-bindings.fish
-            source (brew --prefix)/opt/fzf/shell/key-bindings.fish
-        end
-    end
 end
