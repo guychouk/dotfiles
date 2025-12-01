@@ -1,4 +1,4 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
 
 # This script is called by the dark-mode-notify utility:
 # https://github.com/bouk/dark-mode-notify

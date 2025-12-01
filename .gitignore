@@ -6,3 +6,4 @@ git/ignore
 .zsh_history
 .zcompcache
 kitty/theme.conf
+fish/fish_variables

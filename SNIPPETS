@@ -1,3 +1,6 @@
+# preview last SES message in the browser
+curl -s http://localhost:4566/_aws/ses | jq '.messages[-1].Body.html_part' -r > /tmp/email.html && open /tmp/email.html
+
 # atlas diff & migrate
 atlas migrate diff name-of-new-migration --dir file://migrations --to file://sql/email.sql --dev-url docker://postgres/16/dev
 
