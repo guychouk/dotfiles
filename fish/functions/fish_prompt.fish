@@ -8,9 +8,14 @@ function fish_prompt
     echo -n (prompt_hostname)' '
     echo -ne '\e[0m'
 
-    # Current directory (last 2 components)
+    # Current directory (last 2 components, full names)
     echo -ne '\e[38;5;4m'
-    echo -n (prompt_pwd --dir-length=2)
+    set -l pwd_parts (string split / (prompt_pwd --dir-length=0))
+    if test (count $pwd_parts) -gt 2
+        echo -n $pwd_parts[-2]/$pwd_parts[-1]
+    else
+        echo -n (prompt_pwd --dir-length=0)
+    end
     echo -ne '\e[0m'
 
     # Git branch
