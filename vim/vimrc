@@ -94,7 +94,17 @@ function! InsertRelativeFilePath()
   execute "normal! i" . "[" . l:relative_path . "] \<ESC>"
 endfunction
 
-nnoremap <localleader>f :call InsertRelativeFilePath()<CR>
+function! CopyRelativeFilePath()
+  let l:root = getcwd()
+  let l:file = expand('%:p')
+  if l:file == ''
+    echo "No file associated with this buffer"
+    return
+  endif
+  let l:relative_path = substitute(l:file, l:root . '/', '', '')
+  let @+ = l:relative_path
+  echo "Copied: " . l:relative_path
+endfunction
 
 function! MyTabLine()
   let s = ''
@@ -197,8 +207,6 @@ nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :Rg<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
 nnoremap <silent> <leader>re            :so ~/.vim/vimrc<CR>
-nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
-nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
 " increment/decrement all numbers in visually selected lines
@@ -225,6 +233,13 @@ nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>tt            :Tags<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
+nnoremap <silent> <localleader>p        :Goyo<CR>
+" Quick copies
+nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
+nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
+nnoremap          <leader>ir            :call InsertRelativeFilePath()<CR>
+nnoremap          <leader>yr            :call CopyRelativeFilePath()<CR>
+nnoremap          <localleader>o        :Dispatch! open (pbpaste)<CR>
 nnoremap          gz                    <Plug>(characterize)
 nnoremap          ga                    <Plug>(EasyAlign)
 xnoremap          ga                    <Plug>(EasyAlign)
@@ -282,6 +297,9 @@ let g:context_highlight_tag = '<hide>'
 " vim-minisnip {{{
 let g:minisnip_dir = '~/.vim/snippets'
 let g:minisnip_trigger = '<C-j>'
+" }}}
+" vim-goyo {{{
+let g:goyo_width = 120
 " }}}
 " }}}
 
@@ -387,8 +405,10 @@ augroup filetype_settings
   " Markdown
   autocmd FileType markdown setlocal foldlevel=99
   autocmd FileType markdown setlocal textwidth=80
+  autocmd FileType markdown setlocal conceallevel=2
   autocmd FileType markdown setlocal nonumber
-  autocmd FileType markdown let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf']
+  autocmd FileType markdown setlocal wrap
+  autocmd FileType markdown let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto']
 
   " Python
   autocmd FileType python nmap <buffer> <localleader>m <Plug>FzfPythonPackages
