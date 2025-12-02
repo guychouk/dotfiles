@@ -71,6 +71,11 @@ set -gx COLORTERM truecolor
 # History
 set -g fish_history_max 50000
 
+# Save history immediately after each command
+function save_history --on-event fish_postexec
+    history save
+end
+
 # Aliases
 if command -q eza
     alias ll='eza -lag --time-style=long-iso --group-directories-first --color=always'
