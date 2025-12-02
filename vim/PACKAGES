@@ -5,6 +5,7 @@ guychouk/vim-picoline
 habamax/vim-godot
 junegunn/fzf
 junegunn/fzf.vim
+junegunn/goyo.vim
 junegunn/gv.vim
 junegunn/vim-easy-align
 junegunn/vim-peekaboo
