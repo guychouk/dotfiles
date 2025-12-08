@@ -183,6 +183,17 @@ function! RenameCurrentTab(new_name)
     let g:tabline_custom_names[tabpagenr()] = a:new_name
 endfunction
 
+function! CleanupHelpBuffers()
+  for buf in getbufinfo({'buflisted': 1})
+    if getbufvar(buf.bufnr, '&filetype') ==# 'help'
+      execute 'bwipeout' buf.bufnr
+    endif
+  endfor
+  echomsg "Help buffers cleaned up"
+endfunction
+
+command! CleanupHelp call CleanupHelpBuffers()
+
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
@@ -216,24 +227,20 @@ nnoremap <silent> yoz                   <Plug>ZoomToggle
 nnoremap          H                     gT
 nnoremap          L                     gt
 
-" close buffer but keep the split
-nnoremap <silent> <leader>q             :b#<bar>bd#<CR>
+" close buffer but keep the split - not sure about this flow
+" nnoremap <silent> <leader>q             :b#<bar>bd#<CR>
+
 " allows navigating wrapped lines with j,k
 nnoremap          j                     gj
 nnoremap          k                     gk
-" delete/change the word under cursor and enables more
-" deletes/changes by hitting (n)ext followed by . (dot)
+" delete/change the word under cursor with (n)ext and repeat support using dot
 nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
-
 nnoremap          Q                     :qa<CR>
 nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
-" Clear spaces on empty lines
-nnoremap <silent> <leader>]             :%s/^[ ]\+$//<CR>
-
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <C-e>                 :e#<CR>
@@ -242,15 +249,19 @@ nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :Rg<Space>
 nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
-nnoremap <silent> <leader>re            :so ~/.vim/vimrc<CR>
+nnoremap          <leader>re            :so ~/.vim/vimrc<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
 nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
+nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
+nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
+nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
+nnoremap          <leader>ir            :call InsertRelativeFilePath()<CR>
+nnoremap          <leader>yr            :call CopyRelativeFilePath()<CR>
+xnoremap <silent> K                     :m '<-2<CR>gv=gv
+xnoremap <silent> J                     :m '>+1<CR>gv=gv
 " increment/decrement all numbers in visually selected lines
 xnoremap <silent> <localleader>d        :s/\d\+/\=submatch(0)-1/g<CR>
 xnoremap <silent> <localleader>i        :s/\d\+/\=submatch(0)+1/g<CR>
-nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
-xnoremap <silent> K                     :m '<-2<CR>gv=gv
-xnoremap <silent> J                     :m '>+1<CR>gv=gv
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
@@ -271,11 +282,6 @@ nnoremap          <leader>tt            :Tags<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
 nnoremap <silent> <localleader>p        :Goyo<CR>
-" Quick copies
-nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
-nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
-nnoremap          <leader>ir            :call InsertRelativeFilePath()<CR>
-nnoremap          <leader>yr            :call CopyRelativeFilePath()<CR>
 nnoremap          <localleader>o        :Dispatch! open (pbpaste)<CR>
 nnoremap          gz                    <Plug>(characterize)
 nnoremap          ga                    <Plug>(EasyAlign)
@@ -365,6 +371,10 @@ augroup filetype_settings
   autocmd FileType dirvish nmap <buffer> <localleader>v .kitty icat<CR>
   autocmd FileType dirvish nmap <buffer> t :call dirvish#open('tabedit', 0)<CR>
   autocmd FileType dirvish xmap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+
+  " Help
+  autocmd FileType help nmap <buffer> q :close<CR>
+  autocmd FileType help setlocal buflisted
 
   " Fugitive
   autocmd FileType fugitive normal zR
