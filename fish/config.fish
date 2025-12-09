@@ -100,8 +100,8 @@ end
 
 # fzf
 if command -q fzf
-    set -gx FZF_DEFAULT_OPTS "--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
-    source /opt/homebrew/opt/fzf/shell/key-bindings.fish
+    set -gx FZF_DEFAULT_OPTS "--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-scrollbar"
+    source (brew --prefix)/opt/fzf/shell/key-bindings.fish
     set -gx FZF_ALT_C_COMMAND ""
     fzf_key_bindings
 end
