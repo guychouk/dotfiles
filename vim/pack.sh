@@ -1,4 +1,9 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+
+# This script reads the PACKAGES file and clones all of the packages from
+# github to pack/bundle/start. It then proceeds to remove packages that DON'T
+# exist in the same PACKAGES file. This is a layman's solution to package
+# managers in vim which utilizes vim's built-in packages system (:h packages)
 
 mkdir -p tmp/undo
 mkdir -p pack/bundle/start
