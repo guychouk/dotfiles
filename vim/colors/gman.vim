@@ -102,4 +102,25 @@ hi def link htmlTagName Identifier
 call s:HL('DirvishPathTail', 'blue', '', 'bold')
 call s:HL('FzfBorder',       'green','', '')
 
+" ===== Terminal Colors =====
+" Set ANSI colors for vim's :terminal to match the colorscheme
+let g:terminal_ansi_colors = [
+      \ s:palette.bg0,
+      \ s:palette.red,
+      \ s:palette.green,
+      \ s:palette.yellow,
+      \ s:palette.blue,
+      \ s:palette.magenta,
+      \ s:palette.cyan,
+      \ s:palette.fg0,
+      \ s:palette.muted,
+      \ s:palette.red,
+      \ s:palette.green,
+      \ s:palette.orange,
+      \ s:palette.blue,
+      \ s:palette.magenta,
+      \ s:palette.cyan,
+      \ s:palette.fg0
+      \ ]
+
 " vim: sw=2 ts=2 et

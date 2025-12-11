@@ -6,8 +6,7 @@ set autoread
 set backspace=indent,eol,start
 set completeopt=menuone,preview
 set display=lastline
-set expandtab
-set foldmethod=syntax
+set foldmethod=indent
 set ignorecase
 set noinfercase
 set incsearch
@@ -29,15 +28,16 @@ set title
 set titlestring=%<%F
 set nowrap
 set number
-set shiftround
+set smarttab
+set expandtab
+set tabstop=2
 set shiftwidth=2
+set softtabstop=2
+set shiftround
 set shortmess=aoOstTIcF
 set sidescroll=1
 set sidescrolloff=2
 set signcolumn=yes
-set smarttab
-set softtabstop=2
-set tabstop=2
 set tags=./tags;,tags;
 set undodir=~/.vim/tmp/undo
 set undofile
@@ -55,7 +55,6 @@ set sessionoptions-=options
 set nrformats=bin,hex,blank
 set ttimeout
 set ttimeoutlen=100
-set nolangremap
 set path+=**
 set t_vb=
 set noerrorbells
@@ -65,6 +64,7 @@ if has('macunix')
 elseif has('unix')
   set clipboard=unnamedplus
 endif
+set foldlevel=99
 
 " Disable netrw before calling filetype
 let g:loaded_netrw = 1
@@ -83,116 +83,7 @@ if !exists('g:tabline_custom_names')
     let g:tabline_custom_names = {}
 endif
 
-function! InsertRelativeFilePath()
-  let l:cwd = getcwd()
-  let l:file = expand('%:p')
-  if l:file == ''
-    echo "No file associated with this buffer"
-    return
-  endif
-  let l:relative_path = substitute(l:file, l:cwd . '/', '', '')
-  execute "normal! i" . "[" . l:relative_path . "] \<ESC>"
-endfunction
-
-function! CopyRelativeFilePath()
-  let l:root = getcwd()
-  let l:file = expand('%:p')
-  if l:file == ''
-    echo "No file associated with this buffer"
-    return
-  endif
-  let l:relative_path = substitute(l:file, l:root . '/', '', '')
-  let @+ = l:relative_path
-  echo "Copied: " . l:relative_path
-endfunction
-
-function! GitUnstagedToQuickfix()
-  let l:root = getcwd()
-  let l:diff = systemlist('git diff -U0')
-  let l:qflist = []
-  let l:current_file = ''
-  let l:current_lnum = 0
-  let l:in_hunk = 0
-
-  for l:line in l:diff
-    if l:line =~# '^diff --git'
-      let l:in_hunk = 0
-      continue
-    elseif l:line =~# '^+++ b/'
-      let l:current_file = l:root . '/' . substitute(l:line, '^+++ b/', '', '')
-      let l:in_hunk = 0
-    elseif l:line =~# '^@@'
-      let l:match = matchlist(l:line, '^@@ -\d\+\(,\d\+\)\? +\(\d\+\)')
-      if !empty(l:match)
-        let l:current_lnum = str2nr(l:match[2])
-        let l:in_hunk = 1
-      endif
-    elseif l:in_hunk && (l:line =~# '^+' || l:line =~# '^-')
-      let l:text = substitute(l:line, '^[+-]', '', '')
-      call add(l:qflist, {
-        \ 'filename': l:current_file,
-        \ 'lnum': l:current_lnum,
-        \ 'text': l:text
-        \ })
-      let l:in_hunk = 0
-    endif
-  endfor
-
-  call setqflist(l:qflist)
-  copen
-endfunction
-
-function! MyTabLine()
-  let s = ''
-  for i in range(tabpagenr('$'))
-    " Select the highlighting
-    if i + 1 == tabpagenr()
-      let s .= '%#TabLineSel#'
-    else
-      let s .= '%#TabLine#'
-    endif
-    " Set the tab page number (for mouse clicks)
-    let s .= '%' . (i + 1) . 'T'
-    " Get the buffer list and window number for the tab page
-    let buflist = tabpagebuflist(i + 1)
-    let winnr = tabpagewinnr(i + 1)
-    " Determine the name to use: custom or file name
-    if has_key(g:tabline_custom_names, i + 1)
-      let name = g:tabline_custom_names[i + 1]
-    else
-      let name = fnamemodify(bufname(buflist[winnr - 1]), ':t')
-      if empty(name)
-        let name = ' ? '
-      endif
-    endif
-    " Append the name to the tab line
-    let s .= ' ' . name . ' '
-  endfor
-  " Fill the rest of the tabline
-  let s .= '%#TabLineFill#%T'
-  return s
-endfunction
-
 set tabline=%!MyTabLine()
-
-" Command to rename the current tab
-command! -nargs=1 RenameTab call RenameCurrentTab(<q-args>)
-
-function! RenameCurrentTab(new_name)
-    " Store the new name in the dictionary for the current tab
-    let g:tabline_custom_names[tabpagenr()] = a:new_name
-endfunction
-
-function! CleanupHelpBuffers()
-  for buf in getbufinfo({'buflisted': 1})
-    if getbufvar(buf.bufnr, '&filetype') ==# 'help'
-      execute 'bwipeout' buf.bufnr
-    endif
-  endfor
-  echomsg "Help buffers cleaned up"
-endfunction
-
-command! CleanupHelp call CleanupHelpBuffers()
 
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -255,8 +146,8 @@ nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
 nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
 nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
 nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
-nnoremap          <leader>ir            :call InsertRelativeFilePath()<CR>
-nnoremap          <leader>yr            :call CopyRelativeFilePath()<CR>
+nnoremap          <leader>ir            :InsertRelativeFilePath<CR>
+nnoremap          <leader>yr            :CopyRelativeFilePath<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 " increment/decrement all numbers in visually selected lines
@@ -276,7 +167,7 @@ nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
-nnoremap <silent> <leader>hc            :call GitUnstagedToQuickfix()<CR>
+nnoremap <silent> <leader>hc            :GitUnstagedToQuickfix<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
 nnoremap          <leader>tt            :Tags<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
@@ -304,7 +195,6 @@ packadd! cfilter
 packadd comment
 " }}}
 " FZF {{{
-" Add fzf to runtime path based on OS
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
@@ -376,12 +266,6 @@ augroup filetype_settings
   autocmd FileType help nmap <buffer> q :close<CR>
   autocmd FileType help setlocal buflisted
 
-  " Fugitive
-  autocmd FileType fugitive normal zR
-
-  " HTTP
-  autocmd FileType http nmap <buffer> <localleader>r :execute 'read !'.getline('.')<CR>
-
   " zed (spicedb)
   autocmd FileType zed setlocal noexpandtab
 
@@ -391,52 +275,39 @@ augroup filetype_settings
 
   " Shell
   autocmd FileType sh,bash,zsh compiler shellcheck
-  autocmd FileType sh,bash,zsh setlocal foldlevel=99
 
   " YAML
-  autocmd FileType yaml setlocal foldlevel=99
+  autocmd FileType yaml setlocal foldlevel=2
 
   " HTML + CSS
-  autocmd FileType html,css setlocal foldlevel=99
   autocmd FileType html,css EmmetInstall
 
   " C
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
-  autocmd FileType c setlocal foldlevel=99
   autocmd FileType c nmap <buffer> <localleader>b :Dispatch! nob<CR>
-  autocmd FileType c nmap <buffer> <localleader>t :Dispatch! ctags -R .<CR>
-
-  " SQL
-  autocmd FileType sql let g:stage_api = $STAGE_API_DB
-  autocmd FileType sql let g:stage_dal = $STAGE_DAL_DB
-  autocmd FileType sql nmap <buffer> <localleader>d :%DB g:local_dal
 
   " Proto
   autocmd FileType proto nmap <buffer> <localleader>l :Dispatch buf format -w<CR>
 
   " Nix
-  autocmd FileType nix nmap <buffer> <localleader>r :Dispatch nix-instantiate --eval %<CR>
+  autocmd FileType nix nmap <buffer> <localleader>r :Term ++rows=10 nix-instantiate --eval %<CR>
 
   " Go
   autocmd FileType go compiler go
-  autocmd FileType go setlocal foldlevel=99
   autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
-  autocmd FileType go nmap <buffer> <localleader>t :Dispatch ctags --language-force=Go -R .<CR>
+  autocmd FileType go nmap <buffer> <localleader>r :Term ++rows=10 go run %<CR>
   autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
-  " or use: b:dispatch = go build %
   autocmd FileType go nmap <buffer> <localleader>m <Plug>FzfGoModules
 
   " Godot
+  autocmd BufRead    *.gdip   setlocal filetype=gdresource
+  autocmd BufNewFile *.gdip   setlocal filetype=gdresource
   autocmd FileType   gdscript setlocal foldmethod=expr
   autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
   autocmd FileType   gdscript nmap <buffer> <localleader>r :GodotRun<CR>
-  autocmd FileType   gdscript nmap <buffer> <localleader>b :Start! ./build.sh<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>c :GodotRunCurrent<CR>
   autocmd FileType   gdscript nmap <buffer> <localleader>d :GodotDocs<CR>
-  autocmd FileType   gdscript nmap <buffer> <localleader>t :Dispatch ctags --language-force=GDScript -R .<CR>
-  autocmd BufRead    *.gdip   setlocal filetype=gdresource
-  autocmd BufNewFile *.gdip   setlocal filetype=gdresource
 
   " Git
   autocmd FileType gitcommit,gitrebase setlocal spell
@@ -447,11 +318,10 @@ augroup filetype_settings
   autocmd BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
 
   " JSON/JSONC
-  autocmd FileType json,jsonc setlocal foldlevel=99
+  autocmd FileType json,jsonc setlocal foldlevel=2
   autocmd FileType json,jsonc setlocal conceallevel=2
 
   " Markdown
-  autocmd FileType markdown setlocal foldlevel=99
   autocmd FileType markdown setlocal textwidth=80
   autocmd FileType markdown setlocal conceallevel=2
   autocmd FileType markdown setlocal nonumber
@@ -460,30 +330,25 @@ augroup filetype_settings
 
   " Python
   autocmd FileType python nmap <buffer> <localleader>m <Plug>FzfPythonPackages
-  autocmd FileType python nmap <buffer> <localleader>t :Dispatch ctags --language-force=Python -R .<CR>
 
   " JavaScript
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
-  autocmd FileType javascript,javascriptreact setlocal foldlevel=99
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>m <Plug>FzfNodeModules
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch -compiler=make node %<CR>
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>t :Dispatch ctags --language-force=JavaScript -R .<CR>
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch node %<CR>
   autocmd FileType javascript,javascriptreact EmmetInstall
 
   " TypeScript
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
-  autocmd FileType typescript,typescriptreact setlocal foldlevel=99
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>m <Plug>FzfNodeModules
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Dispatch -compiler=make ts-node %<CR>
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>t :Dispatch ctags --language-force=TypeScript -R .<CR>
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Dispatch ts-node %<CR>
   autocmd FileType typescript,typescriptreact EmmetInstall
 
 augroup END
