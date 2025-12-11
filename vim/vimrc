@@ -30,6 +30,7 @@ set nowrap
 set number
 set smarttab
 set expandtab
+set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set shiftround
@@ -298,6 +299,7 @@ augroup filetype_settings
   autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
   autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
+  autocmd FileType go nmap <buffer> <localleader>r :terminal go run %<CR>
   autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
   autocmd FileType go nmap <buffer> <localleader>m <Plug>FzfGoModules
 
