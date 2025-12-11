@@ -71,12 +71,17 @@ set -gx COLORTERM truecolor
 # History
 set -g fish_history_max 50000
 
-# Save history immediately after each command
+## Save history immediately after each command
 function save_history --on-event fish_postexec
     history save
 end
 
-# Aliases
+# Keybindings
+
+## Bind Ctrl-V to edit command line in $EDITOR
+bind \cv edit_command_buffer
+
+# Listing files
 if command -q eza
     alias ll='eza -lag --time-style=long-iso --group-directories-first --color=always'
 else if command -q gls
@@ -84,8 +89,6 @@ else if command -q gls
 else
     alias ll='ls -lah --color=always'
 end
-
-# Tool integrations
 
 # direnv
 if command -q direnv
