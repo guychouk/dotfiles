@@ -2,46 +2,36 @@
   {
     "appBundleURL" : "file:\/\/\/Applications\/kitty.app\/",
     "appDisplayName" : "kitty.app",
-    "shortcut" : "shift+ctrl+j"
+    "shortcut" : "shift+alt+j"
   },
   {
     "appBundleURL" : "file:\/\/\/Applications\/Brave%20Browser.app\/",
     "appDisplayName" : "Brave Browser.app",
-    "shortcut" : "shift+ctrl+h"
+    "shortcut" : "shift+alt+h"
   },
   {
     "appBundleURL" : "file:\/\/\/Applications\/KeePassXC.app\/",
     "appDisplayName" : "KeePassXC.app",
-    "shortcut" : "shift+ctrl+k"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/ChatGPT.app\/",
-    "appDisplayName" : "ChatGPT.app",
-    "shortcut" : "shift+ctrl+l"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/Godot.app\/",
-    "appDisplayName" : "Godot.app",
-    "shortcut" : "shift+ctrl+g"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/Obsidian.app\/",
-    "appDisplayName" : "Obsidian.app",
-    "shortcut" : "shift+ctrl+n"
+    "shortcut" : "shift+alt+k"
   },
   {
     "appBundleURL" : "file:\/\/\/Applications\/1Password.app\/",
     "appDisplayName" : "1Password.app",
-    "shortcut" : "shift+ctrl+1"
+    "shortcut" : "shift+alt+1"
   },
   {
     "appBundleURL" : "file:\/\/\/Applications\/Slack.app\/",
     "appDisplayName" : "Slack.app",
-    "shortcut" : "shift+ctrl+s"
+    "shortcut" : "shift+alt+s"
   },
   {
-    "appBundleURL" : "file:\/\/\/Applications\/Spotify.app\/",
-    "appDisplayName" : "Spotify.app",
-    "shortcut" : "shift+ctrl+m"
+    "appBundleURL" : "file:\/\/\/Applications\/Obsidian.app\/",
+    "appDisplayName" : "Obsidian.app",
+    "shortcut" : "shift+alt+o"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/Figma.app\/",
+    "appDisplayName" : "Figma.app",
+    "shortcut" : "shift+alt+f"
   }
 ]

@@ -1,4 +1,3 @@
-# Custom prompt with git branch and kubectl context
 function fish_prompt
     # Set cursor to blinking underline
     echo -ne '\e[3 q'
@@ -29,7 +28,7 @@ function fish_prompt
     end
 
     # Lambda
-    echo -ne '\e[38;5;16m'
+    echo -ne '\e[38;5;11m'
     echo -n ' λ '
     echo -ne '\e[0m'
 end

@@ -21,10 +21,6 @@
 
 [init]
 	defaultBranch = main
-	templatedir = ~/.config/git/template
-
-[alias]
-	ctags = !.git/hooks/ctags
 
 [include]
 	path = ./git-user
