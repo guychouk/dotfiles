@@ -1,0 +1,26 @@
+#------------------------------------------------------------------------------
+# "varName: function" or "varName: async function" style
+#------------------------------------------------------------------------------
+--regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*function/\1/f,function/
+--regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*(async[ \t]*)?\(/\1/f,function/
+# myFunc: function(...) { ... } or myFunc: async(...) => { ... }
+
+#------------------------------------------------------------------------------
+# Standard named function declarations
+#------------------------------------------------------------------------------
+--regex-javascript=/^[ \t]*function[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*\(/\1/f,function/
+# function myFunc(...) { ... }
+
+#------------------------------------------------------------------------------
+# Const, let, var assigned to function expressions (arrow or otherwise)
+#------------------------------------------------------------------------------
+--regex-javascript=/^[ \t]*const[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
+--regex-javascript=/^[ \t]*let[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
+--regex-javascript=/^[ \t]*var[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
+# const myFunc = function(...) { ... } or arrow variants
+
+#------------------------------------------------------------------------------
+# Class declarations in JavaScript
+#------------------------------------------------------------------------------
+--regex-javascript=/^[ \t]*class[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)/\1/c,class/
+# class MyClass { ... }
