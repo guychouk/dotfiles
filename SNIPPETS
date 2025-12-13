@@ -73,6 +73,9 @@ ffmpeg -i input.mp4 -ss 00:00:01 -to 00:00:05 -copyts -vf subtitles=file.srt -c:
 # extract subtitles from video with ffmpeg
 ffmpeg -i input.mkv -map 0:s:0 output.srt
 
+# extract audio from video with ffmpeg
+ffmpeg -i input.mp4 -vn -acodec copy output.m4a
+
 # convert GIF to mp4 with ffmpeg
 ffmpeg -i input.gif -movflags faststart -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" output.mp4
 

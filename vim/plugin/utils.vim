@@ -274,6 +274,30 @@ function! s:CleanupHelpBuffers()
   echomsg "Help buffers cleaned up"
 endfunction
 
+function! s:ReuseOrCreateTerminal(args) abort
+  " Expand % now before switching windows
+  let expanded_args = substitute(a:args, '%', expand('%'), 'g')
+
+  " Find first visible terminal window
+  let term_winnr = -1
+  for winnr in range(1, winnr('$'))
+    if getwinvar(winnr, '&buftype') ==# 'terminal'
+      let term_winnr = winnr
+      break
+    endif
+  endfor
+
+  if term_winnr != -1
+    " Terminal exists - reuse it
+    execute term_winnr . 'wincmd w'
+    execute 'term ++curwin ' . expanded_args
+  else
+    " No terminal - create new
+    execute 'term ' . expanded_args
+  endif
+endfunction
+
+command! -nargs=* -complete=shellcmd Term call s:ReuseOrCreateTerminal(<q-args>)
 command! -bar -nargs=0 InsertRelativeFilePath call <sid>InsertRelativeFilePath()
 command! -bar -nargs=0 CopyRelativeFilePath   call <sid>CopyRelativeFilePath()
 command! -bar -nargs=0 GitUnstagedToQuickfix  call <sid>GitUnstagedToQuickfix()

@@ -293,13 +293,13 @@ augroup filetype_settings
   autocmd FileType proto nmap <buffer> <localleader>l :Dispatch buf format -w<CR>
 
   " Nix
-  autocmd FileType nix nmap <buffer> <localleader>r :Dispatch nix-instantiate --eval %<CR>
+  autocmd FileType nix nmap <buffer> <localleader>r :Term ++rows=10 nix-instantiate --eval %<CR>
 
   " Go
   autocmd FileType go compiler go
   autocmd FileType go setlocal foldlevel=99
   autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
-  autocmd FileType go nmap <buffer> <localleader>r :terminal go run %<CR>
+  autocmd FileType go nmap <buffer> <localleader>r :Term ++rows=10 go run %<CR>
   autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
   autocmd FileType go nmap <buffer> <localleader>m <Plug>FzfGoModules
 
