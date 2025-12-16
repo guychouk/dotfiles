@@ -228,6 +228,89 @@ function! s:GitUnstagedToQuickfix()
   copen
 endfunction
 
+function! s:GitDiffToQuickfix(range)
+  " Check if we're in a git repo
+  call system('git rev-parse --git-dir 2>/dev/null')
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echom "Not in a git repository"
+    echohl None
+    return
+  endif
+
+  let l:root = getcwd()
+
+  " If no range provided, default to merge-base with main/master
+  if empty(a:range)
+    " Try to find main or master branch
+    let l:base = 'main'
+    call system('git rev-parse --verify ' . shellescape(l:base) . ' 2>/dev/null')
+    if v:shell_error != 0
+      let l:base = 'master'
+      call system('git rev-parse --verify ' . shellescape(l:base) . ' 2>/dev/null')
+      if v:shell_error != 0
+        echohl ErrorMsg
+        echom "No main or master branch found. Provide a range like: origin/main...HEAD"
+        echohl None
+        return
+      endif
+    endif
+    let l:range = l:base . '...HEAD'
+  else
+    let l:range = a:range
+  endif
+
+  echom "Getting diff for: " . l:range
+
+  " Get the diff
+  let l:diff = systemlist('git diff ' . l:range . ' -U0 2>&1')
+
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echom "Failed to get diff: " . join(l:diff, ' ')
+    echohl None
+    return
+  endif
+
+  let l:qflist = []
+  let l:current_file = ''
+  let l:current_lnum = 0
+  let l:in_hunk = 0
+
+  for l:line in l:diff
+    if l:line =~# '^diff --git'
+      let l:in_hunk = 0
+      continue
+    elseif l:line =~# '^+++ b/'
+      let l:current_file = l:root . '/' . substitute(l:line, '^+++ b/', '', '')
+      let l:in_hunk = 0
+    elseif l:line =~# '^@@'
+      let l:match = matchlist(l:line, '^@@ -\d\+\(,\d\+\)\? +\(\d\+\)')
+      if !empty(l:match)
+        let l:current_lnum = str2nr(l:match[2])
+        let l:in_hunk = 1
+      endif
+    elseif l:in_hunk && (l:line =~# '^+' || l:line =~# '^-')
+      let l:text = substitute(l:line, '^[+-]', '', '')
+      call add(l:qflist, {
+        \ 'filename': l:current_file,
+        \ 'lnum': l:current_lnum,
+        \ 'text': l:text
+        \ })
+      let l:in_hunk = 0
+    endif
+  endfor
+
+  if empty(l:qflist)
+    echom "No changes found for: " . l:range
+    return
+  endif
+
+  call setqflist(l:qflist)
+  echom "Loaded " . len(l:qflist) . " changes (" . l:range . ") into quickfix"
+  copen
+endfunction
+
 " Must be global - called by tabline setting
 function! MyTabLine()
   let s = ''
@@ -297,9 +380,160 @@ function! s:ReuseOrCreateTerminal(args) abort
   endif
 endfunction
 
+function! s:GitCheckoutBranch(branch)
+  " Remove leading/trailing whitespace and any * marker
+  let l:branch = substitute(trim(a:branch), '^\*\s*', '', '')
+  let l:branch = trim(l:branch)
+
+  if empty(l:branch)
+    return
+  endif
+
+  " Check if it's a remote branch (origin/...)
+  if l:branch =~# '^origin/'
+    " Extract branch name without origin/
+    let l:local_branch = substitute(l:branch, '^origin/', '', '')
+
+    " Check if local branch already exists
+    call system('git rev-parse --verify ' . shellescape(l:local_branch) . ' 2>/dev/null')
+
+    if v:shell_error == 0
+      " Local branch exists, just check it out
+      let l:cmd = 'git checkout ' . shellescape(l:local_branch)
+    else
+      " Create new local branch tracking remote
+      let l:cmd = 'git checkout -b ' . shellescape(l:local_branch) . ' --track ' . shellescape(l:branch)
+    endif
+  else
+    " Local branch, just check it out
+    let l:cmd = 'git checkout ' . shellescape(l:branch)
+  endif
+
+  " Execute checkout
+  let l:output = system(l:cmd . ' 2>&1')
+
+  if v:shell_error != 0
+    " Check if it's due to uncommitted changes
+    if l:output =~# 'Your local changes.*would be overwritten'
+      echohl WarningMsg
+      echom "Git: Uncommitted changes blocking checkout"
+      echohl None
+      let l:choice = confirm("Switch anyway?", "&Force\n&Stash\n&Cancel", 3)
+      if l:choice == 1
+        " Force checkout
+        let l:force_output = system(l:cmd . ' --force 2>&1')
+        if v:shell_error == 0
+          echom "Switched to: " . l:branch . " (forced)"
+        else
+          echohl ErrorMsg
+          echom "Failed: " . trim(l:force_output)
+          echohl None
+        endif
+      elseif l:choice == 2
+        " Stash and checkout
+        call system('git stash push -m "Auto-stash before switching to ' . l:branch . '" 2>&1')
+        let l:stash_output = system(l:cmd . ' 2>&1')
+        if v:shell_error == 0
+          echom "Switched to: " . l:branch . " (changes stashed)"
+        else
+          echohl ErrorMsg
+          echom "Failed: " . trim(l:stash_output)
+          echohl None
+        endif
+      endif
+    else
+      echohl ErrorMsg
+      echom "Git checkout failed: " . substitute(trim(l:output), '\n', ' ', 'g')
+      echohl None
+    endif
+  else
+    " Reload current buffer if it has a filename
+    if expand('%') != ''
+      silent! edit
+    endif
+    echom "Switched to: " . l:branch
+    " Trigger any git-related plugins to update
+    silent! doautocmd User FugitiveChanged
+  endif
+endfunction
+
+function! s:FzfGitBranches()
+  " Get all branches (local and remote), remove HEAD entries
+  let l:cmd = 'git branch -a | grep -v HEAD | sed "s/^[* ]*//" | sed "s#remotes/##"'
+
+  call fzf#run(fzf#wrap({
+        \ 'source': l:cmd,
+        \ 'sink': function('s:GitCheckoutBranch'),
+        \ 'options': ['--prompt=Branch> ', '--preview', 'git log --oneline --graph --date=short --pretty="format:%C(auto)%cd %h%d %s" $(echo {} | sed "s#origin/##") --color=always | head -50']
+        \ }))
+endfunction
+
+function! s:CommentOnPRLine()
+  " Get current line number
+  let l:line_num = line('.')
+
+  " Get file path relative to git root
+  let l:git_root = systemlist('git rev-parse --show-toplevel')[0]
+  let l:file_path = expand('%:p')
+  let l:relative_path = substitute(l:file_path, l:git_root . '/', '', '')
+
+  " Get current branch
+  let l:branch = systemlist('git branch --show-current')[0]
+
+  " Get PR number for current branch
+  let l:pr_result = systemlist('gh pr view --json number -q .number')
+  if v:shell_error != 0 || empty(l:pr_result)
+    echohl ErrorMsg
+    echo "No PR found for branch: " . l:branch
+    echohl None
+    return
+  endif
+  let l:pr_number = l:pr_result[0]
+
+  " Get latest commit SHA
+  let l:commit_sha = systemlist('git rev-parse HEAD')[0]
+
+  " Get repo info (owner/repo)
+  let l:repo_info = systemlist('gh repo view --json nameWithOwner -q .nameWithOwner')[0]
+
+  " Prompt for comment
+  call inputsave()
+  let l:comment = input('Comment: ')
+  call inputrestore()
+
+  if empty(l:comment)
+    echo "Cancelled"
+    return
+  endif
+
+  " Post comment using gh api
+  let l:gh_cmd = printf(
+    \ "gh api repos/%s/pulls/%s/comments -f body='%s' -f commit_id='%s' -f path='%s' -F line=%d -f side='RIGHT'",
+    \ l:repo_info,
+    \ l:pr_number,
+    \ escape(l:comment, "'"),
+    \ l:commit_sha,
+    \ l:relative_path,
+    \ l:line_num
+    \ )
+
+  let l:result = system(l:gh_cmd)
+
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echo "Failed to post comment: " . l:result
+    echohl None
+  else
+    echo "Comment posted on " . l:relative_path . ":" . l:line_num
+  endif
+endfunction
+
 command! -nargs=* -complete=shellcmd Term call s:ReuseOrCreateTerminal(<q-args>)
-command! -bar -nargs=0 InsertRelativeFilePath call <sid>InsertRelativeFilePath()
-command! -bar -nargs=0 CopyRelativeFilePath   call <sid>CopyRelativeFilePath()
-command! -bar -nargs=0 GitUnstagedToQuickfix  call <sid>GitUnstagedToQuickfix()
-command! -bar -nargs=1 RenameTab              call <sid>RenameCurrentTab(<q-args>)
-command! -bar -nargs=0 CleanupHelp            call <sid>CleanupHelpBuffers()
+command! -bar -nargs=0 InsertRelativeFilePath  call <sid>InsertRelativeFilePath()
+command! -bar -nargs=0 CopyRelativeFilePath    call <sid>CopyRelativeFilePath()
+command! -bar -nargs=0 GitUnstagedToQuickfix   call <sid>GitUnstagedToQuickfix()
+command! -bar -nargs=? GitDiffToQuickfix       call <sid>GitDiffToQuickfix(<q-args>)
+command! -bar -nargs=1 RenameTab               call <sid>RenameCurrentTab(<q-args>)
+command! -bar -nargs=0 CleanupHelp             call <sid>CleanupHelpBuffers()
+command! -bar -nargs=0 CommentOnPRLine         call <sid>CommentOnPRLine()
+command! -bar -nargs=0 Branches                call <sid>FzfGitBranches()
