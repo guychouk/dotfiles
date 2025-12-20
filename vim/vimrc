@@ -52,7 +52,7 @@ set formatoptions+=j
 set complete-=i
 set viewoptions-=options
 set sessionoptions-=options
-set nrformats=bin,hex,blank
+set nrformats=bin,hex
 set ttimeout
 set ttimeoutlen=100
 set path+=**
@@ -195,7 +195,7 @@ packadd! matchit
 packadd! cfilter
 " }}}
 " comment {{{
-packadd comment
+" packadd! comment
 " }}}
 " FZF {{{
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
