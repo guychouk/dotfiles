@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Clean ANSI (color) and OSC sequences, then open in Vim
 sed -r '
