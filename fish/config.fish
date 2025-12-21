@@ -78,9 +78,6 @@ end
 
 # Keybindings
 
-## Bind Ctrl-V to edit command line in $EDITOR
-bind \cv edit_command_buffer
-
 # Listing files
 if command -q eza
     alias ll='eza -lag --time-style=long-iso --group-directories-first --color=always'
