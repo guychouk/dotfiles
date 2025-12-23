@@ -173,7 +173,7 @@ nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
 nnoremap <silent> <leader>hc            :GitUnstagedToQuickfix<CR>
 nnoremap <silent> <leader>hb            :GitDiffToQuickfix<CR>
 nnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
-nnoremap          <leader>tb            :Tagbar<CR>
+nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
@@ -267,6 +267,9 @@ augroup filetype_settings
   autocmd FileType dirvish nmap <buffer> <localleader>v .kitty icat<CR>
   autocmd FileType dirvish nmap <buffer> t :call dirvish#open('tabedit', 0)<CR>
   autocmd FileType dirvish xmap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+
+  " Tagbar
+  autocmd FileType tagbar setlocal foldlevel=99
 
   " Help
   autocmd FileType help nmap <buffer> q :close<CR>
