@@ -8,9 +8,11 @@ let colors_name = "gman"
 " ===== Palette Map =====
 let s:palette = {
       \ 'bg0':      '#141414',
-      \ 'bg1':      '#232A2E',
+      \ 'bg1':      '#242424',
       \ 'bg2':      '#313B40',
-      \ 'border':   '#4F5E62',
+      \ 'border':   '#242424',
+      \ 'slncbg':   '#242424',
+      \ 'slncfg':   '#666666',
       \ 'fg0':      '#DDDECF',
       \ 'fg1':      '#94AAA0',
       \ 'muted':    '#738A8B',
@@ -36,8 +38,8 @@ endfunction
 
 " ===== General UI Elements =====
 call s:HL('StatusLine',   'fg0',      'bg1',     '')
-call s:HL('StatusLineNC', 'bg1',      'border',  '')
-call s:HL('TabLine',      'fg0',      'bg0',     '')
+call s:HL('StatusLineNC', 'slncfg',   'slncbg',  '')
+call s:HL('TabLine',      'fg0',      'bg1',     '')
 call s:HL('TabLineSel',   'border',   'fg0',     '')
 call s:HL('TabLineFill',  '',         'border',  '')
 call s:HL('Cursor',       '',         'muted',   '')
