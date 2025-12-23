@@ -84,15 +84,15 @@ call s:HL('Todo',       'red',     '', '')
 call s:HL('Type',       'magenta', '', '')
 
 " ===== Statusline Mode Highlight Groups =====
-call s:HL('StatusLineNRM', 'fg0', 'bg1', '')
-call s:HL('StatusLineINS', 'bg0', 'red', '')
-call s:HL('StatusLineVIS', 'bg0', 'yellow', '')
-call s:HL('StatusLineCMD', 'bg0', 'orange', '')
-call s:HL('StatusLineRPL', 'bg0', 'magenta', '')
-call s:HL('StatusLineSEL', 'bg0', 'blue', '')
-call s:HL('StatusLineTRM', 'bg0', 'cyan', '')
-call s:HL('StatusLinePRO', 'bg0', 'green', '')
-call s:HL('StatusLineEXT', 'bg0', 'border', '')
+call s:HL('PicolineNRM', 'fg0',     'bg1', '')
+call s:HL('PicolineINS', 'red',     'bg1', '')
+call s:HL('PicolineVIS', 'yellow',  'bg1', '')
+call s:HL('PicolineCMD', 'orange',  'bg1', '')
+call s:HL('PicolineRPL', 'magenta', 'bg1', '')
+call s:HL('PicolineSEL', 'blue',    'bg1', '')
+call s:HL('PicolineTRM', 'cyan',    'bg1', '')
+call s:HL('PicolinePRO', 'green',   'bg1', '')
+call s:HL('PicolineEXT', 'border',  'bg1', '')
 
 " ===== JSX/TSX tags =====
 hi def link htmlTag     Comment
