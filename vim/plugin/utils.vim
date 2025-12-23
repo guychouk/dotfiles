@@ -1,6 +1,5 @@
 function! s:FzfGoModules()
-  let l:gopath = system('go env GOPATH')
-  let l:gopath = substitute(l:gopath, '\n', '', '')
+  let l:gopath = substitute(system('go env GOPATH'), '\n', '', '')
   let l:mod_cache = l:gopath . '/pkg/mod'
   let l:cmd = 'find ' . shellescape(l:mod_cache) . ' -mindepth 1 -maxdepth 5 -type d'
   call fzf#run(fzf#wrap({
