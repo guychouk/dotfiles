@@ -59,6 +59,7 @@ set path+=**
 set t_vb=
 set noerrorbells
 set noequalalways
+set notitle
 if has('macunix')
   set clipboard=unnamed
 elseif has('unix')
@@ -148,6 +149,7 @@ nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
 nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
 nnoremap          <leader>ir            :InsertRelativeFilePath<CR>
 nnoremap          <leader>yr            :CopyRelativeFilePath<CR>
+nnoremap          <leader>:             :Term<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 " increment/decrement all numbers in visually selected lines
@@ -172,7 +174,8 @@ nnoremap <silent> <leader>hc            :GitUnstagedToQuickfix<CR>
 nnoremap <silent> <leader>hb            :GitDiffToQuickfix<CR>
 nnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
 nnoremap          <leader>tb            :Tagbar<CR>
-nnoremap          <leader>tt            :Tags<CR>
+nnoremap          <leader>tt            :Tags<Space>
+xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
 nnoremap <silent> <localleader>p        :Goyo<CR>
