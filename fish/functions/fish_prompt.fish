@@ -4,7 +4,9 @@ function fish_prompt
 
     # Hostname
     echo -ne '\e[38;5;8m'
-    echo -n (prompt_hostname)' '
+    set -l host_name (prompt_hostname)
+    set -l host_parts (string split '-' $host_name)
+    echo -n $host_parts[1]' '
     echo -ne '\e[0m'
 
     # Current directory (last 2 components, full names)
@@ -21,6 +23,11 @@ function fish_prompt
     if git rev-parse HEAD >/dev/null 2>&1
         set git_branch (git symbolic-ref --short HEAD 2>/dev/null)
         if test -n "$git_branch"
+            # Split branch name by dashes and take first two parts
+            set -l branch_parts (string split '-' $git_branch)
+            if test (count $branch_parts) -gt 2
+                set git_branch "$branch_parts[1]-$branch_parts[2]"
+            end
             echo -ne '\e[38;5;7m'
             echo -n " $git_branch"
             echo -ne '\e[0m'
