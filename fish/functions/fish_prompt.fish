@@ -21,14 +21,14 @@ function fish_prompt
     if git rev-parse HEAD >/dev/null 2>&1
         set git_branch (git symbolic-ref --short HEAD 2>/dev/null)
         if test -n "$git_branch"
-            echo -ne '\e[38;5;180m'
+            echo -ne '\e[38;5;7m'
             echo -n " $git_branch"
             echo -ne '\e[0m'
         end
     end
 
     # Lambda
-    echo -ne '\e[38;5;11m'
+    echo -ne '\e[38;5;3m'
     echo -n ' λ '
     echo -ne '\e[0m'
 end

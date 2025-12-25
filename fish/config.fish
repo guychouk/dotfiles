@@ -64,9 +64,78 @@ fish_add_path -p "$HOME/bin"
 fish_add_path -p "$HOME/scripts"
 fish_add_path -p "$HOME/.local/bin"
 
-# Colors
-set -gx LS_COLORS "di=36:fi=37:ln=34:ex=32:pi=33:so=35:bd=46:cd=43"
+# Colors - gman theme (ANSI 16-color)
 set -gx COLORTERM truecolor
+
+# di = directories
+# ln = symlinks
+# ex = executables
+# or = orphaned symlinks
+# mi = missing files
+# pi = pipes (FIFO)
+# so = sockets
+# bd = block devices
+# cd = character devices
+# su = setuid files
+# sg = setgid files
+# tw = sticky + writable
+# ow = other writeable
+# st = sticky files
+set -gx LS_COLORS "\
+di=34:\
+ln=36:\
+ex=01;32:\
+or=91:\
+mi=91:\
+pi=93:\
+so=35:\
+bd=94:\
+cd=93:\
+su=37;41:\
+sg=37;42:\
+tw=37;46:\
+ow=34;40:\
+st=37;44"
+
+# eza colors for metadata fields (sizes, user, group, dates)
+# ur/uw/ux = user file permissions
+# gr/gw/gx = group file permissions
+# tr/tw/tx = others file permissions
+# sn = size number
+# sb = size bytes
+# uu = user owner (truncated)
+# un = user owner (normal)
+# gu = group owner (truncated)
+# gn = group owner (normal)
+# da = date (timestamp)
+# im = important files (README, Makefile, package.json, etc.)
+# xa = extended attributes (@)
+set -gx EZA_COLORS "\
+ur=37:\
+uw=37:\
+ux=32:\
+ue=32:\
+gr=37:\
+gw=37:\
+gx=32:\
+tr=37:\
+tw=37:\
+tx=32:\
+xa=90:\
+sn=37:\
+sb=37:\
+uu=37:\
+un=37:\
+gu=95:\
+gn=95:\
+da=37:\
+im=37"
+
+set -g fish_color_command green           # Commands
+set -g fish_color_param normal            # Parameters
+set -g fish_color_error red               # Errors
+set -g fish_color_quote b2c98f            # Quotes
+set -g fish_color_valid_path --underline  # Underline valid paths
 
 # History
 set -g fish_history_max 50000
@@ -80,7 +149,7 @@ end
 
 # Listing files
 if command -q eza
-    alias ll='eza -lag --time-style=long-iso --group-directories-first --color=always'
+    alias ll='eza -la --time-style=long-iso --group-directories-first --color=always'
 else if command -q gls
     alias ll='gls -lah --group-directories-first --color=always'
 else
