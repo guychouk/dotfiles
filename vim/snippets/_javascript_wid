@@ -1,4 +1,0 @@
-let {{++}}Index = {{++}}.length
-while ({{++}}Index--) {
-	{{++}}
-}

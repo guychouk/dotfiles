@@ -1,5 +1,0 @@
-const cursor = db.collection('{{++}}').find({{{++}}})
-while (await cursor.hasNext()) {
-	const doc = await cursor.next()
-	{{++}}
-}
