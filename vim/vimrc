@@ -24,7 +24,7 @@ set noshowcmd
 set noshowmode
 set noswapfile
 set viminfofile=$XDG_CACHE_HOME/viminfo
-set title
+set notitle
 set titlestring=%<%F
 set nowrap
 set number
@@ -59,7 +59,6 @@ set path+=**
 set t_vb=
 set noerrorbells
 set noequalalways
-set notitle
 if has('macunix')
   set clipboard=unnamed
 elseif has('unix')
@@ -109,7 +108,7 @@ nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
 nnoremap <silent> <C-A-j>               :resize +5<CR>
 nnoremap <silent> <C-A-k>               :resize -5<CR>
 nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
-nnoremap <silent> yoz                   <Plug>ZoomToggle
+nnoremap <silent> yoz                   :ZoomWin<CR>
 nnoremap          H                     gT
 nnoremap          L                     gt
 nnoremap          j                     gj
@@ -252,6 +251,12 @@ let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
+" Godot {{{
+let g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
+" }}}
+" Markdown {{{
+let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto']
+" }}}
 " }}}
 
 " Autocommands {{{
@@ -302,6 +307,9 @@ augroup filetype_settings
   " HTML + CSS
   autocmd FileType html,css EmmetInstall
 
+  " Palette (vim-css-color)
+  autocmd FileType palette call css_color#init('hex', 'basic', 'paletteComment')
+
   " C
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
@@ -318,24 +326,17 @@ augroup filetype_settings
   autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
   autocmd FileType go nmap <buffer> <localleader>r :Term ++rows=10 go run %<CR>
   autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
-  autocmd FileType go nmap <buffer> <localleader>m <Plug>ExploreGoPackages
+  autocmd FileType go nmap <buffer> <localleader>m :SearchGoPackages<CR>
 
   " Godot
-  autocmd BufRead    *.gdip   setlocal filetype=gdresource
-  autocmd BufNewFile *.gdip   setlocal filetype=gdresource
-  autocmd FileType   gdscript setlocal foldmethod=expr
-  autocmd FileType   gdscript let      g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
-  autocmd FileType   gdscript nmap <buffer> <localleader>r :GodotRun<CR>
-  autocmd FileType   gdscript nmap <buffer> <localleader>c :GodotRunCurrent<CR>
-  autocmd FileType   gdscript nmap <buffer> <localleader>d :GodotDocs<CR>
+  autocmd FileType gdscript setlocal foldmethod=expr
+  autocmd FileType gdscript nmap <buffer> <localleader>r :GodotRun<CR>
+  autocmd FileType gdscript nmap <buffer> <localleader>c :GodotRunCurrent<CR>
+  autocmd FileType gdscript nmap <buffer> <localleader>d :GodotDocs<CR>
 
   " Git
   autocmd FileType gitcommit,gitrebase setlocal spell
   autocmd FileType gitcommit,gitrebase setlocal bufhidden=delete
-
-  " GLSL
-  autocmd BufRead    *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
-  autocmd BufNewFile *.vert,*.tesc,*.tese,*.glsl,*.geom,*.frag,*.comp,*.rgen,*.rmiss,*.rchit,*.rahit,*.rint,*.rcall set filetype=glsl
 
   " JSON/JSONC
   autocmd FileType json,jsonc setlocal foldlevel=2
@@ -346,16 +347,15 @@ augroup filetype_settings
   autocmd FileType markdown setlocal conceallevel=2
   autocmd FileType markdown setlocal nonumber
   autocmd FileType markdown setlocal wrap
-  autocmd FileType markdown let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto']
 
   " Python
-  autocmd FileType python nmap <buffer> <localleader>m <Plug>ExplorePythonPackages
+  autocmd FileType python nmap <buffer> <localleader>m :SearchPythonPackages<CR>
 
   " JavaScript
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>m <Plug>ExploreNodeModules
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>m :SearchNodeModules<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch node %<CR>
@@ -365,7 +365,7 @@ augroup filetype_settings
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>m <Plug>ExploreNodeModules
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>m :SearchNodeModules<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Dispatch ts-node %<CR>

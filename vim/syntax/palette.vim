@@ -1,3 +1,5 @@
+" Vim syntax file for .palette files (depends on vim-css-color)
+
 if exists("b:current_syntax")
   finish
 endif
@@ -9,8 +11,7 @@ syntax match paletteColor /rgba(\d\+,\s*\d\+,\s*\d\+,\s*\d\+\(\.\d\+\)\?)/
 syntax match paletteColor /hsl(\d\+,\s*\d\+%\?,\s*\d\+%\?)/
 syntax match paletteColor /hsla(\d\+,\s*\d\+%\?,\s*\d\+%\?,\s*\d\+\(\.\d\+\)\?)/
 
-" Comments
-syntax match paletteComment /^#.*/ contains=paletteColor
+syntax match paletteComment /^#.*/  contains=paletteColor
 syntax match paletteComment /\s#.*/ contains=paletteColor
 
 highlight link paletteComment Comment
