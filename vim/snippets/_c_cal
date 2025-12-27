@@ -1,8 +1,0 @@
-{{++}} *{{++}} = calloc({{++}}, sizeof({{++}}));
-
-if (!{{++}}) {
-	fprintf(stderr, "Memory allocation failed!\n");
-	{{++}};
-}
-{{++}}
-free({{++}});

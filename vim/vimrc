@@ -79,12 +79,7 @@ syntax enable
 
 set list
 set cmdheight=1
-
-if !exists('g:tabline_custom_names')
-    let g:tabline_custom_names = {}
-endif
-
-set tabline=%!MyTabLine()
+set tabline=%!Picotab()
 
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
@@ -106,7 +101,6 @@ colorscheme gman
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
-" Tab & Window Management
 nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
 nnoremap <silent> <C-w>j                :WinMoveOrSplit j<CR>
 nnoremap <silent> <C-w>k                :WinMoveOrSplit k<CR>
@@ -118,14 +112,8 @@ nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
 nnoremap <silent> yoz                   <Plug>ZoomToggle
 nnoremap          H                     gT
 nnoremap          L                     gt
-
-" close buffer but keep the split - not sure about this flow
-" nnoremap <silent> <leader>q             :b#<bar>bd#<CR>
-
-" allows navigating wrapped lines with j,k
 nnoremap          j                     gj
 nnoremap          k                     gk
-" delete/change the word under cursor with (n)ext and repeat support using dot
 nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
@@ -152,14 +140,13 @@ nnoremap          <leader>yr            :CopyRelativeFilePath<CR>
 nnoremap          <leader>:             :Term<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
-" increment/decrement all numbers in visually selected lines
 xnoremap <silent> <localleader>d        :s/\d\+/\=submatch(0)-1/g<CR>
 xnoremap <silent> <localleader>i        :s/\d\+/\=submatch(0)+1/g<CR>
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
 
-" Package Manager {{{
+" Plugins {{{
 let g:packages = [
   \ 'MaxMEllon/vim-jsx-pretty',
   \ 'Yggdroot/indentLine',
@@ -194,9 +181,6 @@ let g:packages = [
   \ 'tpope/vim-unimpaired',
   \ 'wellle/context.vim',
 \ ]
-" }}}
-
-" Plugins {{{
 nnoremap <silent> <leader>gg            :Git<CR>
 nnoremap <silent> <leader>gb            :Branches<CR>
 nnoremap <silent> <leader>p             :Files<CR>
@@ -269,10 +253,6 @@ let g:dirvish_mode = ':sort ,^.*[\/],'
 let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
-" }}}
-" vim-minisnip {{{
-let g:minisnip_dir = '~/.vim/snippets'
-let g:minisnip_trigger = '<C-j>'
 " }}}
 " vim-goyo {{{
 let g:goyo_width = 120

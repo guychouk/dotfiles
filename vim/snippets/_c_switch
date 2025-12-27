@@ -1,5 +1,0 @@
-switch ({{++}}) {
-	default:
-		{{++}}
-		break;
-}
