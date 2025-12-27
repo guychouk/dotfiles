@@ -155,7 +155,6 @@ let g:packages = [
   \ 'habamax/vim-godot',
   \ 'junegunn/fzf',
   \ 'junegunn/fzf.vim',
-  \ 'junegunn/goyo.vim',
   \ 'junegunn/gv.vim',
   \ 'junegunn/vim-easy-align',
   \ 'junegunn/vim-peekaboo',
@@ -199,7 +198,6 @@ nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
-nnoremap <silent> <localleader>p        :Goyo<CR>
 nnoremap          <localleader>o        :Dispatch! open (pbpaste)<CR>
 nnoremap          gz                    <Plug>(characterize)
 nnoremap          ga                    <Plug>(EasyAlign)
@@ -253,10 +251,6 @@ let g:dirvish_mode = ':sort ,^.*[\/],'
 let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
-" }}}
-" vim-goyo {{{
-let g:goyo_width = 120
-let g:goyo_height = '95%'
 " }}}
 " }}}
 

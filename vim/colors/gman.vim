@@ -80,7 +80,7 @@ call s:HL('Statement',       s:palette['main-color'],  '',                      
 call s:HL('String',          s:palette['green'],       '',                       '')
 call s:HL('Todo',            s:palette['main-color'],  '',                       '')
 call s:HL('Type',            s:palette['main-color'],  '',                       '')
-call s:HL('FzfBorder',       s:palette['green'],       '',                       '')
+call s:HL('FzfBorder',       s:palette['main-color'],  '',                       '')
 call s:HL('DirvishPathTail', s:palette['blue'],        '',                       'bold')
 call s:HL('PicolineNRM',     s:palette['white'],       s:palette['ui-elements'], '')
 call s:HL('PicolineINS',     s:palette['main-color'],  s:palette['ui-elements'], '')
