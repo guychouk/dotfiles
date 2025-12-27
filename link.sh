@@ -1,22 +1,50 @@
 #!/usr/bin/env bash
 
-LINKS_FILE="./LINKS"
+cd "$(dirname "$0")"
 
-while IFS= read -r line || [[ -n "$line" ]]; do
-  # Ignore comments and empty lines
-  [[ "$line" =~ ^#.*$ ]] && continue
-  [[ -z "$line" ]] && continue
+# XDG configs - just directory names, will link to ~/.config/
+xdg_configs=(
+  fish
+  git
+  kitty
+  yazi
+  zsh
+  asdf
+  direnv
+  skhd
+  newsboat
+)
 
-  src=$(echo $line | awk '{print $1}')
-  dest=$(echo $line | awk '{print $2}')
+# Legacy locations - format: "source:destination"
+legacy_links=(
+  "vim:$HOME/.vim"
+  "ctags:$HOME/.ctags.d"
+  "zsh/.zshrc:$HOME/.zshrc"
+  "zsh/.zshenv:$HOME/.zshenv"
+  "asdf/.tool-versions:$HOME/.tool-versions"
+  "gnupg/gpg-agent.conf:$HOME/.gnupg/gpg-agent.conf"
+  "curl/.curlrc:$HOME/.config/.curlrc"
+  "scripts:$HOME/scripts"
+  "agents/com.gv.clear-gpg-cache.plist:$HOME/Library/LaunchAgents/com.gv.clear-gpg-cache.plist"
+)
 
-  src=$(realpath "$src")
-  dest=$(eval echo "$dest")
-
-  if [ -e "$dest" ] || [ -L "$dest" ]; then
-    echo "Skipping $dest, file or link already exists."
-  else
-    echo "Linking $src to $dest"
-    ln -s "$src" "$dest"
-  fi
-done < "$LINKS_FILE"
+if [[ "$1" == "unlink" ]]; then
+  for dir in "${xdg_configs[@]}"; do
+    rm -f ~/.config/$dir
+  done
+  for link in "${legacy_links[@]}"; do
+    dest="${link#*:}"
+    rm -f "$dest"
+  done
+else
+  for dir in "${xdg_configs[@]}"; do
+    rm -f ~/.config/$dir
+    ln -s "$PWD/$dir" ~/.config/$dir
+  done
+  for link in "${legacy_links[@]}"; do
+    src="${link%%:*}"
+    dest="${link#*:}"
+    rm -f "$dest"
+    ln -s "$PWD/$src" "$dest"
+  done
+fi

@@ -193,3 +193,10 @@ function set_kitty_tab_title() {
 # switch env with LE_ENVS_DIR and direnv
 # .envrc: dotenv_if_exists .env.current
 source "${ZDOTDIR}/functions/le"
+
+## auto-source conf.d fragments
+
+for config_file in "${ZDOTDIR}"/conf.d/*.zsh; do
+  [ -f "$config_file" ] && source "$config_file"
+done
+unset config_file
