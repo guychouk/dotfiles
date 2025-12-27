@@ -159,6 +159,43 @@ inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
 
+" Package Manager {{{
+let g:packages = [
+  \ 'MaxMEllon/vim-jsx-pretty',
+  \ 'Yggdroot/indentLine',
+  \ 'ap/vim-css-color',
+  \ 'guychouk/vim-picoline',
+  \ 'habamax/vim-godot',
+  \ 'junegunn/fzf',
+  \ 'junegunn/fzf.vim',
+  \ 'junegunn/goyo.vim',
+  \ 'junegunn/gv.vim',
+  \ 'junegunn/vim-easy-align',
+  \ 'junegunn/vim-peekaboo',
+  \ 'justinmk/vim-dirvish',
+  \ 'markonm/traces.vim',
+  \ 'mattn/emmet-vim',
+  \ 'mbbill/undotree',
+  \ 'mhinz/vim-signify',
+  \ 'pedrohdz/vim-yaml-folds',
+  \ 'preservim/tagbar',
+  \ 'psliwka/vim-smoothie',
+  \ 'ruanyl/vim-gh-line',
+  \ 'tikhomirov/vim-glsl',
+  \ 'tpope/vim-abolish',
+  \ 'tpope/vim-characterize',
+  \ 'tpope/vim-dispatch',
+  \ 'tpope/vim-eunuch',
+  \ 'tpope/vim-fugitive',
+  \ 'tpope/vim-repeat',
+  \ 'tpope/vim-rsi',
+  \ 'tpope/vim-speeddating',
+  \ 'tpope/vim-surround',
+  \ 'tpope/vim-unimpaired',
+  \ 'wellle/context.vim',
+\ ]
+" }}}
+
 " Plugins {{{
 nnoremap <silent> <leader>gg            :Git<CR>
 nnoremap <silent> <leader>gb            :Branches<CR>
