@@ -129,3 +129,6 @@ displayplacer "id:69734272 enabled:false"
 
 # set environment variable with secret from pass with error redirection
 export SECRET=$(pass show secret 2>/dev/null)
+
+# Sync to Ark
+rsync -avh --delete --progress -e "ssh -p 23" /mnt/goliath/Backups/ $(pass show sbox)@$(pass show sbox).your-storagebox.de:/home/Backups/
