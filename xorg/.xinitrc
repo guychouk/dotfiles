@@ -1,5 +1,3 @@
-/home/gv/scripts/update-clock.sh
-
 gpg-connect-agent updatestartuptty /bye
 
 xrdb -merge ~/.Xresources
