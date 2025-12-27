@@ -6,7 +6,7 @@
     <string>com.gv.clear-gpg-cache</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/gv/scripts/clear-gpg-cache.sh</string>
+        <string>/Users/guychouk/scripts/clear-gpg-cache.sh</string>
     </array>
     <key>WatchPaths</key>
     <array>

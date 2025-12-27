@@ -9,8 +9,7 @@ _snip_widget() {
         awk '/^#/ {desc=substr($0, 3); getline; cmd=$0; print desc "\t" cmd}' "$snippets_file" | \
         fzf --delimiter='\t' --with-nth=1 \
             --preview="echo {2..} | bat -l bash -p --color always" \
-            --preview-window=up:3:wrap \
-            --bind='ctrl-y:preview-up,ctrl-e:preview-down'
+            --preview-window=up:3:wrap
     )
 
     # Extract command and insert into readline

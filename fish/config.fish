@@ -81,21 +81,7 @@ set -gx COLORTERM truecolor
 # tw = sticky + writable
 # ow = other writeable
 # st = sticky files
-set -gx LS_COLORS "\
-di=34:\
-ln=36:\
-ex=01;32:\
-or=91:\
-mi=91:\
-pi=93:\
-so=35:\
-bd=94:\
-cd=93:\
-su=37;41:\
-sg=37;42:\
-tw=37;46:\
-ow=34;40:\
-st=37;44"
+set -gx LS_COLORS "di=34:ln=36:ex=01;32:or=91:mi=91:pi=93:so=35:bd=94:cd=93:su=37;41:sg=37;42:tw=37;46:ow=34;40:st=37;44"
 
 # eza colors for metadata fields (sizes, user, group, dates)
 # ur/uw/ux = user file permissions
@@ -110,26 +96,7 @@ st=37;44"
 # da = date (timestamp)
 # im = important files (README, Makefile, package.json, etc.)
 # xa = extended attributes (@)
-set -gx EZA_COLORS "\
-ur=37:\
-uw=37:\
-ux=32:\
-ue=32:\
-gr=37:\
-gw=37:\
-gx=32:\
-tr=37:\
-tw=37:\
-tx=32:\
-xa=90:\
-sn=37:\
-sb=37:\
-uu=37:\
-un=37:\
-gu=95:\
-gn=95:\
-da=37:\
-im=37"
+set -gx EZA_COLORS "ur=37:uw=37:ux=32:ue=32:gr=37:gw=37:gx=32:tr=37:tw=37:tx=32:xa=90:sn=37:sb=37:uu=37:un=37:gu=95:gn=95:da=37:im=37"
 
 set -g fish_color_command green           # Commands
 set -g fish_color_param normal            # Parameters
@@ -170,7 +137,7 @@ end
 # fzf
 if command -q fzf
     set -gx FZF_ALT_C_COMMAND ""
-    set -gx FZF_DEFAULT_OPTS "--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-scrollbar"
+    set -gx FZF_DEFAULT_OPTS "--prompt='' --margin=2%,2% --height 65% --info=inline-right --layout=reverse --no-scrollbar --tiebreak=length"
 
     # Source fzf key bindings from system installation
     set fzf_key_bindings_path ""

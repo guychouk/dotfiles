@@ -1,3 +1,5 @@
+" Git helpers
+
 function! s:GitUnstagedToQuickfix()
   let l:root = getcwd()
   let l:diff = systemlist('git diff -U0')
@@ -39,21 +41,15 @@ function! s:GitCheckoutBranch(branch)
   if empty(l:branch)
     return
   endif
-  " Check if it's a remote branch (origin/...)
   if l:branch =~# '^origin/'
-    " Extract branch name without origin/
     let l:local_branch = substitute(l:branch, '^origin/', '', '')
-    " Check if local branch already exists
     call system('git rev-parse --verify ' . shellescape(l:local_branch) . ' 2>/dev/null')
     if v:shell_error == 0
-      " Local branch exists, just check it out
       let l:cmd = 'git checkout ' . shellescape(l:local_branch)
     else
-      " Create new local branch tracking remote
       let l:cmd = 'git checkout -b ' . shellescape(l:local_branch) . ' --track ' . shellescape(l:branch)
     endif
   else
-    " Local branch, just check it out
     let l:cmd = 'git checkout ' . shellescape(l:branch)
   endif
   " Execute checkout
@@ -64,7 +60,6 @@ function! s:GitCheckoutBranch(branch)
     echohl None
     return
   endif
-  " Reload current buffer if it has a filename
   if expand('%') != ''
     silent! edit
   endif

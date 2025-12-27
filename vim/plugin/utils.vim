@@ -1,15 +1,11 @@
-function! s:Highlight()
-  redir @a | highlight | redir END | new | put a
-endfunction
-
 function! s:CleanUndoFiles()
   !find ~/.vim/tmp/undo -type f -mtime +100d \! -name '.gitignore' -delete
 endfunction
 
 function! s:AddOpenBuffersToList()
-  let qf_list = map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr": v:val}')
-  call setqflist(qf_list)
-  copen
+  let loc_list = map(filter(range(1, bufnr('$')), 'buflisted(v:val)'), '{"bufnr": v:val}')
+  call setloclist(0, loc_list)
+  lopen
 endfunction
 
 function! s:RemoveQfItem()
@@ -31,6 +27,18 @@ function! s:WinMoveOrSplit(key)
       wincmd s
     endif
     exec "wincmd ".a:key
+  endif
+endfunction
+
+function! s:ZoomWin()
+  if exists('t:zoomed') && t:zoomed
+    execute t:zoom_winrestcmd
+    let t:zoomed = 0
+  else
+    let t:zoom_winrestcmd = winrestcmd()
+    resize
+    vertical resize
+    let t:zoomed = 1
   endif
 endfunction
 
@@ -74,7 +82,6 @@ function! s:CleanupHelpBuffers()
 endfunction
 
 function! s:ReuseOrCreateTerminal(args) abort
-  " Expand % now before switching windows
   let expanded_args = substitute(a:args, '%', expand('%'), 'g')
   " Find first visible terminal window
   let term_winnr = -1
@@ -94,13 +101,23 @@ function! s:ReuseOrCreateTerminal(args) abort
   endif
 endfunction
 
+" http://ddrscott.github.io/blog/2016/vim-toggle-movement/
+function! s:ToggleMovement(firstOp, thenOp)
+  let pos = getpos('.')
+  execute "normal! " . a:firstOp
+  if pos == getpos('.')
+    execute "normal! " . a:thenOp
+  endif
+endfunction
+
+command! -nargs=* -complete=shellcmd Term                   call <sid>ReuseOrCreateTerminal(<q-args>)
+command! -bar     -nargs=+           ToggleMovement         call <sid>ToggleMovement(<f-args>)
+command! -bar     -nargs=1           WinMoveOrSplit         call <sid>WinMoveOrSplit(<q-args>)
+command! -bar     -nargs=0           ZoomWin                call <sid>ZoomWin()
 command! -bar     -nargs=0           SynStack               call <sid>SynStack()
 command! -bar     -nargs=0           RemoveQfItem           call <sid>RemoveQfItem()
-command! -bar     -nargs=1           WinMoveOrSplit         call <sid>WinMoveOrSplit(<q-args>)
-command! -bar     -nargs=0           Highlight              call <sid>Highlight()
 command! -bar     -nargs=0           CleanUndoFiles         call <sid>CleanUndoFiles()
 command! -bar     -nargs=0           AddOpenBuffersToList   call <sid>AddOpenBuffersToList()
 command! -bar     -nargs=0           CopyRelativeFilePath   call <sid>CopyRelativeFilePath()
 command! -bar     -nargs=0           InsertRelativeFilePath call <sid>InsertRelativeFilePath()
 command! -bar     -nargs=0           CleanupHelp            call <sid>CleanupHelpBuffers()
-command! -nargs=* -complete=shellcmd Term                   call <sid>ReuseOrCreateTerminal(<q-args>)

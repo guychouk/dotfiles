@@ -84,6 +84,28 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M emacs '^v' edit-command-line
 
+# Snippet selector that inserts into zle
+function _snip_widget() {
+  local snippets_file=~/dotfiles/SNIPPETS
+  local selected=$(
+  awk '/^#/ {desc=substr($0, 3); getline; cmd=$0; print desc "\t" cmd}' "$snippets_file" | \
+    fzf --delimiter='\t' --with-nth=1 \
+    --preview="echo {2..} | bat -l bash -p --color always" \
+    --preview-window=up:3:wrap \
+    --bind='ctrl-y:preview-up,ctrl-e:preview-down'
+  )
+  if [ -n "$selected" ]; then
+    local cmd=$(echo "$selected" | cut -f2-)
+    BUFFER="$cmd"
+    CURSOR=${#BUFFER}
+  fi
+  zle reset-prompt
+}
+zle -N _snip_widget
+bindkey '^s' _snip_widget
+
+# Colors
+
 autoload -U colors
 colors
 export LS_COLORS="di=36:fi=37:ln=34:ex=32:pi=33:so=35:bd=46:cd=43"
@@ -150,7 +172,6 @@ else
 fi
 
 if _has fzf; then
-  source "${ZDOTDIR}/functions/fzf-git"
   export FZF_DEFAULT_OPTS="--prompt='λ ' --margin 2%,2% --height 65% --info=inline-right:'🔍 ' --reverse --no-separator --no-scrollbar"
 
   if [[ "$(uname)" == "Darwin" ]]; then
@@ -174,6 +195,12 @@ fi
 
 ## functions
 
+# switch env with LE_ENVS_DIR and direnv
+# .envrc: dotenv_if_exists .env.current
+function le() {
+  ln -sf "$LE_ENVS_DIR/.env.$1" .env.current
+}
+
 function set_kitty_tab_title() {
   # only set title if we're in kitty
   if [[ "$TERM" == "xterm-kitty" ]]; then
@@ -189,14 +216,3 @@ function set_kitty_tab_title() {
     kitten @ set-tab-title "$title" 2>/dev/null
   fi
 }
-
-# switch env with LE_ENVS_DIR and direnv
-# .envrc: dotenv_if_exists .env.current
-source "${ZDOTDIR}/functions/le"
-
-## auto-source conf.d fragments
-
-for config_file in "${ZDOTDIR}"/conf.d/*.zsh; do
-  [ -f "$config_file" ] && source "$config_file"
-done
-unset config_file
