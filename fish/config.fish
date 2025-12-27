@@ -134,7 +134,7 @@ im=37"
 set -g fish_color_command green           # Commands
 set -g fish_color_param normal            # Parameters
 set -g fish_color_error red               # Errors
-set -g fish_color_quote b2c98f            # Quotes
+set -g fish_color_quote green             # Quotes
 set -g fish_color_valid_path --underline  # Underline valid paths
 
 # History

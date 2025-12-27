@@ -104,7 +104,7 @@ let g:terminal_ansi_colors = [
       \ s:palette['magenta'],
       \ s:palette['cyan'],
       \ s:palette['white'],
-      \ s:palette['black'],
+      \ s:palette['gray'],
       \ s:palette['red'],
       \ s:palette['green'],
       \ s:palette['yellow'],

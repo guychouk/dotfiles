@@ -223,7 +223,7 @@ packadd! cfilter
 " }}}
 " FZF {{{
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
-let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.8, 'border': 'rounded' } }
+let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
 " }}}
 " GH-Line {{{
@@ -324,7 +324,7 @@ augroup filetype_settings
   autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
   autocmd FileType go nmap <buffer> <localleader>r :Term ++rows=10 go run %<CR>
   autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
-  autocmd FileType go nmap <buffer> <localleader>m <Plug>FzfGoModules
+  autocmd FileType go nmap <buffer> <localleader>m <Plug>ExploreGoPackages
 
   " Godot
   autocmd BufRead    *.gdip   setlocal filetype=gdresource
@@ -355,13 +355,13 @@ augroup filetype_settings
   autocmd FileType markdown let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto']
 
   " Python
-  autocmd FileType python nmap <buffer> <localleader>m <Plug>FzfPythonPackages
+  autocmd FileType python nmap <buffer> <localleader>m <Plug>ExplorePythonPackages
 
   " JavaScript
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>m <Plug>FzfNodeModules
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>m <Plug>ExploreNodeModules
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch node %<CR>
@@ -371,7 +371,7 @@ augroup filetype_settings
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>m <Plug>FzfNodeModules
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>m <Plug>ExploreNodeModules
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Dispatch ts-node %<CR>
