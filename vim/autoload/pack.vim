@@ -10,10 +10,6 @@
 
 let s:pack_dir = expand('~/.vim/pack/bundle/start')
 
-command! PackInstall call pack#install()
-command! PackUpdate  call pack#update()
-command! PackClean   call pack#clean()
-
 function! s:repo_to_name(repo)
   return substitute(a:repo, '^.*/', '', '')
 endfunction
