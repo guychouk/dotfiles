@@ -79,5 +79,16 @@ function! s:GitSwitchBranch()
         \ }))
 endfunction
 
+function s:GithubBrowse() range
+  let l:relative_current_file = substitute(system('git ls-files --full-name ' . expand('%:p')), '\n', '', 'g')
+  if a:firstline == a:lastline
+    let l:gh_url = substitute(system('gh browse -n ' . shellescape(l:relative_current_file . ':' . a:firstline)), '\n', '', 'g')
+  else
+    let l:gh_url = substitute(system('gh browse -n ' . shellescape(l:relative_current_file . ':' . a:firstline . '-' . a:lastline)), '\n', '', 'g')
+  endif
+  let @+ = l:gh_url
+endfunction
+
 command! -bar -nargs=0 Branches               call <sid>GitSwitchBranch()
+command! -range        GithubBrowse           <line1>,<line2>call <sid>GithubBrowse()
 command! -bar -nargs=0 GitUnstagedToQuickfix  call <sid>GitUnstagedToQuickfix()
