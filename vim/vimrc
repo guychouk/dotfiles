@@ -169,6 +169,7 @@ let g:packages = [
   \ 'tikhomirov/vim-glsl',
   \ 'tpope/vim-abolish',
   \ 'tpope/vim-characterize',
+  \ 'tpope/vim-commentary',
   \ 'tpope/vim-dispatch',
   \ 'tpope/vim-eunuch',
   \ 'tpope/vim-fugitive',
