@@ -161,7 +161,6 @@ let g:packages = [
   \ 'justinmk/vim-dirvish',
   \ 'markonm/traces.vim',
   \ 'mbbill/undotree',
-  \ 'pedrohdz/vim-yaml-folds',
   \ 'preservim/tagbar',
   \ 'psliwka/vim-smoothie',
   \ 'tpope/vim-abolish',
@@ -291,6 +290,7 @@ augroup filetype_settings
 
   " YAML
   autocmd FileType yaml setlocal foldlevel=2
+  autocmd FileType yaml setlocal foldmethod=indent
 
   " Palette (vim-css-color)
   autocmd FileType palette call css_color#init('hex', 'basic', 'paletteComment')
