@@ -1,39 +1,3 @@
-" Git helpers
-
-function! s:GitUnstagedToQuickfix()
-  let l:root = getcwd()
-  let l:diff = systemlist('git diff -U0')
-  let l:qflist = []
-  let l:current_file = ''
-  let l:current_lnum = 0
-  let l:in_hunk = 0
-  for l:line in l:diff
-    if l:line =~# '^diff --git'
-      let l:in_hunk = 0
-      continue
-    elseif l:line =~# '^+++ b/'
-      let l:current_file = l:root . '/' . substitute(l:line, '^+++ b/', '', '')
-      let l:in_hunk = 0
-    elseif l:line =~# '^@@'
-      let l:match = matchlist(l:line, '^@@ -\d\+\(,\d\+\)\? +\(\d\+\)')
-      if !empty(l:match)
-        let l:current_lnum = str2nr(l:match[2])
-        let l:in_hunk = 1
-      endif
-    elseif l:in_hunk && (l:line =~# '^+' || l:line =~# '^-')
-      let l:text = substitute(l:line, '^[+-]', '', '')
-      call add(l:qflist, {
-        \ 'filename': l:current_file,
-        \ 'lnum': l:current_lnum,
-        \ 'text': l:text
-        \ })
-      let l:in_hunk = 0
-    endif
-  endfor
-  call setqflist(l:qflist)
-  copen
-endfunction
-
 function! s:GitCheckoutBranch(branch)
   " Remove leading/trailing whitespace and any * marker
   let l:branch = substitute(trim(a:branch), '^\*\s*', '', '')
@@ -91,4 +55,3 @@ endfunction
 
 command! -bar -nargs=0 Branches               call <sid>GitSwitchBranch()
 command! -range        GithubBrowse           <line1>,<line2>call <sid>GithubBrowse()
-command! -bar -nargs=0 GitUnstagedToQuickfix  call <sid>GitUnstagedToQuickfix()

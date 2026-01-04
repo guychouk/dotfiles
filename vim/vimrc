@@ -127,13 +127,12 @@ nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap          <leader>/             :Rg<Space>
-nnoremap <silent> <leader>ec            :e ~/.vim/vimrc<CR>
-nnoremap          <leader>re            :so ~/.vim/vimrc<Bar>echomsg "vimrc reloaded"<CR>
-nnoremap <silent> <leader><C-]>         <C-w><C-]><C-w>T
-nnoremap <silent> <localleader>s        :g/\v\/\/\s+[A-Z]/norm f/;ll~<CR>
+nnoremap <silent> <leader>ec            :e $MYVIMRC<CR>
+nnoremap          <leader>re            :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
+nnoremap <silent> <C-]>                 :ltag <C-R><C-W><CR>
 nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
-nnoremap          <leader>yf            :let @+ = expand('%:p')<CR>
-nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<CR>
+nnoremap          <leader>yf            :let @+ = expand('%:p')<Bar>echomsg 'Copied ' . @+<CR>
+nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<Bar>echomsg 'Copied ' . @+<CR>
 nnoremap          <leader>ir            :InsertRelativeFilePath<CR>
 nnoremap          <leader>yr            :CopyRelativeFilePath<CR>
 nnoremap          <leader>:             :Term<Space>
@@ -150,6 +149,7 @@ inoremap          <C-u>                 <C-g>u<C-u>
 let g:packages = [
   \ 'MaxMEllon/vim-jsx-pretty',
   \ 'Yggdroot/indentLine',
+  \ 'airblade/vim-gitgutter',
   \ 'ap/vim-css-color',
   \ 'guychouk/vim-picoline',
   \ 'habamax/vim-godot',
@@ -160,13 +160,10 @@ let g:packages = [
   \ 'junegunn/vim-peekaboo',
   \ 'justinmk/vim-dirvish',
   \ 'markonm/traces.vim',
-  \ 'mattn/emmet-vim',
   \ 'mbbill/undotree',
-  \ 'mhinz/vim-signify',
   \ 'pedrohdz/vim-yaml-folds',
   \ 'preservim/tagbar',
   \ 'psliwka/vim-smoothie',
-  \ 'tikhomirov/vim-glsl',
   \ 'tpope/vim-abolish',
   \ 'tpope/vim-characterize',
   \ 'tpope/vim-commentary',
@@ -188,10 +185,9 @@ nnoremap <silent> <leader>r             :History:<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
-nnoremap <silent> <leader>hd            :SignifyHunkDiff<CR>
-nnoremap <silent> <leader>hu            :SignifyHunkUndo<CR>
-nnoremap <silent> <leader>hc            :GitUnstagedToQuickfix<CR>
-nnoremap <silent> <leader>hb            :GitDiffToQuickfix<CR>
+nnoremap <silent> <leader>hd            :GitGutterPreviewHunk<CR>
+nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
+nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
@@ -222,14 +218,12 @@ let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
 let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded' } }
 let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
 " }}}
-" Signify {{{
-let g:signify_sign_add = '▌'
-let g:signify_sign_change = '▌'
-let g:signify_sign_delete = '▌'
-let g:signify_sign_change_delete = '∙'
-" }}}
-" Emmet {{{
-let g:user_emmet_install_global = 0
+" GitGutter {{{
+let g:gitgutter_map_keys = 0
+let g:gitgutter_sign_added = '▌'
+let g:gitgutter_sign_modified = '▌'
+let g:gitgutter_sign_removed = '▌'
+let g:gitgutter_sign_modified_removed = '▌'
 " }}}
 " indentLine {{{
 let g:indentLine_fileType = ['yaml', 'yml', 'python', 'gdscript']
@@ -298,9 +292,6 @@ augroup filetype_settings
   " YAML
   autocmd FileType yaml setlocal foldlevel=2
 
-  " HTML + CSS
-  autocmd FileType html,css EmmetInstall
-
   " Palette (vim-css-color)
   autocmd FileType palette call css_color#init('hex', 'basic', 'paletteComment')
 
@@ -356,7 +347,6 @@ augroup filetype_settings
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch node %<CR>
-  autocmd FileType javascript,javascriptreact EmmetInstall
 
   " TypeScript
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
@@ -366,7 +356,6 @@ augroup filetype_settings
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Dispatch ts-node %<CR>
-  autocmd FileType typescript,typescriptreact EmmetInstall
 
 augroup END
 " }}}
