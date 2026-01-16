@@ -178,6 +178,7 @@ let g:packages = [
 \ ]
 nnoremap <silent> <leader>gg            :Git<CR>
 nnoremap <silent> <leader>gb            :Branches<CR>
+nnoremap <silent> <leader>cr            :ReviewBranch<CR>
 nnoremap <silent> <leader>p             :Files<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap <silent> <leader>r             :History:<CR>
@@ -188,6 +189,8 @@ nnoremap <silent> <leader>hd            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
+nnoremap <silent> ]c                    :GitGutterNextHunk<CR>
+nnoremap <silent> [c                    :GitGutterPrevHunk<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
@@ -242,7 +245,7 @@ let g:context_highlight_tag = '<hide>'
 let g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
 " }}}
 " Markdown {{{
-let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto']
+let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto','go']
 " }}}
 " }}}
 
