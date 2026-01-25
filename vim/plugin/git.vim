@@ -141,8 +141,8 @@ function! s:ReviewOpenFile()
   wincmd p
   execute 'edit ' . fnameescape(l:filename)
 
-  " Open Gvdiffsplit against base branch
-  execute 'Gvdiffsplit ' . g:review_base_branch
+  " Open Ghdiffsplit against base branch
+  execute 'Ghdiffsplit ' . g:review_base_branch
 endfunction
 
 " Enable/disable review mode mappings
@@ -189,6 +189,27 @@ function! s:CheckReviewMode()
   endif
 endfunction
 
+" Jump to next/previous change - works in both diff mode and GitGutter
+function! s:NextChange()
+  if &diff
+    " In diff mode, use native diff navigation
+    normal! ]c
+  else
+    " Otherwise use GitGutter
+    GitGutterNextHunk
+  endif
+endfunction
+
+function! s:PrevChange()
+  if &diff
+    " In diff mode, use native diff navigation
+    normal! [c
+  else
+    " Otherwise use GitGutter
+    GitGutterPrevHunk
+  endif
+endfunction
+
 " Navigate to next/previous quickfix item and open with diff
 function! s:ReviewNext()
   try
@@ -196,7 +217,7 @@ function! s:ReviewNext()
     " Close any existing diff windows
     only
     " Open diff for new file
-    execute 'Gvdiffsplit ' . g:review_base_branch
+    execute 'Ghdiffsplit ' . g:review_base_branch
   catch /^Vim\%((\a\+)\)\=:E/
     echohl WarningMsg | echo 'No more items' | echohl None
   endtry
@@ -208,7 +229,7 @@ function! s:ReviewPrev()
     " Close any existing diff windows
     only
     " Open diff for new file
-    execute 'Gvdiffsplit ' . g:review_base_branch
+    execute 'Ghdiffsplit ' . g:review_base_branch
   catch /^Vim\%((\a\+)\)\=:E/
     echohl WarningMsg | echo 'No more items' | echohl None
   endtry
@@ -220,7 +241,26 @@ function! s:ListGitBranches(ArgLead, CmdLine, CursorPos)
   return filter(l:branches, 'v:val =~ "^" . a:ArgLead')
 endfunction
 
+" Open current file normally (close diff view)
+function! s:OpenThisFile()
+  " If we're in a fugitive buffer, get the real file path
+  if expand('%') =~# '^fugitive://'
+    " Use Gedit to open the working tree version
+    only
+    Gedit
+  else
+    let l:filename = expand('%:p')
+    only
+    execute 'edit ' . fnameescape(l:filename)
+  endif
+endfunction
+
 command! -bar -nargs=0 Branches               call <sid>GitSwitchBranch()
 command! -range        GithubBrowse           <line1>,<line2>call <sid>GithubBrowse()
 command! -nargs=? -complete=customlist,s:ListGitBranches ReviewBranch call <sid>ReviewBranch(<f-args>)
 command! -bar -nargs=0 ReviewEnd              call <sid>DisableReviewMappings() | echom 'Review mode disabled'
+command! -bar -nargs=0 OpenThisFile           call <sid>OpenThisFile()
+
+" Global mappings for jumping to changes
+nnoremap <silent> ]c :call <SID>NextChange()<CR>
+nnoremap <silent> [c :call <SID>PrevChange()<CR>

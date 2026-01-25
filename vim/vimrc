@@ -189,8 +189,6 @@ nnoremap <silent> <leader>hd            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
-nnoremap <silent> ]c                    :GitGutterNextHunk<CR>
-nnoremap <silent> [c                    :GitGutterPrevHunk<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
