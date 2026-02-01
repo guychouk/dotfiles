@@ -127,8 +127,11 @@ kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group <group> --top
 # focus on single screen with displayplacer
 displayplacer "id:69734272 enabled:false"
 
-# set environment variable with secret from pass with error redirection
+# set environment variable with secret from pass with error redirection #pass
 export SECRET=$(pass show secret 2>/dev/null)
 
-# Sync to Ark
+# Sync to Ark #backup
 rsync -avh --delete --progress -e "ssh -p 23" /mnt/goliath/Backups/ $(pass show sbox)@$(pass show sbox).your-storagebox.de:/home/Backups/
+
+# print time + 6 seconds from now #python
+python -c "import time; print(int(time.time())+6)"
