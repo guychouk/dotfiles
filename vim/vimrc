@@ -243,7 +243,7 @@ let g:context_highlight_tag = '<hide>'
 let g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
 " }}}
 " Markdown {{{
-let g:markdown_fenced_languages = ['python','javascript','bash=sh','html','vim','conf','sql','proto','go']
+let g:markdown_fenced_languages = ['python','javascript','typescript','bash=sh','html','vim','conf','sql','proto','go']
 " }}}
 " }}}
 
@@ -332,7 +332,6 @@ augroup filetype_settings
   autocmd FileType json,jsonc setlocal conceallevel=2
 
   " Markdown
-  autocmd FileType markdown setlocal textwidth=80
   autocmd FileType markdown setlocal conceallevel=2
   autocmd FileType markdown setlocal nonumber
   autocmd FileType markdown setlocal wrap
