@@ -1,3 +1,5 @@
+abbr -a vpr      "gh pr view -w"
+abbr -a vab      "vim ~/.config/fish/conf.d/abbreviations.fish"
 abbr -a acc      "source .venv/bin/activate"
 abbr -a ask      "ollama run llama3.1:8b"
 abbr -a d        "docker"

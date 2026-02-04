@@ -241,26 +241,159 @@ function! s:ListGitBranches(ArgLead, CmdLine, CursorPos)
   return filter(l:branches, 'v:val =~ "^" . a:ArgLead')
 endfunction
 
-" Open current file normally (close diff view)
-function! s:OpenThisFile()
-  " If we're in a fugitive buffer, get the real file path
-  if expand('%') =~# '^fugitive://'
-    " Use Gedit to open the working tree version
-    only
-    Gedit
-  else
-    let l:filename = expand('%:p')
-    only
-    execute 'edit ' . fnameescape(l:filename)
-  endif
-endfunction
-
 command! -bar -nargs=0 Branches               call <sid>GitSwitchBranch()
 command! -range        GithubBrowse           <line1>,<line2>call <sid>GithubBrowse()
 command! -nargs=? -complete=customlist,s:ListGitBranches ReviewBranch call <sid>ReviewBranch(<f-args>)
 command! -bar -nargs=0 ReviewEnd              call <sid>DisableReviewMappings() | echom 'Review mode disabled'
-command! -bar -nargs=0 OpenThisFile           call <sid>OpenThisFile()
+
+" Create anchored PR comment from visual selection
+function! s:PRComment() range
+  " Capture selection info - handle fugitive buffers
+  let l:current_file = expand('%')
+  let l:is_fugitive = l:current_file =~# '^fugitive://'
+
+  if l:is_fugitive
+    " Get the real file path
+    let l:real_path = FugitiveReal(l:current_file)
+    let l:side = 'LEFT'
+  else
+    let l:real_path = expand('%:p')
+    let l:side = 'RIGHT'
+  endif
+
+  " GitHub always wants the PR HEAD commit, regardless of which side we're commenting on
+  let l:commit_sha = substitute(system('git rev-parse HEAD'), '\n', '', 'g')
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echom 'Error: Could not get current commit SHA'
+    echohl None
+    return
+  endif
+
+  " Get repo-relative path (GitHub needs this)
+  let l:file = substitute(system('git ls-files --full-name ' . shellescape(l:real_path)), '\n', '', 'g')
+  if v:shell_error != 0 || empty(l:file)
+    echohl ErrorMsg
+    echom 'Error: Could not get repo-relative path for ' . l:real_path
+    echohl None
+    return
+  endif
+
+  let l:start_line = a:firstline
+  let l:end_line = a:lastline
+
+  " Get PR info
+  let l:pr_number = system('gh pr view --json number -q .number 2>/dev/null')
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echom 'Error: Could not detect PR for current branch. Is there an open PR?'
+    echohl None
+    return
+  endif
+  let l:pr_number = substitute(l:pr_number, '\n', '', 'g')
+
+  " Get repo info (owner/repo format)
+  let l:repo = substitute(system('gh repo view --json nameWithOwner -q .nameWithOwner'), '\n', '', 'g')
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echom 'Error: Could not get repo info'
+    echohl None
+    return
+  endif
+
+  " Create temp file for comment
+  let l:temp_file = tempname()
+  let l:side_label = l:side ==# 'LEFT' ? ' (OLD)' : ' (NEW)'
+  let l:comment_header = [
+        \ '# Enter PR comment for ' . l:file . ':' . l:start_line . (l:start_line != l:end_line ? '-' . l:end_line : '') . l:side_label,
+        \ '# PR #' . l:pr_number . ' | ' . l:repo,
+        \ '# Lines starting with # will be ignored',
+        \ ''
+        \ ]
+  call writefile(l:comment_header, l:temp_file)
+
+  " Store context in script-local variables for the callback
+  let s:pr_comment_context = {
+        \ 'file': l:file,
+        \ 'start_line': l:start_line,
+        \ 'end_line': l:end_line,
+        \ 'pr_number': l:pr_number,
+        \ 'commit_sha': l:commit_sha,
+        \ 'repo': l:repo,
+        \ 'side': l:side,
+        \ 'temp_file': l:temp_file
+        \ }
+
+  " Open editor
+  execute 'split ' . l:temp_file
+  setlocal buftype=acwrite
+  setlocal bufhidden=wipe
+  autocmd! BufWriteCmd <buffer> call <SID>SubmitPRComment()
+
+  echom 'Write your comment, then save and close to submit'
+endfunction
+
+function! s:SubmitPRComment()
+  " Get comment body (filter out lines starting with #)
+  let l:lines = getline(1, '$')
+  let l:body_lines = filter(l:lines, 'v:val !~# "^#"')
+  let l:body = join(l:body_lines, "\n")
+  let l:body = substitute(l:body, '^\s*\|\s*$', '', 'g')
+
+  if empty(l:body)
+    echohl WarningMsg
+    echom 'Comment is empty, not submitting'
+    echohl None
+    set nomodified
+    return
+  endif
+
+  " Build API payload
+  let l:ctx = s:pr_comment_context
+  let l:payload = {
+        \ 'body': l:body,
+        \ 'path': l:ctx.file,
+        \ 'commit_id': l:ctx.commit_sha,
+        \ 'side': l:ctx.side,
+        \ 'line': l:ctx.end_line
+        \ }
+
+  " Add start_line if multi-line selection
+  if l:ctx.start_line != l:ctx.end_line
+    let l:payload['start_line'] = l:ctx.start_line
+    let l:payload['start_side'] = l:ctx.side
+  endif
+
+  " Write payload to temp file
+  let l:payload_file = tempname()
+  call writefile([json_encode(l:payload)], l:payload_file)
+
+  " Submit via gh api
+  let l:cmd = 'gh api repos/' . l:ctx.repo . '/pulls/' . l:ctx.pr_number . '/comments -X POST --input ' . shellescape(l:payload_file) . ' 2>&1'
+  let l:result = system(l:cmd)
+
+  if v:shell_error != 0
+    echohl ErrorMsg
+    echom 'Failed to post comment: ' . substitute(l:result, '\n', ' ', 'g')
+    echom 'Debug: path=' . l:ctx.file . ' side=' . l:ctx.side . ' line=' . l:ctx.end_line . ' commit=' . l:ctx.commit_sha[:7]
+    echohl None
+    " Keep payload file for inspection
+    echom 'Payload saved to: ' . l:payload_file
+    return
+  endif
+
+  " Clean up on success
+  call delete(l:payload_file)
+
+  " Mark as unmodified and close
+  set nomodified
+  echom 'PR comment posted successfully!'
+  quit
+endfunction
 
 " Global mappings for jumping to changes
 nnoremap <silent> ]c :call <SID>NextChange()<CR>
 nnoremap <silent> [c :call <SID>PrevChange()<CR>
+
+" Visual mode mapping for PR comments
+vnoremap <silent> <leader>pc :call <SID>PRComment()<CR>
