@@ -154,9 +154,10 @@ if command -q fzf
         set fzf_key_bindings_path /usr/share/doc/fzf/examples/key-bindings.fish
     end
 
-    # Source if found
-    if test -f "$fzf_key_bindings_path"
+    if status is-interactive
+      if test -n "$fzf_key_bindings_path" -a -f "$fzf_key_bindings_path"
         source "$fzf_key_bindings_path"
         fzf_key_bindings
+      end
     end
 end
