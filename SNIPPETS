@@ -1,3 +1,9 @@
+# convert ttf font to woff2
+woff2_compress input.ttf
+
+# convert png to favicon
+magick input.png -define icon:auto-resize=16,32,48,64,128,256 favicon.ico
+
 # preview last SES message in the browser
 curl -s http://localhost:4566/_aws/ses | jq '.messages[-1].Body.html_part' -r > /tmp/email.html && open /tmp/email.html
 
