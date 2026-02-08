@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-cd "$(dirname "$0")"
+cd "$(dirname "$0")" || exit
 
 # XDG configs (links to ~/.config/)
 xdg_configs=(
@@ -27,23 +27,41 @@ other_links=(
   "scripts:$HOME/scripts"
 )
 
+ensure_link() {
+  local dest=$1 src=$2
+  if [[ -L "$dest" ]]; then
+    local target
+    target=$(readlink "$dest")
+    if [[ "$target" == "$src" ]]; then
+      printf "  [OK] %s\n" "$dest"
+    else
+      printf "  [ERROR] %s -> %s (expected %s)\n" "$dest" "$target" "$src"
+    fi
+  elif [[ -e "$dest" ]]; then
+    printf "  [ERROR] %s already exists, resolve manually\n" "$dest"
+  else
+    ln -s "$src" "$dest"
+    printf "  [OK] %s -> %s\n" "$dest" "$src"
+  fi
+}
+
 if [[ "$1" == "unlink" ]]; then
   for dir in "${xdg_configs[@]}"; do
-    rm -f ~/.config/$dir
+    rm -f "$HOME/.config/$dir"
+    echo "  removed ~/.config/$dir"
   done
   for link in "${other_links[@]}"; do
     dest="${link#*:}"
     rm -f "$dest"
+    echo "  removed $dest"
   done
 else
   for dir in "${xdg_configs[@]}"; do
-    rm -f ~/.config/$dir
-    ln -s "$PWD/$dir" ~/.config/$dir
+    ensure_link "$HOME/.config/$dir" "$PWD/$dir"
   done
   for link in "${other_links[@]}"; do
     src="${link%%:*}"
     dest="${link#*:}"
-    rm -f "$dest"
-    ln -s "$PWD/$src" "$dest"
+    ensure_link "$dest" "$PWD/$src"
   done
 fi
