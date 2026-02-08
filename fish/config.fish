@@ -138,26 +138,7 @@ end
 if command -q fzf
     set -gx FZF_ALT_C_COMMAND ""
     set -gx FZF_DEFAULT_OPTS "--prompt='' --margin=2%,2% --height 65% --info=inline-right --layout=reverse --no-scrollbar --tiebreak=length"
-
-    # Source fzf key bindings from system installation
-    set fzf_key_bindings_path ""
-
-    # macOS with Homebrew
-    if test (uname) = "Darwin" -a -x /opt/homebrew/bin/brew
-        set fzf_key_bindings_path (brew --prefix)/opt/fzf/shell/key-bindings.fish
-    else if test (uname) = "Darwin" -a -x /usr/local/bin/brew
-        set fzf_key_bindings_path (brew --prefix)/opt/fzf/shell/key-bindings.fish
-    # Linux common locations
-    else if test -f /usr/share/fzf/key-bindings.fish
-        set fzf_key_bindings_path /usr/share/fzf/key-bindings.fish
-    else if test -f /usr/share/doc/fzf/examples/key-bindings.fish
-        set fzf_key_bindings_path /usr/share/doc/fzf/examples/key-bindings.fish
-    end
-
     if status is-interactive
-      if test -n "$fzf_key_bindings_path" -a -f "$fzf_key_bindings_path"
-        source "$fzf_key_bindings_path"
-        fzf_key_bindings
-      end
+        fzf --fish | source
     end
 end
