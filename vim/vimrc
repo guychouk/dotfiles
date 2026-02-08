@@ -146,7 +146,7 @@ inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
 
 " Plugins {{{
-let g:packages = [
+let g:picopack = [
   \ 'MaxMEllon/vim-jsx-pretty',
   \ 'Yggdroot/indentLine',
   \ 'airblade/vim-gitgutter',
