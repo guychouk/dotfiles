@@ -126,7 +126,6 @@ nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
-nnoremap          <leader>/             :Rg<Space>
 nnoremap <silent> <leader>ec            :e $MYVIMRC<CR>
 nnoremap          <leader>re            :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap <silent> <C-]>                 :ltag <C-R><C-W><CR>
@@ -183,6 +182,7 @@ nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap <silent> <leader>r             :History:<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
+nnoremap          <leader>/             :Dispatch grep -rn<Space>
 nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
