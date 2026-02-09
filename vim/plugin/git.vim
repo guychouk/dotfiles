@@ -154,8 +154,7 @@ function! s:SubmitPRComment() abort
   quit
 endfunction
 
-vnoremap <silent> <leader>pc :call <SID>PRComment()<CR>
-
-command! -bar    -nargs=0 Branches     call <sid>GitSwitchBranch()
-command! -range           GithubBrowse <line1>,<line2>call <sid>GithubBrowse()
-command! -bar    -nargs=? ReviewBranch call <sid>ReviewBranch(<f-args>)
+command! -bar    -nargs=0 Branches        call <sid>GitSwitchBranch()
+command! -range           GithubBrowse   <line1>,<line2>call <sid>GithubBrowse()
+command! -bar    -nargs=? ReviewBranch   call <sid>ReviewBranch(<f-args>)
+command! -range           CommentOnPRLine <line1>,<line2>call <sid>PRComment()
