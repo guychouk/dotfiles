@@ -3,8 +3,7 @@ if !exists('g:tabline_custom_names')
   let g:tabline_custom_names = {}
 endif
 
-" Must be global - called by tabline setting
-function! Picotab()
+function! Picotab() abort
   let s = ''
   for i in range(tabpagenr('$'))
     if i + 1 == tabpagenr()

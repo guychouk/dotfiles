@@ -26,7 +26,7 @@ set noswapfile
 set viminfofile=$XDG_CACHE_HOME/viminfo
 set notitle
 set titlestring=%<%F
-set nowrap
+set wrap
 set number
 set smarttab
 set expandtab
@@ -100,6 +100,11 @@ colorscheme gman
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
+nnoremap          j                     gj
+nnoremap          k                     gk
+nnoremap <silent> X                     :tabclose<CR>
+nnoremap <silent> H                     :TabMoveOrCreate h<CR>
+nnoremap <silent> L                     :TabMoveOrCreate l<CR>
 nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
 nnoremap <silent> <C-w>j                :WinMoveOrSplit j<CR>
 nnoremap <silent> <C-w>k                :WinMoveOrSplit k<CR>
@@ -108,11 +113,7 @@ nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
 nnoremap <silent> <C-A-j>               :resize +5<CR>
 nnoremap <silent> <C-A-k>               :resize -5<CR>
 nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
-nnoremap <silent> yoz                   :ZoomWin<CR>
-nnoremap          H                     gT
-nnoremap          L                     gt
-nnoremap          j                     gj
-nnoremap          k                     gk
+nnoremap <silent> yoz                   :WinZoom<CR>
 nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
@@ -122,7 +123,6 @@ nnoremap          Y                     y$
 nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
-nnoremap <silent> <C-e>                 :e#<CR>
 nnoremap <silent> <leader>w             :w<CR>
 nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
@@ -131,10 +131,9 @@ nnoremap <silent> <leader>ec            :e $MYVIMRC<CR>
 nnoremap          <leader>re            :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap <silent> <C-]>                 :ltag <C-R><C-W><CR>
 nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
-nnoremap          <leader>yf            :let @+ = expand('%:p')<Bar>echomsg 'Copied ' . @+<CR>
-nnoremap          <leader>yt            :let @+ = strftime("%Y-%m-%d")<Bar>echomsg 'Copied ' . @+<CR>
-nnoremap          <leader>ir            :InsertRelativeFilePath<CR>
-nnoremap          <leader>yr            :CopyRelativeFilePath<CR>
+nnoremap          <leader>yt            :YankCurrentDate<CR>
+nnoremap          <leader>yf            :YankAbsoluteFilePath<CR>
+nnoremap          <leader>yr            :YankRelativeFilePath<CR>
 nnoremap          <leader>:             :Term<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
