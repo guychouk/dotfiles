@@ -193,7 +193,6 @@ nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
-nnoremap          <localleader>o        :Dispatch! open (pbpaste)<CR>
 nnoremap          gz                    <Plug>(characterize)
 nnoremap          ga                    <Plug>(EasyAlign)
 xnoremap          ga                    <Plug>(EasyAlign)
