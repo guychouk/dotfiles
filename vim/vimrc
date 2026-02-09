@@ -176,18 +176,18 @@ let g:picopack = [
 \ ]
 nnoremap <silent> <leader>gg            :Git<CR>
 nnoremap <silent> <leader>gb            :Branches<CR>
-nnoremap <silent> <leader>cr            :ReviewBranch<CR>
+nnoremap <silent> <leader>gr            :ReviewBranch<CR>
 nnoremap <silent> <leader>p             :Files<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap <silent> <leader>r             :History:<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap          <leader>/             :Dispatch grep -rn<Space>
-nnoremap <silent> <leader>cs            :call css_color#toggle()<CR>
+nnoremap          <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hd            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
-nnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
+xnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
