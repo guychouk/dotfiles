@@ -1,4 +1,4 @@
-" Vim compiler plugin
+" Vim compiler file
 " Compiler:    nob for C
 
 CompilerSet makeprg=./nob
