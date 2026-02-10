@@ -158,3 +158,4 @@ command! -bar    -nargs=0 Branches        call <sid>GitSwitchBranch()
 command! -range           GithubBrowse   <line1>,<line2>call <sid>GithubBrowse()
 command! -bar    -nargs=? ReviewBranch   call <sid>ReviewBranch(<f-args>)
 command! -range           CommentOnPRLine <line1>,<line2>call <sid>PRComment()
+command! -bar    -nargs=* GitDiff        call setqflist(map(systemlist('git diff --name-only --relative ' .. <q-args>), {_, f -> {'filename': f, 'lnum': 1}}), 'r') | copen

@@ -184,10 +184,12 @@ nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap          <leader>/             :Dispatch grep -rn<Space>
 nnoremap          <leader>cs            :call css_color#toggle()<CR>
-nnoremap <silent> <leader>hd            :GitGutterPreviewHunk<CR>
+nnoremap <silent> <leader>hp            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
-xnoremap <silent> <leader>hp            :CommentOnPRLine<CR>
+nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
+nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
+xnoremap <silent> <leader>hc            :CommentOnPRLine<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
