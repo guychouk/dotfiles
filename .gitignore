@@ -10,3 +10,4 @@ git/ignore
 kitty/theme.conf
 fish/fish_variables
 fish/conf.d/localonly.fish
+fish/completions/
