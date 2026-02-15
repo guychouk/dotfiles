@@ -185,7 +185,7 @@ nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap <silent> <leader>r             :History:<CR>
 nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
-nnoremap          <leader>/             :Dispatch grep -rn<Space>
+nnoremap          <leader>/             :Rg<Space>
 nnoremap          <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hp            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
