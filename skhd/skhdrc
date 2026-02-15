@@ -104,5 +104,3 @@
 #        "qutebrowser"
 #     ]
 
-# open yazi file browser in new Kitty window
-cmd + shift - return : /Applications/kitty.app/Contents/MacOS/kitty --single-instance -d ~ --override font_size=22 yazi
