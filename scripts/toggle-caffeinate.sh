@@ -8,7 +8,7 @@ if [ -f "$PID_FILE" ]; then
     PID=$(cat "$PID_FILE")
     if kill "$PID" 2>/dev/null; then
         rm "$PID_FILE"
-        osascript -e 'display notification "Sleep prevention disabled" with title "Caffeinate" sound name "Glass"'
+        osascript -e 'display notification "🔴" with title "Caffeinate" sound name "Glass"'
     else
         # PID file exists but process is dead, clean up
         rm "$PID_FILE"
@@ -18,5 +18,5 @@ else
     # Caffeinate is not running, start it
     caffeinate -sdi &
     echo $! > "$PID_FILE"
-    osascript -e 'display notification "Sleep prevention enabled" with title "Caffeinate" sound name "Glass"'
+    osascript -e 'display notification "🟢" with title "Caffeinate" sound name "Glass"'
 fi
