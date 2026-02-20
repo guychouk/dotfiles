@@ -12,7 +12,7 @@ function! s:LspStart() abort
   if !exists('g:loaded_lsp')
     packadd lsp
     call LspOptionsSet(#{
-          \ autoComplete: v:true,
+          \ autoComplete: v:false,
           \ showDiagOnStatusLine: v:true,
           \ })
     call LspAddServer([
