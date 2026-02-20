@@ -4,7 +4,8 @@ set encoding=utf-8
 set autoindent
 set autoread
 set backspace=indent,eol,start
-set completeopt=menuone,preview
+set completeopt=menuone
+set pumheight=15
 set display=lastline
 set foldmethod=indent
 set ignorecase
@@ -16,14 +17,12 @@ set laststatus=2
 set linebreak
 set mouse=a
 set cursorline
-set cursorlineopt=number
 set nohlsearch
 set nojoinspaces
 set noruler
 set noshowcmd
 set noshowmode
 set noswapfile
-set viminfofile=$XDG_CACHE_HOME/viminfo
 set notitle
 set titlestring=%<%F
 set wrap
@@ -34,7 +33,7 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set shiftround
-set shortmess=aoOstTIcF
+set shortmess=aoOstTIc
 set sidescroll=1
 set sidescrolloff=2
 set signcolumn=yes
@@ -59,12 +58,30 @@ set path+=**
 set t_vb=
 set noerrorbells
 set noequalalways
-if has('macunix')
-  set clipboard=unnamed
-elseif has('unix')
-  set clipboard=unnamedplus
-endif
 set foldlevel=99
+
+" Conditional option setting from newer vim versions
+if has('clipboard')
+  set clipboard^=unnamed,unnamedplus
+endif
+if has('patch-8.0.1473')
+  set shortmess+=F
+endif
+if exists('+viminfofile')
+  set viminfofile=$XDG_CACHE_HOME/viminfo
+endif
+if exists('+cursorlineopt')
+  set cursorlineopt=number
+endif
+if exists('+completepopup')
+  set completeopt+=popup
+  set completepopup=border:round
+  if exists('+pumborder')
+    set pumborder=round
+  endif
+else
+  set completeopt+=preview
+endif
 
 " Disable netrw before calling filetype
 let g:loaded_netrw = 1
@@ -254,9 +271,11 @@ let g:markdown_fenced_languages = ['python','javascript','typescript','bash=sh',
 
 augroup appearance_settings
   autocmd!
-  autocmd VimEnter     * call echoraw(&t_EI)
-  autocmd CmdlineEnter * call echoraw(&t_SI)
-  autocmd CmdlineLeave * call echoraw(&t_EI)
+  if exists('*echoraw')
+    autocmd VimEnter     * call echoraw(&t_EI)
+    autocmd CmdlineEnter * call echoraw(&t_SI)
+    autocmd CmdlineLeave * call echoraw(&t_EI)
+  endif
 augroup END
 
 augroup quickfix
