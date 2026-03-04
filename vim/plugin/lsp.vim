@@ -7,6 +7,7 @@
 " Requires language servers in $PATH:
 "   - typescript-language-server (TypeScript/JavaScript)
 "   - gopls (Go)
+"   - clangd (C/C++/ObjC)
 
 function! s:LspStart() abort
   if !exists('g:loaded_lsp')
@@ -27,6 +28,12 @@ function! s:LspStart() abort
           \   filetype: ['go', 'gomod'],
           \   path: exepath('gopls'),
           \   args: ['serve'],
+          \ },
+          \ #{
+          \   name: 'clangd',
+          \   filetype: ['c', 'cpp', 'objc', 'objcpp'],
+          \   path: exepath('clangd'),
+          \   args: [],
           \ },
           \ ])
     let g:loaded_lsp = 1
