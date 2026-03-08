@@ -290,7 +290,15 @@ augroup filetype_settings
   autocmd!
 
   " Dirvish
-  autocmd FileType dirvish nmap <buffer> <localleader>v .kitty icat<CR>
+  function! s:DirvishEnter() abort
+    let l:path = trim(getline('.'))
+    if l:path =~? '\.\(png\|jpg\|jpeg\|gif\|bmp\|webp\|tiff\|ico\)$'
+      call system('kitty @ launch --type=overlay fish -c ' . shellescape('kitty icat ' . shellescape(l:path) . '; read -n1'))
+    else
+      call dirvish#open('edit', 0)
+    endif
+  endfunction
+  autocmd FileType dirvish nmap <buffer> <silent> <CR> :call <SID>DirvishEnter()<CR>
   autocmd FileType dirvish nmap <buffer> t :call dirvish#open('tabedit', 0)<CR>
   autocmd FileType dirvish xmap <buffer> t :call dirvish#open('tabedit', 0)<CR>
 
