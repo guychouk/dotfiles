@@ -281,8 +281,8 @@ augroup END
 augroup quickfix
   autocmd!
   autocmd VimEnter        *     cwindow
-  autocmd QuickFixCmdPost l*    lwindow
-  autocmd QuickFixCmdPost [^l]* cwindow
+  autocmd QuickFixCmdPost l*    if get(getloclist(0, {'title': 1}), 'title', '') !~# '^:Dispatch' | lwindow | wincmd p | endif
+  autocmd QuickFixCmdPost [^l]* if get(getqflist({'title': 1}), 'title', '') !~# '^:Dispatch' | cwindow | wincmd p | endif
   autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
 augroup END
 
