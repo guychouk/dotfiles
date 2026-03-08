@@ -378,6 +378,9 @@ augroup filetype_settings
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch node %<CR>
 
+  " Terminal
+  autocmd TerminalOpen * nnoremap <buffer> q :close<CR>
+
   " TypeScript
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
