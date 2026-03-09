@@ -38,28 +38,17 @@ end
 # Nix
 if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+    fish_add_path -p "$HOME/.nix-profile/bin"
+    fish_add_path -p "/nix/var/nix/profiles/default/bin"
 end
 
 # asdf-vm
-set -gx ASDF_DIR "$XDG_DATA_HOME/asdf"
-set -gx ASDF_DATA_DIR "$ASDF_DIR"
+set -gx ASDF_DATA_DIR "$XDG_DATA_HOME/asdf"
 set -gx ASDF_CONFIG_FILE "$XDG_CONFIG_HOME/asdf/.asdfrc"
-set -gx ASDF_GOLANG_MOD_VERSION_ENABLED true
+fish_add_path -p "$ASDF_DATA_DIR/shims"
+fish_add_path -p "$ASDF_DATA_DIR/completions"
 
-if test -d "$ASDF_DIR"
-    or git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch v0.10.0
-end
-
-if test -f "$ASDF_DIR/asdf.fish"
-    source "$ASDF_DIR/asdf.fish"
-end
-
-# PATH
-fish_add_path -p "$HOME/.nix-profile/bin"
-fish_add_path -p "/nix/var/nix/profiles/default/bin"
-fish_add_path -p "$ASDF_DIR/shims"
-fish_add_path -p "$ASDF_DIR/completions"
-fish_add_path -p "$GEM_HOME"
+# My scripts and local binaries
 fish_add_path -p "$HOME/bin"
 fish_add_path -p "$HOME/scripts"
 fish_add_path -p "$HOME/.local/bin"
