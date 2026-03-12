@@ -33,3 +33,5 @@ ctags
 TypeScript
 LSP
 Vim9
+SpiceDB
+LaunchDarkly

@@ -176,6 +176,7 @@ let g:picopack = [
   \ 'justinmk/vim-dirvish',
   \ 'markonm/traces.vim',
   \ 'mbbill/undotree',
+  \ 'ojroques/vim-oscyank',
   \ 'preservim/tagbar',
   \ 'psliwka/vim-smoothie',
   \ 'tpope/vim-abolish',
@@ -284,6 +285,11 @@ augroup quickfix
   autocmd QuickFixCmdPost l*    if get(getloclist(0, {'title': 1}), 'title', '') !~# '^:Dispatch' | lwindow | wincmd p | endif
   autocmd QuickFixCmdPost [^l]* if get(getqflist({'title': 1}), 'title', '') !~# '^:Dispatch' | cwindow | wincmd p | endif
   autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
+augroup END
+
+augroup oscyank
+  autocmd!
+  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
 augroup END
 
 augroup filetype_settings
