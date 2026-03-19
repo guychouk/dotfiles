@@ -3,6 +3,7 @@
 
 [core]
 	pager = delta
+	quotepath = false
 
 [interactive]
 	diffFilter = delta --color-only
@@ -24,6 +25,12 @@
 
 [include]
 	path = ./git-user
+
+[includeIf "gitdir:/Users/guychouk/projects/"]
+	path = ./git-user-personal
+
+[includeIf "gitdir:/Users/guychouk/projects/factify/"]
+	path = ./git-user-factify
 
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
