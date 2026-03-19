@@ -29,11 +29,5 @@
 [includeIf "gitdir:/Users/guychouk/projects/factify/"]
 	path = ./git-user-factify
 
-[includeIf "gitdir:/Users/guychouk/projects/"]
-	path = ./git-user-personal
-
-[includeIf "gitdir:/Users/guychouk/projects/factify/"]
-	path = ./git-user-factify
-
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
