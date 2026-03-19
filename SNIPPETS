@@ -28,6 +28,12 @@ gpg --output message.txt.sig --sign message.txt
 # gpg decrypt
 gpg --output recovered_message.txt --decrypt message.txt.gpg
 
+# gpg encrypt binary file for pass store recipients
+gpg --batch --yes -r KEY_FINGERPRINT --output output.gpg --encrypt input.file
+
+# gpg decrypt binary file from pass store
+gpg --batch --yes --output output.file --decrypt input.gpg
+
 # add s3 bucket to localstack
 aws --endpoint-url=http://localhost:4566 s3 mb s3://BUCKET
 
