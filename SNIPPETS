@@ -16,6 +16,9 @@ atlas migrate diff name-of-new-migration --dir file://migrations --to file://sql
 # skhd management
 skhd --start-service; skhd --reload
 
+# gpg list keys
+gpg --list-secret-keys --keyid-format LONG
+
 # gpg sign encrypt
 gpg --output message.txt.sig --sign message.txt
 
