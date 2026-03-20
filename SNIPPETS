@@ -16,11 +16,29 @@ atlas migrate diff name-of-new-migration --dir file://migrations --to file://sql
 # skhd management
 skhd --start-service; skhd --reload
 
-# gpg export for github
-gpg --armor --export C5425A14CC652EC133130CE5A124EF3A92F2C7A4
+# gpg import private key and trust it (run both, select trust level 5 in edit-key)
+gpg --import private.asc && gpg --edit-key KEY_FINGERPRINT
 
-# gpg list keys
-gpg --list-secret-keys --keyid-format LONG
+# gpg list keys with keygrips
+gpg --list-keys --with-keygrip
+
+# gpg export public key for github (copy to clipboard)
+gpg --armor --export KEY_FINGERPRINT | pbcopy
+
+# gpg export ssh public key (copy to clipboard)
+SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket) ssh-add -L | pbcopy
+
+# gpg backup private key to pass
+gpg --export-secret-keys --armor KEY_FINGERPRINT | pass insert --multiline gpg/key-name
+
+# gpg backup revocation cert to pass
+gpg --gen-revoke KEY_FINGERPRINT | pass insert --multiline gpg/key-name-revocation-cert
+
+# gpg add auth subkey keygrip to sshcontrol
+echo KEYGRIP >> ~/.gnupg/sshcontrol
+
+# gpg restart agent
+gpgconf --kill gpg-agent && gpgconf --launch gpg-agent
 
 # gpg sign encrypt
 gpg --output message.txt.sig --sign message.txt
