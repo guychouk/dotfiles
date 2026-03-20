@@ -35,6 +35,12 @@ if test (uname) = "Darwin" -a -f /opt/homebrew/bin/brew
     eval (/opt/homebrew/bin/brew shellenv)
 end
 
+# GPG agent (also handles SSH)
+if status is-interactive
+    set -gx GPG_TTY (tty)
+end
+set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
+
 # Nix
 if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
     source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
