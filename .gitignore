@@ -10,4 +10,5 @@ git/ignore
 kitty/theme.conf
 fish/fish_variables
 fish/conf.d/localonly.fish
-fish/completions/
+fish/completions/openspec.fish
+fish/completions/openspec.fish.backup-2026-03-09T12-23-15-177Z
