@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+NOTES_FILE="${1:-NOTES.md}"
+
+if [[ ! -f "$NOTES_FILE" ]]; then
+  echo "No NOTES.md found at $NOTES_FILE" >&2
+  exit 1
+fi
+
+PR_NUMBER=$(gh pr view --json number -q .number 2>/dev/null)
+if [[ -z "$PR_NUMBER" ]]; then
+  echo "No open PR for current branch" >&2
+  exit 1
+fi
+
+REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+COMMIT_SHA=$(git rev-parse HEAD)
+
+posted=0
+skipped=0
+
+while IFS= read -r line || [[ -n "$line" ]]; do
+  [[ -z "$line" ]] && continue
+
+  if [[ "$line" =~ ^(.+):([0-9]+):[0-9]+ - (.+)$ ]]; then
+    abs_path="${BASH_REMATCH[1]}"
+    lineno="${BASH_REMATCH[2]}"
+    comment="${BASH_REMATCH[3]}"
+  else
+    echo "Skipping malformed line: $line" >&2
+    ((skipped++))
+    continue
+  fi
+
+  rel_path=$(git ls-files --full-name "$abs_path" 2>/dev/null)
+  if [[ -z "$rel_path" ]]; then
+    echo "Skipping untracked path: $abs_path" >&2
+    ((skipped++))
+    continue
+  fi
+
+  payload=$(printf '{"body":%s,"path":%s,"commit_id":"%s","side":"RIGHT","line":%s}' \
+    "$(echo "$comment" | jq -Rs .)" \
+    "$(echo "$rel_path" | jq -Rs .)" \
+    "$COMMIT_SHA" \
+    "$lineno")
+
+  gh api "repos/$REPO/pulls/$PR_NUMBER/comments" -X POST --input - <<< "$payload" > /dev/null
+  echo "Posted: $rel_path:$lineno"
+  ((posted++))
+
+done < "$NOTES_FILE"
+
+echo "$posted comment(s) posted, $skipped skipped"
