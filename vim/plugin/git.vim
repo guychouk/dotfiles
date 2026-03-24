@@ -60,6 +60,7 @@ function! s:GitDiff(...) abort
   copen
 endfunction
 
+command! -nargs=1         Browse silent call system('open ' . shellescape(<q-args>))
 command! -bar    -nargs=0 Branches     call <sid>GitSwitchBranch()
 command! -range           GithubBrowse <line1>,<line2>call <sid>GithubBrowse()
 command! -bar    -nargs=? GitDiff      call <sid>GitDiff(<f-args>)
