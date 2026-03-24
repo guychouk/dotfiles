@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler:    ESLint for JavaScript
+" Compiler:    ESLint
 
 CompilerSet makeprg=eslint\ --format\ unix\ .
 CompilerSet errorformat=

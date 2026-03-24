@@ -326,6 +326,7 @@ augroup filetype_settings
 
   " Shell
   autocmd FileType sh,bash,zsh compiler shellcheck
+  autocmd FileType sh,bash,zsh nmap <buffer> <localleader>l :Make<CR>
 
   " YAML
   autocmd FileType yaml setlocal foldlevel=2
@@ -343,17 +344,29 @@ augroup filetype_settings
   autocmd FileType proto nmap <buffer> <localleader>l :Dispatch buf format -w<CR>
 
   " Nix
-  autocmd FileType nix nmap <buffer> <localleader>r :Term ++rows=10 nix-instantiate --eval %<CR>
+  autocmd FileType nix nmap <buffer> <localleader>r :Term nix-instantiate --eval %<CR>
 
   " Vim
   autocmd FileType vim nmap <buffer> <localleader>m :SearchVimPackages<CR>
 
   " Go
+  function! s:GoLint() abort
+    let l:modfile = findfile('go.mod', expand('%:p:h') . ';')
+    if empty(l:modfile)
+      echom 'go.mod not found'
+      return
+    endif
+    let l:moddir = fnamemodify(l:modfile, ':p:h')
+    compiler golangci-lint
+    let &makeprg = 'cd ' . shellescape(l:moddir) . ' && golangci-lint run ./...'
+    Make
+  endfunction
   autocmd FileType go compiler go
-  autocmd FileType go nmap <buffer> <localleader>b :Dispatch go build %<CR>
-  autocmd FileType go nmap <buffer> <localleader>r :Term ++rows=10 go run %<CR>
-  autocmd FileType go nmap <buffer> <localleader>l :Dispatch gofmt -w %<CR>
+  autocmd FileType go nmap <buffer> <localleader>b :Make<CR>
+  autocmd FileType go nmap <buffer> <localleader>r :Term go run %<CR>
+  autocmd FileType go nmap <buffer> <localleader>l :call <SID>GoLint()<CR>
   autocmd FileType go nmap <buffer> <localleader>m :SearchGoPackages<CR>
+
 
   " Godot
   autocmd FileType gdscript setlocal foldmethod=expr
@@ -375,28 +388,36 @@ augroup filetype_settings
   autocmd FileType markdown setlocal wrap
 
   " Python
+  autocmd FileType python compiler ruff
+  autocmd FileType python nmap <buffer> <localleader>r :Term python3 %<CR>
+  autocmd FileType python nmap <buffer> <localleader>R :Dispatch python3 %<CR>
+  autocmd FileType python nmap <buffer> <localleader>l :Make<CR>
   autocmd FileType python nmap <buffer> <localleader>m :SearchPythonPackages<CR>
 
   " JavaScript
+  autocmd FileType javascript,javascriptreact compiler tsc
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>m :SearchNodeModules<CR>
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
-  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Dispatch node %<CR>
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>b :Make<CR>
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>l :Dispatch eslint --format unix .<CR>
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>r :Term node %<CR>
+  autocmd FileType javascript,javascriptreact nmap <buffer> <localleader>R :Dispatch node %<CR>
 
   " Terminal
   autocmd TerminalOpen * nnoremap <buffer> q :close<CR>
 
   " TypeScript
+  autocmd FileType typescript,typescriptreact compiler tsc
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>m :SearchNodeModules<CR>
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>b :Dispatch tsc %<CR>
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>l :Dispatch eslint %<CR>
-  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Dispatch ts-node %<CR>
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>b :Make<CR>
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>l :Dispatch eslint --format unix .<CR>
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>r :Term ts-node %<CR>
+  autocmd FileType typescript,typescriptreact nmap <buffer> <localleader>R :Dispatch -compiler=node ts-node %<CR>
 
 augroup END
 " }}}
