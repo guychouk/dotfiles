@@ -2,4 +2,5 @@
 " Compiler:    nob for C
 
 CompilerSet makeprg=./nob
-CompilerSet errorformat=%f:%l:%c:\ %t%*[^:]:\ %m
+CompilerSet errorformat=
+      \%f:%l:%c:\ %t%*[^:]:\ %m
