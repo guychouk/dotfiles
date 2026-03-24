@@ -151,7 +151,8 @@ nnoremap          <leader>yt            :YankCurrentDate<CR>
 nnoremap          <leader>yf            :YankAbsoluteFilePath<CR>
 nnoremap          <leader>yr            :YankRelativeFilePath<CR>
 nnoremap          <leader>yl            :YankFileLocation<CR>
-nnoremap          <leader>ac            :AnnotateLocation<CR>
+nnoremap          <leader>b             :Bookmark<CR>
+xnoremap          <leader>b             :Bookmark<CR>
 nnoremap          <leader>:             :Term<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
@@ -181,6 +182,7 @@ let g:picopack = [
   \ 'ojroques/vim-oscyank',
   \ 'preservim/tagbar',
   \ 'psliwka/vim-smoothie',
+  \ 'tpope/vim-rhubarb',
   \ 'tpope/vim-abolish',
   \ 'tpope/vim-characterize',
   \ 'tpope/vim-commentary',
