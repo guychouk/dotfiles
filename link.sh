@@ -23,6 +23,7 @@ other_links=(
   "zsh/.zshenv:$HOME/.zshenv"
   "asdf/.tool-versions:$HOME/.tool-versions"
   "gnupg/gpg-agent.conf:$HOME/.gnupg/gpg-agent.conf"
+  "gnupg/org.gnupg.gpg-agent.plist:$HOME/Library/LaunchAgents/org.gnupg.gpg-agent.plist"
   "curl/curlrc:$HOME/.curlrc"
   "scripts:$HOME/scripts"
 )
