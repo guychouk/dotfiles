@@ -1,8 +1,5 @@
 nodejs 22.14.0
-sbt 1.5.5
 golang 1.26.1
 bun 1.0.1
-ruby 3.2.2
 python 3.12.10
 rust 1.92.0
-just 1.40.0
