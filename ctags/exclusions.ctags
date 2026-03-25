@@ -28,7 +28,6 @@
 --exclude=coverage
 --exclude=cscope.*
 --exclude=dist
---exclude=dist
 --exclude=external
 --exclude=gen
 --exclude=min

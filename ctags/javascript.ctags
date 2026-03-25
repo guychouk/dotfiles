@@ -16,10 +16,14 @@
 #------------------------------------------------------------------------------
 # Const, let, var assigned to function expressions (arrow or otherwise)
 #------------------------------------------------------------------------------
---regex-javascript=/^[ \t]*const[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
---regex-javascript=/^[ \t]*let[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
---regex-javascript=/^[ \t]*var[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*\(/\1/f,function/
-# const myFunc = function(...) { ... } or arrow variants
+--regex-javascript=/^[ \t]*(const|let|var)[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*(async[ \t]*)?\([^)]*\)[ \t]*=>/\2/f,function/
+# const myFunc = (...) => or const myFunc = async (...) =>
+
+--regex-javascript=/^[ \t]*(const|let|var)[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*(async[ \t]*)?[A-Za-z_$][A-Za-z0-9_$]*[ \t]*=>/\2/f,function/
+# const myFunc = param => or const myFunc = async param =>
+
+--regex-javascript=/^[ \t]*(const|let|var)[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*(async[ \t]*)?function/\2/f,function/
+# const myFunc = function(...) or const myFunc = async function(...)
 
 #------------------------------------------------------------------------------
 # Class declarations in JavaScript
