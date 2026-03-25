@@ -25,6 +25,12 @@
 --regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]\{1,\}\)*function[^\*][^\*]/\1/f,function/b
 # const myFunc = async function (...) { ... }
 
+--regex-typescript=/^[ \t]*(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?([^)]*)[ \t]*=>/\3/f,function/b
+# const myFunc = (...) => or export const myFunc = async (...) =>
+
+--regex-typescript=/^[ \t]*(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?[A-Za-z0-9_$]\+[ \t]*=>/\3/f,function/b
+# const myFunc = param => or export const myFunc = async param =>
+
 #------------------------------------------------------------------------------
 # Class declarations
 #------------------------------------------------------------------------------
