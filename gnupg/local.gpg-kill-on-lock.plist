@@ -6,7 +6,7 @@
     <string>local.gpg-kill-on-lock</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/guychouk/scripts/gpg-kill-on-lock</string>
+        <string>/Users/guychouk/bin/gpg-kill-on-lock</string>
     </array>
     <key>RunAtLoad</key>
     <true/>
