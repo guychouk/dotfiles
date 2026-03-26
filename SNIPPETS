@@ -16,6 +16,9 @@ atlas migrate diff name-of-new-migration --dir file://migrations --to file://sql
 # skhd management
 skhd --start-service; skhd --reload
 
+# gpg export to .asc file
+gpg --export-secret-keys --armor KEY_FINGERPRINT > backup-private-key.asc
+
 # gpg import private key and trust it (run both, select trust level 5 in edit-key)
 gpg --import private.asc && gpg --edit-key KEY_FINGERPRINT
 
