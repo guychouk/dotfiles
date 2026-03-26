@@ -265,9 +265,6 @@ let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
-" Godot {{{
-let g:godot_executable = '/Applications/Godot.app/Contents/MacOS/Godot --position 1500,0'
-" }}}
 " Markdown {{{
 let g:markdown_fenced_languages = ['python','javascript','typescript','bash=sh','html','vim','conf','sql','proto','go']
 " }}}
