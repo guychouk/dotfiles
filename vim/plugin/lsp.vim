@@ -8,34 +8,57 @@
 "   - typescript-language-server (TypeScript/JavaScript)
 "   - gopls (Go)
 "   - clangd (C/C++/ObjC)
+"   - nc (netcat, proxies stdio to Godot's LSP TCP server on port 6005)
 
 function! s:LspStart() abort
   if !exists('g:loaded_lsp')
     packadd lsp
     call LspOptionsSet(#{
-          \ autoComplete: v:false,
+          \ autoComplete: v:true,
           \ showDiagOnStatusLine: v:true,
           \ })
-    call LspAddServer([
-          \ #{
-          \   name: 'typescript-language-server',
-          \   filetype: ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'],
-          \   path: exepath('typescript-language-server'),
-          \   args: ['--stdio'],
-          \ },
-          \ #{
-          \   name: 'gopls',
-          \   filetype: ['go', 'gomod'],
-          \   path: exepath('gopls'),
-          \   args: ['serve'],
-          \ },
-          \ #{
-          \   name: 'clangd',
-          \   filetype: ['c', 'cpp', 'objc', 'objcpp'],
-          \   path: exepath('clangd'),
-          \   args: [],
-          \ },
-          \ ])
+    let s:servers = []
+    if executable('typescript-language-server')
+      call add(s:servers, #{
+            \   name: 'typescript-language-server',
+            \   filetype: ['typescript', 'typescriptreact', 'javascript', 'javascriptreact'],
+            \   path: exepath('typescript-language-server'),
+            \   args: ['--stdio'],
+            \ })
+    endif
+    if executable('gopls')
+      call add(s:servers, #{
+            \   name: 'gopls',
+            \   filetype: ['go', 'gomod'],
+            \   path: exepath('gopls'),
+            \   args: ['serve'],
+            \ })
+    endif
+    if executable('clangd')
+      call add(s:servers, #{
+            \   name: 'clangd',
+            \   filetype: ['c', 'cpp', 'objc', 'objcpp'],
+            \   path: exepath('clangd'),
+            \   args: [],
+            \ })
+    endif
+    if executable('basedpyright-langserver')
+      call add(s:servers, #{
+            \   name: 'basedpyright',
+            \   filetype: ['python'],
+            \   path: exepath('basedpyright-langserver'),
+            \   args: ['--stdio'],
+            \ })
+    endif
+    if executable('nc')
+      call add(s:servers, #{
+            \   name: 'godot',
+            \   filetype: ['gdscript'],
+            \   path: exepath('nc'),
+            \   args: ['127.0.0.1', '6005'],
+            \ })
+    endif
+    call LspAddServer(s:servers)
     let g:loaded_lsp = 1
   endif
   execute 'LspServer start'
