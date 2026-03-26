@@ -15,6 +15,12 @@ xdg_configs=(
   newsboat
 )
 
+# Swift sources to compile - "source:binary"
+swift_builds=(
+  "scripts/gpg-kill-on-lock.swift:$HOME/bin/gpg-kill-on-lock"
+  "scripts/pbcopy-concealed.swift:$HOME/bin/pbcopy-concealed"
+)
+
 # Other locations - "source:destination"
 other_links=(
   "vim:$HOME/.vim"
@@ -47,6 +53,19 @@ ensure_link() {
   fi
 }
 
+build_swift() {
+  local src=$1 dest=$2
+  if ! command -v swiftc &>/dev/null; then
+    return
+  fi
+  mkdir -p "$(dirname "$dest")"
+  if swiftc "$PWD/$src" -o "$dest" 2>/dev/null; then
+    printf "  [OK] %s -> %s\n" "$src" "$dest"
+  else
+    printf "  [ERROR] failed to compile %s\n" "$src"
+  fi
+}
+
 if [[ "$1" == "unlink" ]]; then
   for dir in "${xdg_configs[@]}"; do
     rm -f "$HOME/.config/$dir"
@@ -65,5 +84,10 @@ else
     src="${link%%:*}"
     dest="${link#*:}"
     ensure_link "$dest" "$PWD/$src"
+  done
+  for build in "${swift_builds[@]}"; do
+    src="${build%%:*}"
+    dest="${build#*:}"
+    build_swift "$src" "$dest"
   done
 fi
