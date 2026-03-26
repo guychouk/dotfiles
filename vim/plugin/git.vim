@@ -56,11 +56,15 @@ function! s:GitDiff(...) abort
     call system('git rev-parse --verify main 2>/dev/null')
     let l:args = (v:shell_error == 0 ? 'main' : 'master') . '...HEAD'
   endif
+  let l:base = trim(system('git merge-base ' . split(l:args, '\.\.\.')[0] . ' HEAD'))
+  let g:gitgutter_diff_base = l:base
   call setqflist(map(systemlist('git diff --name-only --relative ' . l:args), {_, f -> {'filename': f, 'lnum': 1}}), 'r')
   copen
+  GitGutterAll
 endfunction
 
 command! -nargs=1         Browse silent call system('open ' . shellescape(<q-args>))
 command! -bar    -nargs=0 Branches     call <sid>GitSwitchBranch()
 command! -range           GithubBrowse <line1>,<line2>call <sid>GithubBrowse()
 command! -bar    -nargs=? GitDiff      call <sid>GitDiff(<f-args>)
+command! -bar    -nargs=0 GitDiffClear unlet! g:gitgutter_diff_base | GitGutterAll
