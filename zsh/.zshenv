@@ -1,3 +1,5 @@
+# fish is my primary shell. I'm keeping this for posterity.
+
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8

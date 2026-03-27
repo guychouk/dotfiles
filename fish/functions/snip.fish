@@ -1,5 +1,5 @@
 function snip -d "Select and insert snippet into command line"
-    set -l snippets_file ~/dotfiles/SNIPPETS
+    set -l snippets_file $HOME/dotfiles/SNIPPETS
 
     if test "$argv[1]" = "add"
         vim $snippets_file
