@@ -7,7 +7,7 @@ set backspace=indent,eol,start
 set completeopt=menuone
 set pumheight=15
 set display=lastline
-set foldmethod=indent
+set foldmethod=manual
 set ignorecase
 set noinfercase
 set incsearch
@@ -24,7 +24,6 @@ set noshowcmd
 set noshowmode
 set noswapfile
 set notitle
-set titlestring=%<%F
 set wrap
 set number
 set smarttab
@@ -46,6 +45,9 @@ set history=1000
 set wildmenu
 set wildignorecase
 set wildignore+=.DS_Store,Icon\?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip
+set wildignore+=**/node_modules/**,**/.git/**,**/dist/**,**/build/**,**/vendor/**
+set wildignore+=**/__pycache__/**,**/.venv/**,**/venv/**
+set wildignore+=node_modules,.git,dist,build,vendor,__pycache__,.venv,venv
 set belloff=all
 set formatoptions+=j
 set complete-=i
@@ -66,6 +68,9 @@ if has('clipboard')
 endif
 if has('patch-8.0.1473')
   set shortmess+=F
+endif
+if has('patch-8.2.4325')
+  set wildoptions=pum
 endif
 if exists('+viminfofile')
   set viminfofile=$XDG_CACHE_HOME/viminfo
@@ -141,7 +146,6 @@ nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <leader>w             :w<CR>
-nnoremap          <leader>b             :buffer<Space>
 nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
 nnoremap <silent> <leader>ec            :e $MYVIMRC<CR>
 nnoremap          <leader>re            :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
@@ -284,6 +288,8 @@ augroup END
 augroup quickfix
   autocmd!
   autocmd VimEnter        *     cwindow
+  autocmd QuickFixCmdPost cgetexpr cwindow
+  autocmd QuickFixCmdPost lgetexpr lwindow
   autocmd QuickFixCmdPost l*    if get(getloclist(0, {'title': 1}), 'title', '') !~# '^:Dispatch' | lwindow | wincmd p | endif
   autocmd QuickFixCmdPost [^l]* if get(getqflist({'title': 1}), 'title', '') !~# '^:Dispatch' | cwindow | wincmd p | endif
   autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
