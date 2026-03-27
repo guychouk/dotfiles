@@ -3,3 +3,4 @@ golang 1.26.1
 bun 1.0.1
 python 3.12.10
 rust 1.92.0
+pandoc 3.9.0.2
