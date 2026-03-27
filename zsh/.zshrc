@@ -1,9 +1,11 @@
+# fish is my primary shell. I'm keeping this for posterity.
+
 export GPG_TTY=$(tty)
 export GEM_HOME="${XDG_DATA_HOME}/gem"
 export GEM_PATH="${GEM_HOME}"
 export DOCKER_CONFIG="${XDG_DATA_HOME}/docker"
 export PARALLEL_HOME="${XDG_CACHE_HOME}/parallel"
-export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/.npmrc"
+export NPM_CONFIG_USERCONFIG="${XDG_CONFIG_HOME}/npm/npmrc"
 export NPM_CONFIG_CACHE="${XDG_CACHE_HOME}/npm"
 export NODE_REPL_HISTORY="${XDG_CACHE_HOME}/.node_repl_history"
 export TS_NODE_HISTORY="${XDG_CACHE_HOME}/.ts_node_repl_history"
