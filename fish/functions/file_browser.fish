@@ -1,3 +1,3 @@
-function file_browser
+function file_browser --description "Open file browser in ~"
     yazi ~
 end

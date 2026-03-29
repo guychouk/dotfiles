@@ -1,4 +1,4 @@
-function fish_prompt
+function fish_prompt --description "Set fish prompt"
     # Set cursor to blinking underline
     echo -ne '\e[3 q'
 
