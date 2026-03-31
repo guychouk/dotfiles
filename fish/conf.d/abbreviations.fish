@@ -1,3 +1,4 @@
+abbr -a vid      "vim ~/IDEAS"
 abbr -a vab      "vim ~/.config/fish/conf.d/abbreviations.fish"
 abbr -a acc      "source .venv/bin/activate"
 abbr -a d        "docker"
