@@ -81,7 +81,7 @@ if exists('+cursorlineopt')
 endif
 if exists('+completepopup')
   set completeopt+=popup
-  set completepopup=border:round
+  " set completepopup=border:round
   if exists('+pumborder')
     set pumborder=round
   endif
