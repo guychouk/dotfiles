@@ -1,89 +1,67 @@
 --langmap=TypeScript:+.tsx
 
-#------------------------------------------------------------------------------
-# Top-level or standalone functions (including async variants)
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
 # function myFunc(...) { ... }
+--regex-typescript=/^[ \t]*function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
 
---regex-typescript=/^[ \t]*[(]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
 # (function myFunc(...) { ... })
+--regex-typescript=/^[ \t]*[(]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
 
+# async function myFunc(...) { ... }
+# async (myFunc) ... 
 --regex-typescript=/^[ \t]*async[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
-# async function myFunc(...) { ... }
-# but capturing the form: async (myFunc) ... if you wrote it that way
 
+# async function myFunc(...) { ... }
 --regex-typescript=/^[ \t]*async[ \t]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
-# async function myFunc(...) { ... }
 
---regex-typescript=/^[ \t]*[(]async[ \t]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
 # (async function myFunc(...) { ... })
+--regex-typescript=/^[ \t]*[(]async[ \t]function[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t(]/\1/f,function/b
 
-#------------------------------------------------------------------------------
-#  Variable declarations that reference (async) functions or arrow functions
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]\{1,\}\)*function[^\*][^\*]/\1/f,function/b
 # const myFunc = async function (...) { ... }
+--regex-typescript=/^[ \t]*(var|let|const)[ \t]\{1,\}\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]\{1,\}\)*function[^\*][^\*]/\1/f,function/b
 
+# const myFunc = (...) =>
+# export const myFunc = async (...) =>
 --regex-typescript=/^[ \t]*(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?([^)]*)[ \t]*=>/\3/f,function/b
-# const myFunc = (...) => or export const myFunc = async (...) =>
 
+# const myFunc = param =>
+# export const myFunc = async param =>
 --regex-typescript=/^[ \t]*(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?[A-Za-z0-9_$]\+[ \t]*=>/\3/f,function/b
-# const myFunc = param => or export const myFunc = async param =>
 
-#------------------------------------------------------------------------------
-# Class declarations
-#------------------------------------------------------------------------------
+# export class MyClass { ... }
+# export abstract class MyClass { ... }
+# etc.
 --regex-typescript=/^[ \t]*(export([ \t]+abstract)?([ \t]+default)?)?[ \t]*class[ \t]+([a-zA-Z0-9_]+)/\4/c,class/
-# export class MyClass { ... } or abstract class, default class, etc.
 
-#------------------------------------------------------------------------------
-# Methods (regular or async) inside classes/objects
-#------------------------------------------------------------------------------
+# myMethod: async(...)
+# myMethod: (...)
 --regex-typescript=/^[ \t]*\([A-Za-z0-9_$]\+\)[ \t]*:[ \t]*\(async[ \t]*\)\?[ \t]*[(]/\1/m,method,methods/b
-# myMethod: async(...) or myMethod: (...)
 
+# myMethod = async(...)
+# myMethod = (...)
 --regex-typescript=/^[ \t]*\([A-Za-z0-9_$]\{1,\}\)[ \t]*=[ \t]*\(async[ \t]*\)\?[ \t]*[(]/\1/m,method,methods/b
-# myMethod = async(...) or myMethod = (...)
 
+# public myMethod(...)
+# private static myMethod(...)
+# etc.
 --regex-typescript=/^[ \t]*(export)?[ \t]*(public|protected|private)[ \t]+(static)?[ \t]*([a-zA-Z0-9_]+)/\4/m,method/
-# public myMethod(...), private static myMethod(...), etc.
 
-#------------------------------------------------------------------------------
-# Namespaces & modules
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*(declare)?[ \t]*namespace[ \t]+([a-zA-Z0-9_]+)/\2/n,namespace/
 # declare namespace MyNamespace { ... }
+--regex-typescript=/^[ \t]*(declare)?[ \t]*namespace[ \t]+([a-zA-Z0-9_]+)/\2/n,namespace/
 
---regex-typescript=/^[ \t]*(export)?[ \t]*module[ \t]+([a-zA-Z0-9_]+)/\2/M,modules/
 # export module MyModule { ... }
+--regex-typescript=/^[ \t]*(export)?[ \t]*module[ \t]+([a-zA-Z0-9_]+)/\2/M,modules/
 
-#------------------------------------------------------------------------------
-# Exported functions
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*(export)?[ \t]*function[ \t]+([a-zA-Z0-9_]+)/\2/f,function/
 # export function doSomething() { ... }
+--regex-typescript=/^[ \t]*(export)?[ \t]*function[ \t]+([a-zA-Z0-9_]+)/\2/f,function/
 
-#------------------------------------------------------------------------------
-# Variables (exported or not)
-#------------------------------------------------------------------------------
+# export const MY_VAR = 420
 --regex-typescript=/^[ \t]*export[ \t]+(var|let|const)[ \t]+([a-zA-Z0-9_]+)/\2/v,variable/
-# export const MY_VAR = 123
 
-#------------------------------------------------------------------------------
-# Interfaces
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*(export)?[ \t]*interface[ \t]+([a-zA-Z0-9_]+)/\2/i,interface/
 # export interface MyInterface { ... }
+--regex-typescript=/^[ \t]*(export)?[ \t]*interface[ \t]+([a-zA-Z0-9_]+)/\2/i,interface/
 
-#------------------------------------------------------------------------------
-# Type aliases
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*(export)?[ \t]*type[ \t]+([a-zA-Z0-9_]+)/\2/t,types/
 # export type MyType = ...
+--regex-typescript=/^[ \t]*(export)?[ \t]*type[ \t]+([a-zA-Z0-9_]+)/\2/t,types/
 
-#------------------------------------------------------------------------------
-# Enums
-#------------------------------------------------------------------------------
---regex-typescript=/^[ \t]*(export)?[ \t]*enum[ \t]+([a-zA-Z0-9_]+)/\2/e,enumerator/
 # export enum MyEnum { ... }
+--regex-typescript=/^[ \t]*(export)?[ \t]*enum[ \t]+([a-zA-Z0-9_]+)/\2/e,enumerator/

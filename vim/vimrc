@@ -183,7 +183,6 @@ let g:picopack = [
   \ 'junegunn/vim-peekaboo',
   \ 'justinmk/vim-dirvish',
   \ 'markonm/traces.vim',
-  \ 'mbbill/undotree',
   \ 'ojroques/vim-oscyank',
   \ 'preservim/tagbar',
   \ 'psliwka/vim-smoothie',
@@ -206,11 +205,8 @@ let g:picopack_opt = [
 \ ]
 nnoremap <silent> <leader>gg            :Git<CR>
 nnoremap <silent> <leader>gb            :Branches<CR>
-nnoremap <silent> <leader>gr            :ReviewBranch<CR>
 nnoremap <silent> <leader>p             :Files<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
-nnoremap <silent> <leader>r             :History:<CR>
-nnoremap <silent> <leader>u             :UndotreeToggle<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
 nnoremap          <leader>/             :Rg<Space>
 nnoremap          <leader>cs            :call css_color#toggle()<CR>
@@ -219,7 +215,6 @@ nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
 nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
-xnoremap <silent> <leader>hc            :CommentOnPRLine<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
@@ -259,14 +254,11 @@ let g:gitgutter_sign_modified_removed = '▌'
 " indentLine {{{
 let g:indentLine_fileType = ['yaml', 'yml', 'python', 'gdscript']
 " }}}
-" Undotree {{{
-let g:undotree_DiffAutoOpen = 0
-" }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
 " }}}
 " Context.vim {{{
-let g:context_enabled = 0
+let g:context_enabled = 1
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
@@ -353,9 +345,6 @@ augroup filetype_settings
   " Nix
   autocmd FileType nix nnoremap <buffer> <localleader>r :Term nix-instantiate --eval %<CR>
 
-  " Vim
-  autocmd FileType vim nnoremap <buffer> <localleader>m :SearchVimPackages<CR>
-
   " Go
   function! s:GoLint() abort
     let l:modfile = findfile('go.mod', expand('%:p:h') . ';')
@@ -372,7 +361,6 @@ augroup filetype_settings
   autocmd FileType go nnoremap <buffer> <localleader>b :Make<CR>
   autocmd FileType go nnoremap <buffer> <localleader>r :Term go run %<CR>
   autocmd FileType go nnoremap <buffer> <localleader>l :call <SID>GoLint()<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>m :SearchGoPackages<CR>
 
 
   " Godot
@@ -399,14 +387,12 @@ augroup filetype_settings
   autocmd FileType python nnoremap <buffer> <localleader>r :Term python3 %<CR>
   autocmd FileType python nnoremap <buffer> <localleader>R :Dispatch python3 %<CR>
   autocmd FileType python nnoremap <buffer> <localleader>l :Make<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>m :SearchPythonPackages<CR>
 
   " JavaScript
   autocmd FileType javascript,javascriptreact compiler tsc
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
   autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>m :SearchNodeModules<CR>
   autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>b :Make<CR>
   autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>l :Dispatch eslint --format unix .<CR>
   autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>r :Term node %<CR>
@@ -420,7 +406,6 @@ augroup filetype_settings
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
   autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>m :SearchNodeModules<CR>
   autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>b :Make<CR>
   autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>l :Dispatch eslint --format unix .<CR>
   autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>r :Term ts-node %<CR>

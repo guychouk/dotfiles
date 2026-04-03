@@ -1,32 +1,24 @@
 --langmap=JavaScript:+.jsx
 
-#------------------------------------------------------------------------------
-# "varName: function" or "varName: async function" style
-#------------------------------------------------------------------------------
+# myFunc: function(...) { ... }
+# myFunc: async(...) => { ... }
 --regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*function/\1/f,function/
 --regex-javascript=/^[ \t]*([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*:[ \t]*(async[ \t]*)?\(/\1/f,function/
-# myFunc: function(...) { ... } or myFunc: async(...) => { ... }
 
-#------------------------------------------------------------------------------
-# Standard named function declarations
-#------------------------------------------------------------------------------
---regex-javascript=/^[ \t]*function[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*\(/\1/f,function/
 # function myFunc(...) { ... }
+--regex-javascript=/^[ \t]*function[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*\(/\1/f,function/
 
-#------------------------------------------------------------------------------
-# Const, let, var assigned to function expressions (arrow or otherwise)
-#------------------------------------------------------------------------------
+# const myFunc = (...) =>
+# const myFunc = async (...) =>
 --regex-javascript=/^[ \t]*(const|let|var)[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*(async[ \t]*)?\([^)]*\)[ \t]*=>/\2/f,function/
-# const myFunc = (...) => or const myFunc = async (...) =>
 
+# const myFunc = param =>
+# const myFunc = async param =>
 --regex-javascript=/^[ \t]*(const|let|var)[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*(async[ \t]*)?[A-Za-z_$][A-Za-z0-9_$]*[ \t]*=>/\2/f,function/
-# const myFunc = param => or const myFunc = async param =>
 
+# const myFunc = function(...)
+# const myFunc = async function(...)
 --regex-javascript=/^[ \t]*(const|let|var)[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)[ \t]*=[ \t]*(async[ \t]*)?function/\2/f,function/
-# const myFunc = function(...) or const myFunc = async function(...)
 
-#------------------------------------------------------------------------------
-# Class declarations in JavaScript
-#------------------------------------------------------------------------------
---regex-javascript=/^[ \t]*class[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)/\1/c,class/
 # class MyClass { ... }
+--regex-javascript=/^[ \t]*class[ \t]+([A-Za-z_$][A-Za-z0-9_$]*)/\1/c,class/
