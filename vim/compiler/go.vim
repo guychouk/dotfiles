@@ -1,7 +1,7 @@
 " Vim compiler file
-" Compiler:    ruff
+" Compiler:    go
 
-CompilerSet makeprg=ruff\ check\ -q\ --output-format\ concise
+CompilerSet makeprg=go\ build\ ./...
 CompilerSet errorformat=
       \%f:%l:%c:\ %m,
       \%-G%.%#

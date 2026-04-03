@@ -1,4 +1,7 @@
-" Initialize custom tab names dictionary
+" This plugin sets my tabline style to something nicer
+" I rarely use tabs, this plugin is for those rare cases,
+" which is why it is not so polished.
+
 if !exists('g:tabline_custom_names')
   let g:tabline_custom_names = {}
 endif
@@ -33,3 +36,5 @@ function! s:RenameCurrentTab(new_name)
 endfunction
 
 command! -bar -nargs=1 RenameTab call <sid>RenameCurrentTab(<q-args>)
+
+set tabline=%!Picotab()
