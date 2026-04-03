@@ -1,69 +1,58 @@
 " Options {{{
-set nocompatible
-set encoding=utf-8
 set autoindent
 set autoread
 set backspace=indent,eol,start
+set belloff=all
+set complete-=i
 set completeopt=menuone
-set pumheight=15
 set display=lastline
+set encoding=utf-8
+set expandtab
+set foldlevel=99
 set foldmethod=manual
+set formatoptions+=j
+set history=1000
 set ignorecase
-set noinfercase
 set incsearch
-set smartcase
 set keywordprg=:help
-set laststatus=2
 set linebreak
 set mouse=a
-set cursorline
+set nocompatible
+set noequalalways
+set noerrorbells
 set nohlsearch
+set noinfercase
 set nojoinspaces
-set noruler
-set noshowcmd
-set noshowmode
 set noswapfile
-set notitle
-set wrap
-set number
-set smarttab
-set expandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set nrformats=bin,hex
+set pumheight=15
+set sessionoptions-=options
 set shiftround
+set shiftwidth=2
 set shortmess=aoOstTIc
 set sidescroll=1
 set sidescrolloff=2
-set signcolumn=yes
+set smartcase
+set smarttab
+set softtabstop=2
+set t_vb=
+set tabstop=2
 set tags=./tags;,tags;
+set ttimeout
+set ttimeoutlen=100
 set undodir=~/.vim/tmp/undo
 set undofile
 set undolevels=10000
 set updatetime=100
-set history=1000
+set viewoptions-=options
+set wildignore+=**/__pycache__/**,**/.venv/**,**/venv/**
+set wildignore+=**/node_modules/**,**/.git/**,**/dist/**,**/build/**,**/vendor/**
+set wildignore+=.DS_Store,Icon\?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip
+set wildignorecase
 set wildmenu
 set wildmode=longest:full,full
-set wildignorecase
-set wildignore+=.DS_Store,Icon\?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip
-set wildignore+=**/node_modules/**,**/.git/**,**/dist/**,**/build/**,**/vendor/**
-set wildignore+=**/__pycache__/**,**/.venv/**,**/venv/**
-set wildignore+=node_modules,.git,dist,build,vendor,__pycache__,.venv,venv
-set belloff=all
-set formatoptions+=j
-set complete-=i
-set viewoptions-=options
-set sessionoptions-=options
-set nrformats=bin,hex
-set ttimeout
-set ttimeoutlen=100
-set path+=**
-set t_vb=
-set noerrorbells
-set noequalalways
-set foldlevel=99
+set wrap
 
-" Conditional option setting from newer vim versions
 if has('clipboard')
   set clipboard^=unnamed,unnamedplus
 endif
@@ -76,12 +65,9 @@ endif
 if exists('+viminfofile')
   set viminfofile=$XDG_CACHE_HOME/viminfo
 endif
-if exists('+cursorlineopt')
-  set cursorlineopt=number
-endif
 if exists('+completepopup')
   set completeopt+=popup
-  " set completepopup=border:round
+  silent! set completepopup=border:round
   if exists('+pumborder')
     set pumborder=round
   endif
@@ -99,22 +85,28 @@ filetype plugin indent on
 " Appearance {{{
 syntax enable
 
+set number
+set cursorline
+set laststatus=2
+set signcolumn=yes
+set noruler
+set noshowcmd
+set noshowmode
+set notitle
 set list
-set cmdheight=1
-set tabline=%!Picotab()
+set showbreak=↳
+set fillchars=eob:\ 
+set listchars=tab:▏\ ,trail:·,extends:>,precedes:<,nbsp:+
+
+if exists('+cursorlineopt')
+  set cursorlineopt=number
+endif
 
 if has('termguicolors') && $COLORTERM ==# 'truecolor'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
   set termguicolors
 endif
-
-let &showbreak='└ '
-let &fillchars='eob: '
-let &listchars='tab:▏ ,trail:·,extends:>,precedes:<,nbsp:+'
-let &t_SI="\e[5 q"
-let &t_SR="\e[4 q"
-let &t_EI="\e[2 q"
 
 colorscheme gman
 " }}}
@@ -125,6 +117,7 @@ let maplocalleader = "\\"
 
 nnoremap          j                     gj
 nnoremap          k                     gk
+nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> X                     :tabclose<CR>
 nnoremap <silent> H                     :TabMoveOrCreate h<CR>
 nnoremap <silent> L                     :TabMoveOrCreate l<CR>
@@ -141,9 +134,7 @@ nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``
 nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
-nnoremap          Q                     :qa<CR>
-nnoremap          Y                     y$
-nnoremap          R                     :%s//g<Left><Left>
+nnoremap <silent> Y                     y$
 nnoremap <silent> <C-w>{                :pclose<CR>
 nnoremap <silent> <C-g>                 2<C-g>
 nnoremap <silent> <leader>w             :w<CR>
@@ -170,8 +161,6 @@ inoremap          <C-u>                 <C-g>u<C-u>
 
 " Plugins {{{
 let g:picopack = [
-  \ 'MaxMEllon/vim-jsx-pretty',
-  \ 'Yggdroot/indentLine',
   \ 'airblade/vim-gitgutter',
   \ 'ap/vim-css-color',
   \ 'guychouk/vim-picoline',
@@ -183,10 +172,10 @@ let g:picopack = [
   \ 'junegunn/vim-peekaboo',
   \ 'justinmk/vim-dirvish',
   \ 'markonm/traces.vim',
+  \ 'MaxMEllon/vim-jsx-pretty',
   \ 'ojroques/vim-oscyank',
   \ 'preservim/tagbar',
   \ 'psliwka/vim-smoothie',
-  \ 'tpope/vim-rhubarb',
   \ 'tpope/vim-abolish',
   \ 'tpope/vim-characterize',
   \ 'tpope/vim-commentary',
@@ -194,10 +183,12 @@ let g:picopack = [
   \ 'tpope/vim-eunuch',
   \ 'tpope/vim-fugitive',
   \ 'tpope/vim-repeat',
+  \ 'tpope/vim-rhubarb',
   \ 'tpope/vim-rsi',
   \ 'tpope/vim-speeddating',
   \ 'tpope/vim-surround',
   \ 'tpope/vim-unimpaired',
+  \ 'Yggdroot/indentLine',
   \ 'wellle/context.vim',
 \ ]
 let g:picopack_opt = [
@@ -208,7 +199,7 @@ nnoremap <silent> <leader>gb            :Branches<CR>
 nnoremap <silent> <leader>p             :Files<CR>
 nnoremap <silent> <leader>.             :GFiles<CR>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
-nnoremap          <leader>/             :Rg<Space>
+nnoremap          <leader>/             :Grep<Space>
 nnoremap          <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hp            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
@@ -217,7 +208,6 @@ nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
 nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
-xnoremap <silent> <leader>t             y:<C-U>Tags <C-R>"<CR>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
@@ -234,9 +224,6 @@ packadd! matchit
 " }}}
 " cfilter {{{
 packadd! cfilter
-" }}}
-" comment {{{
-" packadd! comment
 " }}}
 " FZF {{{
 let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
@@ -256,9 +243,23 @@ let g:indentLine_fileType = ['yaml', 'yml', 'python', 'gdscript']
 " }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
+function! s:DirvishEnter() abort
+  let l:path = trim(getline('.'))
+  if l:path =~? '\.\(png\|jpg\|jpeg\|gif\|bmp\|webp\|tiff\|ico\)$'
+    call system('kitty @ launch --type=overlay fish -c ' . shellescape('kitty icat ' . shellescape(l:path) . '; read -n1'))
+  else
+    call dirvish#open('edit', 0)
+  endif
+endfunction
+augroup dirvish_settings
+  autocmd!
+  autocmd FileType dirvish nnoremap <buffer> <silent> <CR> :call <SID>DirvishEnter()<CR>
+  autocmd FileType dirvish nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+  autocmd FileType dirvish xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
+augroup END
 " }}}
 " Context.vim {{{
-let g:context_enabled = 1
+let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
@@ -269,23 +270,23 @@ let g:markdown_fenced_languages = ['python','javascript','typescript','bash=sh',
 
 " Autocommands {{{
 
-augroup appearance_settings
+augroup autoread_trigger
   autocmd!
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
+  autocmd FileChangedShell * let v:fcs_choice = v:fcs_reason ==# 'deleted' ? '' : 'reload'
+augroup END
+
+augroup cursor_settings
+  autocmd!
+  " beam in insert, underline in replace, block in normal
+  let &t_SI="\e[5 q"
+  let &t_SR="\e[4 q"
+  let &t_EI="\e[2 q"
   if exists('*echoraw')
     autocmd VimEnter     * call echoraw(&t_EI)
     autocmd CmdlineEnter * call echoraw(&t_SI)
     autocmd CmdlineLeave * call echoraw(&t_EI)
   endif
-augroup END
-
-augroup quickfix
-  autocmd!
-  autocmd VimEnter        *     cwindow
-  autocmd QuickFixCmdPost cgetexpr cwindow
-  autocmd QuickFixCmdPost lgetexpr lwindow
-  autocmd QuickFixCmdPost l*    if get(getloclist(0, {'title': 1}), 'title', '') !~# '^:Dispatch' | lwindow | wincmd p | endif
-  autocmd QuickFixCmdPost [^l]* if get(getqflist({'title': 1}), 'title', '') !~# '^:Dispatch' | cwindow | wincmd p | endif
-  autocmd FileType        qf    map <buffer> dd :RemoveQfItem<CR>
 augroup END
 
 augroup oscyank
@@ -296,25 +297,15 @@ augroup END
 augroup filetype_settings
   autocmd!
 
-  " Dirvish
-  function! s:DirvishEnter() abort
-    let l:path = trim(getline('.'))
-    if l:path =~? '\.\(png\|jpg\|jpeg\|gif\|bmp\|webp\|tiff\|ico\)$'
-      call system('kitty @ launch --type=overlay fish -c ' . shellescape('kitty icat ' . shellescape(l:path) . '; read -n1'))
-    else
-      call dirvish#open('edit', 0)
-    endif
-  endfunction
-  autocmd FileType dirvish nnoremap <buffer> <silent> <CR> :call <SID>DirvishEnter()<CR>
-  autocmd FileType dirvish nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-  autocmd FileType dirvish xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-
   " Tagbar
   autocmd FileType tagbar setlocal foldlevel=99
 
   " Help
   autocmd FileType help nnoremap <buffer> q :close<CR>
   autocmd FileType help setlocal buflisted
+
+  " Terminal
+  autocmd TerminalOpen * nnoremap <buffer> q :close<CR>
 
   " zed (spicedb)
   autocmd FileType zed setlocal noexpandtab
@@ -323,51 +314,15 @@ augroup filetype_settings
   autocmd FileType man setlocal hlsearch
   autocmd FileType man nnoremap <buffer> q :q<CR>
 
-  " Shell
-  autocmd FileType sh,bash,zsh compiler shellcheck
-  autocmd FileType sh,bash,zsh nnoremap <buffer> <localleader>l :Make<CR>
-
   " YAML
   autocmd FileType yaml setlocal foldlevel=2
   autocmd FileType yaml setlocal foldmethod=indent
 
-  " Palette (vim-css-color)
+  " Palette
   autocmd FileType palette call css_color#init('hex', 'basic', 'paletteComment')
-
-  " C
-  autocmd FileType c setlocal tabstop=4
-  autocmd FileType c setlocal shiftwidth=4
-  autocmd FileType c nnoremap <buffer> <localleader>b :Dispatch! nob<CR>
 
   " Proto
   autocmd FileType proto nnoremap <buffer> <localleader>l :Dispatch buf format -w<CR>
-
-  " Nix
-  autocmd FileType nix nnoremap <buffer> <localleader>r :Term nix-instantiate --eval %<CR>
-
-  " Go
-  function! s:GoLint() abort
-    let l:modfile = findfile('go.mod', expand('%:p:h') . ';')
-    if empty(l:modfile)
-      echom 'go.mod not found'
-      return
-    endif
-    let l:moddir = fnamemodify(l:modfile, ':p:h')
-    compiler golangci-lint
-    let &makeprg = 'cd ' . shellescape(l:moddir) . ' && golangci-lint run ./...'
-    Make
-  endfunction
-  autocmd FileType go compiler go
-  autocmd FileType go nnoremap <buffer> <localleader>b :Make<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>r :Term go run %<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>l :call <SID>GoLint()<CR>
-
-
-  " Godot
-  autocmd FileType gdscript setlocal foldmethod=expr
-  autocmd FileType gdscript nnoremap <buffer> <localleader>r :GodotRun<CR>
-  autocmd FileType gdscript nnoremap <buffer> <localleader>c :GodotRunCurrent<CR>
-  autocmd FileType gdscript nnoremap <buffer> <localleader>d :GodotDocs<CR>
 
   " Git
   autocmd FileType gitcommit,gitrebase setlocal spell
@@ -382,34 +337,66 @@ augroup filetype_settings
   autocmd FileType markdown setlocal nonumber
   autocmd FileType markdown setlocal wrap
 
+  " Godot
+  autocmd FileType gdscript setlocal foldmethod=expr
+  autocmd FileType gdscript nnoremap <buffer> <localleader>r :GodotRun<CR>
+  autocmd FileType gdscript nnoremap <buffer> <localleader>c :GodotRunCurrent<CR>
+  autocmd FileType gdscript nnoremap <buffer> <localleader>d :GodotDocs<CR>
+
+  " Nix
+  autocmd FileType nix nnoremap <buffer> <localleader>r :Term nix-instantiate --eval %<CR>
+
+  " Shell
+  autocmd FileType sh,bash,zsh setlocal suffixesadd=.sh
+  autocmd FileType sh,bash,zsh setlocal include=^\s*\.\s\+\|^\s*source\s\+
+  autocmd FileType sh,bash,zsh nnoremap <buffer> <localleader>l :compiler shellcheck <Bar> Make<CR>
+
+  " C
+  autocmd FileType c setlocal path+=**
+  autocmd FileType c setlocal tabstop=4
+  autocmd FileType c setlocal shiftwidth=4
+  autocmd FileType c nnoremap <buffer> <localleader>b :compiler nob <Bar> Make<CR>
+
+  " Go
+  autocmd FileType go setlocal path+=**
+  autocmd FileType go setlocal suffixesadd=.go
+  autocmd FileType go nnoremap <buffer> <localleader>b :compiler go <Bar> Make<CR>
+  autocmd FileType go nnoremap <buffer> <localleader>r :Term go run %<CR>
+  autocmd FileType go nnoremap <buffer> <localleader>t :compiler gotest <Bar> Make<CR>
+  autocmd FileType go nnoremap <buffer> <localleader>l :compiler golangci-lint <Bar> Make<CR>
+
   " Python
-  autocmd FileType python compiler ruff
+  autocmd FileType python setlocal path+=**
+  autocmd FileType python setlocal suffixesadd=.py
+  autocmd FileType python setlocal include=^\s*\(import\|from\)
+  autocmd FileType python setlocal includeexpr=substitute(v:fname,'\\.','\/','g')
   autocmd FileType python nnoremap <buffer> <localleader>r :Term python3 %<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>R :Dispatch python3 %<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>l :Make<CR>
+  autocmd FileType python nnoremap <buffer> <localleader>R :compiler python3 <Bar> Make<CR>
+  autocmd FileType python nnoremap <buffer> <localleader>l :compiler ruff <Bar> Make<CR>
 
   " JavaScript
-  autocmd FileType javascript,javascriptreact compiler tsc
+  autocmd FileType javascript,javascriptreact setlocal path+=**
+  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx,.json
+  autocmd FileType javascript,javascriptreact setlocal include=from\s*['"]\|require(\s*['"]
+  autocmd FileType javascript,javascriptreact setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
-  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
   autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>b :Make<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>l :Dispatch eslint --format unix .<CR>
   autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>r :Term node %<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>R :Dispatch node %<CR>
-
-  " Terminal
-  autocmd TerminalOpen * nnoremap <buffer> q :close<CR>
+  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>R :compiler node <Bar> Make<CR>
+  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>l :compiler eslint <Bar> Make<CR>
 
   " TypeScript
-  autocmd FileType typescript,typescriptreact compiler tsc
+  autocmd FileType typescript,typescriptreact setlocal path+=**
+  autocmd FileType typescript,typescriptreact setlocal suffixesadd=.ts,.tsx,.js,.jsx,.json
+  autocmd FileType typescript,typescriptreact setlocal include=from\s*['"]\|require(\s*['"]
+  autocmd FileType typescript,typescriptreact setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
-  autocmd FileType typescript,typescriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>b :Make<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>l :Dispatch eslint --format unix .<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>r :Term ts-node %<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>R :Dispatch -compiler=node ts-node %<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>b :compiler tsc <Bar> Make<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>r :Term bun %<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>R :compiler bun <Bar> Make<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>l :compiler eslint <Bar> Make<CR>
 
 augroup END
 " }}}

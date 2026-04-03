@@ -27,7 +27,7 @@ function! s:TabMoveOrCreate(key) abort
   endif
 endfunction
 
-" http://ddrscott.github.io/blog/2016/vim-toggle-movement/
+" Taken from https://ddrscott.github.io/blog/2016/vim-toggle-movement
 function! s:ToggleMovement(firstOp, thenOp) abort
   let pos = getpos('.')
   execute "normal! " . a:firstOp

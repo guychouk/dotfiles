@@ -1,7 +1,6 @@
-" normaltab.vim - Tab that behaves like a normal tab
-"
-" On whitespace-only prefix: indent/dedent
-" Otherwise: complete (omni if available, keyword fallback)
+" This plugin makes Tab behave better in insert mode.
+" When there's a whitespace prefix, it attempts to indent (or dedent with S-Tab).
+" Otherwise, we try to autocomplete (omni if available, keyword as fallback).
 
 function! s:Tab() abort
   if pumvisible()
