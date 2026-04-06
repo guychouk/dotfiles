@@ -21,11 +21,11 @@
 
 # const myFunc = (...) =>
 # export const myFunc = async (...) =>
---regex-typescript=/^[ \t]*(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?([^)]*)[ \t]*=>/\3/f,function/b
+--regex-typescript=/^[ \t]*\(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?([^)]*)[ \t]*=>/\3/f,function/b
 
 # const myFunc = param =>
 # export const myFunc = async param =>
---regex-typescript=/^[ \t]*(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?[A-Za-z0-9_$]\+[ \t]*=>/\3/f,function/b
+--regex-typescript=/^[ \t]*\(export[ \t]\+\)\?\(var\|let\|const\)[ \t]\+\([A-Za-z0-9_$]\+\)[ \t]*=[ \t]*\(async[ \t]*\)\?[A-Za-z0-9_$]\+[ \t]*=>/\3/f,function/b
 
 # export class MyClass { ... }
 # export abstract class MyClass { ... }
