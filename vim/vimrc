@@ -206,6 +206,7 @@ nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
 nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
+nnoremap          <leader><CR>          :Dispatch!<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 nnoremap <silent> yoc                   :ContextToggle<CR>
