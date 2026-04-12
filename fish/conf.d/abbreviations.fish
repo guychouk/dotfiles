@@ -1,5 +1,6 @@
 abbr -a ccp      "CLAUDE_CONFIG_DIR=\"$HOME/.claude-personal\" claude"
 abbr -a vid      "vim ~/IDEAS"
+abbr -a vis      "vim ~/dotfiles/SNIPPETS"
 abbr -a vab      "vim ~/.config/fish/conf.d/abbreviations.fish"
 abbr -a acc      "source .venv/bin/activate"
 abbr -a d        "docker"
