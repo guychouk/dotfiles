@@ -1,3 +1,6 @@
+# flush DNS cache on macOS
+sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
+
 # rsync photos from macos to ark
 rsync -avhn --checksum /Users/guychouk/Pictures/Photos/ guychouk@ark:/mnt/Chubby/Backups/Guy/Pictures/
 
