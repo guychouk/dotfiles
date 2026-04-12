@@ -1,4 +1,4 @@
-function! s:Bookmark() range abort
+function! s:TakeNote() range abort
   let l:file = expand('%:p')
   if l:file == ''
     echo "No file associated with this buffer"
@@ -17,7 +17,7 @@ function! s:Bookmark() range abort
   else
     let l:location = l:file . ':' . a:firstline . ':' . col('.')
   endif
-  let l:comment = input('💬: ')
+  let l:comment = input('📝: ')
   if l:comment == ''
     return
   endif
@@ -26,10 +26,10 @@ function! s:Bookmark() range abort
     let l:entry .= ' - ' . l:quote
   endif
   let l:entry .= ' - ' . l:comment
-  call writefile([l:entry], getcwd() . '/BOOKMARKS.md', 'a')
+  call writefile([l:entry], getcwd() . '/' . expand('%') . '.notes.md', 'a')
 endfunction
 
-function! s:OpenBookmark() abort
+function! s:OpenNote() abort
   let l:match = matchlist(getline('.'), '^\(.\{-\}\):\(\d\+\):\(\d\+\)')
   if empty(l:match)
     normal! gf
@@ -41,7 +41,8 @@ endfunction
 
 augroup bookmarks
   autocmd!
-  autocmd BufRead BOOKMARKS.md nnoremap <buffer> gf :call <sid>OpenBookmark()<CR>
+  autocmd BufRead *.notes.md nnoremap <buffer> gf :call <sid>OpenNote()<CR>
 augroup END
 
-command! -range Bookmark <line1>,<line2>call <sid>Bookmark()
+command! -range NewNote <line1>,<line2>call <sid>TakeNote()
+command!        Notes execute 'edit ' . fnameescape(getcwd() . '/' . expand('%') . '.notes.md')

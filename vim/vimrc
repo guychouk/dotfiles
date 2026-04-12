@@ -147,8 +147,9 @@ nnoremap          <leader>yt            :YankCurrentDate<CR>
 nnoremap          <leader>yf            :YankAbsoluteFilePath<CR>
 nnoremap          <leader>yr            :YankRelativeFilePath<CR>
 nnoremap          <leader>yl            :YankFileLocation<CR>
-nnoremap          <leader>b             :Bookmark<CR>
-xnoremap          <leader>b             :Bookmark<CR>
+nnoremap          <leader>nn            :NewNote<CR>
+xnoremap          <leader>nn            :NewNote<CR>
+nnoremap          <leader>ns            :Notes<CR>
 nnoremap          <leader>:             :Term<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
