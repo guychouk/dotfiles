@@ -33,6 +33,7 @@ other_links=(
   "gnupg/local.gpg-kill-on-lock.plist:$HOME/Library/LaunchAgents/local.gpg-kill-on-lock.plist"
   "curl/curlrc:$HOME/.curlrc"
   "scripts:$HOME/scripts"
+  "emacs:$HOME/.emacs.d"
 )
 
 ensure_link() {
