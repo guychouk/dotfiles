@@ -19,7 +19,7 @@
 (setq display-line-numbers-type t)
 
 ;;; Font - primary monospace with Hebrew fallback
-(set-face-attribute 'default nil :font "Menlo" :height 180)
+(set-face-attribute 'default nil :font "Iosevka Term" :height 360)
 (set-fontset-font t 'hebrew "Arial Hebrew")
 
 ;;; Theme
