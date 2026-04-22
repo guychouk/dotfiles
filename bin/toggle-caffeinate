@@ -1,6 +1,5 @@
-#!/bin/bash
+#!/bin/sh
 
-# PID file to track caffeinate process
 PID_FILE="$HOME/.caffeinate.pid"
 
 if [ -f "$PID_FILE" ]; then

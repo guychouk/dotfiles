@@ -1,6 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/sh
 
-if [[ $(uname) == "Darwin" ]]; then
+if [ "$(uname)" = "Darwin" ]; then
     /opt/homebrew/bin/pinentry-mac "$@"
 else
     /usr/bin/pinentry-tty "$@"
