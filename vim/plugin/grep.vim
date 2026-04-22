@@ -13,7 +13,7 @@ function! s:Grep(...)
   return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
 endfunction
 
-command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr s:Grep(<f-args>)
-command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr s:Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr s:Grep(<f-args>) | copen
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr s:Grep(<f-args>) | lopen
 
 cnoreabbrev <expr> grep (getcmdtype() ==# ':' && getcmdline() ==# 'grep') ? 'Grep' : 'grep'
