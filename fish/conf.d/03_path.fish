@@ -4,10 +4,6 @@
 fish_add_path -p "$HOME/.nix-profile/bin"
 fish_add_path -p "/nix/var/nix/profiles/default/bin"
 
-# asdf is third
-fish_add_path -p "$ASDF_DATA_DIR/shims"
-fish_add_path -p "$ASDF_DATA_DIR/completions"
-
 # last are my scripts and binaries in my $HOME directory
 fish_add_path -p "$HOME/bin"
 fish_add_path -p "$HOME/.local/bin"

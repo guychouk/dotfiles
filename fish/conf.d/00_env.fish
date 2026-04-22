@@ -24,9 +24,6 @@ set -gx PYTHONHISTFILE        "$XDG_CACHE_HOME/.python_history"
 set -gx TS_NODE_HISTORY       "$XDG_CACHE_HOME/.ts_node_repl_history"
 set -gx WGET_HSTS_FILE        "$XDG_CONFIG_HOME/.wget-hsts"
 
-set -gx ASDF_DATA_DIR         "$XDG_DATA_HOME/asdf"
-set -gx ASDF_CONFIG_FILE      "$XDG_CONFIG_HOME/asdf/.asdfrc"
-
 set -gx COLORTERM truecolor
 set -gx LS_COLORS "di=34:ln=36:ex=01;32:or=91:mi=91:pi=93:so=35:bd=94:cd=93:su=37;41:sg=37;42:tw=37;46:ow=34;40:st=37;44"
 set -gx EZA_COLORS "ur=37:uw=37:ux=32:ue=32:gr=37:gw=37:gx=32:tr=37:tw=37:tx=32:xa=90:sn=37:sb=37:uu=37:un=37:gu=95:gn=95:da=37:im=37"

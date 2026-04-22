@@ -9,7 +9,7 @@ xdg_configs=(
   kitty
   yazi
   zsh
-  asdf
+  mise
   direnv
   skhd
   newsboat
@@ -27,7 +27,6 @@ other_links=(
   "ctags:$HOME/.ctags.d"
   "zsh/.zshrc:$HOME/.zshrc"
   "zsh/.zshenv:$HOME/.zshenv"
-  "asdf/.tool-versions:$HOME/.tool-versions"
   "gnupg/gpg-agent.conf:$HOME/.gnupg/gpg-agent.conf"
   "gnupg/org.gnupg.gpg-agent.plist:$HOME/Library/LaunchAgents/org.gnupg.gpg-agent.plist"
   "gnupg/local.gpg-kill-on-lock.plist:$HOME/Library/LaunchAgents/local.gpg-kill-on-lock.plist"

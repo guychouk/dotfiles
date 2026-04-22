@@ -25,15 +25,6 @@ if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
-# asdf-vm
-export ASDF_DIR="${XDG_DATA_HOME}/asdf"
-export ASDF_DATA_DIR="${ASDF_DIR}"
-export ASDF_CONFIG_FILE="${XDG_CONFIG_HOME}/asdf/.asdfrc"
-export ASDF_GOLANG_MOD_VERSION_ENABLED=true
-if [[ -f "$ASDF_DIR/asdf.sh" ]]; then
-  source "$ASDF_DIR/asdf.sh"
-fi
-
 # PATH
 export GEM_HOME="${XDG_DATA_HOME}/gem"
-export PATH="$ASDF_DIR/shims:$ASDF_DIR/completions:$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
+export PATH="$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
