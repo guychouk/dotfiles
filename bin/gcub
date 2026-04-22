@@ -1,0 +1,9 @@
+#!/bin/sh
+git fetch --prune
+git worktree prune
+git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads \
+  | grep ' \[gone\]$' \
+  | sed 's/ \[gone\]$//' \
+  | while IFS= read -r branch; do
+      git branch -D "$branch"
+    done

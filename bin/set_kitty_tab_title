@@ -1,0 +1,11 @@
+#!/bin/sh
+if [ "$TERM" = "xterm-kitty" ]; then
+  title="$1"
+  if [ -z "$title" ]; then
+    title=$(basename "$PWD")
+    if [ "$PWD" = "$HOME" ]; then
+      title="~"
+    fi
+  fi
+  kitten @ set-tab-title "$title" 2>/dev/null
+fi

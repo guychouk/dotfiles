@@ -17,8 +17,8 @@ xdg_configs=(
 
 # Swift sources to compile - "source:binary"
 swift_builds=(
-  "scripts/gpg-kill-on-lock.swift:$HOME/bin/gpg-kill-on-lock"
-  "scripts/pbcopy-concealed.swift:$HOME/bin/pbcopy-concealed"
+  "bin/gpg-kill-on-lock.swift:$HOME/bin/gpg-kill-on-lock"
+  "bin/pbcopy-concealed.swift:$HOME/bin/pbcopy-concealed"
 )
 
 # Other locations - "source:destination"
@@ -32,7 +32,6 @@ other_links=(
   "gnupg/org.gnupg.gpg-agent.plist:$HOME/Library/LaunchAgents/org.gnupg.gpg-agent.plist"
   "gnupg/local.gpg-kill-on-lock.plist:$HOME/Library/LaunchAgents/local.gpg-kill-on-lock.plist"
   "curl/curlrc:$HOME/.curlrc"
-  "scripts:$HOME/scripts"
   "emacs:$HOME/.emacs.d"
 )
 
@@ -77,6 +76,11 @@ if [[ "$1" == "unlink" ]]; then
     rm -f "$dest"
     echo "  removed $dest"
   done
+  for f in bin/*; do
+    case "$f" in *.swift) continue ;; esac
+    rm -f "$HOME/bin/$(basename "$f")"
+    echo "  removed $HOME/bin/$(basename "$f")"
+  done
 else
   for dir in "${xdg_configs[@]}"; do
     ensure_link "$HOME/.config/$dir" "$PWD/$dir"
@@ -85,6 +89,11 @@ else
     src="${link%%:*}"
     dest="${link#*:}"
     ensure_link "$dest" "$PWD/$src"
+  done
+  mkdir -p "$HOME/bin"
+  for f in bin/*; do
+    case "$f" in *.swift) continue ;; esac
+    ensure_link "$HOME/bin/$(basename "$f")" "$PWD/$f"
   done
   for build in "${swift_builds[@]}"; do
     src="${build%%:*}"

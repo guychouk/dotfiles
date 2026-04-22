@@ -1,3 +1,4 @@
+abbr -a pcs      "pc process ls -o json | jq -r '.[] | select(.status != \"Disabled\") | \"\(.name)\t\(.status)\"' | column -t"
 abbr -a ccp      "CLAUDE_CONFIG_DIR=\"$HOME/.claude-personal\" claude"
 abbr -a vid      "vim ~/IDEAS"
 abbr -a vis      "vim ~/dotfiles/SNIPPETS"
