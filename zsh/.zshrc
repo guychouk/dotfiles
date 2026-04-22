@@ -154,11 +154,6 @@ function () {
   [ -f "${zsh_abbr_plugin}" ] && source "${zsh_abbr_plugin}"
 }
 
-## asdf-vm (PATH and exports moved to .zshenv)
-
-mkdir -p "$XDG_CONFIG_HOME/asdf"
-[ -d "$ASDF_DIR" ] || git clone https://github.com/asdf-vm/asdf.git "$ASDF_DIR" --branch v0.10.0
-
 ## programs
 
 _has() {
