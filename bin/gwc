@@ -1,0 +1,24 @@
+#!/bin/sh
+if [ $# -lt 1 ]; then
+  echo "usage: gwc <ticket-id> [branch-name]"
+  exit 1
+fi
+
+ticket="$1"
+branch="${2:-$ticket}"
+repo=$(basename "$PWD")
+wt_path="../$repo-$ticket"
+
+git fetch origin "$branch" 2>/dev/null
+if git branch -a --format='%(refname:short)' | grep -qx "origin/$branch"; then
+  git worktree add "$wt_path" --track -b "$branch" "origin/$branch" || exit 1
+elif git branch --format='%(refname:short)' | grep -qx "$branch"; then
+  git worktree add "$wt_path" "$branch" || exit 1
+else
+  git worktree add "$wt_path" -b "$branch" || exit 1
+fi
+
+abs_path=$(realpath "$wt_path")
+zoxide add "$abs_path"
+direnv allow "$abs_path/.envrc" 2>/dev/null
+kitten @ launch --type=tab --tab-title "$ticket" --cwd "$abs_path"

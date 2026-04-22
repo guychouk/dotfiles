@@ -8,7 +8,6 @@ fish_add_path -p "/nix/var/nix/profiles/default/bin"
 fish_add_path -p "$ASDF_DATA_DIR/shims"
 fish_add_path -p "$ASDF_DATA_DIR/completions"
 
-# last are my local binaries and scripts
+# last are my scripts and binaries in my $HOME directory
 fish_add_path -p "$HOME/bin"
-fish_add_path -p "$HOME/scripts"
 fish_add_path -p "$HOME/.local/bin"

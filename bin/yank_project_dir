@@ -1,0 +1,2 @@
+#!/bin/sh
+find ~/projects/ -type d -maxdepth 3 -not -path '*/.git/*' -not -name '.git' | fzf --pointer='▶' | tr -d '\n' | pbcopy

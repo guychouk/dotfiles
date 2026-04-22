@@ -1,0 +1,13 @@
+#!/bin/sh
+selected=$(git worktree list | tail -n +2 | fzf --prompt='remove worktree> ')
+[ -n "$selected" ] || exit 0
+
+wt_path=$(echo "$selected" | awk '{print $1}')
+
+if ! git worktree remove "$wt_path"; then
+  printf 'force? [y/N] '
+  read -r yn
+  case "$yn" in
+    [yY]) git worktree remove --force "$wt_path" ;;
+  esac
+fi

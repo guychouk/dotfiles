@@ -1,0 +1,3 @@
+#!/bin/sh
+prefix="${PASSWORD_STORE_DIR:-$HOME/.password-store}"
+find "$prefix" -name '*.gpg' | sed "s|^$prefix/||;s|\.gpg\$||"

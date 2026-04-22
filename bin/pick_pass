@@ -1,0 +1,5 @@
+#!/bin/sh
+entry=$(find ~/.password-store -name '*.gpg' | sed "s|$HOME/.password-store/||;s|\.gpg\$||" | fzf --pointer='▶')
+if [ -n "$entry" ]; then
+  pcp "$entry"
+fi
