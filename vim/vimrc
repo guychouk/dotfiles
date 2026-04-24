@@ -274,7 +274,7 @@ let g:markdown_fenced_languages = ['python','javascript','typescript','bash=sh',
 
 augroup autoread_trigger
   autocmd!
-  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * checktime
+  autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if getcmdwintype() ==# '' | checktime | endif
   autocmd FileChangedShell * let v:fcs_choice = v:fcs_reason ==# 'deleted' ? '' : 'reload'
 augroup END
 
