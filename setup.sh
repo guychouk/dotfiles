@@ -28,10 +28,15 @@ other_links=(
   "zsh/.zshrc:$HOME/.zshrc"
   "zsh/.zshenv:$HOME/.zshenv"
   "gnupg/gpg-agent.conf:$HOME/.gnupg/gpg-agent.conf"
-  "gnupg/org.gnupg.gpg-agent.plist:$HOME/Library/LaunchAgents/org.gnupg.gpg-agent.plist"
-  "gnupg/local.gpg-kill-on-lock.plist:$HOME/Library/LaunchAgents/local.gpg-kill-on-lock.plist"
   "curl/curlrc:$HOME/.curlrc"
   "emacs:$HOME/.emacs.d"
+)
+
+# LaunchAgents - "source:destination"
+launchagents=(
+  "launchd/org.gnupg.gpg-agent.plist:$HOME/Library/LaunchAgents/org.gnupg.gpg-agent.plist"
+  "launchd/local.gpg-kill-on-lock.plist:$HOME/Library/LaunchAgents/local.gpg-kill-on-lock.plist"
+  "launchd/com.koekeishiya.skhd.plist:$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist"
 )
 
 ensure_link() {
@@ -75,6 +80,14 @@ if [[ "$1" == "unlink" ]]; then
     rm -f "$dest"
     echo "  removed $dest"
   done
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    for link in "${launchagents[@]}"; do
+      dest="${link#*:}"
+      launchctl unload "$dest" 2>/dev/null || true
+      rm -f "$dest"
+      echo "  removed $dest"
+    done
+  fi
   for f in bin/*; do
     case "$f" in *.swift) continue ;; esac
     rm -f "$HOME/bin/$(basename "$f")"
@@ -89,6 +102,15 @@ else
     dest="${link#*:}"
     ensure_link "$dest" "$PWD/$src"
   done
+  if [[ "$OSTYPE" == "darwin"* ]]; then
+    mkdir -p "$HOME/Library/LaunchAgents"
+    for link in "${launchagents[@]}"; do
+      src="${link%%:*}"
+      dest="${link#*:}"
+      ensure_link "$dest" "$PWD/$src"
+      launchctl load "$dest" 2>/dev/null || launchctl bootstrap gui/$(id -u) "$dest" 2>/dev/null || true
+    done
+  fi
   mkdir -p "$HOME/bin"
   for f in bin/*; do
     case "$f" in *.swift) continue ;; esac

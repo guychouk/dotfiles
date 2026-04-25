@@ -1,2 +1,2 @@
 #!/bin/sh
-find ~/Documents -type f -not -path '*/.git/*' | fzf --pointer='▶' | tr -d '\n' | pbcopy
+find ~/Documents -type f -not -path '*/.git/*' | choose | tr -d '\n' | pbcopy
