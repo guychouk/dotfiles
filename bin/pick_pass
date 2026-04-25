@@ -1,5 +1,5 @@
 #!/bin/sh
-entry=$(pass_entries | fzf --pointer='▶')
+entry=$(pass_entries | choose)
 if [ -n "$entry" ]; then
   pcp "$entry"
 fi
