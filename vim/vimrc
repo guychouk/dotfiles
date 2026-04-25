@@ -338,6 +338,7 @@ augroup filetype_settings
   autocmd FileType markdown setlocal conceallevel=2
   autocmd FileType markdown setlocal nonumber
   autocmd FileType markdown setlocal wrap
+  autocmd FileType markdown nnoremap <buffer> <localleader>o :Dispatch! mdlinks % \| choose \| cut -f2 \| xargs open<CR>
 
   " Godot
   autocmd FileType gdscript setlocal foldmethod=expr

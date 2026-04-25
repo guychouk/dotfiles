@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mdlinks "$1" | choose | cut -f2 | xargs open
