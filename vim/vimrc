@@ -35,6 +35,7 @@ set sidescrolloff=2
 set smartcase
 set smarttab
 set softtabstop=2
+set splitright
 set t_vb=
 set tabstop=2
 set tags=./tags;,tags;
@@ -250,6 +251,10 @@ function! s:DirvishEnter() abort
   if l:path =~? '\.\(png\|jpg\|jpeg\|gif\|bmp\|webp\|tiff\|ico\)$'
     call system('kitty @ launch --type=overlay fish -c ' . shellescape('kitty icat ' . shellescape(l:path) . '; read -n1'))
   else
+    if winnr('$') > 1
+      wincmd p
+      close
+    endif
     call dirvish#open('edit', 0)
   endif
 endfunction
