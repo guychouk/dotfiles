@@ -39,6 +39,16 @@ launchagents=(
   "launchd/com.koekeishiya.skhd.plist:$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist"
 )
 
+usage() {
+  cat << EOF
+usage: setup.sh [unlink]
+
+  setup.sh           link dotfiles
+  setup.sh unlink    unlink dotfiles
+EOF
+  exit "${1:-0}"
+}
+
 ensure_link() {
   local dest=$1 src=$2
   if [[ -L "$dest" ]]; then
@@ -69,6 +79,8 @@ build_swift() {
     printf "  [ERROR] failed to compile %s\n" "$src"
   fi
 }
+
+[[ "$1" == "-h" || "$1" == "--help" ]] && usage
 
 if [[ "$1" == "unlink" ]]; then
   for dir in "${xdg_configs[@]}"; do
@@ -108,7 +120,7 @@ else
       src="${link%%:*}"
       dest="${link#*:}"
       ensure_link "$dest" "$PWD/$src"
-      launchctl load "$dest" 2>/dev/null || launchctl bootstrap gui/$(id -u) "$dest" 2>/dev/null || true
+      launchctl load "$dest" 2>/dev/null || launchctl bootstrap "gui/$(id -u)" "$dest" 2>/dev/null || true
     done
   fi
   mkdir -p "$HOME/bin"
