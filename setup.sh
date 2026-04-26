@@ -19,6 +19,7 @@ xdg_configs=(
 swift_builds=(
   "bin/gpg-kill-on-lock.swift:$HOME/bin/gpg-kill-on-lock"
   "bin/pbcopy-concealed.swift:$HOME/bin/pbcopy-concealed"
+  "bin/clipboard-daemon.swift:$HOME/bin/clipboard-daemon"
 )
 
 # Other locations - "source:destination"
@@ -37,6 +38,7 @@ launchagents=(
   "launchd/org.gnupg.gpg-agent.plist:$HOME/Library/LaunchAgents/org.gnupg.gpg-agent.plist"
   "launchd/local.gpg-kill-on-lock.plist:$HOME/Library/LaunchAgents/local.gpg-kill-on-lock.plist"
   "launchd/com.koekeishiya.skhd.plist:$HOME/Library/LaunchAgents/com.koekeishiya.skhd.plist"
+  "launchd/local.clipboard-daemon.plist:$HOME/Library/LaunchAgents/local.clipboard-daemon.plist"
 )
 
 usage() {
