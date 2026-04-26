@@ -112,3 +112,4 @@ cmd + shift - d : ~/bin/yank_docs_file
 cmd + shift - f : ~/bin/yank_docs_dir
 cmd + shift - p : ~/bin/yank_project_dir
 cmd + shift - s : ~/bin/pick_pass
+cmd + shift - c : ~/bin/clipboard-pick
