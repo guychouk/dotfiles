@@ -13,10 +13,11 @@
 (setq-default indent-tabs-mode nil)
 (setq-default fill-column 80)
 (setq scroll-conservatively 101)
+(setq-default mode-line-format nil)
+(setq-default word-wrap t)
 
 ;;; Line numbers
-(global-display-line-numbers-mode 1)
-(setq display-line-numbers-type t)
+(global-display-line-numbers-mode 0)
 
 ;;; Font - primary monospace with Hebrew fallback
 (set-face-attribute 'default nil :font "Iosevka Term" :height 360)
