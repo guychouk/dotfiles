@@ -181,7 +181,6 @@ let g:picopack = [
   \ 'tpope/vim-abolish',
   \ 'tpope/vim-characterize',
   \ 'tpope/vim-commentary',
-  \ 'tpope/vim-dispatch',
   \ 'tpope/vim-eunuch',
   \ 'tpope/vim-fugitive',
   \ 'tpope/vim-repeat',
@@ -208,7 +207,7 @@ nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
 nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
-nnoremap          <leader><CR>          :Dispatch!<CR>
+nnoremap          <leader><CR>          :Recompile<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 nnoremap <silent> yoc                   :ContextToggle<CR>
@@ -329,7 +328,7 @@ augroup filetype_settings
   autocmd FileType palette call css_color#init('hex', 'basic', 'paletteComment')
 
   " Proto
-  autocmd FileType proto nnoremap <buffer> <localleader>l :Dispatch buf format -w<CR>
+  autocmd FileType proto nnoremap <buffer> <localleader>l :Term buf format -w<CR>
 
   " Git
   autocmd FileType gitcommit,gitrebase setlocal spell
@@ -343,7 +342,7 @@ augroup filetype_settings
   autocmd FileType markdown setlocal conceallevel=2
   autocmd FileType markdown setlocal nonumber
   autocmd FileType markdown setlocal wrap
-  autocmd FileType markdown nnoremap <buffer> <localleader>o :Dispatch! mdl %<CR>
+  autocmd FileType markdown nnoremap <buffer> <localleader>o :Compile mdl %<CR>
 
   " Godot
   autocmd FileType gdscript setlocal foldmethod=expr
@@ -357,21 +356,21 @@ augroup filetype_settings
   " Shell
   autocmd FileType sh,bash,zsh setlocal suffixesadd=.sh
   autocmd FileType sh,bash,zsh setlocal include=^\s*\.\s\+\|^\s*source\s\+
-  autocmd FileType sh,bash,zsh nnoremap <buffer> <localleader>l :compiler shellcheck <Bar> Make<CR>
+  autocmd FileType sh,bash,zsh nnoremap <buffer> <localleader>l :Compile shellcheck<CR>
 
   " C
   autocmd FileType c setlocal path+=**
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
-  autocmd FileType c nnoremap <buffer> <localleader>b :compiler nob <Bar> Make<CR>
+  autocmd FileType c nnoremap <buffer> <localleader>b :Compile nob<CR>
 
   " Go
   autocmd FileType go setlocal path+=**
   autocmd FileType go setlocal suffixesadd=.go
-  autocmd FileType go nnoremap <buffer> <localleader>b :compiler go <Bar> Make<CR>
+  autocmd FileType go nnoremap <buffer> <localleader>b :Compile go<CR>
   autocmd FileType go nnoremap <buffer> <localleader>r :Term go run %<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>t :compiler gotest <Bar> Make<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>l :compiler golangci-lint <Bar> Make<CR>
+  autocmd FileType go nnoremap <buffer> <localleader>t :Compile gotest<CR>
+  autocmd FileType go nnoremap <buffer> <localleader>l :Compile golangci-lint<CR>
 
   " Python
   autocmd FileType python setlocal path+=**
@@ -379,8 +378,8 @@ augroup filetype_settings
   autocmd FileType python setlocal include=^\s*\(import\|from\)
   autocmd FileType python setlocal includeexpr=substitute(v:fname,'\\.','\/','g')
   autocmd FileType python nnoremap <buffer> <localleader>r :Term python3 %<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>R :compiler python3 <Bar> Make<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>l :compiler ruff <Bar> Make<CR>
+  autocmd FileType python nnoremap <buffer> <localleader>R :Compile python3<CR>
+  autocmd FileType python nnoremap <buffer> <localleader>l :Compile ruff<CR>
 
   " JavaScript
   autocmd FileType javascript,javascriptreact setlocal path+=**
@@ -389,10 +388,10 @@ augroup filetype_settings
   autocmd FileType javascript,javascriptreact setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
   autocmd FileType javascript,javascriptreact setlocal tabstop=4
   autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>b :Make<CR>
+  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>b :Compile<CR>
   autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>r :Term node %<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>R :compiler node <Bar> Make<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>l :compiler eslint <Bar> Make<CR>
+  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>R :Compile node<CR>
+  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>l :Compile eslint<CR>
 
   " TypeScript
   autocmd FileType typescript,typescriptreact setlocal path+=**
@@ -401,10 +400,10 @@ augroup filetype_settings
   autocmd FileType typescript,typescriptreact setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
   autocmd FileType typescript,typescriptreact setlocal tabstop=2
   autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>b :compiler tsc <Bar> Make<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>b :Compile tsc<CR>
   autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>r :Term bun %<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>R :compiler bun <Bar> Make<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>l :compiler eslint <Bar> Make<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>R :Compile bun<CR>
+  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>l :Compile eslint<CR>
 
 augroup END
 " }}}
