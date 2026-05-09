@@ -1,2 +1,0 @@
-#!/bin/sh
-find ~/Documents -type f -not -path '*/.git/*' | choose | tr -d '\n' | pbcopy
