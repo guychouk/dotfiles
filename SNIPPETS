@@ -1,3 +1,6 @@
+# find and delete broken symlinks
+find . -type l -exec test ! -e {} \; -delete
+
 # flush DNS cache on macOS
 sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder
 

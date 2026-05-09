@@ -1,4 +1,4 @@
-function snip -d "Select and insert snippet into command line"
+function snip -d "Select and insert snippet into command line using fzf"
     set -l snippets_file $HOME/dotfiles/SNIPPETS
 
     if test "$argv[1]" = "add"

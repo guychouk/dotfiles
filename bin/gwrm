@@ -1,4 +1,5 @@
 #!/bin/sh
+
 selected=$(git worktree list | tail -n +2 | fzf --prompt='remove worktree> ')
 [ -n "$selected" ] || exit 0
 

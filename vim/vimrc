@@ -52,7 +52,7 @@ set wildignore+=.DS_Store,Icon\?,*.dmg,*.git,*.pyc,*.o,*.obj,*.so,*.swp,*.zip
 set wildignorecase
 set wildmenu
 set wildmode=longest:full,full
-set wrap
+set nowrap
 
 if has('clipboard')
   set clipboard^=unnamed,unnamedplus

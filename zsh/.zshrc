@@ -192,12 +192,6 @@ fi
 
 ## functions
 
-# switch env with LE_ENVS_DIR and direnv
-# .envrc: dotenv_if_exists .env.current
-function le() {
-  ln -sf "$LE_ENVS_DIR/.env.$1" .env.current
-}
-
 function set_kitty_tab_title() {
   # only set title if we're in kitty
   if [[ "$TERM" == "xterm-kitty" ]]; then

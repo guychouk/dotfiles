@@ -1,8 +1,0 @@
-#!/bin/sh
-HISTORY=/tmp/clipboard_history
-[ -f "$HISTORY" ] || exit 0
-
-selected=$(cat "$HISTORY" | choose)
-[ -z "$selected" ] && exit 0
-
-printf '%s' "$selected" | python3 -c 'import sys; s=sys.stdin.read(); s=s.replace("\\\\", "\x00"); s=s.replace("\\n", "\n"); s=s.replace("\\t", "\t"); s=s.replace("\x00", "\\"); sys.stdout.write(s)' | pbcopy

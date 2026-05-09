@@ -77,7 +77,7 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 defaults write com.apple.dock show-recents -bool false
 
 # Set hostname
-MY_HOSTNAME=bpmbp
+MY_HOSTNAME=guychouk-mbp
 scutil --set HostName $MY_HOSTNAME
 scutil --set LocalHostName $MY_HOSTNAME
 scutil --set ComputerName $MY_HOSTNAME
