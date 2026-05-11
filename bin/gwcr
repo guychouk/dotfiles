@@ -1,12 +1,21 @@
 #!/bin/sh
 
 if [ $# -lt 1 ]; then
-  echo "usage: gwc <ticket-id> [branch-name]"
+  echo "usage: gwcr <ticket-id|pr-number> [branch-name]"
   exit 1
 fi
 
-ticket="$1"
-branch="${2:-$ticket}"
+arg="$1"
+
+if echo "$arg" | grep -qE '^[0-9]+$'; then
+  branch=$(gh pr view "$arg" --json headRefName -q .headRefName) || exit 1
+  ticket=$(echo "$branch" | grep -oiE 'eng-[0-9]+' | head -1 | tr '[:upper:]' '[:lower:]')
+  [ -z "$ticket" ] && ticket="pr-$arg"
+else
+  ticket="$arg"
+  branch="${2:-$ticket}"
+fi
+
 repo=$(basename "$PWD")
 wt_path="../$repo-$ticket"
 

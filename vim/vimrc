@@ -152,6 +152,8 @@ nnoremap          <leader>nn            :NewNote<CR>
 xnoremap          <leader>nn            :NewNote<CR>
 nnoremap          <leader>ns            :Notes<CR>
 nnoremap          <leader>:             :Term<Space>
+nnoremap          <leader>!             :Term!<CR>
+nnoremap          <leader><CR>          :Compile!<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 xnoremap <silent> <localleader>d        :s/\d\+/\=submatch(0)-1/g<CR>
@@ -207,7 +209,6 @@ nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
 nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
-nnoremap          <leader><CR>          :Recompile<CR>
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
 nnoremap          <leader>tt            :Tags<Space>
 nnoremap <silent> yoc                   :ContextToggle<CR>

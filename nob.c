@@ -50,7 +50,7 @@ const Link swift_builds[] = {
 };
 
 void usage(void) {
-    printf("usage: ./nob <link|launchd|swiftc>\n");
+    printf("usage: ./nob <links|launchd|swiftc>\n");
 }
 
 int main (int argc, char **argv) {
@@ -61,7 +61,7 @@ int main (int argc, char **argv) {
         return 1;
     }
     const char *command = shift(argv, argc);
-    if (strcmp(command, "link") == 0) {
+    if (strcmp(command, "links") == 0) {
         for (size_t i = 0; i < ARRAY_LEN(links); i++) {
             if (symlink(links[i].src, links[i].dst) < 0) {
                 if (errno != EEXIST) perror(links[i].dst);

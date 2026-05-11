@@ -55,22 +55,25 @@ function! s:Compile(bang, arg) abort
         \ })
 endfunction
 
-function! s:Recompile() abort
-  if empty(s:cmd)
-      echohl WarningMsg
-      echo 'nothing to recompile'
-      echohl None
-      return
-  endif
-  call s:Compile(1, s:cmd)
-endfunction
-
 function! s:CompileStop() abort
   if s:job isnot v:null && job_status(s:job) ==# 'run'
     call job_stop(s:job)
   endif
 endfunction
 
-command! -nargs=* -bang -complete=compiler Compile     call <sid>Compile(<bang>0, <q-args>)
-command!                                   Recompile   call <sid>Recompile()
+function! s:CompileDispatch(bang, arg) abort
+  if a:bang
+    if empty(s:cmd)
+      echohl WarningMsg
+      echo 'nothing to recompile'
+      echohl None
+      return
+    endif
+    call s:Compile(1, s:cmd)
+  else
+    call s:Compile(0, a:arg)
+  endif
+endfunction
+
+command! -nargs=* -bang -complete=compiler Compile     call <sid>CompileDispatch(<bang>0, <q-args>)
 command!                                   CompileStop call <sid>CompileStop()
