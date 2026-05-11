@@ -359,6 +359,7 @@ augroup filetype_settings
   autocmd FileType sh,bash,zsh nnoremap <buffer> <localleader>l :Compile shellcheck<CR>
 
   " C
+  let c_no_curly_error = 1
   autocmd FileType c setlocal path+=**
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
