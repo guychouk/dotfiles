@@ -68,6 +68,20 @@ int main (int argc, char **argv) {
             }
             printf("%s -> %s\n", links[i].src, links[i].dst);
         }
+        nob_mkdir_if_not_exists(HOME "/bin");
+        File_Paths binaries = {0};
+        if (!read_entire_dir(DOTSDIR "/bin", &binaries)) return 1;
+        for (size_t i = 0; i < binaries.count; i++) {
+            const char *name = binaries.items[i];
+            const char *src = temp_sprintf(DOTSDIR "/bin/%s", name);
+            const char *dst = temp_sprintf(HOME "/bin/%s", name);
+            if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
+            if (symlink(src, dst) < 0) {
+                if (errno != EEXIST) perror(dst);
+            }
+            printf("%s -> %s\n", src, dst);
+        }
+        nob_da_free(binaries);
     } else if (strcmp(command, "swiftc") == 0) {
         Cmd cmd = {0};
         for (size_t i = 0; i < ARRAY_LEN(swift_builds); i++) {
