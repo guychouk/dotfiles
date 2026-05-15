@@ -1,0 +1,3 @@
+#!/bin/sh
+
+ollama run qwen2.5-coder:1.5b "You are a code example generator. Output ONLY code, no prose. Task: $1" | vim -c "set ft=markdown" -c "nmap Q :q!<CR>" -
