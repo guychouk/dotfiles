@@ -183,3 +183,9 @@ rsync -avh --delete --progress -e "ssh -p 23" /mnt/goliath/Backups/ $(pass show 
 
 # print time + 6 seconds from now #python
 python -c "import time; print(int(time.time())+6)"
+
+# remove white background from image (floodfill from corner) #magick
+magick input.png -alpha set -fuzz 5% -fill none -draw "color 0,0 floodfill" output.png
+
+# erase rectangular region to transparent #magick
+magick input.png -region WxH+X+Y -alpha set -channel alpha -evaluate set 0 +channel +region output.png
