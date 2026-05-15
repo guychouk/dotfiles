@@ -151,7 +151,7 @@ nnoremap          <leader>yl            :YankFileLocation<CR>
 nnoremap          <leader>nn            :NewNote<CR>
 xnoremap          <leader>nn            :NewNote<CR>
 nnoremap          <leader>ns            :Notes<CR>
-nnoremap          <leader>:             :Term<Space>
+nnoremap          <leader>:             :Compile<Space>
 nnoremap          <leader>!             :Term!<CR>
 nnoremap          <leader><CR>          :Compile!<CR>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
@@ -271,7 +271,7 @@ let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
 " Markdown {{{
-let g:markdown_fenced_languages = ['python','javascript','typescript','bash=sh','html','vim','conf','sql','proto','go']
+let g:markdown_fenced_languages = ['c','python','javascript','typescript','bash=sh','html','vim','conf','sql','proto','go']
 " }}}
 " }}}
 
@@ -361,6 +361,7 @@ augroup filetype_settings
 
   " C
   let c_no_curly_error = 1
+  autocmd FileType c setlocal foldmethod=syntax
   autocmd FileType c setlocal path+=**
   autocmd FileType c setlocal tabstop=4
   autocmd FileType c setlocal shiftwidth=4
