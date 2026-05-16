@@ -1,3 +1,6 @@
+abbr -a n        "./nob"
+abbr -a nb       "./nob build"
+abbr -a nr       "./nob run"
 abbr -a pm       "presenterm"
 abbr -a pcs      "pc process ls -o json | jq -r '.[] | select(.status != \"Disabled\") | \"\(.name)\t\(.status)\"' | column -t"
 abbr -a ccp      "CLAUDE_CONFIG_DIR=\"$HOME/.claude-personal\" claude"
