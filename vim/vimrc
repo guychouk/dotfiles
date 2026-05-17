@@ -251,10 +251,6 @@ function! s:DirvishEnter() abort
   if l:path =~? '\.\(png\|jpg\|jpeg\|gif\|bmp\|webp\|tiff\|ico\)$'
     call system('kitty @ launch --type=overlay fish -c ' . shellescape('kitty icat ' . shellescape(l:path) . '; read -n1'))
   else
-    if winnr('$') > 1
-      wincmd p
-      close
-    endif
     call dirvish#open('edit', 0)
   endif
 endfunction

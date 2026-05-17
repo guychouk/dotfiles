@@ -75,5 +75,12 @@ function! s:CompileDispatch(bang, arg) abort
   endif
 endfunction
 
-command! -nargs=* -bang -complete=compiler Compile     call <sid>CompileDispatch(<bang>0, <q-args>)
-command!                                   CompileStop call <sid>CompileStop()
+function! s:CompleteCompile(arg, line, pos) abort
+  if a:arg =~# '^\(\.*/\|/\|\~\)'
+    return join(getcompletion(a:arg, 'file'), "\n")
+  endif
+  return join(getcompletion(a:arg, 'compiler'), "\n")
+endfunction
+
+command! -nargs=* -bang -complete=custom,<sid>CompleteCompile Compile call <sid>CompileDispatch(<bang>0, <q-args>)
+command!                                                       CompileStop call <sid>CompileStop()
