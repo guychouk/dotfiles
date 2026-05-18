@@ -31,6 +31,10 @@ function! s:Compile(bang, arg) abort
     execute 'compiler' l:arg
     let l:cmd = substitute(&makeprg, '\s*\$\*', '', 'g')
   else
+    let l:head = matchstr(l:arg, '^\S\+')
+    if !a:bang && s:IsCompiler(l:head)
+      execute 'compiler' l:head
+    endif
     let l:cmd = l:arg
   endif
   if empty(l:cmd)
