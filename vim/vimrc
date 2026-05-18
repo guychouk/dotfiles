@@ -168,7 +168,6 @@ let g:picopack = [
   \ 'airblade/vim-gitgutter',
   \ 'ap/vim-css-color',
   \ 'guychouk/vim-picoline',
-  \ 'habamax/vim-godot',
   \ 'junegunn/fzf',
   \ 'junegunn/fzf.vim',
   \ 'junegunn/gv.vim',
@@ -343,9 +342,6 @@ augroup filetype_settings
 
   " Godot
   autocmd FileType gdscript setlocal foldmethod=expr
-  autocmd FileType gdscript nnoremap <buffer> <localleader>r :GodotRun<CR>
-  autocmd FileType gdscript nnoremap <buffer> <localleader>c :GodotRunCurrent<CR>
-  autocmd FileType gdscript nnoremap <buffer> <localleader>d :GodotDocs<CR>
 
   " Nix
   autocmd FileType nix nnoremap <buffer> <localleader>r :Term nix-instantiate --eval %<CR>

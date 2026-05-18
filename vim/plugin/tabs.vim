@@ -1,7 +1,3 @@
-" This plugin sets my tabline style to something nicer
-" I rarely use tabs, this plugin is for those rare cases,
-" which is why it is not so polished.
-
 if !exists('g:tabline_custom_names')
   let g:tabline_custom_names = {}
 endif
@@ -35,6 +31,23 @@ function! s:RenameCurrentTab(new_name)
   let g:tabline_custom_names[tabpagenr()] = a:new_name
 endfunction
 
-command! -bar -nargs=1 RenameTab call <sid>RenameCurrentTab(<q-args>)
+function! s:TabMoveOrCreate(key) abort
+  if a:key ==# 'h'
+    if tabpagenr() == 1
+      0tabnew
+    else
+      normal! gT
+    endif
+  else
+    if tabpagenr() == tabpagenr('$')
+      tabnew
+    else
+      normal! gt
+    endif
+  endif
+endfunction
+
+command! -bar -nargs=1 RenameTab       call <sid>RenameCurrentTab(<q-args>)
+command! -bar -nargs=1 TabMoveOrCreate call <sid>TabMoveOrCreate(<q-args>)
 
 set tabline=%!Picotab()
