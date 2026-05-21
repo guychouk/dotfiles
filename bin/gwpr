@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+n=${1:?usage: $(basename "$0") <pr-number>}
+
+repo=$(git rev-parse --show-toplevel)
+name=$(basename "$repo")
+wt="$(dirname "$repo")/$name-pr-$n"
+
+branch=$(gh pr view "$n" --json headRefName -q .headRefName)
+git -C "$repo" fetch origin "$branch"
+git -C "$repo" worktree add "$wt" "origin/$branch"
+echo "$wt"
