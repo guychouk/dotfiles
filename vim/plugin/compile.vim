@@ -23,10 +23,10 @@ endfunction
 function! s:Compile(bang, arg) abort
   let l:arg = trim(a:arg)
   if empty(l:arg)
-    let l:cmd = substitute(&makeprg, '\s*\$\*', '', 'g')
+    let l:cmd = expandcmd(substitute(&makeprg, '\s*\$\*', '', 'g'))
   elseif !a:bang && s:IsCompiler(l:arg)
     execute 'compiler' l:arg
-    let l:cmd = substitute(&makeprg, '\s*\$\*', '', 'g')
+    let l:cmd = expandcmd(substitute(&makeprg, '\s*\$\*', '', 'g'))
   else
     let l:head = matchstr(l:arg, '^\S\+')
     if !a:bang && s:IsCompiler(l:head)

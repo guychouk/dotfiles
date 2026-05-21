@@ -1,6 +1,9 @@
 " Vim compiler file
 " Compiler:    ESLint
 
+if exists("current_compiler") | finish | endif
+let current_compiler = "eslint"
+
 CompilerSet makeprg=eslint\ --format\ unix\ .
 CompilerSet errorformat=
       \%f:%l:%c:\ %m,
