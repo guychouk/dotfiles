@@ -1,48 +1,54 @@
-function! s:TakeNote() range abort
-  let l:file = expand('%:p')
-  if l:file == ''
-    echo "No file associated with this buffer"
+function! s:NewNote(first, last) abort
+  let l:src = expand('%:p')
+  if empty(l:src)
+    echohl WarningMsg | echo 'no file' | echohl None
     return
   endif
-  let l:quote = ''
-  let l:is_visual = line("'<") == a:firstline && line("'>") == a:lastline
-  if l:is_visual && a:firstline == a:lastline
-    let l:location = l:file . ':' . a:firstline . ':' . col("'<")
-    let l:selected = strpart(getline(a:firstline), col("'<") - 1, col("'>") - col("'<") + 1)
-    let l:quote = '"' . trim(l:selected) . '"'
-  elseif l:is_visual
-    let l:location = l:file . ':' . a:firstline . '-' . a:lastline
-    let l:lines = getline(a:firstline, a:lastline)
-    let l:quote = '"' . join(map(l:lines, 'trim(v:val)'), ' ') . '"'
-  else
-    let l:location = l:file . ':' . a:firstline . ':' . col('.')
-  endif
-  let l:comment = input('📝: ')
-  if l:comment == ''
+  let l:target = expand('%:p:h') . '/notes.md'
+  let l:loc = a:first == a:last
+        \ ? l:src . ':' . a:first
+        \ : l:src . ':' . a:first . '-' . a:last
+  let l:fence = ['```' . &filetype] + getline(a:first, a:last) + ['```']
+
+  belowright 10new
+  setlocal buftype=acwrite bufhidden=wipe noswapfile filetype=markdown
+  execute 'file' fnameescape('note:' . l:loc)
+  let b:note_target = l:target
+  call setline(1, ['## ' . l:loc, ''] + l:fence + ['', ''])
+  call cursor(line('$'), 1)
+  autocmd BufWriteCmd <buffer> call s:SaveNote()
+  startinsert
+endfunction
+
+function! s:SaveNote() abort
+  let l:lines = getline(1, '$')
+  while !empty(l:lines) && empty(l:lines[-1])
+    call remove(l:lines, -1)
+  endwhile
+  if empty(l:lines)
+    setlocal nomodified
+    bwipeout
     return
   endif
-  let l:entry = l:location
-  if l:quote != ''
-    let l:entry .= ' - ' . l:quote
-  endif
-  let l:entry .= ' - ' . l:comment
-  call writefile([l:entry], getcwd() . '/' . expand('%') . '.notes.md', 'a')
+  call writefile(l:lines + [''], b:note_target, 'a')
+  setlocal nomodified
+  bwipeout
 endfunction
 
 function! s:OpenNote() abort
-  let l:match = matchlist(getline('.'), '^\(.\{-\}\):\(\d\+\):\(\d\+\)')
+  let l:match = matchlist(getline('.'), '\(\f\+\):\(\d\+\)\%(-\d\+\)\?')
   if empty(l:match)
     normal! gf
     return
   endif
-  execute 'edit ' . fnameescape(l:match[1])
-  call cursor(str2nr(l:match[2]), str2nr(l:match[3]))
+  execute 'edit' fnameescape(l:match[1])
+  call cursor(str2nr(l:match[2]), 1)
 endfunction
 
-augroup bookmarks
+augroup notes
   autocmd!
-  autocmd BufRead *.notes.md nnoremap <buffer> gf :call <sid>OpenNote()<CR>
+  autocmd BufRead notes.md nnoremap <buffer> gf :call <sid>OpenNote()<CR>
 augroup END
 
-command! -range NewNote <line1>,<line2>call <sid>TakeNote()
-command!        Notes execute 'edit ' . fnameescape(getcwd() . '/' . expand('%') . '.notes.md')
+command! -range NewNote call <sid>NewNote(<line1>, <line2>)
+command!        Notes execute 'edit' fnameescape(expand('%:p:h') . '/notes.md')
