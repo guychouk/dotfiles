@@ -237,20 +237,6 @@ let g:indentLine_fileType = ['yaml', 'yml', 'python', 'gdscript']
 " }}}
 " Dirvish {{{
 let g:dirvish_mode = ':sort ,^.*[\/],'
-function! s:DirvishEnter() abort
-  let l:path = trim(getline('.'))
-  if l:path =~? '\.\(png\|jpg\|jpeg\|gif\|bmp\|webp\|tiff\|ico\)$'
-    call system('kitty @ launch --type=overlay fish -c ' . shellescape('kitty icat ' . shellescape(l:path) . '; read -n1'))
-  else
-    call dirvish#open('edit', 0)
-  endif
-endfunction
-augroup dirvish_settings
-  autocmd!
-  autocmd FileType dirvish nnoremap <buffer> <silent> <CR> :call <SID>DirvishEnter()<CR>
-  autocmd FileType dirvish nnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-  autocmd FileType dirvish xnoremap <buffer> t :call dirvish#open('tabedit', 0)<CR>
-augroup END
 " }}}
 " Context.vim {{{
 let g:context_enabled = 0
@@ -288,110 +274,9 @@ augroup oscyank
   autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
 augroup END
 
-augroup filetype_settings
+augroup terminal_settings
   autocmd!
-
-  " Tagbar
-  autocmd FileType tagbar setlocal foldlevel=99
-
-  " Help
-  autocmd FileType help nnoremap <buffer> q :close<CR>
-  autocmd FileType help setlocal buflisted
-
-  " Terminal
   autocmd TerminalOpen * nnoremap <buffer> q :close<CR>
-
-  " zed (spicedb)
-  autocmd FileType zed setlocal noexpandtab
-
-  " Man
-  autocmd FileType man setlocal hlsearch
-  autocmd FileType man nnoremap <buffer> q :q<CR>
-
-  " YAML
-  autocmd FileType yaml setlocal foldlevel=2
-  autocmd FileType yaml setlocal foldmethod=indent
-
-  " Palette
-  autocmd FileType palette call css_color#init('hex', 'basic', 'paletteComment')
-
-  " Proto
-  autocmd FileType proto nnoremap <buffer> <localleader>l :Term buf format -w<CR>
-
-  " Git
-  autocmd FileType gitcommit,gitrebase setlocal spell
-  autocmd FileType gitcommit,gitrebase setlocal bufhidden=delete
-
-  " JSON/JSONC
-  autocmd FileType json,jsonc setlocal foldlevel=2
-  autocmd FileType json,jsonc setlocal conceallevel=2
-
-  " Markdown
-  autocmd FileType markdown setlocal conceallevel=2
-  autocmd FileType markdown setlocal nonumber
-  autocmd FileType markdown setlocal wrap
-  autocmd FileType markdown nnoremap <buffer> <localleader>o :Compile mdl %<CR>
-
-  " Godot
-  autocmd FileType gdscript setlocal foldmethod=expr
-
-  " Nix
-  autocmd FileType nix nnoremap <buffer> <localleader>r :Term nix-instantiate --eval %<CR>
-
-  " Shell
-  autocmd FileType sh,bash,zsh setlocal suffixesadd=.sh
-  autocmd FileType sh,bash,zsh setlocal include=^\s*\.\s\+\|^\s*source\s\+
-  autocmd FileType sh,bash,zsh nnoremap <buffer> <localleader>l :Compile shellcheck<CR>
-
-  " C
-  let c_no_curly_error = 1
-  autocmd FileType c setlocal foldmethod=syntax
-  autocmd FileType c setlocal path+=**
-  autocmd FileType c setlocal tabstop=4
-  autocmd FileType c setlocal shiftwidth=4
-  autocmd FileType c nnoremap <buffer> <localleader>b :Compile nob<CR>
-
-  " Go
-  autocmd FileType go setlocal path+=**
-  autocmd FileType go setlocal suffixesadd=.go
-  autocmd FileType go nnoremap <buffer> <localleader>b :Compile go<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>r :Term go run %<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>t :Compile gotest<CR>
-  autocmd FileType go nnoremap <buffer> <localleader>l :Compile golangci-lint<CR>
-
-  " Python
-  autocmd FileType python setlocal path+=**
-  autocmd FileType python setlocal suffixesadd=.py
-  autocmd FileType python setlocal include=^\s*\(import\|from\)
-  autocmd FileType python setlocal includeexpr=substitute(v:fname,'\\.','\/','g')
-  autocmd FileType python nnoremap <buffer> <localleader>r :Term python3 %<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>R :Compile python3<CR>
-  autocmd FileType python nnoremap <buffer> <localleader>l :Compile ruff<CR>
-
-  " JavaScript
-  autocmd FileType javascript,javascriptreact setlocal path+=**
-  autocmd FileType javascript,javascriptreact setlocal suffixesadd=.js,.jsx,.ts,.tsx,.json
-  autocmd FileType javascript,javascriptreact setlocal include=from\s*['"]\|require(\s*['"]
-  autocmd FileType javascript,javascriptreact setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
-  autocmd FileType javascript,javascriptreact setlocal tabstop=4
-  autocmd FileType javascript,javascriptreact setlocal shiftwidth=4
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>b :Compile<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>r :Term node %<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>R :Compile node<CR>
-  autocmd FileType javascript,javascriptreact nnoremap <buffer> <localleader>l :Compile eslint<CR>
-
-  " TypeScript
-  autocmd FileType typescript,typescriptreact setlocal path+=**
-  autocmd FileType typescript,typescriptreact setlocal suffixesadd=.ts,.tsx,.js,.jsx,.json
-  autocmd FileType typescript,typescriptreact setlocal include=from\s*['"]\|require(\s*['"]
-  autocmd FileType typescript,typescriptreact setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
-  autocmd FileType typescript,typescriptreact setlocal tabstop=2
-  autocmd FileType typescript,typescriptreact setlocal shiftwidth=2
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>b :Compile tsc<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>r :Term bun %<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>R :Compile bun<CR>
-  autocmd FileType typescript,typescriptreact nnoremap <buffer> <localleader>l :Compile eslint<CR>
-
 augroup END
 " }}}
 
