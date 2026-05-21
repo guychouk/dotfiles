@@ -1,3 +1,6 @@
+# check p12 is correct via openssl
+openssl pkcs12 -info -in key.p12 -noout
+
 # find and delete broken symlinks
 find . -type l -exec test ! -e {} \; -delete
 
@@ -189,3 +192,6 @@ magick input.png -alpha set -fuzz 5% -fill none -draw "color 0,0 floodfill" outp
 
 # erase rectangular region to transparent #magick
 magick input.png -region WxH+X+Y -alpha set -channel alpha -evaluate set 0 +channel +region output.png
+
+# extract stored binary file from pass #pass
+pass show files/path > output.file
