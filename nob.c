@@ -33,6 +33,7 @@ const Link links[] = {
     {DOTSDIR "/zsh/.zshenv",          HOME "/.zshenv"},
     {DOTSDIR "/gnupg/gpg-agent.conf", HOME "/.gnupg/gpg-agent.conf"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
+    {DOTSDIR "/tmux/tmux.conf",       HOME "/.tmux.conf"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
 };
 
