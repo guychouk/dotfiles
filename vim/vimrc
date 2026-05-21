@@ -53,6 +53,7 @@ set wildignorecase
 set wildmenu
 set wildmode=longest:full,full
 set nowrap
+set path+=**
 
 if has('clipboard')
   set clipboard^=unnamed,unnamedplus
@@ -144,6 +145,9 @@ nnoremap <silent> <leader>ec            :e $MYVIMRC<CR>
 nnoremap          <leader>re            :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap <silent> <C-]>                 :ltag <C-R><C-W><CR>
 nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
+nnoremap          <leader>b             :buffer<Space>
+nnoremap          <leader>p             :find<Space>
+nnoremap          <leader>tt            :tag<Space>
 nnoremap          <leader>yt            :YankCurrentDate<CR>
 nnoremap          <leader>yf            :YankAbsoluteFilePath<CR>
 nnoremap          <leader>yr            :YankRelativeFilePath<CR>
@@ -154,11 +158,11 @@ nnoremap          <leader>ns            :Notes<CR>
 nnoremap          <leader>:             :Compile<Space>
 nnoremap          <leader>!             :Term!<CR>
 nnoremap          <leader><CR>          :Compile!<CR>
+nnoremap          <leader>/             :Grep<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
 xnoremap <silent> <localleader>d        :s/\d\+/\=submatch(0)-1/g<CR>
 xnoremap <silent> <localleader>i        :s/\d\+/\=submatch(0)+1/g<CR>
-xnoremap          gh                    :GBrowse!<CR>
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
@@ -168,8 +172,6 @@ let g:picopack = [
   \ 'airblade/vim-gitgutter',
   \ 'ap/vim-css-color',
   \ 'guychouk/vim-picoline',
-  \ 'junegunn/fzf',
-  \ 'junegunn/fzf.vim',
   \ 'junegunn/gv.vim',
   \ 'junegunn/vim-easy-align',
   \ 'junegunn/vim-peekaboo',
@@ -197,11 +199,8 @@ let g:picopack_opt = [
   \ 'yegappan/lsp',
 \ ]
 nnoremap <silent> <leader>gg            :Git<CR>
-nnoremap <silent> <leader>gb            :Branches<CR>
-nnoremap <silent> <leader>p             :Files<CR>
-nnoremap <silent> <leader>.             :GFiles<CR>
+nnoremap          <leader>gb            :Git switch<Space>
 nnoremap <silent> <leader>s             :PicolineToggle<CR>
-nnoremap          <leader>/             :Grep<Space>
 nnoremap          <leader>cs            :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hp            :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
@@ -209,15 +208,13 @@ nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
 nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
 nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
 nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
-nnoremap          <leader>tt            :Tags<Space>
 nnoremap <silent> yoc                   :ContextToggle<CR>
 nnoremap <silent> yop                   :IndentLinesToggle<CR>
 nnoremap          gz                    <Plug>(characterize)
 nnoremap          ga                    <Plug>(EasyAlign)
 xnoremap          ga                    <Plug>(EasyAlign)
-xnoremap <silent> <leader><Tab>         <Plug>(fzf-maps-x)
-onoremap <silent> <leader><Tab>         <Plug>(fzf-maps-o)
-inoremap <silent> <C-x><C-f>            <Plug>(fzf-complete-path)
+nnoremap          gh                    :GBrowse!<CR>
+xnoremap          gh                    :GBrowse!<CR>
 " Man {{{
 runtime ftplugin/man.vim
 " }}}
@@ -226,11 +223,6 @@ packadd! matchit
 " }}}
 " cfilter {{{
 packadd! cfilter
-" }}}
-" FZF {{{
-let g:fzf_colors = { 'border':  ['fg', 'FzfBorder', 'Ignore'] }
-let g:fzf_layout = { 'window': { 'width': 0.7, 'height': 0.6, 'border': 'rounded' } }
-let g:fzf_preview_window = ['right:70%:hidden', 'ctrl-]']
 " }}}
 " GitGutter {{{
 let g:gitgutter_map_keys = 0
