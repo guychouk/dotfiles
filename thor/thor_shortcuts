@@ -2,31 +2,11 @@
   {
     "appBundleURL" : "file:\/\/\/Applications\/kitty.app\/",
     "appDisplayName" : "kitty.app",
-    "shortcut" : "shift+alt+k"
+    "shortcut" : "ctrl+cmd+1"
   },
   {
     "appBundleURL" : "file:\/\/\/Applications\/Brave%20Browser.app\/",
     "appDisplayName" : "Brave Browser.app",
-    "shortcut" : "shift+alt+b"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/KeePassXC.app\/",
-    "appDisplayName" : "KeePassXC.app",
-    "shortcut" : "shift+alt+p"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/1Password.app\/",
-    "appDisplayName" : "1Password.app",
-    "shortcut" : "shift+alt+1"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/Slack.app\/",
-    "appDisplayName" : "Slack.app",
-    "shortcut" : "shift+alt+s"
-  },
-  {
-    "appBundleURL" : "file:\/\/\/Applications\/Figma.app\/",
-    "appDisplayName" : "Figma.app",
-    "shortcut" : "shift+alt+f"
+    "shortcut" : "ctrl+cmd+2"
   }
 ]
