@@ -1,4 +1,4 @@
-;;; early-init.el --- Suppress UI before frame creation -*- lexical-binding: t -*-
+;;; Suppress UI before frame creation -*- lexical-binding: t -*-
 
 (setq inhibit-startup-screen t)
 (push '(menu-bar-lines . 0) default-frame-alist)

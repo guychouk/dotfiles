@@ -1,4 +1,4 @@
-;;; gman-theme.el --- gman color scheme -*- lexical-binding: t -*-
+;;; gman color scheme -*- lexical-binding: t -*-
 
 (deftheme gman "gman color scheme")
 
@@ -45,5 +45,3 @@
    `(header-line                  ((t (:foreground ,fg :background ,ui))))))
 
 (provide-theme 'gman)
-
-;;; gman-theme.el ends here
