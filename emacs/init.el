@@ -1,11 +1,9 @@
-;;; init.el --- Personal Emacs configuration -*- lexical-binding: t -*-
+;;; -*- lexical-binding: t -*-
 
-;;; No backup, autosave, or lockfiles
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq create-lockfiles nil)
 
-;;; Sane defaults
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (setq ring-bell-function 'ignore)
@@ -16,14 +14,11 @@
 (setq-default mode-line-format nil)
 (setq-default word-wrap t)
 
-;;; Line numbers
 (global-display-line-numbers-mode 0)
 
-;;; Font - primary monospace with Hebrew fallback
 (set-face-attribute 'default nil :font "Iosevka Term" :height 360)
 (set-fontset-font t 'hebrew "Arial Hebrew")
 
-;;; Theme
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes" user-emacs-directory))
 (load-theme 'gman t)
@@ -48,5 +43,3 @@
   (find-file file)
   (setq-local bidi-paragraph-direction 'right-to-left)
   (activate-input-method "hebrew"))
-
-;;; init.el ends here
