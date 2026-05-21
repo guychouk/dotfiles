@@ -6,4 +6,8 @@ let current_compiler = "nob"
 
 CompilerSet makeprg=./nob
 CompilerSet errorformat=
-      \%f:%l:%c:\ %t%*[^:]:\ %m
+      \%f:%l:%c:\ %t%*[^:]:\ %m,
+      \%f:%l:%c:\ %m,
+      \%f:%l:%c,
+      \%f:%l:\ %m,
+      \%f:%l
