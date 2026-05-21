@@ -22,18 +22,23 @@ endfunction
 
 function! s:Compile(bang, arg) abort
   let l:arg = trim(a:arg)
+  let l:head = matchstr(l:arg, '^\S\+')
+  let l:rest = trim(strpart(l:arg, len(l:head)))
+  let l:name = fnamemodify(l:head, ':t:r')
+  let l:via_path = l:head =~# '[/.]'
   if empty(l:arg)
-    let l:cmd = expandcmd(substitute(&makeprg, '\s*\$\*', '', 'g'))
-  elseif !a:bang && s:IsCompiler(l:arg)
-    execute 'compiler' l:arg
-    let l:cmd = expandcmd(substitute(&makeprg, '\s*\$\*', '', 'g'))
-  else
-    let l:head = matchstr(l:arg, '^\S\+')
-    if !a:bang && s:IsCompiler(l:head)
-      execute 'compiler' l:head
+    let l:cmd = &makeprg
+  elseif !a:bang && !empty(l:name) && s:IsCompiler(l:name)
+    execute 'compiler' l:name
+    if l:via_path
+      let l:cmd = l:arg
+    else
+      let l:cmd = empty(l:rest) ? &makeprg : &makeprg . ' ' . l:rest
     endif
+  else
     let l:cmd = l:arg
   endif
+  let l:cmd = expandcmd(substitute(l:cmd, '\s*\$\*', '', 'g'))
   if empty(l:cmd)
     echohl WarningMsg | echo 'no command' | echohl None
     return
@@ -79,12 +84,12 @@ function! s:CompileDispatch(bang, arg) abort
   endif
 endfunction
 
-function! s:CompleteCompile(arg, line, pos) abort
+function! s:CompileComplete(arg, line, pos) abort
   if a:arg =~# '^\(\.*/\|/\|\~\)'
     return join(getcompletion(a:arg, 'file'), "\n")
   endif
   return join(getcompletion(a:arg, 'compiler'), "\n")
 endfunction
 
-command! -nargs=* -bang -complete=custom,<sid>CompleteCompile Compile call <sid>CompileDispatch(<bang>0, <q-args>)
-command!                                                       CompileStop call <sid>CompileStop()
+command! CompileStop call <sid>CompileStop()
+command! -nargs=* -bang -complete=custom,<sid>CompileComplete Compile call <sid>CompileDispatch(<bang>0, <q-args>)
