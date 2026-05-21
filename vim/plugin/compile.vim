@@ -1,22 +1,19 @@
-let s:job   = v:null
-let s:cmd   = ''
-let s:efm   = ''
-let s:cwd   = ''
-let s:lines = []
+let s:job  = v:null
+let s:gen  = 0
+let s:qfid = 0
+let s:cmd  = ''
+let s:efm  = ''
 
-function! s:OnOut(ch, msg) abort
-  call add(s:lines, a:msg)
-  call setqflist([], 'a', {'lines': [a:msg], 'efm': s:efm})
+function! s:OnOut(gen, ch, msg) abort
+  if a:gen != s:gen | return | endif
+  call setqflist([], 'a', {'id': s:qfid, 'lines': [a:msg], 'efm': s:efm})
 endfunction
 
-function! s:OnExit(job, status) abort
-  call setqflist([], 'r', {
-        \ 'lines': s:lines,
-        \ 'efm': s:efm,
-        \ 'title': printf('[%d] %s', a:status, s:cmd)
-        \})
+function! s:OnExit(gen, cmd, job, status) abort
+  if a:gen != s:gen | return | endif
+  call setqflist([], 'r', {'id': s:qfid, 'title': printf('[%d] %s', a:status, a:cmd)})
   cwindow
-  echo printf('Compile: %s -> %d (%d lines)', s:cmd, a:status, len(s:lines))
+  echo printf('Compile: %s -> %d', a:cmd, a:status)
 endfunction
 
 function! s:IsCompiler(name) abort
@@ -38,24 +35,22 @@ function! s:Compile(bang, arg) abort
     let l:cmd = l:arg
   endif
   if empty(l:cmd)
-    echohl WarningMsg
-    echo 'no command'
-    echohl None
+    echohl WarningMsg | echo 'no command' | echohl None
     return
   endif
   if s:job isnot v:null && job_status(s:job) ==# 'run'
     call job_stop(s:job)
   endif
-  let s:cmd   = l:cmd
-  let s:efm   = &errorformat
-  let s:cwd   = getcwd()
-  let s:lines = []
-  call setqflist([], 'r', {'title': 'Compile: ' . l:cmd})
+  let s:gen += 1
+  let s:cmd  = l:cmd
+  let s:efm  = &errorformat
+  call setqflist([], ' ', {'title': 'Compile: ' . l:cmd})
+  let s:qfid = getqflist({'nr': '$', 'id': 0}).id
   let s:job = job_start(['/bin/sh', '-c', l:cmd], {
-        \ 'cwd':     s:cwd,
-        \ 'out_cb':  function('s:OnOut'),
-        \ 'err_cb':  function('s:OnOut'),
-        \ 'exit_cb': function('s:OnExit'),
+        \ 'cwd':     getcwd(),
+        \ 'out_cb':  function('s:OnOut', [s:gen]),
+        \ 'err_cb':  function('s:OnOut', [s:gen]),
+        \ 'exit_cb': function('s:OnExit', [s:gen, l:cmd]),
         \ })
 endfunction
 
@@ -63,17 +58,22 @@ function! s:CompileStop() abort
   if s:job isnot v:null && job_status(s:job) ==# 'run'
     call job_stop(s:job)
   endif
+  let s:gen += 1
 endfunction
 
 function! s:CompileDispatch(bang, arg) abort
   if a:bang
     if empty(s:cmd)
-      echohl WarningMsg
-      echo 'nothing to recompile'
-      echohl None
+      echohl WarningMsg | echo 'nothing to recompile' | echohl None
       return
     endif
-    call s:Compile(1, s:cmd)
+    let l:saved_efm = &errorformat
+    let &errorformat = s:efm
+    try
+      call s:Compile(1, s:cmd)
+    finally
+      let &errorformat = l:saved_efm
+    endtry
   else
     call s:Compile(0, a:arg)
   endif
