@@ -19,7 +19,7 @@ function! s:STab() abort
   if col('.') == 1 || getline('.')[:col('.')-2] =~ '^\s*$'
     return "\<C-d>"
   endif
-  return exists('g:loaded_lsp') ? "\<C-x>\<C-o>" : "\<C-p>"
+  return exists('g:loaded_lsp') ? "\<C-x>\<C-o>" : "\<C-n>"
 endfunction
 
 inoremap <expr> <Tab>   <SID>Tab()

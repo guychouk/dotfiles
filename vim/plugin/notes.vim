@@ -16,7 +16,10 @@ function! s:NewNote(first, last) abort
   let b:note_target = l:target
   call setline(1, ['## ' . l:loc, ''] + l:fence + ['', ''])
   call cursor(line('$'), 1)
-  autocmd BufWriteCmd <buffer> call s:SaveNote()
+  augroup notes_buffer
+    autocmd! * <buffer>
+    autocmd BufWriteCmd <buffer> call s:SaveNote()
+  augroup END
   startinsert
 endfunction
 
