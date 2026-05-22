@@ -124,8 +124,8 @@ nnoremap          j                     gj
 nnoremap          k                     gk
 nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> X                     :tabclose<CR>
-nnoremap <silent> H                     gT
-nnoremap <silent> L                     gt
+nnoremap <silent> H                     :bprev<CR>
+nnoremap <silent> L                     :bnext<CR>
 nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
 nnoremap <silent> <C-w>j                :WinMoveOrSplit j<CR>
 nnoremap <silent> <C-w>k                :WinMoveOrSplit k<CR>
@@ -244,9 +244,6 @@ let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
 " }}}
-" Markdown {{{
-let g:markdown_fenced_languages = ['c','python','javascript','typescript','bash=sh','html','vim','conf','sql','proto','go']
-" }}}
 " }}}
 
 " Autocommands {{{
@@ -272,7 +269,7 @@ augroup END
 
 augroup oscyank
   autocmd!
-  autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
+  autocmd TextYankPost * if v:event.operator ==# 'y' && v:event.regname ==# '' | execute 'OSCYankRegister "' | endif
 augroup END
 
 augroup terminal_settings

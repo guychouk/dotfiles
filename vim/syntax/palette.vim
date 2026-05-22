@@ -11,8 +11,8 @@ syntax match paletteColor /rgba(\d\+,\s*\d\+,\s*\d\+,\s*\d\+\(\.\d\+\)\?)/
 syntax match paletteColor /hsl(\d\+,\s*\d\+%\?,\s*\d\+%\?)/
 syntax match paletteColor /hsla(\d\+,\s*\d\+%\?,\s*\d\+%\?,\s*\d\+\(\.\d\+\)\?)/
 
-syntax match paletteComment /^#.*/  contains=paletteColor
-syntax match paletteComment /\s#.*/ contains=paletteColor
+syntax match paletteComment /^#\([^0-9a-fA-F]\|$\).*/  contains=paletteColor
+syntax match paletteComment /\s#\([^0-9a-fA-F]\|$\).*/ contains=paletteColor
 
 highlight link paletteComment Comment
 
