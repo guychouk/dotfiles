@@ -124,8 +124,8 @@ nnoremap          j                     gj
 nnoremap          k                     gk
 nnoremap          R                     :%s//g<Left><Left>
 nnoremap <silent> X                     :tabclose<CR>
-nnoremap <silent> H                     :TabMoveOrCreate h<CR>
-nnoremap <silent> L                     :TabMoveOrCreate l<CR>
+nnoremap <silent> H                     gT
+nnoremap <silent> L                     gt
 nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
 nnoremap <silent> <C-w>j                :WinMoveOrSplit j<CR>
 nnoremap <silent> <C-w>k                :WinMoveOrSplit k<CR>
