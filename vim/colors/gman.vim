@@ -28,7 +28,7 @@ let s:palette = {
       \ 'dimgray':       '#6b6b6b',
       \ }
 
-function! s:HL(group, fg, bg, attr)
+function! s:HL(group, fg, bg, attr) abort
   execute 'hi' a:group
         \ 'guifg=' . (a:fg ==# '' ? 'NONE' : s:palette[a:fg])
         \ 'guibg=' . (a:bg ==# '' ? 'NONE' : s:palette[a:bg])

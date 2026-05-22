@@ -1,2 +1,2 @@
 setlocal buflisted
-nnoremap <buffer> q :close<CR>
+nnoremap <buffer> <nowait> <silent> q :close<CR>
