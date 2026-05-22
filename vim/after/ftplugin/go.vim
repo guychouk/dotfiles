@@ -1,4 +1,3 @@
-setlocal path+=**
 setlocal suffixesadd=.go
 nnoremap <buffer> <localleader>b :Compile go<CR>
 nnoremap <buffer> <localleader>r :Term go run %<CR>

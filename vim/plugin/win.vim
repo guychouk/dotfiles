@@ -2,10 +2,10 @@ function! s:WinMoveOrSplit(key) abort
   let t:curwin = winnr()
   exec "wincmd ".a:key
   if (t:curwin == winnr())
-    if (match(a:key,'[jk]'))
-      wincmd v
-    else
+    if a:key =~# '[jk]'
       wincmd s
+    else
+      wincmd v
     endif
     exec "wincmd ".a:key
   endif

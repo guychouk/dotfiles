@@ -42,6 +42,9 @@ set tags=./tags;,tags;
 set ttimeout
 set ttimeoutlen=100
 set undodir=~/.vim/tmp/undo
+if !isdirectory(expand(&undodir))
+  call mkdir(expand(&undodir), 'p')
+endif
 set undofile
 set undolevels=10000
 set updatetime=100
