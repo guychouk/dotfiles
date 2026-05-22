@@ -164,8 +164,6 @@ nnoremap          <leader><CR>          :Compile!<CR>
 nnoremap          <leader>/             :Grep<Space>
 xnoremap <silent> K                     :m '<-2<CR>gv=gv
 xnoremap <silent> J                     :m '>+1<CR>gv=gv
-xnoremap <silent> <localleader>d        :s/\d\+/\=submatch(0)-1/g<CR>
-xnoremap <silent> <localleader>i        :s/\d\+/\=submatch(0)+1/g<CR>
 inoremap          <C-w>                 <C-g>u<C-w>
 inoremap          <C-u>                 <C-g>u<C-u>
 " }}}
