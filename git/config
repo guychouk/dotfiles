@@ -31,3 +31,46 @@
 
 [url "ssh://git@github.com/"]
 	insteadOf = https://github.com/
+
+[alias]
+	a = add
+	aa = add .
+	ap = add -p
+	as = update-index --assume-unchanged
+	ns = update-index --no-assume-unchanged
+	b = branch
+	bd = branch -D
+	t = tag --sort -version:refname
+	c = commit
+	ca = commit -a
+	cam = commit -a -m
+	can = commit --amend --no-edit
+	cl = clone
+	cm = commit -m
+	co = checkout
+	d = diff
+	f = fetch
+	fm = fetch origin main:main
+	l = log
+	lp = log --date=short --format=\"%C(green)%C(bold)%cd %C(auto)%h%d %s (%an)\" --graph
+	m = merge
+	new = checkout -b
+	pf = push --force-with-lease
+	pl = pull
+	ps = push
+	psd = push --delete origin
+	pso = push origin
+	psu = push --set-upstream
+	r = reset
+	rh = reset --hard HEAD
+	ra = remote add
+	rb = rebase
+	rbi = rebase -i
+	rbm = rebase main
+	rs = restore
+	rss = restore --staged
+	st = stash
+	ss = status --short
+	w = worktree
+	wr = worktree remove
+	wa = worktree add
