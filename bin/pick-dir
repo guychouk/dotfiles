@@ -1,0 +1,2 @@
+#!/bin/sh
+find ~/src ~/Documents ~/projects -type d -maxdepth 3 -not -path '*/.git/*' -not -name '.git' | pick | tr -d '\n' | pbcopy
