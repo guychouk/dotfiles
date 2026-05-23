@@ -1,15 +1,11 @@
 #!/bin/sh
 
-if [ -e "$HOME/.gnupg/ssh-mode" ]; then
-  if [ "$(uname)" = "Darwin" ]; then
+if [ "$(uname)" = "Darwin" ]; then
+  if [ -e "$HOME/.gnupg/ssh-mode" ]; then
     exec /opt/homebrew/bin/pinentry-tty "$@"
   else
-    exec /usr/bin/pinentry-tty "$@"
+    exec /opt/homebrew/bin/pinentry-mac "$@"
   fi
+else
+  exec /usr/bin/pinentry-tty "$@"
 fi
-
-if [ "$(uname)" = "Darwin" ]; then
-  exec /opt/homebrew/bin/pinentry-mac "$@"
-fi
-
-exec /usr/bin/pinentry-tty "$@"
