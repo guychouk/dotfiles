@@ -129,8 +129,8 @@ nnoremap <silent> L               :bnext<CR>
 nnoremap <silent> 0               :ToggleMovement ^ 0<CR>
 nnoremap <silent> <C-]>           :ltag <C-R><C-W><CR>
 nnoremap <silent> <C-g>           2<C-g>
-nnoremap <silent> <C-w>{          :pclose<CR>
-nnoremap <silent> <C-w>}          :ptag <C-r><C-w><CR>
+nnoremap <silent> <C-w>}          :pclose<CR>
+nnoremap <silent> <C-w>{          :ptag <C-r><C-w><CR>
 nnoremap <silent> <C-w>h          :WinMoveOrSplit h<CR>
 nnoremap <silent> <C-w>j          :WinMoveOrSplit j<CR>
 nnoremap <silent> <C-w>k          :WinMoveOrSplit k<CR>
@@ -146,10 +146,9 @@ nnoremap <silent> d*              /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
 nnoremap <silent> d#              ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 nnoremap <silent> Y               y$
 nnoremap          <leader>b       :buffer<Space>
-nnoremap          <leader>p       :find<Space>
+nnoremap          <leader>f       :find<Space>
 nnoremap          <leader>t       :tag<Space>
 nnoremap <silent> <leader>w       :w<CR>
-nnoremap          <leader>f       :vimgrep // %<Left><Left><Left>
 nnoremap <silent> <leader>ec      :e $MYVIMRC<CR>
 nnoremap          <leader>re      :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap          <leader>yt      :YankCurrentDate<CR>
