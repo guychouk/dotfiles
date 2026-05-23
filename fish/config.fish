@@ -1,5 +1,6 @@
 if status is-interactive
   set -gx GPG_TTY (tty)
+  gpg-connect-agent updatestartuptty /bye >/dev/null
 end
 set -gx SSH_AUTH_SOCK (gpgconf --list-dirs agent-ssh-socket 2>/dev/null)
 

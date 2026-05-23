@@ -1,0 +1,7 @@
+#!/bin/sh
+# Print stdin to the terminal if attached, else pipe to the given command.
+if [ -r /dev/tty ] && [ -w /dev/tty ]; then
+  exec cat
+else
+  exec "$@"
+fi
