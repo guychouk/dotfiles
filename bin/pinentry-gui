@@ -1,0 +1,5 @@
+#!/bin/sh
+# Route gpg-agent prompts to pinentry-mac (default).
+
+rm -f "$HOME/.gnupg/ssh-mode"
+echo "pinentry: mac (ssh-mode off)"
