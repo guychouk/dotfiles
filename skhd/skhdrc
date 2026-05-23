@@ -1,7 +1,7 @@
 # Pickers
 cmd + shift - f : find ~/Documents -type f -not -path '*/.git/*' | choose | tr -d '\n' | pbcopy
 cmd + shift - d : find ~/{src,Documents,projects} -type d -maxdepth 3 -not -path '*/.git/*' -not -name '.git' | choose | tr -d '\n' | pbcopy
-cmd + shift - s : ~/bin/pick-pass
+cmd + shift - s : kitty --title pick-pass --override remember_window_size=no --override initial_window_width=60c --override initial_window_height=20c ~/bin/pick-pass
 cmd + shift - c : ~/bin/clippy --list
 
 # Utils
