@@ -120,52 +120,53 @@ colorscheme gman
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
-nnoremap          j                     gj
-nnoremap          k                     gk
-nnoremap          R                     :%s//g<Left><Left>
-nnoremap <silent> X                     :tabclose<CR>
-nnoremap <silent> H                     :bprev<CR>
-nnoremap <silent> L                     :bnext<CR>
-nnoremap <silent> <C-w>h                :WinMoveOrSplit h<CR>
-nnoremap <silent> <C-w>j                :WinMoveOrSplit j<CR>
-nnoremap <silent> <C-w>k                :WinMoveOrSplit k<CR>
-nnoremap <silent> <C-w>l                :WinMoveOrSplit l<CR>
-nnoremap <silent> <C-A-h>               :vertical resize -5<CR>
-nnoremap <silent> <C-A-j>               :resize +5<CR>
-nnoremap <silent> <C-A-k>               :resize -5<CR>
-nnoremap <silent> <C-A-l>               :vertical resize +5<CR>
-nnoremap <silent> yoz                   :WinZoom<CR>
-nnoremap <silent> c*                    /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
-nnoremap <silent> c#                    ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
-nnoremap <silent> d*                    /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
-nnoremap <silent> d#                    ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
-nnoremap <silent> Y                     y$
-nnoremap <silent> <C-w>{                :pclose<CR>
-nnoremap <silent> <C-g>                 2<C-g>
-nnoremap <silent> <leader>w             :w<CR>
-nnoremap          <leader>f             :vimgrep // %<Left><Left><Left>
-nnoremap <silent> <leader>ec            :e $MYVIMRC<CR>
-nnoremap          <leader>re            :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
-nnoremap <silent> <C-]>                 :ltag <C-R><C-W><CR>
-nnoremap <silent> 0                     :ToggleMovement ^ 0<CR>
-nnoremap          <leader>b             :buffer<Space>
-nnoremap          <leader>p             :find<Space>
-nnoremap          <leader>tt            :tag<Space>
-nnoremap          <leader>yt            :YankCurrentDate<CR>
-nnoremap          <leader>yf            :YankAbsoluteFilePath<CR>
-nnoremap          <leader>yr            :YankRelativeFilePath<CR>
-nnoremap          <leader>yl            :YankFileLocation<CR>
-nnoremap          <leader>nn            :NewNote<CR>
-xnoremap          <leader>nn            :NewNote<CR>
-nnoremap          <leader>ns            :Notes<CR>
-nnoremap          <leader>:             :Compile<Space>
-nnoremap          <leader>!             :Term!<CR>
-nnoremap          <leader><CR>          :Compile!<CR>
-nnoremap          <leader>/             :Grep<Space>
-xnoremap <silent> K                     :m '<-2<CR>gv=gv
-xnoremap <silent> J                     :m '>+1<CR>gv=gv
-inoremap          <C-w>                 <C-g>u<C-w>
-inoremap          <C-u>                 <C-g>u<C-u>
+nnoremap          j               gj
+nnoremap          k               gk
+nnoremap          R               :%s//g<Left><Left>
+nnoremap <silent> X               :tabclose<CR>
+nnoremap <silent> H               :bprev<CR>
+nnoremap <silent> L               :bnext<CR>
+nnoremap <silent> 0               :ToggleMovement ^ 0<CR>
+nnoremap <silent> <C-]>           :ltag <C-R><C-W><CR>
+nnoremap <silent> <C-g>           2<C-g>
+nnoremap <silent> <C-w>{          :pclose<CR>
+nnoremap <silent> <C-w>}          :ptag <C-r><C-w><CR>
+nnoremap <silent> <C-w>h          :WinMoveOrSplit h<CR>
+nnoremap <silent> <C-w>j          :WinMoveOrSplit j<CR>
+nnoremap <silent> <C-w>k          :WinMoveOrSplit k<CR>
+nnoremap <silent> <C-w>l          :WinMoveOrSplit l<CR>
+nnoremap <silent> <C-A-h>         :vertical resize -5<CR>
+nnoremap <silent> <C-A-j>         :resize +5<CR>
+nnoremap <silent> <C-A-k>         :resize -5<CR>
+nnoremap <silent> <C-A-l>         :vertical resize +5<CR>
+nnoremap <silent> yoz             :WinZoom<CR>
+nnoremap <silent> c*              /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap <silent> c#              ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap <silent> d*              /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap <silent> d#              ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+nnoremap <silent> Y               y$
+nnoremap          <leader>b       :buffer<Space>
+nnoremap          <leader>p       :find<Space>
+nnoremap          <leader>t       :tag<Space>
+nnoremap <silent> <leader>w       :w<CR>
+nnoremap          <leader>f       :vimgrep // %<Left><Left><Left>
+nnoremap <silent> <leader>ec      :e $MYVIMRC<CR>
+nnoremap          <leader>re      :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
+nnoremap          <leader>yt      :YankCurrentDate<CR>
+nnoremap          <leader>yf      :YankAbsoluteFilePath<CR>
+nnoremap          <leader>yr      :YankRelativeFilePath<CR>
+nnoremap          <leader>yl      :YankFileLocation<CR>
+nnoremap          <leader>nn      :NewNote<CR>
+xnoremap          <leader>nn      :NewNote<CR>
+nnoremap          <leader>ns      :Notes<CR>
+nnoremap          <leader>:       :Compile<Space>
+nnoremap          <leader>!       :Term!<CR>
+nnoremap          <leader><CR>    :Compile!<CR>
+nnoremap          <leader>/       :Grep<Space>
+xnoremap <silent> K               :m '<-2<CR>gv=gv
+xnoremap <silent> J               :m '>+1<CR>gv=gv
+inoremap          <C-w>           <C-g>u<C-w>
+inoremap          <C-u>           <C-g>u<C-u>
 " }}}
 
 " Plugins {{{
@@ -199,23 +200,22 @@ let g:picopack = [
 let g:picopack_opt = [
   \ 'yegappan/lsp',
 \ ]
-nnoremap <silent> <leader>gg            :Git<CR>
-nnoremap          <leader>gb            :Git switch<Space>
-nnoremap <silent> <leader>s             :PicolineToggle<CR>
-nnoremap          <leader>cs            :call css_color#toggle()<CR>
-nnoremap <silent> <leader>hp            :GitGutterPreviewHunk<CR>
-nnoremap <silent> <leader>hu            :GitGutterUndoHunk<CR>
-nnoremap <silent> <leader>hs            :GitGutterStageHunk<CR>
-nnoremap <silent> <expr> ]c             &diff ? ']c' : ':GitGutterNextHunk<CR>'
-nnoremap <silent> <expr> [c             &diff ? '[c' : ':GitGutterPrevHunk<CR>'
-nnoremap          <leader>tb            :TagbarOpenAutoClose<CR>
-nnoremap <silent> yoc                   :ContextToggle<CR>
-nnoremap <silent> yop                   :IndentLinesToggle<CR>
-nnoremap          gz                    <Plug>(characterize)
-nnoremap          ga                    <Plug>(EasyAlign)
-xnoremap          ga                    <Plug>(EasyAlign)
-nnoremap          gh                    :GBrowse!<CR>
-xnoremap          gh                    :GBrowse!<CR>
+nnoremap <silent> <leader>gg      :Git<CR>
+nnoremap          <leader>gb      :Git switch<Space>
+nnoremap <silent> <leader>s       :PicolineToggle<CR>
+nnoremap          <leader>cs      :call css_color#toggle()<CR>
+nnoremap <silent> <leader>hp      :GitGutterPreviewHunk<CR>
+nnoremap <silent> <leader>hu      :GitGutterUndoHunk<CR>
+nnoremap <silent> <leader>hs      :GitGutterStageHunk<CR>
+nnoremap <silent> <expr> ]c       &diff ? ']c' : ':GitGutterNextHunk<CR>'
+nnoremap <silent> <expr> [c       &diff ? '[c' : ':GitGutterPrevHunk<CR>'
+nnoremap <silent> yoc             :ContextToggle<CR>
+nnoremap <silent> yop             :IndentLinesToggle<CR>
+nnoremap          gz              <Plug>(characterize)
+nnoremap          ga              <Plug>(EasyAlign)
+xnoremap          ga              <Plug>(EasyAlign)
+nnoremap          gh              :GBrowse!<CR>
+xnoremap          gh              :GBrowse!<CR>
 " Man {{{
 runtime ftplugin/man.vim
 " }}}
