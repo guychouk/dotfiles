@@ -1,7 +1,8 @@
 /**
-* Clipboard history daemon and picker. Single binary with two modes:
+* Clipboard history daemon and picker. Single binary with three modes:
 * - `--daemon`: watches clipboard and stores entries to disk (sensitive stuff omitted)
-* - `--list`: displays history and pipes selection to choose
+* - `--list`: prints "id │ preview" lines for each entry to stdout
+* - `--paste`: reads such a line from stdin and copies the matching entry to the pasteboard
 */
 
 import AppKit
@@ -44,37 +45,21 @@ func runList() {
     let sorted = files.sorted { Int($0) ?? -1 < Int($1) ?? -1 }
     guard !sorted.isEmpty else { exit(0) }
 
-    let chooseProcess = Process()
-    chooseProcess.executableURL = URL(fileURLWithPath: "/opt/homebrew/bin/choose")
-
-    let inputPipe = Pipe()
-    let outputPipe = Pipe()
-    chooseProcess.standardInput = inputPipe
-    chooseProcess.standardOutput = outputPipe
-
-    try? chooseProcess.run()
-
     for file in sorted {
         let path = "\(historyDir)/\(file)"
         guard let content = try? String(contentsOfFile: path, encoding: .utf8) else { continue }
 
         let firstLine = content.split(separator: "\n", maxSplits: 1, omittingEmptySubsequences: false).first.map { String($0) } ?? ""
         let preview = String(firstLine.prefix(80))
-        let line = "\(file) │ \(preview)\n"
-
-        if let data = line.data(using: .utf8) {
-            inputPipe.fileHandleForWriting.write(data)
-        }
+        print("\(file) │ \(preview)")
     }
-    inputPipe.fileHandleForWriting.closeFile()
+}
 
-    chooseProcess.waitUntilExit()
-
-    let selectedData = outputPipe.fileHandleForReading.readDataToEndOfFile()
-    guard let selected = String(data: selectedData, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines), !selected.isEmpty else { exit(0) }
+func runPaste() {
+    let selected = (readLine() ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+    guard !selected.isEmpty else { exit(0) }
 
     let filename = selected.split(separator: " ").first.map { String($0) } ?? ""
-
     let path = "\(historyDir)/\(filename)"
     guard let content = try? String(contentsOfFile: path, encoding: .utf8) else { exit(1) }
 
@@ -83,7 +68,7 @@ func runList() {
 }
 
 if CommandLine.arguments.count <= 1 {
-    fputs("Usage: clipboard-daemon [--daemon|--list]\n", stderr)
+    fputs("Usage: clipboard-daemon [--daemon|--list|--paste]\n", stderr)
     exit(1)
 }
 
@@ -92,7 +77,9 @@ switch CommandLine.arguments[1] {
         runDaemon()
     case "--list":
         runList()
+    case "--paste":
+        runPaste()
     default:
-        fputs("Usage: clipboard-daemon [--daemon|--list]\n", stderr)
+        fputs("Usage: clipboard-daemon [--daemon|--list|--paste]\n", stderr)
         exit(1)
 }
