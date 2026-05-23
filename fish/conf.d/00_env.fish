@@ -1,6 +1,4 @@
-set -gx LANG en_US.UTF-8
 set -gx LC_ALL en_US.UTF-8
-set -gx LC_CTYPE en_US.UTF-8
 set -gx SHELL_SESSIONS_DISABLE 1
 
 set -gx EDITOR vim
