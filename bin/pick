@@ -1,7 +1,0 @@
-#!/bin/sh
-# fzf if a terminal is available, choose otherwise.
-if [ -r /dev/tty ] && [ -w /dev/tty ]; then
-  exec fzf "$@"
-else
-  exec choose "$@"
-fi

@@ -25,7 +25,6 @@ const Link links[] = {
     {DOTSDIR "/zsh",                  XDG_CONFIG "/zsh"},
     {DOTSDIR "/mise",                 XDG_CONFIG "/mise"},
     {DOTSDIR "/direnv",               XDG_CONFIG "/direnv"},
-    {DOTSDIR "/skhd",                 XDG_CONFIG "/skhd"},
     {DOTSDIR "/newsboat",             XDG_CONFIG "/newsboat"},
     {DOTSDIR "/vim",                  HOME "/.vim"},
     {DOTSDIR "/ctags",                HOME "/.ctags.d"},
@@ -40,14 +39,16 @@ const Link links[] = {
 const Link launchd_links[] = {
     {DOTSDIR "/launchd/org.gnupg.gpg-agent.plist",    LAUNCH_AGENTS_DIR "/org.gnupg.gpg-agent.plist"},
     {DOTSDIR "/launchd/local.gpg-kill-on-lock.plist", LAUNCH_AGENTS_DIR "/local.gpg-kill-on-lock.plist"},
-    {DOTSDIR "/launchd/com.koekeishiya.skhd.plist",   LAUNCH_AGENTS_DIR "/com.koekeishiya.skhd.plist"},
     {DOTSDIR "/launchd/local.clippy-daemon.plist",    LAUNCH_AGENTS_DIR "/local.clippy-daemon.plist"},
+    {DOTSDIR "/launchd/local.butler-hotkey.plist",    LAUNCH_AGENTS_DIR "/local.butler-hotkey.plist"},
 };
 
 const Link swift_builds[] = {
     {DOTSDIR "/src/gpg-kill-on-lock.swift", HOME "/bin/gpg-kill-on-lock"},
     {DOTSDIR "/src/pbpass.swift",           HOME "/bin/pbpass"},
     {DOTSDIR "/src/clippy.swift",           HOME "/bin/clippy"},
+    {DOTSDIR "/src/picker.swift",           HOME "/bin/picker"},
+    {DOTSDIR "/src/hotkey.swift",           HOME "/bin/hotkey"},
 };
 
 void usage(void) {
