@@ -1,2 +1,0 @@
-#!/bin/sh
-~/bin/clippy --list | pick | ~/bin/clippy --paste

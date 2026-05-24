@@ -1,0 +1,16 @@
+#!/bin/sh
+action=$(printf 'pick file\npick dir\npick clip' | $HOME/bin/picker)
+case "$action" in
+  'pick file')
+    find ~/Documents -type f -not -path '*/.git/*' \
+      | $HOME/bin/picker | tr -d '\n' | /usr/bin/pbcopy
+    ;;
+  'pick dir')
+    find ~/src ~/Documents ~/projects -type d -maxdepth 3 \
+      -not -path '*/.git/*' -not -name '.git' \
+      | $HOME/bin/picker | tr -d '\n' | /usr/bin/pbcopy
+    ;;
+  'pick clip')
+    $HOME/bin/clippy --list | $HOME/bin/picker | $HOME/bin/clippy --paste
+    ;;
+esac

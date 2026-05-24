@@ -1,7 +1,0 @@
-# Pickers
-cmd + shift - f : ~/bin/pick-file
-cmd + shift - d : ~/bin/pick-dir
-cmd + shift - c : ~/bin/pick-clip
-
-# Utils
-cmd + shift - return : kitty yazi ~
