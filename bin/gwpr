@@ -9,5 +9,5 @@ wt="$(dirname "$repo")/$name-pr-$n"
 
 branch=$(gh pr view "$n" --json headRefName -q .headRefName)
 git -C "$repo" fetch origin "$branch"
-git -C "$repo" worktree add "$wt" "origin/$branch"
+git -C "$repo" worktree add "$wt" --track -b "$branch" "origin/$branch"
 echo "$wt"
