@@ -1,25 +1,25 @@
 #!/bin/sh
 
-export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin"
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
 
 action=$(printf 'file\ndirectory\nclipboard\npassword' | $HOME/bin/picker)
 case "$action" in
   'file')
     find ~/Documents -type f -not -path '*/.git/*' \
-      | $HOME/bin/picker | tr -d '\n' | /usr/bin/pbcopy
+      | picker | tr -d '\n' | pbcopy
     ;;
   'directory')
     find ~/src ~/Documents ~/projects -type d -maxdepth 3 \
       -not -path '*/.git/*' -not -name '.git' \
-      | $HOME/bin/picker | tr -d '\n' | /usr/bin/pbcopy
+      | picker | tr -d '\n' | pbcopy
     ;;
   'clipboard')
-    $HOME/bin/clippy --list | $HOME/bin/picker | $HOME/bin/clippy --paste
+    clippy --list | picker | clippy --paste
     ;;
   'password')
-    prefix="${PASSWORD_STORE_DIR:-$HOME/.password-store}"
-    entry=$(find "$prefix" -name '*.gpg' | sed "s|^$prefix/||;s|\.gpg\$||" | $HOME/bin/picker)
+    PASSWORD_STORE_DIR="$HOME/.password-store"
+    entry=$(find "$PASSWORD_STORE_DIR" -name '*.gpg' | sed "s|^$PASSWORD_STORE_DIR/||;s|\.gpg\$||" | picker)
     [ -z "$entry" ] && exit 0
-    /opt/homebrew/bin/pass show "$entry" | head -1 | $HOME/bin/pbpass
+    pass show "$entry" | head -1 | pbpass
     ;;
 esac
