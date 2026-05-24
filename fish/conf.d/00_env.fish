@@ -7,6 +7,7 @@ set -gx PAGER less
 set -gx MANPAGER "vim +MANPAGER --not-a-term -"
 
 set -gx SNIPPETS_FILE         "$HOME/dotfiles/SNIPPETS"
+set -gx PASSWORD_STORE_DIR    "$HOME/.password-store"
 
 set -gx XDG_CACHE_HOME        "$HOME/.cache"
 set -gx XDG_CONFIG_HOME       "$HOME/.config"
