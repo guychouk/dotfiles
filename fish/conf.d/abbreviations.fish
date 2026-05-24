@@ -1,3 +1,7 @@
+abbr -a aa       "abduco -a"
+abbr -a ab       "abduco"
+abbr -a ac       "abduco -c"
+abbr -a al       "abduco -l"
 abbr -a n        "./nob"
 abbr -a nb       "./nob build"
 abbr -a nr       "./nob run"
