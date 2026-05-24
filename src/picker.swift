@@ -27,7 +27,7 @@ class Picker: NSObject, NSApplicationDelegate, NSWindowDelegate,
 
     func applicationDidFinishLaunching(_: Notification) {
         window = KeyWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 680, height: 460),
+            contentRect: NSRect(x: 0, y: 0, width: 680, height: 400),
             styleMask: [.borderless, .resizable],
             backing: .buffered,
             defer: false
@@ -36,7 +36,13 @@ class Picker: NSObject, NSApplicationDelegate, NSWindowDelegate,
         window.backgroundColor = .clear
         window.isMovableByWindowBackground = true
         window.delegate = self
-        window.center()
+        if let screen = NSScreen.main {
+            let wf = window.frame
+            let sf = screen.visibleFrame
+            let x = sf.midX - wf.width / 2
+            let y = sf.midY - wf.height / 2 + sf.height * 0.1
+            window.setFrameOrigin(NSPoint(x: x, y: y))
+        }
 
         let blur = NSVisualEffectView()
         blur.material = .hudWindow
@@ -160,7 +166,7 @@ class Picker: NSObject, NSApplicationDelegate, NSWindowDelegate,
     func tableView(_: NSTableView, viewFor _: NSTableColumn?, row: Int) -> NSView? {
         let cellView = NSTableCellView()
         let label = NSTextField(labelWithString: shown[row])
-        label.font = NSFont.systemFont(ofSize: 17, weight: .regular)
+        label.font = NSFont.systemFont(ofSize: 16, weight: .regular)
         label.textColor = .white
         label.translatesAutoresizingMaskIntoConstraints = false
         cellView.addSubview(label)
