@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler:    TypeScript compiler
+" Compiler:    TypeScript
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "tsc"

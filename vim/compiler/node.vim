@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler:    Node.js
+" Compiler:    node
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "node"

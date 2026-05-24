@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler: gotest
+" Compiler:    go test
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "gotest"

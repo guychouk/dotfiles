@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler:    buf compiler
+" Compiler:    buf
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "buf"
