@@ -126,7 +126,13 @@ nnoremap          R               :%s//g<Left><Left>
 nnoremap <silent> X               :tabclose<CR>
 nnoremap <silent> H               :bprev<CR>
 nnoremap <silent> L               :bnext<CR>
+nnoremap <silent> Y               y$
 nnoremap <silent> 0               :ToggleMovement ^ 0<CR>
+nnoremap <silent> c*              /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
+nnoremap <silent> c#              ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
+nnoremap <silent> d*              /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
+nnoremap <silent> d#              ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
+nnoremap <silent> yoz             :WinZoom<CR>
 nnoremap <silent> <C-]>           :ltag <C-R><C-W><CR>
 nnoremap <silent> <C-g>           2<C-g>
 nnoremap <silent> <C-w>}          :pclose<CR>
@@ -139,12 +145,6 @@ nnoremap <silent> <C-A-h>         :vertical resize -5<CR>
 nnoremap <silent> <C-A-j>         :resize +5<CR>
 nnoremap <silent> <C-A-k>         :resize -5<CR>
 nnoremap <silent> <C-A-l>         :vertical resize +5<CR>
-nnoremap <silent> yoz             :WinZoom<CR>
-nnoremap <silent> c*              /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
-nnoremap <silent> c#              ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
-nnoremap <silent> d*              /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
-nnoremap <silent> d#              ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
-nnoremap <silent> Y               y$
 nnoremap          <leader>b       :buffer<Space>
 nnoremap          <leader>f       :find<Space>
 nnoremap          <leader>t       :tag<Space>
@@ -156,7 +156,6 @@ nnoremap          <leader>yf      :YankAbsoluteFilePath<CR>
 nnoremap          <leader>yr      :YankRelativeFilePath<CR>
 nnoremap          <leader>yl      :YankFileLocation<CR>
 nnoremap          <leader>nn      :NewNote<CR>
-xnoremap          <leader>nn      :NewNote<CR>
 nnoremap          <leader>ns      :Notes<CR>
 nnoremap          <leader>:       :Compile<Space>
 nnoremap          <leader>!       :Term!<CR>
@@ -164,6 +163,7 @@ nnoremap          <leader><CR>    :Compile!<CR>
 nnoremap          <leader>/       :Grep<Space>
 xnoremap <silent> K               :m '<-2<CR>gv=gv
 xnoremap <silent> J               :m '>+1<CR>gv=gv
+xnoremap          <leader>nn      :NewNote<CR>
 inoremap          <C-w>           <C-g>u<C-w>
 inoremap          <C-u>           <C-g>u<C-u>
 " }}}
@@ -197,10 +197,9 @@ let g:picopack = [
 let g:picopack_opt = [
   \ 'yegappan/lsp',
 \ ]
-nnoremap <silent> <leader>gg      :Git<CR>
-nnoremap          <leader>gb      :Git switch<Space>
+nnoremap <silent> <leader>g       :Git<CR>
 nnoremap <silent> <leader>s       :PicolineToggle<CR>
-nnoremap          <leader>cs      :call css_color#toggle()<CR>
+nnoremap <silent> <leader>cs      :call css_color#toggle()<CR>
 nnoremap <silent> <leader>hp      :GitGutterPreviewHunk<CR>
 nnoremap <silent> <leader>hu      :GitGutterUndoHunk<CR>
 nnoremap <silent> <leader>hs      :GitGutterStageHunk<CR>
@@ -210,8 +209,8 @@ nnoremap <silent> yoc             :ContextToggle<CR>
 nnoremap <silent> yop             :IndentLinesToggle<CR>
 nnoremap          gz              <Plug>(characterize)
 nnoremap          ga              <Plug>(EasyAlign)
-xnoremap          ga              <Plug>(EasyAlign)
 nnoremap          gh              :GBrowse!<CR>
+xnoremap          ga              <Plug>(EasyAlign)
 xnoremap          gh              :GBrowse!<CR>
 " Man {{{
 runtime ftplugin/man.vim
@@ -253,9 +252,11 @@ augroup END
 
 augroup cursor_settings
   autocmd!
-  " beam in insert, underline in replace, block in normal
+  " beam in insert
   let &t_SI="\e[5 q"
+  " underline in replace
   let &t_SR="\e[4 q"
+  " block in normal
   let &t_EI="\e[2 q"
   if exists('*echoraw')
     autocmd VimEnter     * call echoraw(&t_EI)

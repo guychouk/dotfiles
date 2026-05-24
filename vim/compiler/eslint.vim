@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler:    ESLint
+" Compiler:    eslint
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "eslint"

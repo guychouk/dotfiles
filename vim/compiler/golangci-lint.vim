@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler: golangci-lint
+" Compiler:    golangci-lint
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "golangci-lint"

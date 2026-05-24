@@ -1,5 +1,5 @@
 " Vim compiler file
-" Compiler:    nob for C
+" Compiler:    nob
 
 if exists("current_compiler") | finish | endif
 let current_compiler = "nob"
