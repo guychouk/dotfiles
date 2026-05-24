@@ -1,7 +1,7 @@
 #!/bin/sh
 
 prefix="${PASSWORD_STORE_DIR:-$HOME/.password-store}"
-entry=$(find "$prefix" -name '*.gpg' | sed "s|^$prefix/||;s|\.gpg\$||" | pick)
+entry=$(find "$prefix" -name '*.gpg' | sed "s|^$prefix/||;s|\.gpg\$||" | fzf)
 [ -z "$entry" ] && exit 0
 
 pass show "$entry" | head -1 | pbpass

@@ -1,4 +1,5 @@
 #!/bin/sh
+
 set -e
 
 n=${1:?usage: $(basename "$0") <pr-number>}

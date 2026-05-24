@@ -1,5 +1,6 @@
 #!/bin/sh
-action=$(printf 'pick file\npick dir\npick clip' | $HOME/bin/picker)
+
+action=$(printf 'pick file\npick dir\npick clip\npick pass' | $HOME/bin/picker)
 case "$action" in
   'pick file')
     find ~/Documents -type f -not -path '*/.git/*' \
@@ -12,5 +13,11 @@ case "$action" in
     ;;
   'pick clip')
     $HOME/bin/clippy --list | $HOME/bin/picker | $HOME/bin/clippy --paste
+    ;;
+  'pick pass')
+    prefix="${PASSWORD_STORE_DIR:-$HOME/.password-store}"
+    entry=$(find "$prefix" -name '*.gpg' | sed "s|^$prefix/||;s|\.gpg\$||" | $HOME/bin/picker)
+    [ -z "$entry" ] && exit 0
+    pass show "$entry" | head -1 | $HOME/bin/pbpass
     ;;
 esac

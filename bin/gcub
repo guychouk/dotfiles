@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # This script cleans git branches that are no longer tracked
-
 git fetch --prune
 git worktree prune
 git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads \
