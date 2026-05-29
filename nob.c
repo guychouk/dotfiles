@@ -44,6 +44,9 @@ typedef struct {
     const char *log;        // optional, NULL to skip (used for both stdout+stderr)
     bool keep_alive;
     bool run_at_load;
+    bool scheduled;         // run on a daily StartCalendarInterval at hour:minute
+    int hour;
+    int minute;
 } Service;
 
 const Service services[] = {
@@ -76,6 +79,12 @@ const Service services[] = {
         .env = {"LANG=en_US.UTF-8", "LC_ALL=en_US.UTF-8"},
         .log = "/tmp/emacs-daemon.log",
         .keep_alive = true, .run_at_load = true,
+    },
+    {
+        .label = "local.backup-documents",
+        .args = {HOME "/bin/backup-documents"},
+        .log = "/tmp/backup-documents.log",
+        .scheduled = true, .hour = 12, .minute = 0,
     },
 };
 
@@ -113,6 +122,12 @@ void gen_plist(String_Builder *sb, const Service *s) {
         sb_appendf(sb, "    <key>RunAtLoad</key>\n    <true/>\n");
     if (s->keep_alive)
         sb_appendf(sb, "    <key>KeepAlive</key>\n    <true/>\n");
+    if (s->scheduled) {
+        sb_appendf(sb, "    <key>StartCalendarInterval</key>\n    <dict>\n");
+        sb_appendf(sb, "        <key>Hour</key>\n        <integer>%d</integer>\n", s->hour);
+        sb_appendf(sb, "        <key>Minute</key>\n        <integer>%d</integer>\n", s->minute);
+        sb_appendf(sb, "    </dict>\n");
+    }
     if (s->log) {
         sb_appendf(sb, "    <key>StandardOutPath</key>\n    <string>%s</string>\n", s->log);
         sb_appendf(sb, "    <key>StandardErrorPath</key>\n    <string>%s</string>\n", s->log);
