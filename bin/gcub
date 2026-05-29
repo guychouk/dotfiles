@@ -1,11 +1,43 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-# This script cleans git branches that are no longer tracked
+# Cleans git branches that are no longer tracked and removes worktrees
+# whose branch has a merged PR on the current repo.
+
 git fetch --prune
 git worktree prune
+
 git for-each-ref --format '%(refname:short) %(upstream:track)' refs/heads \
   | grep ' \[gone\]$' \
   | sed 's/ \[gone\]$//' \
   | while IFS= read -r branch; do
       git branch -D "$branch"
     done
+
+REPO=$(gh repo view --json nameWithOwner --jq '.nameWithOwner' 2>/dev/null || true)
+[[ -z "$REPO" ]] && exit 0
+
+ROOT=$(git rev-parse --show-toplevel)
+
+git worktree list --porcelain | awk '
+  /^worktree / { path=$2; ref="DETACHED" }
+  /^branch /   { ref=$2 }
+  /^$/         { if (path != "") print path, ref; path="" }
+' | while read -r path ref; do
+      [[ "$path" == "$ROOT" ]] && continue
+
+      if [[ "$ref" == "DETACHED" ]]; then
+        commit=$(git -C "$path" rev-parse HEAD 2>/dev/null || true)
+        state=$(gh pr list --repo "$REPO" --state merged --search "$commit" --json state --jq '.[0].state // ""' 2>/dev/null || true)
+        label="detached:${commit:0:7}"
+      else
+        branch="${ref#refs/heads/}"
+        state=$(gh pr list --repo "$REPO" --head "$branch" --state merged --json state --jq '.[0].state // ""' 2>/dev/null || true)
+        label="$branch"
+      fi
+
+      if [[ "$state" == "MERGED" ]]; then
+        echo "Removing worktree [$label]: $path"
+        git worktree remove --force "$path" 2>/dev/null || rm -rf "$path"
+      fi
+    done
+git worktree prune
