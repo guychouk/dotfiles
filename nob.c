@@ -70,6 +70,13 @@ const Service services[] = {
         .args = {HOME "/bin/hotkey", "11", "768", HOME "/bin/butler"},
         .keep_alive = true, .run_at_load = true,
     },
+    {
+        .label = "org.gnu.emacs.daemon",
+        .args = {"/opt/homebrew/bin/emacs", "--fg-daemon"},
+        .env = {"LANG=en_US.UTF-8", "LC_ALL=en_US.UTF-8"},
+        .log = "/tmp/emacs-daemon.log",
+        .keep_alive = true, .run_at_load = true,
+    },
 };
 
 const Link swift_builds[] = {
