@@ -36,11 +36,40 @@ const Link links[] = {
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
 };
 
-const Link launchd_links[] = {
-    {DOTSDIR "/launchd/org.gnupg.gpg-agent.plist",    LAUNCH_AGENTS_DIR "/org.gnupg.gpg-agent.plist"},
-    {DOTSDIR "/launchd/local.gpg-kill-on-lock.plist", LAUNCH_AGENTS_DIR "/local.gpg-kill-on-lock.plist"},
-    {DOTSDIR "/launchd/local.clippy-daemon.plist",    LAUNCH_AGENTS_DIR "/local.clippy-daemon.plist"},
-    {DOTSDIR "/launchd/local.butler-hotkey.plist",    LAUNCH_AGENTS_DIR "/local.butler-hotkey.plist"},
+typedef struct {
+    const char *label;
+    const char *args[10];   // NULL-terminated
+    const char *env[6];     // NULL-terminated "KEY=VALUE" pairs
+    const char *workdir;    // optional, NULL to skip
+    const char *log;        // optional, NULL to skip (used for both stdout+stderr)
+    bool keep_alive;
+    bool run_at_load;
+} Service;
+
+const Service services[] = {
+    {
+        .label = "org.gnupg.gpg-agent",
+        .args = {"/opt/homebrew/bin/gpg-agent", "--supervised"},
+        .log = "/tmp/gpg-agent.log",
+        .keep_alive = true, .run_at_load = true,
+    },
+    {
+        .label = "local.gpg-kill-on-lock",
+        .args = {HOME "/bin/gpg-kill-on-lock"},
+        .log = "/tmp/gpg-kill-on-lock.log",
+        .keep_alive = true, .run_at_load = true,
+    },
+    {
+        .label = "local.clippy",
+        .args = {HOME "/bin/clippy", "--daemon"},
+        .log = "/tmp/clippy-daemon.log",
+        .keep_alive = true, .run_at_load = true,
+    },
+    {
+        .label = "local.butler-hotkey",
+        .args = {HOME "/bin/hotkey", "11", "768", HOME "/bin/butler"},
+        .keep_alive = true, .run_at_load = true,
+    },
 };
 
 const Link swift_builds[] = {
@@ -50,6 +79,64 @@ const Link swift_builds[] = {
     {DOTSDIR "/src/picker.swift",           HOME "/bin/picker"},
     {DOTSDIR "/src/hotkey.swift",           HOME "/bin/hotkey"},
 };
+
+void gen_plist(String_Builder *sb, const Service *s) {
+    sb->count = 0;
+    sb_appendf(sb, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+    sb_appendf(sb, "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
+    sb_appendf(sb, "<plist version=\"1.0\">\n<dict>\n");
+    sb_appendf(sb, "    <key>Label</key>\n    <string>%s</string>\n", s->label);
+    sb_appendf(sb, "    <key>ProgramArguments</key>\n    <array>\n");
+    for (size_t i = 0; i < ARRAY_LEN(s->args) && s->args[i]; i++) {
+        sb_appendf(sb, "        <string>%s</string>\n", s->args[i]);
+    }
+    sb_appendf(sb, "    </array>\n");
+    if (s->env[0]) {
+        sb_appendf(sb, "    <key>EnvironmentVariables</key>\n    <dict>\n");
+        for (size_t i = 0; i < ARRAY_LEN(s->env) && s->env[i]; i++) {
+            const char *eq = strchr(s->env[i], '=');
+            sb_appendf(sb, "        <key>%.*s</key>\n        <string>%s</string>\n",
+                       (int)(eq - s->env[i]), s->env[i], eq + 1);
+        }
+        sb_appendf(sb, "    </dict>\n");
+    }
+    if (s->workdir)
+        sb_appendf(sb, "    <key>WorkingDirectory</key>\n    <string>%s</string>\n", s->workdir);
+    if (s->run_at_load)
+        sb_appendf(sb, "    <key>RunAtLoad</key>\n    <true/>\n");
+    if (s->keep_alive)
+        sb_appendf(sb, "    <key>KeepAlive</key>\n    <true/>\n");
+    if (s->log) {
+        sb_appendf(sb, "    <key>StandardOutPath</key>\n    <string>%s</string>\n", s->log);
+        sb_appendf(sb, "    <key>StandardErrorPath</key>\n    <string>%s</string>\n", s->log);
+    }
+    sb_appendf(sb, "</dict>\n</plist>\n");
+}
+
+// (Re)load a launchd service, replacing any running instance. bootout is
+// asynchronous, so a bootstrap fired right after it can lose the race with the
+// teardown and fail with a generic I/O error; retry until the job drains. Logs
+// and launchctl's own stderr are silenced during the dance since the transient
+// failures are expected; only a final, persistent failure is reported.
+void reload_service(const char *domain, const char *label, const char *plist) {
+    Cmd cmd = {0};
+    Nob_Log_Level prev = minimal_log_level;
+    minimal_log_level = NO_LOGS;
+    cmd_append(&cmd, "launchctl", "bootout", temp_sprintf("%s/%s", domain, label));
+    cmd_run(&cmd, .stderr_path = "/dev/null");
+    for (int i = 0; i < 15; i++) {
+        cmd_append(&cmd, "launchctl", "bootstrap", domain, plist);
+        if (cmd_run(&cmd, .stderr_path = "/dev/null")) {
+            minimal_log_level = prev;
+            cmd_free(cmd);
+            return;
+        }
+        usleep(200 * 1000);
+    }
+    minimal_log_level = prev;
+    cmd_free(cmd);
+    nob_log(ERROR, "could not load %s; try: launchctl bootstrap %s %s", label, domain, plist);
+}
 
 void usage(void) {
     printf("usage: ./nob <links|launchd|swiftc>\n");
@@ -91,15 +178,17 @@ int main (int argc, char **argv) {
             cmd_run_sync_and_reset(&cmd);
         }
     } else if (strcmp(command, "launchd") == 0) {
-        Cmd cmd = {0};
-        for (size_t i = 0; i < ARRAY_LEN(launchd_links); i++) {
-            if (symlink(launchd_links[i].src, launchd_links[i].dst) < 0) {
-                if (errno != EEXIST) perror(links[i].dst);
-            }
-            printf("%s -> %s\n", launchd_links[i].src, launchd_links[i].dst);
-            cmd_append(&cmd, "launchctl", "load", launchd_links[i].dst);
-            cmd_run_sync_and_reset(&cmd);
+        String_Builder sb = {0};
+        const char *domain = temp_sprintf("gui/%d", getuid());
+        for (size_t i = 0; i < ARRAY_LEN(services); i++) {
+            const Service *s = &services[i];
+            const char *dst = temp_sprintf(LAUNCH_AGENTS_DIR "/%s.plist", s->label);
+            gen_plist(&sb, s);
+            if (!write_entire_file(dst, sb.items, sb.count)) return 1;
+            printf("%s\n", dst);
+            reload_service(domain, s->label, dst);
         }
+        nob_sb_free(sb);
     } else {
         usage();
         return 1;
