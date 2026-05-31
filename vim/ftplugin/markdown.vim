@@ -9,5 +9,6 @@ let g:markdown_fenced_languages = [
       \'conf',
       \'sql',
       \'proto',
+      \'yaml',
       \'go',
       \]
