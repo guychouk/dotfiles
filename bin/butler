@@ -2,7 +2,7 @@
 
 export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
 
-action=$(printf 'file\ndirectory\nclipboard\npassword' | $HOME/bin/picker)
+action=$(printf 'file\ndirectory\nclipboard\npassword\nusername' | $HOME/bin/picker)
 case "$action" in
   'file')
     find ~/Documents -type f -not -path '*/.git/*' \
@@ -20,6 +20,12 @@ case "$action" in
     PASSWORD_STORE_DIR="$HOME/.password-store"
     entry=$(find "$PASSWORD_STORE_DIR" -name '*.gpg' | sed "s|^$PASSWORD_STORE_DIR/||;s|\.gpg\$||" | picker)
     [ -z "$entry" ] && exit 0
-    pass show "$entry" | head -1 | pbpass
+    pass show "$entry" | sed -n '1p' | pbpass
+    ;;
+  'username')
+    PASSWORD_STORE_DIR="$HOME/.password-store"
+    entry=$(find "$PASSWORD_STORE_DIR" -name '*.gpg' | sed "s|^$PASSWORD_STORE_DIR/||;s|\.gpg\$||" | picker)
+    [ -z "$entry" ] && exit 0
+    pass show "$entry" | sed -n '2p' | pbpass
     ;;
 esac
