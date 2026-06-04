@@ -171,6 +171,7 @@ inoremap          <C-u>           <C-g>u<C-u>
 " Plugins {{{
 let g:picopack = [
   \ 'airblade/vim-gitgutter',
+  \ 'andymass/vim-matchup',
   \ 'ap/vim-css-color',
   \ 'guychouk/vim-picoline',
   \ 'junegunn/vim-easy-align',
@@ -180,6 +181,7 @@ let g:picopack = [
   \ 'MaxMEllon/vim-jsx-pretty',
   \ 'ojroques/vim-oscyank',
   \ 'psliwka/vim-smoothie',
+  \ 'romainl/vim-qf',
   \ 'tpope/vim-abolish',
   \ 'tpope/vim-characterize',
   \ 'tpope/vim-commentary',
@@ -191,8 +193,8 @@ let g:picopack = [
   \ 'tpope/vim-speeddating',
   \ 'tpope/vim-surround',
   \ 'tpope/vim-unimpaired',
-  \ 'Yggdroot/indentLine',
   \ 'wellle/context.vim',
+  \ 'Yggdroot/indentLine',
 \ ]
 let g:picopack_opt = [
   \ 'yegappan/lsp',
@@ -214,12 +216,6 @@ xnoremap          ga              <Plug>(EasyAlign)
 xnoremap          gh              :GBrowse!<CR>
 " Man {{{
 runtime ftplugin/man.vim
-" }}}
-" MatchIt {{{
-packadd! matchit
-" }}}
-" cfilter {{{
-packadd! cfilter
 " }}}
 " GitGutter {{{
 let g:gitgutter_map_keys = 0
