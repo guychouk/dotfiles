@@ -120,14 +120,16 @@ colorscheme gman
 let mapleader = "\<Space>"
 let maplocalleader = "\\"
 
+nnoremap          ;               :
+nnoremap          :               ;
 nnoremap          j               gj
 nnoremap          k               gk
-nnoremap          R               :%s//g<Left><Left>
-nnoremap <silent> X               :tabclose<CR>
 nnoremap <silent> H               :bprev<CR>
 nnoremap <silent> L               :bnext<CR>
 nnoremap <silent> Y               y$
 nnoremap <silent> 0               :ToggleMovement ^ 0<CR>
+nnoremap          gs              :%s/
+nnoremap          gS              :%S/
 nnoremap <silent> c*              /\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgn
 nnoremap <silent> c#              ?\<<C-R>=expand('<cword>')<CR>\>\C<CR>``cgN
 nnoremap <silent> d*              /\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgn
@@ -148,22 +150,24 @@ nnoremap <silent> <C-A-l>         :vertical resize +5<CR>
 nnoremap          <leader>b       :buffer<Space>
 nnoremap          <leader>f       :find<Space>
 nnoremap          <leader>t       :tag<Space>
-nnoremap <silent> <leader>w       :w<CR>
-nnoremap <silent> <leader>ec      :e $MYVIMRC<CR>
-nnoremap          <leader>re      :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
+nnoremap <silent> <leader>e       :e $MYVIMRC<CR>
+nnoremap          <leader>r       :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
+nnoremap          <leader>;       :Compile<Space>
+nnoremap          <leader>1       :Term<Space>
+nnoremap          <leader>!       :Term!<CR>
+nnoremap          <leader><CR>    :Compile!<CR>
+nnoremap          <leader>/       :Grep<Space>
 nnoremap          <leader>yt      :YankCurrentDate<CR>
 nnoremap          <leader>yf      :YankAbsoluteFilePath<CR>
 nnoremap          <leader>yr      :YankRelativeFilePath<CR>
 nnoremap          <leader>yl      :YankFileLocation<CR>
 nnoremap          <leader>nn      :NewNote<CR>
 nnoremap          <leader>ns      :Notes<CR>
-nnoremap          <leader>:       :Compile<Space>
-nnoremap          <leader>!       :Term!<CR>
-nnoremap          <leader><CR>    :Compile!<CR>
-nnoremap          <leader>/       :Grep<Space>
+xnoremap          <leader>nn      :NewNote<CR>
+xnoremap          gs              :s/
+xnoremap          gS              :S/
 xnoremap <silent> K               :m '<-2<CR>gv=gv
 xnoremap <silent> J               :m '>+1<CR>gv=gv
-xnoremap          <leader>nn      :NewNote<CR>
 inoremap          <C-w>           <C-g>u<C-w>
 inoremap          <C-u>           <C-g>u<C-u>
 " }}}
@@ -178,7 +182,6 @@ let g:picopack = [
   \ 'junegunn/vim-peekaboo',
   \ 'justinmk/vim-dirvish',
   \ 'markonm/traces.vim',
-  \ 'MaxMEllon/vim-jsx-pretty',
   \ 'ojroques/vim-oscyank',
   \ 'psliwka/vim-smoothie',
   \ 'romainl/vim-qf',
@@ -195,9 +198,6 @@ let g:picopack = [
   \ 'tpope/vim-unimpaired',
   \ 'wellle/context.vim',
   \ 'Yggdroot/indentLine',
-\ ]
-let g:picopack_opt = [
-  \ 'yegappan/lsp',
 \ ]
 nnoremap <silent> <leader>g       :Git<CR>
 nnoremap <silent> <leader>s       :PicolineToggle<CR>
