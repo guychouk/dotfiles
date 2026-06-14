@@ -35,6 +35,7 @@ class Picker: NSObject, NSApplicationDelegate, NSWindowDelegate,
         window.isOpaque = false
         window.backgroundColor = .clear
         window.isMovableByWindowBackground = true
+        window.level = .floating
         window.delegate = self
         if let screen = NSScreen.main {
             let wf = window.frame
