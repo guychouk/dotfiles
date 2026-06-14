@@ -5,11 +5,11 @@ export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
 action=$(printf 'file\ncaffeinate\ndirectory\nclipboard\npassword\nusername' | $HOME/bin/picker)
 case "$action" in
   'file')
-    find ~/Documents -type f -not -path '*/.git/*' \
+    find ~/Documents ~/Downloads -type f -not -path '*/.git/*' \
       | picker | tr -d '\n' | pbcopy
     ;;
   'directory')
-    find ~/src ~/Documents ~/projects -type d -maxdepth 3 \
+    find ~/src ~/Documents ~/projects ~/Downloads -type d -maxdepth 3 \
       -not -path '*/.git/*' -not -name '.git' \
       | picker | tr -d '\n' | pbcopy
     ;;
