@@ -15,6 +15,7 @@ set -gx XDG_DATA_HOME         "$HOME/.local/share"
 set -gx XDG_STATE_HOME        "$HOME/.local/state"
 
 set -gx DOCKER_CONFIG         "$XDG_DATA_HOME/docker"
+set -gx GOPATH                "$XDG_DATA_HOME/go"
 set -gx GEM_HOME              "$XDG_DATA_HOME/gem"
 set -gx LESSHISTFILE          "$XDG_CACHE_HOME/.lesshst"
 set -gx NODE_REPL_HISTORY     "$XDG_CACHE_HOME/.node_repl_history"
