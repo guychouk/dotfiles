@@ -26,6 +26,7 @@ let s:palette = {
       \ 'gray':          '#808080',
       \ 'white':         '#e8e1cf',
       \ 'dimgray':       '#6b6b6b',
+      \ 'guide':         '#3a3a3a',
       \ }
 
 function! s:HL(group, fg, bg, attr) abort
@@ -50,7 +51,8 @@ call s:HL('Folded',            'gray',          '',              '')
 call s:HL('LineNr',            'gray',          '',              '')
 call s:HL('MatchParen',        'black',         'white',         'bold')
 call s:HL('NonText',           'gray',          '',              '')
-call s:HL('SpecialKey',        'gray',          '',              '')
+call s:HL('SpecialKey',        'guide',         '',              '')
+call s:HL('Whitespace',        'guide',         '',              '')
 call s:HL('Normal',            'white',         'black',         '')
 call s:HL('PmenuSel',          'brightblack',   'brightmagenta', '')
 call s:HL('Pmenu',             'brightmagenta', 'pum',           '')
