@@ -10,7 +10,7 @@ set grepprg=rg\ --vimgrep\ --smart-case
 set grepformat=%f:%l:%c:%m
 
 function! s:Grep(...)
-  return system(join([&grepprg] + [expandcmd(join(a:000, ' '))], ' '))
+  return systemlist(split(&grepprg) + a:000)
 endfunction
 
 command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr s:Grep(<f-args>)
