@@ -36,6 +36,42 @@ function! s:GoSrc() abort
 endfunction
 command! -buffer GoSrc call <SID>GoSrc()
 
+" Override the distributed :GoKeywordPrg (still bound to K via keywordprg) to
+" render `go doc` into a reusable scratch window instead of the blocking pager.
+" iskeyword is widened so the word under the cursor includes the package
+" selector (fmt.Println, not just Println); -C anchors go doc in the file's
+" package so imports and same-package names resolve.
+function! s:GoDoc() abort
+  let l:isk = &l:iskeyword
+  setlocal iskeyword+=.
+  let l:word = expand('<cword>')
+  let &l:iskeyword = l:isk
+  let l:out = systemlist(['go', 'doc', '-C', expand('%:p:h'), l:word])
+  if v:shell_error != 0
+    echohl WarningMsg | echo 'go doc: ' . join(l:out, ' ') | echohl None
+    return
+  endif
+  for l:w in range(1, winnr('$'))
+    if getbufvar(winbufnr(l:w), 'godoc_scratch', 0)
+      execute l:w . 'wincmd w' | break
+    endif
+  endfor
+  if !get(b:, 'godoc_scratch', 0)
+    botright new
+    let b:godoc_scratch = 1
+    setlocal buftype=nofile bufhidden=hide noswapfile nobuflisted winfixheight
+    setlocal syntax=go
+    nnoremap <buffer> <silent> q <C-w>c
+  endif
+  setlocal modifiable
+  silent %delete _
+  call setline(1, l:out)
+  setlocal nomodifiable
+  execute 'resize' min([max([len(l:out), 3]), 20])
+  normal! gg
+endfunction
+command! -buffer -nargs=* GoKeywordPrg call <SID>GoDoc()
+
 nnoremap <buffer> <localleader>b :Compile go<CR>
 nnoremap <buffer> <localleader>r :Term go run %<CR>
 nnoremap <buffer> <localleader>t :Compile gotest<CR>
