@@ -14,14 +14,10 @@ set formatoptions+=j
 set history=1000
 set ignorecase
 set incsearch
-set keywordprg=:help
 set linebreak
 set mouse=a
-set nocompatible
 set noequalalways
-set noerrorbells
 set nohlsearch
-set noinfercase
 set nojoinspaces
 set noswapfile
 set nrformats=bin,hex
@@ -33,10 +29,8 @@ set shortmess=aoOstTIc
 set sidescroll=1
 set sidescrolloff=2
 set smartcase
-set smarttab
 set softtabstop=2
 set splitright
-set t_vb=
 set tabstop=2
 set tags=./tags;,tags;
 set ttimeout
