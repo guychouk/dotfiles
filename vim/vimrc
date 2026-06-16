@@ -124,8 +124,8 @@ nnoremap          ;               :
 nnoremap          :               ;
 nnoremap          j               gj
 nnoremap          k               gk
-nnoremap <silent> H               :bprev<CR>
-nnoremap <silent> L               :bnext<CR>
+nnoremap <silent> H               gT
+nnoremap <silent> L               gt
 nnoremap <silent> Y               y$
 nnoremap <silent> 0               :ToggleMovement ^ 0<CR>
 nnoremap          gs              :%s/
@@ -235,6 +235,9 @@ let g:dirvish_mode = ':sort ,^.*[\/],'
 let g:context_enabled = 0
 let g:context_add_mappings = 0
 let g:context_highlight_tag = '<hide>'
+" }}}
+" Match-up {{{
+let g:matchup_matchparen_offscreen = {}
 " }}}
 " }}}
 
