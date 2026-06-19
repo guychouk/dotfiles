@@ -1,15 +1,11 @@
 # yaml-language-server: $schema=https://gh-dash.dev/schema.json
 prSections:
-  - title: Drafts
-    filters: is:open draft:true
   - title: Ready
     filters: is:open draft:false
-  - title: My Pull Requests
+  - title: Drafts
+    filters: is:open draft:true
+  - title: My PRs
     filters: is:open author:@me
-  - title: Needs My Review
-    filters: is:open review-requested:@me
-  - title: Involved
-    filters: is:open involves:@me -author:@me
 issuesSections:
   - title: My Issues
     filters: is:open author:@me
@@ -17,86 +13,56 @@ issuesSections:
     filters: is:open assignee:@me
   - title: Involved
     filters: is:open involves:@me -author:@me
-notificationsSections:
-  - title: All
-    filters: ""
-  - title: Created
-    filters: reason:author
-  - title: Participating
-    filters: reason:participating
-  - title: Mentioned
-    filters: reason:mention
-  - title: Review Requested
-    filters: reason:review-requested
-  - title: Assigned
-    filters: reason:assign
-  - title: Subscribed
-    filters: reason:subscribed
-  - title: Team Mentioned
-    filters: reason:team-mention
-repo:
-  branchesRefetchIntervalSeconds: 30
-  prsRefetchIntervalSeconds: 60
 defaults:
   preview:
-    open: true
+    open: false
     width: 0.45
+    position: bottom
     height: 0.6
-    position: auto
     prsLimit: 20
     prApproveComment: lgtm
     issuesLimit: 20
     notificationsLimit: 20
     view: prs
-    layout:
-      prs:
-        updatedAt:
-          width: 5
-          createdAt:
-            width: 5
-            repo:
-              width: 20
-            author:
-              width: 15
-            authorIcon:
-              hidden: false
-            labels:
-              width: 22
-              hidden: true
-            assignees:
-              width: 20
-              hidden: true
-            base:
-              width: 15
-              hidden: true
-            lines:
-              width: 15
-        issues:
-          updatedAt:
-            width: 5
-            createdAt:
-              width: 5
-            repo:
-              width: 15
-            creator:
-              width: 10
-            creatorIcon:
-              hidden: false
-            assignees:
-              width: 20
-              hidden: true
-    refetchIntervalMinutes: 30
-keybindings: {}
-repoPaths: {}
+  layout:
+    prs:
+      repo:
+        hidden: true
+      author:
+        width: 25
+  refetchIntervalMinutes: 30
+keybindings:
+  prs:
+    - key: R
+      name: rerun failed checks
+      command: >-
+        gh pr checks {{.PrNumber}} --repo {{.RepoName}} --json state,link
+        | jq -r '.[] | select(.state=="FAILURE") | .link'
+        | grep -oE 'runs/[0-9]+' | grep -oE '[0-9]+' | sort -u
+        | xargs -I{} gh run rerun {} --repo {{.RepoName}} --failed
+    - key: M
+      name: add me as reviewer
+      command: gh pr edit {{.PrNumber}} --repo {{.RepoName}} --add-reviewer guychouk
+    - key: W
+      name: review in worktree
+      command: cd {{.RepoPath}}; and set -l wt (git-worktree-pr {{.PrNumber}}); and cd $wt; and exec vim -c GitReview
+    - key: S
+      name: claude review and notify
+      command: nohup pr-review {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-{{.PrNumber}}.log 2>&1 &
+    - key: O
+      name: open pr review in vim
+      command: cd {{.RepoPath}}; and exec vim (git-worktree-pr -p {{.PrNumber}})/pr-review.md
+repoPaths:
+  factify-inc/mono: /Users/guychouk/projects/factify/mono
 theme:
   ui:
-    sectionsShowCount: true
+    sectionsShowCount: false
     table:
       showSeparator: true
-      compact: false
+      compact: true
 pager:
   diff: ""
 confirmQuit: false
-showAuthorIcons: true
+showAuthorIcons: false
 smartFilteringAtLaunch: true
 includeReadNotifications: true

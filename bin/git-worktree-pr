@@ -1,0 +1,38 @@
+#!/bin/sh
+
+set -e
+
+# usage: git-worktree-pr [-p] <pr-number>
+# Adds or refreshes a worktree for a PR at <repo>-pr-<n>, tracking the PR's head
+# branch at its latest origin state, and prints the worktree path. Run inside the
+# target repo.
+#   -p  print the worktree path for the PR and exit, without fetching or creating.
+
+print_only=0
+[ "$1" = "-p" ] && { print_only=1; shift; }
+
+n=${1:?usage: $(basename "$0") [-p] <pr-number>}
+
+repo=$(git rev-parse --show-toplevel)
+name=$(basename "$repo")
+wt="$(dirname "$repo")/$name-pr-$n"
+
+if [ "$print_only" = 1 ]; then
+  echo "$wt"
+  exit 0
+fi
+
+branch=$(gh pr view "$n" --json headRefName -q .headRefName)
+git -C "$repo" fetch origin "$branch"
+
+if [ ! -d "$wt" ]; then
+  if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
+    git -C "$repo" worktree add "$wt" "$branch"
+  else
+    git -C "$repo" worktree add "$wt" --track -b "$branch" "origin/$branch"
+  fi
+fi
+git -C "$wt" reset --hard "origin/$branch"
+
+zoxide add "$wt"
+echo "$wt"
