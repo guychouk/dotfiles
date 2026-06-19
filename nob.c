@@ -7,7 +7,11 @@
 #define NOB_IMPLEMENTATION
 #include "nob.h"
 
+#ifdef __APPLE__
 #define HOME               "/Users/guychouk"
+#else
+#define HOME               "/home/guychouk"
+#endif
 #define XDG_CONFIG         HOME"/.config"
 #define DOTSDIR            HOME"/dotfiles"
 #define LAUNCH_AGENTS_DIR  HOME"/Library/LaunchAgents"
@@ -32,6 +36,7 @@ const Link links[] = {
     {DOTSDIR "/zsh/.zshrc",           HOME "/.zshrc"},
     {DOTSDIR "/zsh/.zshenv",          HOME "/.zshenv"},
     {DOTSDIR "/gnupg/gpg-agent.conf", HOME "/.gnupg/gpg-agent.conf"},
+    {DOTSDIR "/bin/pinentry",         "/usr/local/bin/pinentry-wrapper"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
     {DOTSDIR "/tmux/tmux.conf",       HOME "/.tmux.conf"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
@@ -161,6 +166,26 @@ void reload_service(const char *domain, const char *label, const char *plist) {
     nob_log(ERROR, "could not load %s; try: launchctl bootstrap %s %s", label, domain, plist);
 }
 
+// Symlink src -> dst. Paths under $HOME are created directly as the invoking
+// user (the common case); anything outside it (eg. /usr/local/bin) needs root,
+// so shell out to sudo for just that entry rather than running all of links as
+// root and littering $HOME with root-owned symlinks.
+void link_path(Cmd *cmd, const char *src, const char *dst) {
+    if (strncmp(dst, HOME, strlen(HOME)) == 0) {
+        if (symlink(src, dst) < 0 && errno != EEXIST) perror(dst);
+    } else {
+        const char *slash = strrchr(dst, '/');
+        if (slash && slash != dst) {
+            cmd_append(cmd, "sudo", "mkdir", "-p",
+                       temp_sprintf("%.*s", (int)(slash - dst), dst));
+            cmd_run_sync_and_reset(cmd);
+        }
+        cmd_append(cmd, "sudo", "ln", "-sf", src, dst);
+        cmd_run_sync_and_reset(cmd);
+    }
+    printf("%s -> %s\n", src, dst);
+}
+
 void usage(void) {
     printf("usage: ./nob <links|launchd|swiftc>\n");
 }
@@ -174,33 +199,36 @@ int main (int argc, char **argv) {
     }
     const char *command = shift(argv, argc);
     if (strcmp(command, "links") == 0) {
+        Cmd cmd = {0};
         for (size_t i = 0; i < ARRAY_LEN(links); i++) {
-            if (symlink(links[i].src, links[i].dst) < 0) {
-                if (errno != EEXIST) perror(links[i].dst);
-            }
-            printf("%s -> %s\n", links[i].src, links[i].dst);
+            link_path(&cmd, links[i].src, links[i].dst);
         }
         nob_mkdir_if_not_exists(HOME "/bin");
         File_Paths binaries = {0};
         if (!read_entire_dir(DOTSDIR "/bin", &binaries)) return 1;
         for (size_t i = 0; i < binaries.count; i++) {
             const char *name = binaries.items[i];
-            const char *src = temp_sprintf(DOTSDIR "/bin/%s", name);
-            const char *dst = temp_sprintf(HOME "/bin/%s", name);
             if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
-            if (symlink(src, dst) < 0) {
-                if (errno != EEXIST) perror(dst);
-            }
-            printf("%s -> %s\n", src, dst);
+            link_path(&cmd, temp_sprintf(DOTSDIR "/bin/%s", name),
+                      temp_sprintf(HOME "/bin/%s", name));
         }
         nob_da_free(binaries);
+        cmd_free(cmd);
     } else if (strcmp(command, "swiftc") == 0) {
+#ifndef __APPLE__
+        nob_log(ERROR, "swiftc is macOS-only (Swift GUI helpers)");
+        return 1;
+#endif
         Cmd cmd = {0};
         for (size_t i = 0; i < ARRAY_LEN(swift_builds); i++) {
             cmd_append(&cmd, "swiftc", swift_builds[i].src, "-o", swift_builds[i].dst);
             cmd_run_sync_and_reset(&cmd);
         }
     } else if (strcmp(command, "launchd") == 0) {
+#ifndef __APPLE__
+        nob_log(ERROR, "launchd is macOS-only; use systemd user units on Linux");
+        return 1;
+#endif
         String_Builder sb = {0};
         const char *domain = temp_sprintf("gui/%d", getuid());
         for (size_t i = 0; i < ARRAY_LEN(services); i++) {

@@ -2,10 +2,10 @@
 
 if [ "$(uname)" = "Darwin" ]; then
   if [ -e "$HOME/.gnupg/ssh-mode" ]; then
-    exec /opt/homebrew/bin/pinentry-tty "$@"
+    exec /opt/homebrew/bin/pinentry-curses "$@"
   else
     exec /opt/homebrew/bin/pinentry-mac "$@"
   fi
 else
-  exec /usr/bin/pinentry-tty "$@"
+  exec /usr/bin/pinentry-curses "$@"
 fi
