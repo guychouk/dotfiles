@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+# usage: pr-review <repo-path> <pr-number>
+# Sets up (or refreshes) a worktree for the PR, runs a headless claude review
+# into <worktree>/pr-review.md, then fires a macOS notification. Meant to be
+# launched detached (see the gh-dash S keybinding).
+
+repo=${1:?usage: $(basename "$0") <repo-path> <pr-number>}
+n=${2:?usage: $(basename "$0") <repo-path> <pr-number>}
+
+wt=$(cd "$repo" && git-worktree-pr "$n") || {
+  osascript -e "display notification \"PR #$n worktree setup failed\" with title \"gh-dash\" sound name \"Basso\""
+  exit 1
+}
+
+out="$wt/pr-review.md"
+cd "$wt"
+claude -p 'Review the diff of this worktree against main (git diff origin/main...HEAD). Focus on correctness, security, efficiency, backwards compatibility; skip nits. Output terse lowercase markdown.' --permission-mode bypassPermissions >"$out" 2>&1
+
+osascript -e "display notification \"PR #$n review ready\" with title \"gh-dash\" subtitle \"$out\" sound name \"Glass\""
