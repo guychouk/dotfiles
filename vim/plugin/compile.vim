@@ -67,7 +67,7 @@ function! s:CompileStop() abort
 endfunction
 
 function! s:CompileDispatch(bang, arg) abort
-  if a:bang
+  if a:bang && empty(trim(a:arg))
     if empty(s:cmd)
       echohl WarningMsg | echo 'nothing to recompile' | echohl None
       return
@@ -80,7 +80,7 @@ function! s:CompileDispatch(bang, arg) abort
       let &errorformat = l:saved_efm
     endtry
   else
-    call s:Compile(0, a:arg)
+    call s:Compile(a:bang, a:arg)
   endif
 endfunction
 
