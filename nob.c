@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <limits.h>
 
 #define NOB_STRIP_PREFIX
 #define NOB_IMPLEMENTATION
@@ -214,6 +215,29 @@ int main (int argc, char **argv) {
         }
         nob_da_free(binaries);
         cmd_free(cmd);
+
+        // Self-heal: drop stale ~/bin symlinks left behind when a dotfiles/bin
+        // script is renamed or removed. Only links that point back into the
+        // repo and whose target no longer exists are pruned; anything pointing
+        // elsewhere, or still valid, is left untouched.
+        File_Paths existing = {0};
+        if (read_entire_dir(HOME "/bin", &existing)) {
+            for (size_t i = 0; i < existing.count; i++) {
+                const char *name = existing.items[i];
+                if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
+                const char *path = temp_sprintf(HOME "/bin/%s", name);
+                char target[PATH_MAX];
+                ssize_t n = readlink(path, target, sizeof(target) - 1);
+                if (n < 0) continue;            // not a symlink
+                target[n] = '\0';
+                if (strncmp(target, DOTSDIR, strlen(DOTSDIR)) == 0 &&
+                    access(target, F_OK) != 0) {
+                    unlink(path);
+                    printf("pruned %s -> %s\n", path, target);
+                }
+            }
+            nob_da_free(existing);
+        }
     } else if (strcmp(command, "swiftc") == 0) {
 #ifndef __APPLE__
         nob_log(ERROR, "swiftc is macOS-only (Swift GUI helpers)");
