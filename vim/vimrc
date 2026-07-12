@@ -155,6 +155,8 @@ nnoremap          <leader>yt      :YankCurrentDate<CR>
 nnoremap          <leader>yf      :YankAbsoluteFilePath<CR>
 nnoremap          <leader>yr      :YankRelativeFilePath<CR>
 nnoremap          <leader>yl      :YankFileLocation<CR>
+nnoremap          <leader>yc      :YankLineWithLocation<CR>
+xnoremap          <leader>yc      :YankLineWithLocation<CR>
 nnoremap          <leader>nn      :NewNote<CR>
 nnoremap          <leader>ns      :Notes<CR>
 xnoremap          <leader>nn      :NewNote<CR>

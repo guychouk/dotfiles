@@ -37,7 +37,24 @@ function! s:YankFileLocation()
   echomsg "Yanked: " . l:location
 endfunction
 
+function! s:YankLineWithLocation(l1, l2)
+  let l:file = expand('%:p')
+  if l:file == ''
+    echo "No file associated with this buffer"
+    return
+  endif
+  let l:lines = getline(a:l1, a:l2)
+  if a:l1 == a:l2
+    let l:location = l:file . ':' . a:l1 . ':' . col('.')
+  else
+    let l:location = l:file . ':' . a:l1 . '-' . a:l2
+  endif
+  let @+ = l:location . "\n" . join(l:lines, "\n")
+  echomsg "Yanked: " . l:location
+endfunction
+
 command! -bar -nargs=0 YankCurrentDate      call <sid>YankCurrentDate()
 command! -bar -nargs=0 YankRelativeFilePath call <sid>YankRelativeFilePath()
 command! -bar -nargs=0 YankAbsoluteFilePath call <sid>YankAbsoluteFilePath()
 command! -bar -nargs=0 YankFileLocation     call <sid>YankFileLocation()
+command! -bar -range   YankLineWithLocation call <sid>YankLineWithLocation(<line1>, <line2>)
