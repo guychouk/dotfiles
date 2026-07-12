@@ -23,16 +23,18 @@ if [ "$print_only" = 1 ]; then
 fi
 
 branch=$(gh pr view "$n" --json headRefName -q .headRefName)
-git -C "$repo" fetch origin "$branch"
+# Keep git's chatter (it writes "HEAD is now at ..." to stdout) off stdout so
+# the only thing callers capture is the worktree path printed at the end.
+git -C "$repo" fetch origin "$branch" >&2
 
 if [ ! -d "$wt" ]; then
   if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
-    git -C "$repo" worktree add "$wt" "$branch"
+    git -C "$repo" worktree add "$wt" "$branch" >&2
   else
-    git -C "$repo" worktree add "$wt" --track -b "$branch" "origin/$branch"
+    git -C "$repo" worktree add "$wt" --track -b "$branch" "origin/$branch" >&2
   fi
 fi
-git -C "$wt" reset --hard "origin/$branch"
+git -C "$wt" reset --hard "origin/$branch" >&2
 
 zoxide add "$wt"
 echo "$wt"

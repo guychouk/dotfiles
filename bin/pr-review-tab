@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -e
+
+# usage: pr-review-tab <repo-path> <pr-number>
+# Sets up (or refreshes) a worktree for the PR, then opens a new kitty tab,
+# titled after the worktree's name with the repo's own name stripped (e.g.
+# "mono-pr-2668" -> "pr-2668", "mono-eng-6924-foo" -> "eng-6924-foo"), with
+# the review on the left and a claude pane on the right. Meant to be
+# launched detached (see the gh-dash T keybinding).
+
+repo=${1:?usage: $(basename "$0") <repo-path> <pr-number>}
+n=${2:?usage: $(basename "$0") <repo-path> <pr-number>}
+
+wt=$(cd "$repo" && git-worktree-pr "$n") || {
+  osascript -e "display notification \"PR #$n worktree setup failed\" with title \"gh-dash\" sound name \"Basso\""
+  exit 1
+}
+
+reponame=$(basename "$repo")
+title=$(basename "$wt")
+title=${title#"$reponame"-}
+
+kitty @ launch --type=tab --tab-title "$title" --cwd "$wt" vim -c GitReview
