@@ -43,9 +43,9 @@ keybindings:
     - key: M
       name: add me as reviewer
       command: gh pr edit {{.PrNumber}} --repo {{.RepoName}} --add-reviewer guychouk
-    - key: W
-      name: review in worktree
-      command: cd {{.RepoPath}}; and set -l wt (git-worktree-pr {{.PrNumber}}); and cd $wt; and exec vim -c GitReview
+    - key: T
+      name: review in worktree (new tab)
+      command: nohup pr-review-tab {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-tab-{{.PrNumber}}.log 2>&1 &
     - key: S
       name: claude review and notify
       command: nohup pr-review {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-{{.PrNumber}}.log 2>&1 &
