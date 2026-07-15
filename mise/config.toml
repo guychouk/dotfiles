@@ -1,5 +1,2 @@
 [settings]
 idiomatic_version_file = false
-
-[tools]
-rust = "latest"
