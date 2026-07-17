@@ -32,6 +32,7 @@ const Link links[] = {
     {DOTSDIR "/direnv",               XDG_CONFIG "/direnv"},
     {DOTSDIR "/newsboat",             XDG_CONFIG "/newsboat"},
     {DOTSDIR "/gh-dash",              XDG_CONFIG "/gh-dash"},
+    {DOTSDIR "/sc-im",                XDG_CONFIG "/sc-im"},
     {DOTSDIR "/vim",                  HOME "/.vim"},
     {DOTSDIR "/ctags",                HOME "/.ctags.d"},
     {DOTSDIR "/zsh/.zshrc",           HOME "/.zshrc"},
