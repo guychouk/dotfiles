@@ -1,0 +1,27 @@
+#!/bin/sh
+
+export PATH="/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin:$HOME/bin"
+
+TITLE="scratch"
+FILE="$HOME/.scratch.txt"
+WIDTH=1280
+HEIGHT=720
+KITTY_SOCK=$(ls -t /tmp/kitty-* 2>/dev/null | head -1)
+KITTY="kitty @ --to unix:$KITTY_SOCK"
+
+if osascript -e "tell application \"System Events\" to tell process \"kitty\" to (name of every window) contains \"$TITLE\"" | grep -q true; then
+  osascript -e "
+    tell application \"kitty\" to activate
+    tell application \"System Events\" to tell process \"kitty\"
+      perform action \"AXRaise\" of (first window whose name is \"$TITLE\")
+    end tell
+  "
+else
+  read -r SCREEN_W SCREEN_H <<EOF
+$(osascript -l JavaScript -e "ObjC.import('Cocoa'); var f = \$.NSScreen.mainScreen.frame; f.size.width + ' ' + f.size.height")
+EOF
+  X=$(( (SCREEN_W - WIDTH) / 2 ))
+  Y=$(( (SCREEN_H - HEIGHT) / 2 ))
+  WIN_ID=$($KITTY launch --type=os-window --os-window-title="$TITLE" --os-window-position="${X}x${Y}" -- vim -c 'set laststatus=0' "$FILE")
+  $KITTY resize-os-window --match "id:$WIN_ID" --unit=pixels --width="$WIDTH" --height="$HEIGHT"
+fi
