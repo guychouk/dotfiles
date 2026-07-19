@@ -159,6 +159,7 @@ nnoremap          <leader>yc      :YankLineWithLocation<CR>
 xnoremap          <leader>yc      :YankLineWithLocation<CR>
 nnoremap          <leader>nn      :NewNote<CR>
 nnoremap          <leader>ns      :Notes<CR>
+nnoremap          <leader>=       :let @c=getline('.')<CR>o<C-r>=<C-r>c<CR><Esc>
 xnoremap          <leader>nn      :NewNote<CR>
 xnoremap          gs              :s/
 xnoremap          gS              :S/
