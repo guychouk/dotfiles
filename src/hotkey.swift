@@ -2,7 +2,7 @@
  * Global hotkey daemon. Registers one hotkey and runs one shell command when fired.
  * Usage: hotkey <keycode> <modifiers> <command>
  *
- * Common keycodes:  B=11  P=35  Space=49
+ * Common keycodes:  B=11  P=35  S=1  Space=49
  * Carbon modifier masks: cmd=256  shift=512  option=2048  ctrl=4096
  * Example (cmd+shift+b): hotkey 11 768 /Users/you/bin/butler
  */

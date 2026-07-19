@@ -82,6 +82,11 @@ const Service services[] = {
         .keep_alive = true, .run_at_load = true,
     },
     {
+        .label = "local.scratch-hotkey",
+        .args = {HOME "/bin/hotkey", "1", "768", HOME "/bin/scratch"},
+        .keep_alive = true, .run_at_load = true,
+    },
+    {
         .label = "org.gnu.emacs.daemon",
         .args = {"/opt/homebrew/bin/emacs", "--fg-daemon"},
         .env = {"LANG=en_US.UTF-8", "LC_ALL=en_US.UTF-8"},
