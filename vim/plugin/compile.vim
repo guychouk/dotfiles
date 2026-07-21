@@ -1,7 +1,7 @@
 let s:job  = v:null
 let s:gen  = 0
-let s:qfid = 0
 let s:cmd  = ''
+let s:qfid = 0
 let s:efm  = ''
 
 function! s:OnOut(gen, ch, msg) abort
@@ -16,27 +16,16 @@ function! s:OnExit(gen, cmd, job, status) abort
   echo printf('Compile: %s -> %d', a:cmd, a:status)
 endfunction
 
-function! s:IsCompiler(name) abort
-  return a:name =~# '^\S\+$' && !empty(globpath(&runtimepath, 'compiler/' . a:name . '.vim'))
-endfunction
-
 function! s:Compile(bang, arg) abort
   let l:arg = trim(a:arg)
-  let l:head = matchstr(l:arg, '^\S\+')
-  let l:rest = trim(strpart(l:arg, len(l:head)))
-  let l:name = fnamemodify(l:head, ':t:r')
-  let l:via_path = l:head =~# '[/.]'
-  if empty(l:arg)
-    let l:cmd = &makeprg
-  elseif !a:bang && !empty(l:name) && s:IsCompiler(l:name)
-    execute 'compiler' l:name
-    if l:via_path
-      let l:cmd = l:arg
-    else
-      let l:cmd = empty(l:rest) ? &makeprg : &makeprg . ' ' . l:rest
+  if a:bang && empty(l:arg)
+    if empty(s:cmd)
+      echohl WarningMsg | echo 'nothing to recompile' | echohl None
+      return
     endif
+    let l:cmd = s:cmd
   else
-    let l:cmd = l:arg
+    let l:cmd = empty(l:arg) ? &makeprg : l:arg
   endif
   let l:cmd = expandcmd(substitute(l:cmd, '\s*\$\*', '', 'g'))
   if empty(l:cmd)
@@ -66,30 +55,5 @@ function! s:CompileStop() abort
   let s:gen += 1
 endfunction
 
-function! s:CompileDispatch(bang, arg) abort
-  if a:bang && empty(trim(a:arg))
-    if empty(s:cmd)
-      echohl WarningMsg | echo 'nothing to recompile' | echohl None
-      return
-    endif
-    let l:saved_efm = &errorformat
-    let &errorformat = s:efm
-    try
-      call s:Compile(1, s:cmd)
-    finally
-      let &errorformat = l:saved_efm
-    endtry
-  else
-    call s:Compile(a:bang, a:arg)
-  endif
-endfunction
-
-function! s:CompileComplete(arg, line, pos) abort
-  if a:arg =~# '^\(\.*/\|/\|\~\)'
-    return join(getcompletion(a:arg, 'file'), "\n")
-  endif
-  return join(getcompletion(a:arg, 'compiler'), "\n")
-endfunction
-
 command! CompileStop call <sid>CompileStop()
-command! -nargs=* -bang -complete=custom,<sid>CompileComplete Compile call <sid>CompileDispatch(<bang>0, <q-args>)
+command! -nargs=* -bang -complete=file Compile call <sid>Compile(<bang>0, <q-args>)

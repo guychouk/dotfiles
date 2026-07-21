@@ -5,7 +5,7 @@ setlocal include=from\s*['\"]\|require(\s*['\"]
 setlocal includeexpr=v:fname=~#'^[./]'?v:fname:'node_modules/'.v:fname.'/index'
 setlocal isfname+=@-@
 nnoremap <buffer> <silent> gf :call jsgf#open()<CR>
-nnoremap <buffer> <localleader>b :Compile tsc<CR>
+nnoremap <buffer> <localleader>b :compiler tsc<Bar>Compile<CR>
 nnoremap <buffer> <localleader>r :Term bun %<CR>
-nnoremap <buffer> <localleader>R :Compile bun<CR>
-nnoremap <buffer> <localleader>l :Compile eslint<CR>
+nnoremap <buffer> <localleader>R :compiler bun<Bar>Compile<CR>
+nnoremap <buffer> <localleader>l :compiler eslint<Bar>Compile<CR>

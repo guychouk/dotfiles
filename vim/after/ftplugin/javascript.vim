@@ -7,5 +7,5 @@ setlocal isfname+=@-@
 nnoremap <buffer> <silent> gf :call jsgf#open()<CR>
 nnoremap <buffer> <localleader>b :Compile<CR>
 nnoremap <buffer> <localleader>r :Term node %<CR>
-nnoremap <buffer> <localleader>R :Compile node<CR>
-nnoremap <buffer> <localleader>l :Compile eslint<CR>
+nnoremap <buffer> <localleader>R :compiler node<Bar>Compile<CR>
+nnoremap <buffer> <localleader>l :compiler eslint<Bar>Compile<CR>
