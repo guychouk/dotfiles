@@ -194,6 +194,7 @@ let g:picopack = [
   \ 'tpope/vim-surround',
   \ 'tpope/vim-unimpaired',
   \ 'wellle/context.vim',
+  \ 'wellle/targets.vim',
 \ ]
 nnoremap <silent> <leader>g       :Git<CR>
 nnoremap <silent> <leader>s       :PicolineToggle<CR>
