@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'EOF'
+diane - shell interface to the /diane Claude skill
+
+Usage:
+  diane                     status summary
+  diane record [topic]      record an observation (opens vim for body)
+  diane query <topic>       search the knowledge base
+  diane maintain            audit the archive
+
+Pipe content to skip the editor:
+  echo "TIL about X" | diane record learning
+EOF
+  exit 0
+}
+
+[[ "${1:-}" == "-h" || "${1:-}" == "--help" ]] && usage
+
+DIANE_DIR="$HOME/projects/diane"
+
+prompt="/diane"
+if [[ $# -gt 0 ]]; then
+  prompt="/diane $*"
+fi
+
+subcmd="${1:-}"
+
+if [[ "$subcmd" == "record" ]]; then
+  if [[ -t 0 ]]; then
+    tmpdir="${TMPDIR:-/tmp}"
+    tmpfile=$(mktemp "${tmpdir%/}/diane-XXXXXX")
+    trap 'rm -f "$tmpfile"' EXIT
+    "${EDITOR:-vim}" -c 'set filetype=markdown' "$tmpfile"
+    body=$(<"$tmpfile")
+    if [[ -z "$body" ]]; then
+      echo "Empty buffer, nothing to record." >&2
+      exit 1
+    fi
+    prompt="$prompt
+
+$body"
+  else
+    prompt="$prompt
+
+$(cat)"
+  fi
+fi
+
+cd "$DIANE_DIR"
+exec claude -p --no-session-persistence "$prompt"

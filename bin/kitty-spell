@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export PATH="/opt/homebrew/bin:$PATH"
+
+text=$(sed $'s/\x1b\[[0-9;?]*[a-zA-Z]//g; s/\x1b\][^\x07]*\x07//g' | tr -cd '[:print:][:space:]')
+
+if [ -z "$text" ]; then
+    printf "\033[2mNothing on screen.\033[0m\n"
+    sleep 1
+    exit 0
+fi
+
+entries=$(printf "%s\n" "$text" | aspell pipe 2>/dev/null \
+    | awk -F: '/^&/{
+        split($1, h, " "); w = h[2]
+        n = split($2, s, ", ")
+        for (i = 1; i <= n && i <= 6; i++) {
+            gsub(/^ +| +$/, "", s[i])
+            printf "%s → %s\n", w, s[i]
+        }
+    }' | awk '!seen[$0]++')
+
+if [ -z "$entries" ]; then
+    printf "\033[2mNo misspellings found.\033[0m\n"
+    sleep 1
+    exit 0
+fi
+
+selected=$(printf "%s\n" "$entries" | fzf \
+    --prompt="spell › " \
+    --layout=reverse \
+    --no-info \
+    --margin=1,2 \
+    --no-scrollbar) || true
+
+if [ -z "$selected" ]; then
+    exit 0
+fi
+
+correction="${selected##* → }"
+printf "%s" "$correction" | pbcopy
+
+sock="${KITTY_LISTEN_ON:-}"
+if [ -n "$sock" ]; then
+    my_id="${KITTY_WINDOW_ID:-}"
+    if [ -n "$my_id" ]; then
+        parent_id=$(kitty @ ls --to "$sock" 2>/dev/null | python3 -c "
+import json, sys, os
+mid = int(os.environ.get('KITTY_WINDOW_ID', 0))
+for o in json.load(sys.stdin):
+    for t in o['tabs']:
+        if mid in [w['id'] for w in t['windows']]:
+            for w in t['windows']:
+                if w['id'] != mid:
+                    print(w['id']); exit()
+" 2>/dev/null || true)
+        if [ -n "$parent_id" ]; then
+            (sleep 0.15 && kitty @ send-text --to "$sock" --match "id:$parent_id" -- "$correction") &
+            disown 2>/dev/null
+        fi
+    fi
+fi

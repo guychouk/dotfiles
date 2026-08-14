@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ $# -gt 0 ]; then
+  text="$*"
+elif [ ! -t 0 ]; then
+  text="$(cat)"
+else
+  echo "usage: tts <text>  or  pbpaste | tts" >&2
+  exit 1
+fi
+
+api_key="$(op read op://Employee/openai-api-key/password)"
+
+body="$(jq -n --arg text "$text" '{model: "gpt-4o-mini-tts", input: $text, voice: "alloy"}')"
+
+if [ -t 1 ]; then
+  tmp_dir="$(mktemp -d)"
+  trap 'rm -rf "$tmp_dir"' EXIT
+  out="$tmp_dir/out.mp3"
+  curl -sf https://api.openai.com/v1/audio/speech \
+    -H "Authorization: Bearer $api_key" \
+    -H "Content-Type: application/json" \
+    -d "$body" \
+    --output "$out"
+  afplay "$out"
+else
+  curl -sf https://api.openai.com/v1/audio/speech \
+    -H "Authorization: Bearer $api_key" \
+    -H "Content-Type: application/json" \
+    -d "$body"
+fi
