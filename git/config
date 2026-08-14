@@ -23,6 +23,9 @@
 [init]
 	defaultBranch = main
 
+[includeIf "gitdir:/Users/guychouk/.claude/"]
+	path = ./git-user-personal
+
 [includeIf "gitdir:/Users/guychouk/projects/"]
 	path = ./git-user-personal
 
