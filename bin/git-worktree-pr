@@ -22,10 +22,14 @@ if [ "$print_only" = 1 ]; then
   exit 0
 fi
 
-branch=$(gh pr view "$n" --json headRefName -q .headRefName)
+refs=$(gh pr view "$n" --json headRefName,baseRefName -q '.headRefName, .baseRefName')
+branch=$(echo "$refs" | sed -n 1p)
+base=$(echo "$refs" | sed -n 2p)
 # Keep git's chatter (it writes "HEAD is now at ..." to stdout) off stdout so
 # the only thing callers capture is the worktree path printed at the end.
-git -C "$repo" fetch origin "$branch" >&2
+# The base is fetched too: review tooling diffs against origin/<base>, and a
+# stale base ref sweeps unrelated merged work into the diff.
+git -C "$repo" fetch origin "$base" "$branch" >&2
 
 if [ ! -d "$wt" ]; then
   if git -C "$repo" show-ref --verify --quiet "refs/heads/$branch"; then
