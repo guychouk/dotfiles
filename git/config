@@ -26,10 +26,10 @@
 [includeIf "gitdir:/Users/guychouk/.claude/"]
 	path = ./git-user-personal
 
-[includeIf "gitdir:/Users/guychouk/projects/"]
+[includeIf "gitdir:/Users/guychouk/src/"]
 	path = ./git-user-personal
 
-[includeIf "gitdir:/Users/guychouk/projects/factify/"]
+[includeIf "gitdir:/Users/guychouk/src/factify/"]
 	path = ./git-user-factify
 
 [url "ssh://git@github.com/"]

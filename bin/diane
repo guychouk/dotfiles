@@ -19,7 +19,7 @@ EOF
 
 [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]] && usage
 
-DIANE_DIR="$HOME/projects/diane"
+DIANE_DIR="$HOME/src/diane"
 
 prompt="/diane"
 if [[ $# -gt 0 ]]; then

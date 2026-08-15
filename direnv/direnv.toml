@@ -4,4 +4,4 @@ log_format = "-"
 warn_timeout = 0
 
 [whitelist]
-prefix = ["/Users/guychouk/projects/factify/"]
+prefix = ["/Users/guychouk/src/factify/"]
