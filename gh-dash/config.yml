@@ -34,23 +34,23 @@ defaults:
 keybindings:
   prs:
     - key: R
-      name: rerun failed checks
+      name: Rerun failed checks
       command: >-
         gh pr checks {{.PrNumber}} --repo {{.RepoName}} --json state,link
         | jq -r '.[] | select(.state=="FAILURE") | .link'
         | grep -oE 'runs/[0-9]+' | grep -oE '[0-9]+' | sort -u
         | xargs -I{} gh run rerun {} --repo {{.RepoName}} --failed
     - key: M
-      name: add me as reviewer
+      name: Add me as reviewer
       command: gh pr edit {{.PrNumber}} --repo {{.RepoName}} --add-reviewer guychouk
     - key: T
-      name: review in worktree (new tab)
-      command: nohup cr tab {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-tab-{{.PrNumber}}.log 2>&1 &
+      name: Review in worktree (new tab)
+      command: cr tab {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-tab-{{.PrNumber}}.log 2>&1 &
     - key: S
-      name: claude review and notify
-      command: nohup cr review {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-{{.PrNumber}}.log 2>&1 &
+      name: Claude review and notify
+      command: cr review {{.RepoPath}} {{.PrNumber}} >/tmp/pr-review-{{.PrNumber}}.log 2>&1 &
     - key: O
-      name: open pr review in vim
+      name: Open pr review in vim
       command: cd {{.RepoPath}}; and exec vim (cr wt -p {{.PrNumber}})/pr-review.md
 repoPaths:
   factify-inc/mono: /Users/guychouk/src/factify/mono
