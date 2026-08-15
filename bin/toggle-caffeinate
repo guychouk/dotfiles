@@ -3,19 +3,17 @@
 PID_FILE="$HOME/.caffeinate.pid"
 
 if [ -f "$PID_FILE" ]; then
-  # Caffeinate is running, kill it
   PID=$(cat "$PID_FILE")
   if kill "$PID" 2>/dev/null; then
+    # Caffeinate is running, kill it
     rm "$PID_FILE"
     osascript -e 'display notification "🔴" with title "Caffeinate"'
-  else
-    # PID file exists but process is dead, clean up
-    rm "$PID_FILE"
-    osascript -e 'display notification "Caffeinate was not running" with title "Caffeinate"'
+    exit 0
   fi
-else
-  # Caffeinate is not running, start it
-  caffeinate -sdi &
-  echo $! > "$PID_FILE"
-  osascript -e 'display notification "🟢" with title "Caffeinate"'
+  # PID file stale, clean up and fall through to start it
+  rm "$PID_FILE"
 fi
+
+caffeinate -sdi &
+echo $! > "$PID_FILE"
+osascript -e 'display notification "🟢" with title "Caffeinate"'
