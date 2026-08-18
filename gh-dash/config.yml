@@ -1,4 +1,4 @@
-# yaml-language-server: $schema=https://gh-dash.dev/schema.json
+# https://gh-dash.dev/schema.json
 prSections:
   - title: Ready
     filters: is:open draft:false
