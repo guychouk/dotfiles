@@ -9,9 +9,11 @@
 #include "nob.h"
 
 #ifdef __APPLE__
-#define HOME               "/Users/guychouk"
+#define IS_APPLE 1
+#define HOME     "/Users/guychouk"
 #else
-#define HOME               "/home/guychouk"
+#define IS_APPLE 0
+#define HOME     "/home/guychouk"
 #endif
 #define XDG_CONFIG         HOME"/.config"
 #define DOTSDIR            HOME"/dotfiles"
@@ -221,11 +223,6 @@ int main (int argc, char **argv) {
         }
         nob_da_free(binaries);
         cmd_free(cmd);
-
-        // Self-heal: drop stale ~/bin symlinks left behind when a dotfiles/bin
-        // script is renamed or removed. Only links that point back into the
-        // repo and whose target no longer exists are pruned; anything pointing
-        // elsewhere, or still valid, is left untouched.
         File_Paths existing = {0};
         if (read_entire_dir(HOME "/bin", &existing)) {
             for (size_t i = 0; i < existing.count; i++) {
@@ -245,20 +242,20 @@ int main (int argc, char **argv) {
             nob_da_free(existing);
         }
     } else if (strcmp(command, "swiftc") == 0) {
-#ifndef __APPLE__
-        nob_log(ERROR, "swiftc is macOS-only (Swift GUI helpers)");
-        return 1;
-#endif
+        if (!IS_APPLE) {
+            nob_log(ERROR, "swiftc is macOS-only (Swift GUI helpers)");
+            return 1;
+        }
         Cmd cmd = {0};
         for (size_t i = 0; i < ARRAY_LEN(swift_builds); i++) {
             cmd_append(&cmd, "swiftc", swift_builds[i].src, "-o", swift_builds[i].dst);
             cmd_run_sync_and_reset(&cmd);
         }
     } else if (strcmp(command, "launchd") == 0) {
-#ifndef __APPLE__
-        nob_log(ERROR, "launchd is macOS-only; use systemd user units on Linux");
-        return 1;
-#endif
+        if (!IS_APPLE) {
+            nob_log(ERROR, "launchd is macOS-only; use systemd user units on Linux");
+            return 1;
+        }
         String_Builder sb = {0};
         const char *domain = temp_sprintf("gui/%d", getuid());
         for (size_t i = 0; i < ARRAY_LEN(services); i++) {
