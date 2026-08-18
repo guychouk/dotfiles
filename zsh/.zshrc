@@ -1,5 +1,3 @@
-# fish is my primary shell. I'm keeping this for posterity.
-
 export GPG_TTY=$(tty)
 export GEM_HOME="${XDG_DATA_HOME}/gem"
 export GEM_PATH="${GEM_HOME}"

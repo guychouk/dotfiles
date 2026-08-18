@@ -1,5 +1,3 @@
-# fish is my primary shell. I'm keeping this for posterity.
-
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 export LC_CTYPE=en_US.UTF-8
@@ -17,7 +15,6 @@ export XDG_STATE_HOME="${HOME}/.local/state"
 
 export ZDOTDIR="${XDG_CONFIG_HOME}/zsh"
 export ZSH_CACHE_DIR="${XDG_CACHE_HOME}/zsh"
-export OLLAMA_API_BASE="http://127.0.0.1:11434"
 
 # Homebrew (needed for fzf and other tools)
 if [[ "$(uname)" == "Darwin" && -f /opt/homebrew/bin/brew ]]; then
