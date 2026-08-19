@@ -1,11 +1,11 @@
 # https://gh-dash.dev/schema.json
 prSections:
-  - title: Ready
-    filters: is:open draft:false
-  - title: Drafts
-    filters: is:open draft:true
   - title: My PRs
     filters: is:open author:@me
+  - title: Ready
+    filters: is:open draft:false -author:@me
+  - title: Drafts
+    filters: is:open draft:true -author:@me
 issuesSections:
   - title: My Issues
     filters: is:open author:@me
