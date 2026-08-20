@@ -73,22 +73,6 @@ const Service services[] = {
         .keep_alive = true, .run_at_load = true,
     },
     {
-        .label = "local.clippy",
-        .args = {HOME "/bin/clippy", "--daemon"},
-        .log = "/tmp/clippy-daemon.log",
-        .keep_alive = true, .run_at_load = true,
-    },
-    {
-        .label = "local.butler-hotkey",
-        .args = {HOME "/bin/hotkey", "11", "768", HOME "/bin/butler"},
-        .keep_alive = true, .run_at_load = true,
-    },
-    {
-        .label = "local.scratch-hotkey",
-        .args = {HOME "/bin/hotkey", "1", "768", HOME "/bin/scratch"},
-        .keep_alive = true, .run_at_load = true,
-    },
-    {
         .label = "org.gnu.emacs.daemon",
         .args = {"/opt/homebrew/bin/emacs", "--fg-daemon"},
         .env = {"LANG=en_US.UTF-8", "LC_ALL=en_US.UTF-8"},
@@ -105,10 +89,6 @@ const Service services[] = {
 
 const Link swift_builds[] = {
     {DOTSDIR "/src/gpg-kill-on-lock.swift", HOME "/bin/gpg-kill-on-lock"},
-    {DOTSDIR "/src/pbpass.swift",           HOME "/bin/pbpass"},
-    {DOTSDIR "/src/clippy.swift",           HOME "/bin/clippy"},
-    {DOTSDIR "/src/picker.swift",           HOME "/bin/picker"},
-    {DOTSDIR "/src/hotkey.swift",           HOME "/bin/hotkey"},
 };
 
 void gen_plist(String_Builder *sb, const Service *s) {

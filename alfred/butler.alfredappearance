@@ -1,0 +1,65 @@
+{
+  "alfredtheme" : {
+    "result" : {
+      "textSpacing" : 8,
+      "subtext" : {
+        "size" : 12,
+        "colorSelected" : "#FFFFFFCC",
+        "font" : "System",
+        "color" : "#FFFFFF66"
+      },
+      "shortcut" : {
+        "size" : 18,
+        "colorSelected" : "#FFFFFFFF",
+        "font" : "System",
+        "color" : "#FEFFFF66"
+      },
+      "backgroundSelected" : "#FFFFFF26",
+      "text" : {
+        "size" : 15,
+        "colorSelected" : "#FFFFFFFF",
+        "font" : "System",
+        "color" : "#FFFFFFD8"
+      },
+      "iconPaddingHorizontal" : 4,
+      "roundness" : 11,
+      "paddingVertical" : 8,
+      "iconSize" : 32
+    },
+    "search" : {
+      "backgroundSelected" : "#FFFFFF26",
+      "paddingHorizontal" : 8,
+      "spacing" : 6,
+      "text" : {
+        "size" : 24,
+        "colorSelected" : "#FFFFFFFF",
+        "font" : "System Light",
+        "color" : "#FFFFFFFF"
+      },
+      "background" : "#890E1600",
+      "roundness" : 0,
+      "paddingVertical" : 8
+    },
+    "window" : {
+      "color" : "#7F7F7F00",
+      "paddingHorizontal" : 8,
+      "width" : 545,
+      "borderPadding" : 0,
+      "borderColor" : "#7F7F7F7F",
+      "blur" : 0,
+      "roundness" : 21,
+      "paddingVertical" : 8
+    },
+    "credit" : "guychouk",
+    "visualEffectMode" : 2,
+    "separator" : {
+      "color" : "#CBCBCBFF",
+      "thickness" : 0
+    },
+    "scrollbar" : {
+      "color" : "#6D6D6DFF",
+      "thickness" : 0
+    },
+    "name" : "Butler"
+  }
+}
