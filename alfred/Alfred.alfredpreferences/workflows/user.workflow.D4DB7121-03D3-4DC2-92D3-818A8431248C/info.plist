@@ -88,7 +88,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>pass</string>
+	<string>Pass</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -137,6 +137,25 @@ pass show "{query}" | head -1 | tr -d '\n'</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>alfredfiltersresults</key>
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -181,25 +200,6 @@ scripts/list-pass.sh</string>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
 			<string>999C292E-E285-40AE-A5C3-76FEDDFFCC10</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</string>
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
@@ -274,57 +274,63 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Dedicated pass(1) workflow. Keyword "pass" lists entries via scripts/list-pass.sh (copied from butler). Tab on a result to pick one of three actions: Enter/no-modifier copies the password (line 1) to the clipboard; Cmd copies the username (line 2) to the clipboard; Alt/Option runs `pass edit` inside a new kitty tab (targeting the most-recently-modified /tmp/kitty-* socket, falling back to opening a new kitty window) so any field beyond the first two lines can be copied by hand. Replaces butler's separate "pass" and "user" keywords with a single entry point.</string>
+	<string>Lock icon created by Those Icons from Flaticon</string>
 	<key>uidata</key>
 	<dict>
 		<key>32AF0DBE-ACEB-4DDD-8451-077B0121F367</key>
 		<dict>
+			<key>note</key>
+			<string>With ⌘ the Username is chosen (head -2 of entry)</string>
 			<key>xpos</key>
-			<real>455.0</real>
+			<real>365</real>
 			<key>ypos</key>
-			<real>745.0</real>
+			<real>415</real>
 		</dict>
 		<key>47768B4D-E032-4BDC-BC11-E37D0C6F5609</key>
 		<dict>
 			<key>xpos</key>
-			<real>805.0</real>
+			<real>530</real>
 			<key>ypos</key>
-			<real>945.0</real>
+			<real>615</real>
 		</dict>
 		<key>6BAFFD29-40D8-492D-BA49-10FA7B34186C</key>
 		<dict>
 			<key>xpos</key>
-			<real>805.0</real>
+			<real>535</real>
 			<key>ypos</key>
-			<real>545.0</real>
+			<real>215</real>
 		</dict>
 		<key>999C292E-E285-40AE-A5C3-76FEDDFFCC10</key>
 		<dict>
 			<key>xpos</key>
-			<real>105.0</real>
+			<real>95</real>
 			<key>ypos</key>
-			<real>745.0</real>
+			<real>415</real>
 		</dict>
 		<key>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</key>
 		<dict>
 			<key>xpos</key>
-			<real>805.0</real>
+			<real>535</real>
 			<key>ypos</key>
-			<real>745.0</real>
+			<real>415</real>
 		</dict>
 		<key>C2B0CAB0-347F-4A84-B065-DA16F711CAB0</key>
 		<dict>
+			<key>note</key>
+			<string>With a simple Enter the Password is chosen (head -1 of entry)</string>
 			<key>xpos</key>
-			<real>455.0</real>
+			<real>365</real>
 			<key>ypos</key>
-			<real>545.0</real>
+			<real>215</real>
 		</dict>
 		<key>C8E51AD3-A3E0-4E87-91DF-7C22DFF119FE</key>
 		<dict>
+			<key>note</key>
+			<string>Holding ⌥ opens the whole entry with MacVIM</string>
 			<key>xpos</key>
-			<real>455.0</real>
+			<real>365</real>
 			<key>ypos</key>
-			<real>945.0</real>
+			<real>615</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

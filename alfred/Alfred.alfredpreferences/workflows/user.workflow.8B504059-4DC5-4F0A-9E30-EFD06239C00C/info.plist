@@ -107,22 +107,24 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Replaces ~/dotfiles/bin/butler's file/project/documents/directory/caffeinate cases with native Alfred Script Filters. Keywords: file (~/Downloads files), proj (~/src and ~/opt dirs, maxdepth 3), doc (~/Documents files), dir (~/Documents and ~/Downloads dirs, maxdepth 3) -- each copies the selected path to the clipboard. caff toggles ~/dotfiles/bin/toggle-caffeinate. The butler clipboard and password/username cases are intentionally not reimplemented here; see NOTES.md.</string>
+	<string>Coffee icons created by Magnific from Flaticon</string>
 	<key>uidata</key>
 	<dict>
 		<key>23CBE965-B5F0-4B74-9457-983972730B62</key>
 		<dict>
+			<key>note</key>
+			<string>Call the toggle-caffeinate.sh script</string>
 			<key>xpos</key>
-			<real>910</real>
+			<real>320</real>
 			<key>ypos</key>
-			<real>605</real>
+			<real>365</real>
 		</dict>
 		<key>67671BCB-1CD6-491C-AA16-A045C2DBA90F</key>
 		<dict>
 			<key>xpos</key>
-			<real>560</real>
+			<real>95</real>
 			<key>ypos</key>
-			<real>605</real>
+			<real>365</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

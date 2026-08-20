@@ -55,7 +55,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Markdown Links</string>
+	<string>MD Links</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -111,6 +111,25 @@ scripts/parse-links.sh "$mdfile"</string>
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>acceptsmulti</key>
+				<integer>0</integer>
+				<key>filetypes</key>
+				<array>
+					<string>net.daringfireball.markdown</string>
+				</array>
+				<key>name</key>
+				<string>mdlinks</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>896FBCAC-BB79-458E-AC96-80006BA45A49</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>browser</key>
 				<string></string>
 				<key>skipqueryencode</key>
@@ -126,25 +145,6 @@ scripts/parse-links.sh "$mdfile"</string>
 			<string>alfred.workflow.action.openurl</string>
 			<key>uid</key>
 			<string>0798DAFE-73F0-4AA7-AA16-0CCB4E9C4617</string>
-			<key>version</key>
-			<integer>1</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>acceptsmulti</key>
-				<integer>0</integer>
-				<key>filetypes</key>
-				<array>
-					<string>net.daringfireball.markdown</string>
-				</array>
-				<key>name</key>
-				<string>Extract links (mdlinks)</string>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.trigger.action</string>
-			<key>uid</key>
-			<string>896FBCAC-BB79-458E-AC96-80006BA45A49</string>
 			<key>version</key>
 			<integer>1</integer>
 		</dict>
@@ -170,36 +170,36 @@ scripts/parse-links.sh "$mdfile"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>File Action (right-click a markdown file, or select and hit the file actions shortcut) that runs mdlinks against it, lists every link found as a Script Filter, and opens the chosen link in the default browser.</string>
+	<string>Coffee icons created by Magnific from Flaticon</string>
 	<key>uidata</key>
 	<dict>
 		<key>0798DAFE-73F0-4AA7-AA16-0CCB4E9C4617</key>
 		<dict>
 			<key>xpos</key>
-			<real>990</real>
+			<real>540</real>
 			<key>ypos</key>
-			<real>425</real>
+			<real>360</real>
 		</dict>
 		<key>2F1F9A80-BB90-4794-BB29-BD6BE5B64DDF</key>
 		<dict>
 			<key>xpos</key>
-			<real>720</real>
+			<real>265</real>
 			<key>ypos</key>
-			<real>560</real>
+			<real>390</real>
 		</dict>
 		<key>896FBCAC-BB79-458E-AC96-80006BA45A49</key>
 		<dict>
 			<key>xpos</key>
-			<real>540</real>
+			<real>90</real>
 			<key>ypos</key>
-			<real>430</real>
+			<real>360</real>
 		</dict>
 		<key>D648B515-791E-4EFD-AE8A-5753FFF52328</key>
 		<dict>
 			<key>xpos</key>
-			<real>825</real>
+			<real>340</real>
 			<key>ypos</key>
-			<real>425</real>
+			<real>360</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
