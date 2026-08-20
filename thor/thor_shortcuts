@@ -8,5 +8,10 @@
     "appBundleURL" : "file:\/\/\/Applications\/Brave%20Browser.app\/",
     "appDisplayName" : "Brave Browser.app",
     "shortcut" : "ctrl+cmd+2"
+  },
+  {
+    "appBundleURL" : "file:\/\/\/Applications\/Obsidian.app\/",
+    "appDisplayName" : "Obsidian.app",
+    "shortcut" : "ctrl+cmd+3"
   }
 ]
