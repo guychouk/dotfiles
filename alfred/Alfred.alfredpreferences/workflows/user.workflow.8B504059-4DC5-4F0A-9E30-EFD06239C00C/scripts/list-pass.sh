@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # Lists pass(1) entries under ~/.password-store as Alfred Script Filter JSON
 # on stdout. Each entry name is the .gpg file's path relative to the store,
 # with the .gpg suffix stripped (e.g. work/vpn.gpg -> work/vpn).

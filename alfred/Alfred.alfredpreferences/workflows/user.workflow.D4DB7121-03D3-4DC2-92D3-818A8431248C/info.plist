@@ -94,6 +94,49 @@
 		<dict>
 			<key>config</key>
 			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>6BAFFD29-40D8-492D-BA49-10FA7B34186C</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+pass show "{query}" | head -1 | tr -d '\n'</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>C2B0CAB0-347F-4A84-B065-DA16F711CAB0</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
 				<key>alfredfiltersresults</key>
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
@@ -144,30 +187,6 @@ scripts/list-pass.sh</string>
 		<dict>
 			<key>config</key>
 			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-pass show "{query}" | head -1 | tr -d '\n'</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>C2B0CAB0-347F-4A84-B065-DA16F711CAB0</string>
-			<key>version</key>
-			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
 				<key>autopaste</key>
 				<false/>
 				<key>clipboardtext</key>
@@ -180,7 +199,7 @@ pass show "{query}" | head -1 | tr -d '\n'</string>
 			<key>type</key>
 			<string>alfred.workflow.output.clipboard</string>
 			<key>uid</key>
-			<string>6BAFFD29-40D8-492D-BA49-10FA7B34186C</string>
+			<string>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</string>
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
@@ -207,25 +226,6 @@ pass show "{query}" | sed -n '2p' | tr -d '\n'</string>
 			<string>32AF0DBE-ACEB-4DDD-8451-077B0121F367</string>
 			<key>version</key>
 			<integer>2</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</string>
-			<key>version</key>
-			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -258,11 +258,7 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 				<false/>
 				<key>onlyshowifquerypopulated</key>
 				<false/>
-				<key>output</key>
-				<integer>0</integer>
 				<key>removeextension</key>
-				<false/>
-				<key>sticky</key>
 				<false/>
 				<key>text</key>
 				<string>Finished editing in MacVim</string>
@@ -273,6 +269,8 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 			<string>alfred.workflow.output.notification</string>
 			<key>uid</key>
 			<string>47768B4D-E032-4BDC-BC11-E37D0C6F5609</string>
+			<key>version</key>
+			<integer>1</integer>
 		</dict>
 	</array>
 	<key>readme</key>
@@ -282,53 +280,55 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 		<key>32AF0DBE-ACEB-4DDD-8451-077B0121F367</key>
 		<dict>
 			<key>xpos</key>
-			<integer>450</integer>
+			<real>455.0</real>
 			<key>ypos</key>
-			<integer>1100</integer>
+			<real>745.0</real>
 		</dict>
 		<key>47768B4D-E032-4BDC-BC11-E37D0C6F5609</key>
 		<dict>
 			<key>xpos</key>
-			<integer>800</integer>
+			<real>805.0</real>
 			<key>ypos</key>
-			<integer>1300</integer>
+			<real>945.0</real>
 		</dict>
 		<key>6BAFFD29-40D8-492D-BA49-10FA7B34186C</key>
 		<dict>
 			<key>xpos</key>
-			<integer>800</integer>
+			<real>805.0</real>
 			<key>ypos</key>
-			<integer>900</integer>
+			<real>545.0</real>
 		</dict>
 		<key>999C292E-E285-40AE-A5C3-76FEDDFFCC10</key>
 		<dict>
 			<key>xpos</key>
-			<integer>100</integer>
+			<real>105.0</real>
 			<key>ypos</key>
-			<integer>1100</integer>
+			<real>745.0</real>
 		</dict>
 		<key>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</key>
 		<dict>
 			<key>xpos</key>
-			<integer>800</integer>
+			<real>805.0</real>
 			<key>ypos</key>
-			<integer>1100</integer>
+			<real>745.0</real>
 		</dict>
 		<key>C2B0CAB0-347F-4A84-B065-DA16F711CAB0</key>
 		<dict>
 			<key>xpos</key>
-			<integer>450</integer>
+			<real>455.0</real>
 			<key>ypos</key>
-			<integer>900</integer>
+			<real>545.0</real>
 		</dict>
 		<key>C8E51AD3-A3E0-4E87-91DF-7C22DFF119FE</key>
 		<dict>
 			<key>xpos</key>
-			<integer>450</integer>
+			<real>455.0</real>
 			<key>ypos</key>
-			<integer>1300</integer>
+			<real>945.0</real>
 		</dict>
 	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
 	<key>variablesdontexport</key>
 	<array/>
 	<key>version</key>
