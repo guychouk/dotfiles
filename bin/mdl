@@ -1,3 +1,0 @@
-#!/bin/sh
-
-mdlinks "$1" | picker | cut -f2 | xargs open
