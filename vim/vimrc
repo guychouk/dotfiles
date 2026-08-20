@@ -96,6 +96,7 @@ set list
 set showbreak=↳
 set fillchars=eob:\ 
 set listchars=tab:▏\ ,trail:·,extends:>,precedes:<,leadmultispace:¦\ ,nbsp:+
+set guifont=Iosevka\ Term:h18
 
 if exists('+cursorlineopt')
   set cursorlineopt=number
