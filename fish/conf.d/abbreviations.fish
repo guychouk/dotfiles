@@ -1,5 +1,6 @@
 abbr -a --set-cursor kns 'kubectl config set-context --current --namespace %'
 abbr -a --set-cursor grp 'grep -rn "%" .'
+abbr -a --set-cursor gplc 'git -C ./% pull'
 abbr -a aa       "abduco -a"
 abbr -a ab       "abduco"
 abbr -a ac       "abduco -c"
