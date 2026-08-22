@@ -25,9 +25,6 @@ curl -s http://localhost:4566/_aws/ses | jq '.messages[-1].Body.html_part' -r > 
 # atlas diff & migrate
 atlas migrate diff name-of-new-migration --dir file://migrations --to file://sql/email.sql --dev-url docker://postgres/16/dev
 
-# skhd management
-skhd --start-service; skhd --reload
-
 # gpg export to .asc file
 gpg --export-secret-keys --armor KEY_FINGERPRINT > backup-private-key.asc
 
@@ -69,9 +66,6 @@ gpg --batch --yes --output output.file --decrypt input.gpg
 
 # add s3 bucket to localstack
 aws --endpoint-url=http://localhost:4566 s3 mb s3://BUCKET
-
-# mongo shell query to fetch specific element from an array in a document
-db.organizations.aggregate([ { $match:{} }, { $project: { nameOfField: { $filter: { input: "$nameOfField", as:"tmp", cond: { $eq: [ "$$tmp.prop", "query" ] } } } } } ])
 
 # random 32 character string
 cat /dev/urandom | LC_ALL=C tr -dc 'a-z0-9' | fold -w 32 | head -n 1
@@ -142,24 +136,6 @@ ffmpeg -f avfoundation -list_devices true -i ""
 # record whole screen
 ffmpeg -f avfoundation -i "1" -framerate 30 "screen-recording-$(date +"%m-%d-%y").mkv"
 
-# create Kafka topic
-kafka-topics.sh --create --topic <topic> --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1
-
-# export MongoDB collection by query
-mongoexport --quiet --uri="mongodb://localhost:27017" --collection=<collection> -q '' | jq '.'
-
-# publish message to exchange using RabbitMQ API
-curl -u test:rabbitmq 'http://localhost:15672/api/exchanges/%2F/<exchange>/publish' --data-raw '{"vhost":"/","name":"<exchange>","properties":{"delivery_mode":2,"headers":{"consistent-hash":""}},"routing_key":"100","delivery_mode":"2","payload":"{}","headers":{"consistent-hash":""},"props":{},"payload_encoding":"string"}'
-
-# download RabbitMQ CLI from local instance
-curl -O http://localhost:15672/cli/rabbitmqadmin
-
-# run RabbitMQ DOCKER container
-FROM rabbitmq:3.9.12-management\nRUN rabbitmq-plugins enable rabbitmq_consistent_hash_exchange rabbitmq_delayed_message_exchange
-
-# run nodemon with ts-node and debugging
-nodemon --watch src --exec 'node --require ts-node/register --inspect' src/app.ts
-
 # scrape IMGs from HTML page using html-xml-utils.
 curl -s $1 | hxwls | grep -E "(jpg|png)" | grep -v thumb | xargs -I{} curl -s -O {}
 
@@ -169,14 +145,8 @@ curl -k -X GET -H "Authorization: Bearer $(cat /var/run/secrets/kubernetes.io/se
 # push new tag to Github
 git tag -a $TAG -m $TAG && git push origin refs/tags/$TAG
 
-# run Kafka UI in Kubernetes
-kubectl run kafka-ui --image=provectuslabs/kafka-ui --env="KAFKA_CLUSTERS_0_NAME=local" --env="KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:9092" --env="DYNAMIC_CONFIG_ENABLED=true" --restart=Never -- java -jar ./kafka-ui-api.jar
-
 # spreadsheets formula for calculating monthly expenses based on my Finances sheet
 =ArrayFormula({ { unique(text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM")) }, { sumif( text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM"), unique(text(filter('2022'!F2:F,'2022'!F2:F<>""),"MMMM")), '2022'!B2:B) } })
-
-# reset Kafka topic offset to latest
-kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group <group> --topic <topic> --reset-offsets --to-latest
 
 # focus on single screen with displayplacer
 displayplacer "id:69734272 enabled:false"
