@@ -68,7 +68,7 @@ const Service services[] = {
     },
     {
         .label = "local.gpg-kill-on-lock",
-        .args = {HOME "/bin/gpg-kill-on-lock"},
+        .args = {HOME "/.local/bin/gpg-kill-on-lock"},
         .log = "/tmp/gpg-kill-on-lock.log",
         .keep_alive = true, .run_at_load = true,
     },
@@ -79,16 +79,10 @@ const Service services[] = {
         .log = "/tmp/emacs-daemon.log",
         .keep_alive = true, .run_at_load = true,
     },
-    {
-        .label = "local.backup-documents",
-        .args = {HOME "/bin/backup-documents"},
-        .log = "/tmp/backup-documents.log",
-        .scheduled = true, .hour = 12, .minute = 0,
-    },
 };
 
 const Link swift_builds[] = {
-    {DOTSDIR "/src/gpg-kill-on-lock.swift", HOME "/bin/gpg-kill-on-lock"},
+    {DOTSDIR "/src/gpg-kill-on-lock.swift", HOME "/.local/bin/gpg-kill-on-lock"},
 };
 
 void gen_plist(String_Builder *sb, const Service *s) {
@@ -192,23 +186,23 @@ int main (int argc, char **argv) {
         for (size_t i = 0; i < ARRAY_LEN(links); i++) {
             link_path(&cmd, links[i].src, links[i].dst);
         }
-        nob_mkdir_if_not_exists(HOME "/bin");
+        nob_mkdir_if_not_exists(HOME "/.local/bin");
         File_Paths binaries = {0};
         if (!read_entire_dir(DOTSDIR "/bin", &binaries)) return 1;
         for (size_t i = 0; i < binaries.count; i++) {
             const char *name = binaries.items[i];
             if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
             link_path(&cmd, temp_sprintf(DOTSDIR "/bin/%s", name),
-                      temp_sprintf(HOME "/bin/%s", name));
+                      temp_sprintf(HOME "/.local/bin/%s", name));
         }
         nob_da_free(binaries);
         cmd_free(cmd);
         File_Paths existing = {0};
-        if (read_entire_dir(HOME "/bin", &existing)) {
+        if (read_entire_dir(HOME "/.local/bin", &existing)) {
             for (size_t i = 0; i < existing.count; i++) {
                 const char *name = existing.items[i];
                 if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
-                const char *path = temp_sprintf(HOME "/bin/%s", name);
+                const char *path = temp_sprintf(HOME "/.local/bin/%s", name);
                 char target[PATH_MAX];
                 ssize_t n = readlink(path, target, sizeof(target) - 1);
                 if (n < 0) continue;            // not a symlink

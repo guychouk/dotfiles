@@ -24,4 +24,4 @@ fi
 
 # PATH
 export GEM_HOME="${XDG_DATA_HOME}/gem"
-export PATH="$GEM_HOME:$HOME/bin:$HOME/scripts:$HOME/.local/bin:$PATH"
+export PATH="$GEM_HOME:$HOME/.local/bin:$PATH"
