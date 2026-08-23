@@ -67,12 +67,6 @@ const Service services[] = {
         .keep_alive = true, .run_at_load = true,
     },
     {
-        .label = "local.gpg-kill-on-lock",
-        .args = {HOME "/.local/bin/gpg-kill-on-lock"},
-        .log = "/tmp/gpg-kill-on-lock.log",
-        .keep_alive = true, .run_at_load = true,
-    },
-    {
         .label = "org.gnu.emacs.daemon",
         .args = {"/opt/homebrew/bin/emacs", "--fg-daemon"},
         .env = {"LANG=en_US.UTF-8", "LC_ALL=en_US.UTF-8"},
@@ -81,9 +75,7 @@ const Service services[] = {
     },
 };
 
-const Link swift_builds[] = {
-    {DOTSDIR "/src/gpg-kill-on-lock.swift", HOME "/.local/bin/gpg-kill-on-lock"},
-};
+const Link swift_builds[] = {0};
 
 void gen_plist(String_Builder *sb, const Service *s) {
     sb->count = 0;

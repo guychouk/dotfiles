@@ -1,0 +1,4 @@
+#!/bin/sh
+
+/opt/homebrew/bin/gpgconf --kill gpg-agent
+osascript -e 'display notification "🔒" with title "GPG Agent"'
