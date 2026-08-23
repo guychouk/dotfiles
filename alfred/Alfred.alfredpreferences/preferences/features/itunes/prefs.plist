@@ -11,7 +11,13 @@
 		<key>string</key>
 		<string></string>
 	</dict>
+	<key>includePodcasts</key>
+	<false/>
+	<key>indexUntickedTracks</key>
+	<false/>
 	<key>keywordEnabled</key>
+	<false/>
+	<key>usePlaylist</key>
 	<false/>
 </dict>
 </plist>
