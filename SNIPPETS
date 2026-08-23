@@ -171,3 +171,27 @@ pass show files/path > output.file
 
 # clear out a launchctl process via fzf #launchctl
 launchctl list | awk 'NR>1 && $3 != "-" {print $3}' | fzf | xargs -I{} launchctl bootout gui/$(id -u)/{}
+
+# list all loaded services for the current user #launchctl
+launchctl list
+
+# print full status for a launchctl service (plist path, pid, last exit code, etc) #launchctl
+launchctl print gui/$(id -u)/LABEL
+
+# load a launchd service (modern equivalent of launchctl load) #launchctl
+launchctl bootstrap gui/$(id -u) /path/to/label.plist
+
+# unload a running launchd service (modern equivalent of launchctl unload) #launchctl
+launchctl bootout gui/$(id -u)/LABEL
+
+# enable a launchd service (clears a disabled override so it can start again) #launchctl
+launchctl enable gui/$(id -u)/LABEL
+
+# disable a launchd service persistently (survives reboot, blocks future bootstrap) #launchctl
+launchctl disable gui/$(id -u)/LABEL
+
+# restart a running launchd service immediately #launchctl
+launchctl kickstart -k gui/$(id -u)/LABEL
+
+# validate a plist's syntax before installing it #launchctl
+plutil -lint /path/to/label.plist
