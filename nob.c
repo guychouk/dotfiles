@@ -45,75 +45,7 @@ const Link links[] = {
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
 };
 
-typedef struct {
-    const char *label;
-    const char *args[10];   // NULL-terminated
-    const char *env[6];     // NULL-terminated "KEY=VALUE" pairs
-    const char *workdir;    // optional, NULL to skip
-    const char *log;        // optional, NULL to skip (used for both stdout+stderr)
-    bool keep_alive;
-    bool run_at_load;
-    bool scheduled;         // run on a daily StartCalendarInterval at hour:minute
-    int hour;
-    int minute;
-} Service;
-
-const Service services[] = {
-    {
-        .label = "org.gnupg.gpg-agent",
-        .args = {"/opt/homebrew/bin/gpg-agent", "--supervised"},
-        .log = "/tmp/gpg-agent.log",
-        .keep_alive = true, .run_at_load = true,
-    },
-    {
-        .label = "org.gnu.emacs.daemon",
-        .args = {"/opt/homebrew/bin/emacs", "--fg-daemon"},
-        .env = {"LANG=en_US.UTF-8", "LC_ALL=en_US.UTF-8"},
-        .log = "/tmp/emacs-daemon.log",
-        .keep_alive = true, .run_at_load = true,
-    },
-};
-
 const Link swift_builds[] = {0};
-
-void gen_plist(String_Builder *sb, const Service *s) {
-    sb->count = 0;
-    sb_appendf(sb, "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-    sb_appendf(sb, "<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n");
-    sb_appendf(sb, "<plist version=\"1.0\">\n<dict>\n");
-    sb_appendf(sb, "    <key>Label</key>\n    <string>%s</string>\n", s->label);
-    sb_appendf(sb, "    <key>ProgramArguments</key>\n    <array>\n");
-    for (size_t i = 0; i < ARRAY_LEN(s->args) && s->args[i]; i++) {
-        sb_appendf(sb, "        <string>%s</string>\n", s->args[i]);
-    }
-    sb_appendf(sb, "    </array>\n");
-    if (s->env[0]) {
-        sb_appendf(sb, "    <key>EnvironmentVariables</key>\n    <dict>\n");
-        for (size_t i = 0; i < ARRAY_LEN(s->env) && s->env[i]; i++) {
-            const char *eq = strchr(s->env[i], '=');
-            sb_appendf(sb, "        <key>%.*s</key>\n        <string>%s</string>\n",
-                       (int)(eq - s->env[i]), s->env[i], eq + 1);
-        }
-        sb_appendf(sb, "    </dict>\n");
-    }
-    if (s->workdir)
-        sb_appendf(sb, "    <key>WorkingDirectory</key>\n    <string>%s</string>\n", s->workdir);
-    if (s->run_at_load)
-        sb_appendf(sb, "    <key>RunAtLoad</key>\n    <true/>\n");
-    if (s->keep_alive)
-        sb_appendf(sb, "    <key>KeepAlive</key>\n    <true/>\n");
-    if (s->scheduled) {
-        sb_appendf(sb, "    <key>StartCalendarInterval</key>\n    <dict>\n");
-        sb_appendf(sb, "        <key>Hour</key>\n        <integer>%d</integer>\n", s->hour);
-        sb_appendf(sb, "        <key>Minute</key>\n        <integer>%d</integer>\n", s->minute);
-        sb_appendf(sb, "    </dict>\n");
-    }
-    if (s->log) {
-        sb_appendf(sb, "    <key>StandardOutPath</key>\n    <string>%s</string>\n", s->log);
-        sb_appendf(sb, "    <key>StandardErrorPath</key>\n    <string>%s</string>\n", s->log);
-    }
-    sb_appendf(sb, "</dict>\n</plist>\n");
-}
 
 // (Re)load a launchd service, replacing any running instance. bootout is
 // asynchronous, so a bootstrap fired right after it can lose the race with the
@@ -221,17 +153,24 @@ int main (int argc, char **argv) {
             nob_log(ERROR, "launchd is macOS-only; use systemd user units on Linux");
             return 1;
         }
-        String_Builder sb = {0};
+        Cmd cmd = {0};
         const char *domain = temp_sprintf("gui/%d", getuid());
-        for (size_t i = 0; i < ARRAY_LEN(services); i++) {
-            const Service *s = &services[i];
-            const char *dst = temp_sprintf(LAUNCH_AGENTS_DIR "/%s.plist", s->label);
-            gen_plist(&sb, s);
-            if (!write_entire_file(dst, sb.items, sb.count)) return 1;
-            printf("%s\n", dst);
-            reload_service(domain, s->label, dst);
+        File_Paths plists = {0};
+        if (!read_entire_dir(DOTSDIR "/launchd", &plists)) return 1;
+        for (size_t i = 0; i < plists.count; i++) {
+            const char *name = plists.items[i];
+            size_t name_len = strlen(name);
+            const char *suffix = ".plist";
+            size_t suffix_len = strlen(suffix);
+            if (name_len < suffix_len || strcmp(name + name_len - suffix_len, suffix) != 0) continue;
+            const char *src = temp_sprintf(DOTSDIR "/launchd/%s", name);
+            const char *dst = temp_sprintf(LAUNCH_AGENTS_DIR "/%s", name);
+            link_path(&cmd, src, dst);
+            const char *label = temp_sprintf("%.*s", (int)(name_len - suffix_len), name);
+            reload_service(domain, label, dst);
         }
-        nob_sb_free(sb);
+        nob_da_free(plists);
+        cmd_free(cmd);
     } else {
         usage();
         return 1;
