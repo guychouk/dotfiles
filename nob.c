@@ -45,8 +45,6 @@ const Link links[] = {
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
 };
 
-const Link swift_builds[] = {0};
-
 // (Re)load a launchd service, replacing any running instance. bootout is
 // asynchronous, so a bootstrap fired right after it can lose the race with the
 // teardown and fail with a generic I/O error; retry until the job drains. Logs
@@ -93,7 +91,7 @@ void link_path(Cmd *cmd, const char *src, const char *dst) {
 }
 
 void usage(void) {
-    printf("usage: ./nob <links|launchd|swiftc>\n");
+    printf("usage: ./nob <links|launchd>\n");
 }
 
 int main (int argc, char **argv) {
@@ -137,16 +135,6 @@ int main (int argc, char **argv) {
                 }
             }
             nob_da_free(existing);
-        }
-    } else if (strcmp(command, "swiftc") == 0) {
-        if (!IS_APPLE) {
-            nob_log(ERROR, "swiftc is macOS-only (Swift GUI helpers)");
-            return 1;
-        }
-        Cmd cmd = {0};
-        for (size_t i = 0; i < ARRAY_LEN(swift_builds); i++) {
-            cmd_append(&cmd, "swiftc", swift_builds[i].src, "-o", swift_builds[i].dst);
-            cmd_run_sync_and_reset(&cmd);
         }
     } else if (strcmp(command, "launchd") == 0) {
         if (!IS_APPLE) {
