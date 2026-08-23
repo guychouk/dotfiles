@@ -15,9 +15,9 @@
 #define IS_APPLE 0
 #define HOME     "/home/guychouk"
 #endif
-#define XDG_CONFIG         HOME"/.config"
-#define DOTSDIR            HOME"/dotfiles"
-#define LAUNCH_AGENTS_DIR  HOME"/Library/LaunchAgents"
+#define XDG_CONFIG         HOME "/.config"
+#define DOTSDIR            HOME "/dotfiles"
+#define LAUNCH_AGENTS_DIR  HOME "/Library/LaunchAgents"
 
 typedef struct {
     char *src;
