@@ -40,7 +40,7 @@ const Link links[] = {
     {DOTSDIR "/zsh/.zshrc",           HOME "/.zshrc"},
     {DOTSDIR "/zsh/.zshenv",          HOME "/.zshenv"},
     {DOTSDIR "/gnupg/gpg-agent.conf", HOME "/.gnupg/gpg-agent.conf"},
-    {DOTSDIR "/bin/pinentry",         "/usr/local/bin/pinentry-wrapper"},
+    {DOTSDIR "/scripts/pinentry",     "/usr/local/bin/pinentry-wrapper"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
     {DOTSDIR "/tmux/tmux.conf",       HOME "/.tmux.conf"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
@@ -180,11 +180,11 @@ int main (int argc, char **argv) {
         }
         nob_mkdir_if_not_exists(HOME "/.local/bin");
         File_Paths binaries = {0};
-        if (!read_entire_dir(DOTSDIR "/bin", &binaries)) return 1;
+        if (!read_entire_dir(DOTSDIR "/scripts", &binaries)) return 1;
         for (size_t i = 0; i < binaries.count; i++) {
             const char *name = binaries.items[i];
             if (strcmp(name, ".") == 0 || strcmp(name, "..") == 0) continue;
-            link_path(&cmd, temp_sprintf(DOTSDIR "/bin/%s", name),
+            link_path(&cmd, temp_sprintf(DOTSDIR "/scripts/%s", name),
                       temp_sprintf(HOME "/.local/bin/%s", name));
         }
         nob_da_free(binaries);

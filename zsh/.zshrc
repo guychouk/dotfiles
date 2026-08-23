@@ -16,6 +16,13 @@ if [[ "$(uname)" == "Linux" ]]; then
   export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 fi
 
+# auto-switch pinentry mode: curses over SSH, GUI locally
+if [ -n "$SSH_TTY" ]; then
+  pinentry-ssh >/dev/null 2>&1
+else
+  pinentry-gui >/dev/null 2>&1
+fi
+
 ## zsh setup
 
 [[ ! -d "${ZSH_CACHE_DIR}" ]] && mkdir "${ZSH_CACHE_DIR}"
@@ -83,26 +90,6 @@ bindkey "^W" backward-delete-to-slash-or-dot
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey -M emacs '^v' edit-command-line
-
-# Snippet selector that inserts into zle
-function _snip_widget() {
-  local snippets_file=~/dotfiles/SNIPPETS
-  local selected=$(
-  awk '/^#/ {desc=substr($0, 3); getline; cmd=$0; print desc "\t" cmd}' "$snippets_file" | \
-    fzf --delimiter='\t' --with-nth=1 \
-    --preview="echo {2..} | bat -l bash -p --color always" \
-    --preview-window=up:3:wrap \
-    --bind='ctrl-y:preview-up,ctrl-e:preview-down'
-  )
-  if [ -n "$selected" ]; then
-    local cmd=$(echo "$selected" | cut -f2-)
-    BUFFER="$cmd"
-    CURSOR=${#BUFFER}
-  fi
-  zle reset-prompt
-}
-zle -N _snip_widget
-bindkey '^s' _snip_widget
 
 # Colors
 
@@ -187,21 +174,3 @@ fi
 if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
-
-## functions
-
-function set_kitty_tab_title() {
-  # only set title if we're in kitty
-  if [[ "$TERM" == "xterm-kitty" ]]; then
-    local title="$1"
-    # If no title was passed, use the current directory name
-    if [[ -z "$title" ]]; then
-      title=${PWD##*/}
-      if [[ "$PWD" == "$HOME" ]]; then
-        title="~"
-      fi
-    fi
-    # use kitty remote control to set tab title
-    kitten @ set-tab-title "$title" 2>/dev/null
-  fi
-}
