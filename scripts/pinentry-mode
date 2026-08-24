@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# Route gpg-agent prompts to pinentry-tty (ssh) or pinentry-mac (gui).
+case "${1}" in
+  ssh)
+    touch "$HOME/.gnupg/ssh-mode"
+    gpg-connect-agent updatestartuptty /bye >/dev/null
+    echo "pinentry: tty (ssh-mode on)"
+    ;;
+  gui)
+    rm -f "$HOME/.gnupg/ssh-mode"
+    echo "pinentry: mac (ssh-mode off)"
+    ;;
+  *)
+    echo "usage: pinentry-mode ssh|gui" >&2
+    exit 1
+    ;;
+esac

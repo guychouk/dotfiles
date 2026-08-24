@@ -1,4 +1,4 @@
-include ~/.config/newsboat/gman-theme
+include ./gman-theme
 browser "open %u"
 
 bind-key j down

@@ -8,7 +8,7 @@ end
 
 # auto-switch pinentry mode: curses over SSH, GUI locally
 if test -n "$SSH_TTY"
-  pinentry-ssh >/dev/null 2>&1
+  pinentry-mode ssh >/dev/null 2>&1
 else
-  pinentry-gui >/dev/null 2>&1
+  pinentry-mode gui >/dev/null 2>&1
 end

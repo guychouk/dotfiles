@@ -39,7 +39,7 @@ const Link links[] = {
     {DOTSDIR "/zsh/.zshrc",           HOME "/.zshrc"},
     {DOTSDIR "/zsh/.zshenv",          HOME "/.zshenv"},
     {DOTSDIR "/gnupg/gpg-agent.conf", HOME "/.gnupg/gpg-agent.conf"},
-    {DOTSDIR "/scripts/pinentry",     "/usr/local/bin/pinentry-wrapper"},
+    {DOTSDIR "/scripts/pinentry",     "/usr/local/bin/pinentry"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
     {DOTSDIR "/tmux/tmux.conf",       HOME "/.tmux.conf"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
