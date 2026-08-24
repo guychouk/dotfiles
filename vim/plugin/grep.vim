@@ -10,7 +10,7 @@ set grepprg=rg\ --vimgrep\ --smart-case
 set grepformat=%f:%l:%c:%m
 
 function! s:Grep(...)
-  let lines = systemlist(split(&grepprg) + a:000)
+  let lines = systemlist(&grepprg . ' ' . join(map(copy(a:000), {_, v -> shellescape(v)})))
   return type(lines) == v:t_list ? lines : []
 endfunction
 

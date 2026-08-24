@@ -17,8 +17,6 @@ endfunction
 
 set tabline=%!Tabline()
 
-" The tabline expression only re-evaluates on redraw, so a cd leaves the label
-" stale until something else triggers one. Force it whenever the cwd changes.
 augroup tabline_dirchanged
   autocmd!
   autocmd DirChanged * redrawtabline

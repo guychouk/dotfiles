@@ -1,7 +1,7 @@
 function! s:YankAbsoluteFilePath()
   let l:file = expand('%:p')
   if l:file == ''
-    echo "No file associated with this buffer"
+    echo "No file!"
     return
   endif
   let @+ = l:file
@@ -12,7 +12,7 @@ function! s:YankRelativeFilePath()
   let l:root = getcwd()
   let l:file = expand('%:p')
   if l:file == ''
-    echo "No file associated with this buffer"
+    echo "No file!"
     return
   endif
   let l:relative_path = substitute(l:file, l:root . '/', '', '')
@@ -29,7 +29,7 @@ endfunction
 function! s:YankFileLocation()
   let l:file = expand('%:p')
   if l:file == ''
-    echo "No file associated with this buffer"
+    echo "No file!"
     return
   endif
   let l:location = l:file . ':' . line('.') . ':' . col('.')
@@ -40,7 +40,7 @@ endfunction
 function! s:YankLineWithLocation(l1, l2)
   let l:file = expand('%:p')
   if l:file == ''
-    echo "No file associated with this buffer"
+    echo "No file!"
     return
   endif
   let l:lines = getline(a:l1, a:l2)
