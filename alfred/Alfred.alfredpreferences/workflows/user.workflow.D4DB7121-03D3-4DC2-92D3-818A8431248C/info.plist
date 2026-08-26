@@ -84,32 +84,13 @@
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>Dedicated pass(1) workflow: list entries, Tab for Copy password / Copy username / Edit in Vim</string>
+	<string>Dedicated pass(1) workflow for listing entries, copy password / username and edit in MacVim</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
 	<string>Pass</string>
 	<key>objects</key>
 	<array>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>autopaste</key>
-				<false/>
-				<key>clipboardtext</key>
-				<string>{query}</string>
-				<key>ignoredynamicplaceholders</key>
-				<false/>
-				<key>transient</key>
-				<true/>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.output.clipboard</string>
-			<key>uid</key>
-			<string>6BAFFD29-40D8-492D-BA49-10FA7B34186C</string>
-			<key>version</key>
-			<integer>3</integer>
-		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -133,6 +114,25 @@ pass show "{query}" | head -1 | tr -d '\n'</string>
 			<string>C2B0CAB0-347F-4A84-B065-DA16F711CAB0</string>
 			<key>version</key>
 			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>autopaste</key>
+				<false/>
+				<key>clipboardtext</key>
+				<string>{query}</string>
+				<key>ignoredynamicplaceholders</key>
+				<false/>
+				<key>transient</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.clipboard</string>
+			<key>uid</key>
+			<string>6BAFFD29-40D8-492D-BA49-10FA7B34186C</string>
+			<key>version</key>
+			<integer>3</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -284,35 +284,35 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 			<key>xpos</key>
 			<real>365</real>
 			<key>ypos</key>
-			<real>415</real>
+			<real>275</real>
 		</dict>
 		<key>47768B4D-E032-4BDC-BC11-E37D0C6F5609</key>
 		<dict>
 			<key>xpos</key>
 			<real>530</real>
 			<key>ypos</key>
-			<real>615</real>
+			<real>475</real>
 		</dict>
 		<key>6BAFFD29-40D8-492D-BA49-10FA7B34186C</key>
 		<dict>
 			<key>xpos</key>
 			<real>535</real>
 			<key>ypos</key>
-			<real>215</real>
+			<real>75</real>
 		</dict>
 		<key>999C292E-E285-40AE-A5C3-76FEDDFFCC10</key>
 		<dict>
 			<key>xpos</key>
 			<real>95</real>
 			<key>ypos</key>
-			<real>415</real>
+			<real>275</real>
 		</dict>
 		<key>C08D4EF3-5DB4-4E8C-BBB3-2F53CECCD170</key>
 		<dict>
 			<key>xpos</key>
 			<real>535</real>
 			<key>ypos</key>
-			<real>415</real>
+			<real>275</real>
 		</dict>
 		<key>C2B0CAB0-347F-4A84-B065-DA16F711CAB0</key>
 		<dict>
@@ -321,7 +321,7 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 			<key>xpos</key>
 			<real>365</real>
 			<key>ypos</key>
-			<real>215</real>
+			<real>75</real>
 		</dict>
 		<key>C8E51AD3-A3E0-4E87-91DF-7C22DFF119FE</key>
 		<dict>
@@ -330,7 +330,7 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 			<key>xpos</key>
 			<real>365</real>
 			<key>ypos</key>
-			<real>615</real>
+			<real>475</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -340,6 +340,6 @@ EDITOR="mvim -f" pass edit "{query}"</string>
 	<key>version</key>
 	<string>1.0</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>guycho.uk</string>
 </dict>
 </plist>
