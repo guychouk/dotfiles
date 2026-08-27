@@ -4,7 +4,7 @@
 if exists("current_compiler") | finish | endif
 let current_compiler = "eslint"
 
-CompilerSet makeprg=eslint\ --format\ unix\ .
+CompilerSet makeprg=./node_modules/.bin/eslint\ --format\ unix\ .
 CompilerSet errorformat=
       \%f:%l:%c:\ %m,
       \%-G\\s%#,
