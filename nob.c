@@ -40,7 +40,6 @@ const Link links[] = {
     {DOTSDIR "/gnupg/gpg-agent.conf", HOME "/.gnupg/gpg-agent.conf"},
     {DOTSDIR "/scripts/pinentry",     "/usr/local/bin/pinentry"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
-    {DOTSDIR "/tmux/tmux.conf",       HOME "/.tmux.conf"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
 };
 
