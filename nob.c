@@ -31,7 +31,6 @@ const Link links[] = {
     {DOTSDIR "/yazi",                 XDG_CONFIG "/yazi"},
     {DOTSDIR "/zsh",                  XDG_CONFIG "/zsh"},
     {DOTSDIR "/mise",                 XDG_CONFIG "/mise"},
-    {DOTSDIR "/direnv",               XDG_CONFIG "/direnv"},
     {DOTSDIR "/newsboat",             XDG_CONFIG "/newsboat"},
     {DOTSDIR "/gh-dash",              XDG_CONFIG "/gh-dash"},
     {DOTSDIR "/vim",                  HOME "/.vim"},

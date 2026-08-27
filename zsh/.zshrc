@@ -165,12 +165,6 @@ if _has fzf; then
   fi
 fi
 
-if _has direnv; then
-  # silence direnv
-  export DIRENV_LOG_FORMAT=
-  eval "$(direnv hook zsh)"
-fi
-
 if _has zoxide; then
   eval "$(zoxide init --cmd j zsh)"
 fi
