@@ -132,6 +132,7 @@ nnoremap <silent> d#              ?\<<C-r>=expand('<cword>')<CR>\>\C<CR>``dgN
 nnoremap <silent> yoz             :WinZoom<CR>
 nnoremap <silent> <C-]>           :ltag <C-R><C-W><CR>
 nnoremap <silent> <C-g>           2<C-g>
+xnoremap <silent> <C-g>           g<C-g>
 nnoremap <silent> <C-w>}          :pclose<CR>
 nnoremap <silent> <C-w>{          :ptag <C-r><C-w><CR>
 nnoremap <silent> <C-w>h          :WinMoveOrSplit h<CR>
