@@ -24,4 +24,5 @@ This README is just a quick summary while that page is the tour.
 ## Using this
 
 Not meant to be installed wholesale on someone else's machine - paths and
-tool choices are mine. I hope something here will be of interest to you.
+tool choices are mine. Nevertheless, I still hope something here will be of
+interest to you.
