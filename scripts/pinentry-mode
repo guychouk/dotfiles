@@ -1,6 +1,5 @@
 #!/bin/sh
 
-# Route gpg-agent prompts to pinentry-tty (ssh) or pinentry-mac (gui).
 case "${1}" in
   ssh)
     touch "$HOME/.gnupg/ssh-mode"
