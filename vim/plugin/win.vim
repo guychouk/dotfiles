@@ -1,4 +1,4 @@
-function! s:WinMoveOrSplit(key) abort
+function! s:win_move_or_split(key) abort
   let t:curwin = winnr()
   exec "wincmd ".a:key
   if (t:curwin == winnr())
@@ -11,7 +11,7 @@ function! s:WinMoveOrSplit(key) abort
   endif
 endfunction
 
-function! s:WinZoom() abort
+function! s:win_zoom() abort
   if exists('t:zoomed') && t:zoomed
     execute t:zoom_winrestcmd
     let t:zoomed = 0
@@ -23,5 +23,5 @@ function! s:WinZoom() abort
   endif
 endfunction
 
-command! -bar -nargs=0 WinZoom         call <sid>WinZoom()
-command! -bar -nargs=1 WinMoveOrSplit  call <sid>WinMoveOrSplit(<q-args>)
+command! -bar -nargs=0 WinZoom         call <sid>win_zoom()
+command! -bar -nargs=1 WinMoveOrSplit  call <sid>win_move_or_split(<q-args>)

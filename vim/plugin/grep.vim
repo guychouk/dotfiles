@@ -9,12 +9,12 @@ endif
 set grepprg=rg\ --vimgrep\ --smart-case
 set grepformat=%f:%l:%c:%m
 
-function! s:Grep(...)
+function! s:grep(...)
   let lines = systemlist(&grepprg . ' ' . join(map(copy(a:000), {_, v -> shellescape(v)})))
   return type(lines) == v:t_list ? lines : []
 endfunction
 
-command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr s:Grep(<f-args>)
-command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr s:Grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar Grep  cgetexpr s:grep(<f-args>)
+command! -nargs=+ -complete=file_in_path -bar LGrep lgetexpr s:grep(<f-args>)
 
 cnoreabbrev <expr> grep (getcmdtype() ==# ':' && getcmdline() ==# 'grep') ? 'Grep' : 'grep'

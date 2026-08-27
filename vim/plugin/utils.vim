@@ -1,4 +1,4 @@
-function! s:SynStack() abort
+function! s:syn_stack() abort
   if !exists("*synstack")
     echom "No synstack function available!"
     return
@@ -7,7 +7,7 @@ function! s:SynStack() abort
 endfunction
 
 " Taken from https://ddrscott.github.io/blog/2016/vim-toggle-movement
-function! s:ToggleMovement(firstOp, thenOp) abort
+function! s:toggle_movement(firstOp, thenOp) abort
   let pos = getpos('.')
   execute "normal! " . a:firstOp
   if pos == getpos('.')
@@ -15,5 +15,5 @@ function! s:ToggleMovement(firstOp, thenOp) abort
   endif
 endfunction
 
-command! -bar -nargs=0 SynStack        call <sid>SynStack()
-command! -bar -nargs=+ ToggleMovement  call <sid>ToggleMovement(<f-args>)
+command! -bar -nargs=0 SynStack        call <sid>syn_stack()
+command! -bar -nargs=+ ToggleMovement  call <sid>toggle_movement(<f-args>)

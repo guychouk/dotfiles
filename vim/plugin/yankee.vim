@@ -1,4 +1,4 @@
-function! s:YankAbsoluteFilePath()
+function! s:yank_absolute_file_path()
   let l:file = expand('%:p')
   if l:file == ''
     echo "No file!"
@@ -8,7 +8,7 @@ function! s:YankAbsoluteFilePath()
   echomsg "Yanked: " . l:file
 endfunction
 
-function! s:YankRelativeFilePath()
+function! s:yank_relative_file_path()
   let l:root = getcwd()
   let l:file = expand('%:p')
   if l:file == ''
@@ -20,13 +20,13 @@ function! s:YankRelativeFilePath()
   echomsg "Yanked: " . l:relative_path
 endfunction
 
-function! s:YankCurrentDate()
+function! s:yank_current_date()
   let l:date = strftime('%Y-%m-%d')
   let @+ = l:date
   echomsg "Yanked: " . l:date
 endfunction
 
-function! s:YankFileLocation()
+function! s:yank_file_location()
   let l:file = expand('%:p')
   if l:file == ''
     echo "No file!"
@@ -37,7 +37,7 @@ function! s:YankFileLocation()
   echomsg "Yanked: " . l:location
 endfunction
 
-function! s:YankLineWithLocation(l1, l2)
+function! s:yank_line_with_location(l1, l2)
   let l:file = expand('%:p')
   if l:file == ''
     echo "No file!"
@@ -53,8 +53,8 @@ function! s:YankLineWithLocation(l1, l2)
   echomsg "Yanked: " . l:location
 endfunction
 
-command! -bar -nargs=0 YankCurrentDate      call <sid>YankCurrentDate()
-command! -bar -nargs=0 YankRelativeFilePath call <sid>YankRelativeFilePath()
-command! -bar -nargs=0 YankAbsoluteFilePath call <sid>YankAbsoluteFilePath()
-command! -bar -nargs=0 YankFileLocation     call <sid>YankFileLocation()
-command! -bar -range   YankLineWithLocation call <sid>YankLineWithLocation(<line1>, <line2>)
+command! -bar -nargs=0 YankCurrentDate      call <sid>yank_current_date()
+command! -bar -nargs=0 YankRelativeFilePath call <sid>yank_relative_file_path()
+command! -bar -nargs=0 YankAbsoluteFilePath call <sid>yank_absolute_file_path()
+command! -bar -nargs=0 YankFileLocation     call <sid>yank_file_location()
+command! -bar -range   YankLineWithLocation call <sid>yank_line_with_location(<line1>, <line2>)

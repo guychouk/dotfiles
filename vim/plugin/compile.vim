@@ -1,22 +1,25 @@
+" A Compile command that also remebers the last command for quick
+" iterations!
+
 let s:job  = v:null
 let s:gen  = 0
 let s:cmd  = ''
 let s:qfid = 0
 let s:efm  = ''
 
-function! s:OnOut(gen, ch, msg) abort
+function! s:on_out(gen, ch, msg) abort
   if a:gen != s:gen | return | endif
   call setqflist([], 'a', {'id': s:qfid, 'lines': [a:msg], 'efm': s:efm})
 endfunction
 
-function! s:OnExit(gen, cmd, job, status) abort
+function! s:on_exit(gen, cmd, job, status) abort
   if a:gen != s:gen | return | endif
   call setqflist([], 'r', {'id': s:qfid, 'title': printf('[%d] %s', a:status, a:cmd)})
   cwindow
   echo printf('Compile: %s -> %d', a:cmd, a:status)
 endfunction
 
-function! s:Compile(bang, arg) abort
+function! s:compile(bang, arg) abort
   let l:arg = trim(a:arg)
   if a:bang && empty(l:arg)
     if empty(s:cmd)
@@ -42,18 +45,18 @@ function! s:Compile(bang, arg) abort
   let s:qfid = getqflist({'nr': '$', 'id': 0}).id
   let s:job = job_start(['/bin/sh', '-c', l:cmd], {
         \ 'cwd':     getcwd(),
-        \ 'out_cb':  function('s:OnOut', [s:gen]),
-        \ 'err_cb':  function('s:OnOut', [s:gen]),
-        \ 'exit_cb': function('s:OnExit', [s:gen, l:cmd]),
+        \ 'out_cb':  function('s:on_out', [s:gen]),
+        \ 'err_cb':  function('s:on_out', [s:gen]),
+        \ 'exit_cb': function('s:on_exit', [s:gen, l:cmd]),
         \ })
 endfunction
 
-function! s:CompileStop() abort
+function! s:compile_stop() abort
   if s:job isnot v:null && job_status(s:job) ==# 'run'
     call job_stop(s:job)
   endif
   let s:gen += 1
 endfunction
 
-command! CompileStop call <sid>CompileStop()
-command! -nargs=* -bang -complete=file Compile call <sid>Compile(<bang>0, <q-args>)
+command! CompileStop call <sid>compile_stop()
+command! -nargs=* -bang -complete=file Compile call <sid>compile(<bang>0, <q-args>)

@@ -1,6 +1,6 @@
 let s:last = ''
 
-function! s:Term(bang, args) abort
+function! s:term(bang, args) abort
   if a:bang
     if empty(s:last)
       echohl WarningMsg | echo 'nothing to rerun' | echohl None
@@ -13,4 +13,4 @@ function! s:Term(bang, args) abort
   endif
 endfunction
 
-command! -nargs=* -bang -complete=shellcmd Term call <sid>Term(<bang>0, <q-args>)
+command! -nargs=* -bang -complete=shellcmd Term call <sid>term(<bang>0, <q-args>)

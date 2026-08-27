@@ -1,4 +1,4 @@
-function! s:GitReview(...) abort
+function! s:git_review(...) abort
   let l:range = (a:0 > 0 && !empty(a:1)) ? a:1 : ''
   let l:base = trim(system('cr base ' . l:range))
   if v:shell_error
@@ -19,5 +19,5 @@ function! s:GitReview(...) abort
   GitGutterAll
 endfunction
 
-command! -bar -nargs=? GitReview      call <sid>GitReview(<f-args>)
+command! -bar -nargs=? GitReview      call <sid>git_review(<f-args>)
 command! -bar -nargs=0 GitReviewClear unlet! g:gitgutter_diff_base | GitGutterAll
