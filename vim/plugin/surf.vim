@@ -27,6 +27,7 @@ function! s:surf(fdtype, Sink) abort
         \ 'source': l:source,
         \ 'sink': a:Sink,
         \ 'down': '10',
+        \ 'options': ['--style=minimal', '--info=hidden', '--margin=0', '--prompt=λ '],
         \ }))
 endfunction
 
