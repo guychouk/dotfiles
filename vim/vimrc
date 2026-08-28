@@ -22,6 +22,7 @@ set nojoinspaces
 set noswapfile
 set nrformats=bin,hex
 set pumheight=15
+set redrawtime=300
 set sessionoptions-=options
 set shiftround
 set shiftwidth=2
