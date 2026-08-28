@@ -58,6 +58,8 @@ endfunction
 
 call s:hl('StatusLine',        'white',         'ui',            '')
 call s:hl('StatusLineNC',      'gray',          'ui',            '')
+call s:hl('StatusLineTerm',    'white',         'ui',            '')
+call s:hl('StatusLineTermNC',  'gray',          'ui',            '')
 call s:hl('TabLine',           'white',         'ui',            '')
 call s:hl('TabLineSel',        'ui',            'white',         '')
 call s:hl('TabLineFill',       '',              'ui',            '')

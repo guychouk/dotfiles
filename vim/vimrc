@@ -87,7 +87,7 @@ syntax enable
 
 set number
 set cursorline
-set laststatus=0
+set laststatus=2
 set signcolumn=yes
 set noruler
 set noshowcmd
