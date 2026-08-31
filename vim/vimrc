@@ -165,7 +165,7 @@ xnoremap          <leader>yc      :YankLineWithLocation<CR>
 nnoremap          <leader>nn      :NewNote<CR>
 nnoremap          <leader>ns      :Notes<CR>
 nnoremap          <leader>=       :put =eval(getline('.'))<CR>
-xnoremap          <leader>nn      :NewNote<CR>
+xnoremap          <leader>nn      :<C-u>NewNoteVisual<CR>
 xnoremap          gs              :s/
 xnoremap          gS              :S/
 xnoremap <silent> K               :m '<-2<CR>gv=gv
