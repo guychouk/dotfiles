@@ -7,6 +7,9 @@ gpgconf --launch gpg-agent
 # Warm the SSH auth subkey (used for all github.com traffic)
 SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)" ssh -o BatchMode=yes -T git@github.com >/dev/null 2>&1
 
+# Warm the SSH auth subkey for the diane repo's self-hosted Gitea remote
+SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)" ssh -o BatchMode=yes -p 2222 -T git@git.ark.kuta.games >/dev/null 2>&1
+
 # Warm the GPG signing keys for both identities (personal + Factify)
 for key in C5425A14CC652EC133130CE5A124EF3A92F2C7A4 FDE79464274DD21417E734C9465A22B12E521EC5; do
   echo | gpg --batch --yes --local-user "$key" --sign --armor --output /dev/null 2>/dev/null
