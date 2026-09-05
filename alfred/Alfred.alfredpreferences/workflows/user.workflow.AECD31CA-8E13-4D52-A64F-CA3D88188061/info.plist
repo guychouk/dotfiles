@@ -109,7 +109,7 @@ print(json.dumps({"items": items}))
 				<integer>0</integer>
 				<key>script</key>
 				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-nohup kitty --title "{query}" -e abduco -a "{query}" &gt;/tmp/abduco-attach-alfred.log 2&gt;&amp;1 &amp;
+nohup kitty --title "{query}" -e fish -c "abduco -a '{query}'" &gt;/tmp/abduco-attach-alfred.log 2&gt;&amp;1 &amp;
 disown</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>

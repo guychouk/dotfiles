@@ -90,7 +90,7 @@
 				<integer>0</integer>
 				<key>script</key>
 				<string>PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-nohup kitty --title Paddock -e paddock &gt;/tmp/paddock-alfred.log 2&gt;&amp;1 &amp;
+nohup kitty --title Paddock -e fish -c "paddock" &gt;/tmp/paddock-alfred.log 2&gt;&amp;1 &amp;
 disown</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
