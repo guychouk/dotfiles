@@ -27,7 +27,7 @@ function! s:surf(fdtype, Sink) abort
         \ 'source': l:source,
         \ 'sink': a:Sink,
         \ 'down': '10',
-        \ 'options': ['--margin=2%,0%', '--info=hidden', '--no-scrollbar', '--prompt=🔎 '],
+        \ 'options': ['--margin=2%,0%', '--info=hidden', '--no-scrollbar', '--prompt=λ ', '--color=prompt:#e58a2b'],
         \ }))
 endfunction
 

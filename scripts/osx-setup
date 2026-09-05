@@ -76,6 +76,9 @@ defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
 # Don’t show recent applications in Dock
 defaults write com.apple.dock show-recents -bool false
 
+# Hide MacVim's title bar (frameless window, no traffic lights)
+defaults write org.vim.MacVim MMNoTitleBarWindow -bool true
+
 # Set hostname
 MY_HOSTNAME=guychouk-mbp
 scutil --set HostName $MY_HOSTNAME
