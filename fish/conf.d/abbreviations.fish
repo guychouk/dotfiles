@@ -1,5 +1,6 @@
 # Abbreviations that set the cursor's position using %
 abbr -a --set-cursor grp 'grep -rn "%" .'
+abbr -a --set-cursor gCs 'git -C % status'
 
 # Regular abbreviations
 abbr -a aa       "abduco -a"
