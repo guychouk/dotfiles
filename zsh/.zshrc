@@ -11,11 +11,6 @@ export WGET_HSTS_FILE="${XDG_CONFIG_HOME}/.wget-hsts"
 export PYTHONHISTFILE="${XDG_CACHE_HOME}/.python_history"
 export LESSHISTFILE="${XDG_CACHE_HOME}/.lesshst"
 
-# fix ssh auth socket on linux
-if [[ "$(uname)" == "Linux" ]]; then
-  export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-fi
-
 # auto-switch pinentry mode: curses over SSH, GUI locally
 if [ -n "$SSH_TTY" ]; then
   pinentry-mode ssh >/dev/null 2>&1

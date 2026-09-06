@@ -25,3 +25,12 @@ fi
 # PATH
 export GEM_HOME="${XDG_DATA_HOME}/gem"
 export PATH="$GEM_HOME:$HOME/.local/bin:$PATH"
+
+# gpg-agent as the SSH agent: unconditional and in .zshenv (not .zshrc) so it
+# also applies to non-interactive zsh, e.g. Claude Code's Bash tool. Mirrors
+# what fish/conf.d/02_gpg.fish already does unconditionally for every fish
+# shell; zsh only had this in .zshrc, Linux-gated, i.e. never on this Mac
+# outside an interactive shell.
+if command -v gpgconf > /dev/null 2>&1; then
+  export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+fi
