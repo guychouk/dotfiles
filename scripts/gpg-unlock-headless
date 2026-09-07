@@ -1,0 +1,32 @@
+#!/bin/sh
+# Headless counterpart to gpg-unlock: primes gpg-agent's cache via
+# gpg-preset-passphrase (GnuPG's own mechanism for unattended machines,
+# see gpg-preset-passphrase(1)) instead of triggering a real pinentry-mac
+# prompt that requires someone physically at this Mac to answer it.
+#
+# Passphrases live in Keychain, added once by hand:
+#   security add-generic-password -a "$USER" -s gpg-unlock-personal -w
+#   security add-generic-password -a "$USER" -s gpg-unlock-factify  -w
+# (type the value at the prompt or pass -w '<passphrase>' directly from
+# your own terminal — never through an AI chat session)
+#
+# Run automatically at login by com.guychouk.gpg-unlock-headless.plist.
+# gpg-agent.conf needs allow-preset-passphrase and a max-cache-ttl longer
+# than 8h for this to actually stick.
+
+PATH="/opt/homebrew/bin:/usr/bin:/bin:$HOME/.local/bin:$PATH"
+PRESET="$(gpgconf --list-dirs libexecdir)/gpg-preset-passphrase"
+
+gpgconf --launch gpg-agent
+
+preset() {
+  # $1 = Keychain service name, $2 = keygrip
+  security find-generic-password -a "$USER" -s "$1" -w 2>/dev/null \
+    | "$PRESET" --preset "$2"
+}
+
+preset gpg-unlock-personal 398D8631EABD58E553A20D2BE3A23D5DF148BD84 # personal signing key
+preset gpg-unlock-personal A46B54C305A6F92C347922A00936E74D46D86655 # personal SSH auth subkey
+preset gpg-unlock-factify  B723BF2077A922EE94C4B0BEA24643A20E89DA41 # Factify signing key
+
+osascript -e 'display notification "🔓 gpg-agent primed from Keychain (headless)" with title "GPG Agent"' >/dev/null 2>&1 &
