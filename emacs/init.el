@@ -23,6 +23,9 @@
              (expand-file-name "themes" user-emacs-directory))
 (load-theme 'gman t)
 
+;; C-SPC is bound to Alfred
+(global-set-key (kbd "C-c SPC") 'set-mark-command)
+
 ;;; Hebrew editing
 ;;
 ;; Use Emacs's own input method rather than the OS Hebrew keyboard.
