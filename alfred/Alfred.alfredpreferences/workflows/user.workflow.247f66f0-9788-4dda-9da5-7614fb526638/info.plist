@@ -18,7 +18,7 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<false/>
+				<true/>
 			</dict>
 		</array>
 	</dict>
@@ -92,6 +92,7 @@
 				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
 REPO="{query}"
 REPONAME=$(basename "$REPO")
+osascript -e "display notification \"Pushing $REPONAME...\" with title \"Git Push\""
 cd "$REPO" || exit 1
 if git push &gt;/tmp/git_push.log 2&gt;&amp;1; then
   osascript -e "display notification \"Push complete\" with title \"$REPONAME\" subtitle \"Success\""
