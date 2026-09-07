@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.agents</string>
+	<string>com.guychouk.push-gitea</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
 	<dict>
-		<key>AD7A74A5-2DDB-4480-8122-5C8B245D6A64</key>
+		<key>55B77A78-A531-4775-8B27-07667D1ED76F</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>DD670C01-F710-43AC-9D33-DFE74689AF13</string>
+				<string>9598B0F7-32EB-4D15-AF57-363DA8F47DDC</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
@@ -25,11 +25,11 @@
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>List running abduco agent sessions and attach to one in a new kitty window</string>
+	<string>Select a repo with a gitea remote and push its current branch there</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>Agents</string>
+	<string>Push to Gitea</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -40,7 +40,7 @@
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
 				<key>argumenttreatemptyqueryasnil</key>
-				<true/>
+				<false/>
 				<key>argumenttrimmode</key>
 				<integer>0</integer>
 				<key>argumenttype</key>
@@ -48,7 +48,7 @@
 				<key>escaping</key>
 				<integer>68</integer>
 				<key>keyword</key>
-				<string>agents</string>
+				<string>gitea</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -61,25 +61,7 @@
 				<string></string>
 				<key>script</key>
 				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-abduco -l 2&gt;/dev/null | tail -n +2 | python3 -c '
-import sys, json
-items = []
-for line in sys.stdin:
-    line = line.rstrip("\n")
-    if not line.strip():
-        continue
-    parts = line.split("\t")
-    if len(parts) &lt; 3:
-        continue
-    attached = line.startswith("*")
-    ts = parts[1].strip()
-    name = parts[-1].strip()
-    subtitle = ("attached now" if attached else "detached") + " - last active " + ts
-    items.append({"uid": name, "title": name, "subtitle": subtitle, "arg": name})
-if not items:
-    items.append({"title": "No abduco sessions running", "subtitle": "abduco -l returned nothing to attach to", "valid": False})
-print(json.dumps({"items": items}))
-'</string>
+scripts/list-gitea-repos.sh</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -87,7 +69,7 @@ print(json.dumps({"items": items}))
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Attach to agent</string>
+				<string>Select a repo to push to gitea</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -96,7 +78,7 @@ print(json.dumps({"items": items}))
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>AD7A74A5-2DDB-4480-8122-5C8B245D6A64</string>
+			<string>55B77A78-A531-4775-8B27-07667D1ED76F</string>
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
@@ -109,8 +91,7 @@ print(json.dumps({"items": items}))
 				<integer>0</integer>
 				<key>script</key>
 				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-nohup kitty --title "{query}" -e fish -c "abduco -a '{query}'" &gt;/tmp/abduco-attach-alfred.log 2&gt;&amp;1 &amp;
-disown</string>
+scripts/push-gitea.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -121,23 +102,23 @@ disown</string>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>DD670C01-F710-43AC-9D33-DFE74689AF13</string>
+			<string>9598B0F7-32EB-4D15-AF57-363DA8F47DDC</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Keyword "agents" lists live abduco sessions (from `abduco -l`) and, on selection, opens a new kitty window running `abduco -a &lt;name&gt;` to attach. Closing that kitty window only detaches the client (abduco's default behavior on hangup) - it never kills the underlying session, so it's safe to close whenever.</string>
+	<string>Type 'gitea', select a repo, and push its current branch to its "gitea" remote specifically (not whatever the tracking branch happens to be), same convention as paddock's own repos-screen "P" key. Discovers repos by scanning ~/src/*/ plus ~/dotfiles for one with a git remote named "gitea"; nothing to maintain by hand.</string>
 	<key>uidata</key>
 	<dict>
-		<key>AD7A74A5-2DDB-4480-8122-5C8B245D6A64</key>
+		<key>55B77A78-A531-4775-8B27-07667D1ED76F</key>
 		<dict>
 			<key>xpos</key>
 			<integer>110</integer>
 			<key>ypos</key>
 			<integer>180</integer>
 		</dict>
-		<key>DD670C01-F710-43AC-9D33-DFE74689AF13</key>
+		<key>9598B0F7-32EB-4D15-AF57-363DA8F47DDC</key>
 		<dict>
 			<key>xpos</key>
 			<integer>415</integer>

@@ -3,20 +3,30 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.gpg-lock</string>
+	<string>com.guychouk.paddock-toggle</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
 	<dict>
-		<key>A55B663E-3C6E-40C4-8211-5E3D4AEDBCFD</key>
+		<key>A2A0EF65-A65B-4634-919E-C60BDDCF398E</key>
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>FD294EC4-6D15-4CB3-A4B2-ED2E6C60D266</string>
+				<string>4AE8A1B5-D230-489A-9A5F-92416EA9057C</string>
 				<key>modifiers</key>
 				<integer>0</integer>
 				<key>modifiersubtext</key>
 				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>FCD69B47-70B2-4E9D-BD1E-8AD8E33DBCF0</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Open http://localhost:&lt;port&gt; in the browser</string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -25,11 +35,11 @@
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>Dedicated GnuPG workflow for locking/unlocking the GPG agent. Unlock primes from Keychain (no prompt) — see gpg-unlock directly for the interactive/physically-present variant.</string>
+	<string>List paddock targets (dev servers, port-forwards, agents), toggle one start/stop, or open its port in the browser</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>GPG</string>
+	<string>Paddock</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -48,7 +58,7 @@
 				<key>escaping</key>
 				<integer>68</integer>
 				<key>keyword</key>
-				<string>gpg</string>
+				<string>pad</string>
 				<key>queuedelaycustom</key>
 				<integer>3</integer>
 				<key>queuedelayimmediatelyinitially</key>
@@ -60,12 +70,8 @@
 				<key>runningsubtext</key>
 				<string></string>
 				<key>script</key>
-				<string>echo '{
-  "items": [
-    {"uid": "gpg-lock", "title": "Lock", "subtitle": "Lock GPG", "arg": "lock"},
-    {"uid": "gpg-unlock", "title": "Unlock", "subtitle": "Unlock GPG", "arg": "unlock"}
-  ]
-}'</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/list-targets.sh</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -73,16 +79,16 @@
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>gpg-agent: lock or unlock</string>
+				<string>Toggle a paddock target -- Enter: start/stop, Cmd: open in browser</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
-				<false/>
+				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.input.scriptfilter</string>
 			<key>uid</key>
-			<string>A55B663E-3C6E-40C4-8211-5E3D4AEDBCFD</string>
+			<string>A2A0EF65-A65B-4634-919E-C60BDDCF398E</string>
 			<key>version</key>
 			<integer>3</integer>
 		</dict>
@@ -94,12 +100,8 @@
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$HOME/.local/bin:$PATH"
-arg="{query}"
-case "$arg" in
-  lock) gpg-lock ;;
-  unlock) gpg-unlock-headless ;;
-esac</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/toggle.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -110,28 +112,59 @@ esac</string>
 			<key>type</key>
 			<string>alfred.workflow.action.script</string>
 			<key>uid</key>
-			<string>FD294EC4-6D15-4CB3-A4B2-ED2E6C60D266</string>
+			<string>4AE8A1B5-D230-489A-9A5F-92416EA9057C</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/open-url.sh "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>FCD69B47-70B2-4E9D-BD1E-8AD8E33DBCF0</string>
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Shield icon created by kliwir art from Flaticon</string>
+	<string>Type 'pad', fuzzy-search any paddock target by name. Enter starts it if stopped or stops it if running; Cmd opens http://localhost:&lt;port&gt; in the browser instead (the target's first `ports` entry, or its `localPort` for a port-forward), and notifies "no known port" for a target that doesn't have one, like an agent. Reads live state from `paddock ls --json` every keystroke and on selection, so it never goes stale. Excludes tailscale-serve targets, which get their own dedicated workflow.</string>
 	<key>uidata</key>
 	<dict>
-		<key>A55B663E-3C6E-40C4-8211-5E3D4AEDBCFD</key>
+		<key>4AE8A1B5-D230-489A-9A5F-92416EA9057C</key>
 		<dict>
 			<key>xpos</key>
-			<real>110</real>
+			<integer>415</integer>
 			<key>ypos</key>
-			<real>180</real>
+			<integer>90</integer>
 		</dict>
-		<key>FD294EC4-6D15-4CB3-A4B2-ED2E6C60D266</key>
+		<key>A2A0EF65-A65B-4634-919E-C60BDDCF398E</key>
 		<dict>
 			<key>xpos</key>
-			<real>415</real>
+			<integer>110</integer>
 			<key>ypos</key>
-			<real>180</real>
+			<integer>180</integer>
+		</dict>
+		<key>FCD69B47-70B2-4E9D-BD1E-8AD8E33DBCF0</key>
+		<dict>
+			<key>xpos</key>
+			<integer>415</integer>
+			<key>ypos</key>
+			<integer>280</integer>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
