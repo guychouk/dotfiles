@@ -1,16 +1,12 @@
 #!/bin/sh
 
 if [ "$(uname)" = "Darwin" ]; then
-  if [ -e "$HOME/.gnupg/ssh-mode" ]; then
-    exec /opt/homebrew/bin/pinentry-curses "$@"
-  else
-    # pinentry-mac's dialog gives no signal outside itself, so a request
-    # triggered by agent/automated work (no one watching the terminal it
-    # came from) just silently stalls until someone notices the popup.
-    # Same notification pattern as the envrefresh Alfred workflow.
-    osascript -e 'display notification "GPG passphrase needed" with title "gpg-agent" sound name "Ping"' >/dev/null 2>&1 &
-    exec /opt/homebrew/bin/pinentry-mac "$@"
-  fi
+  # gpg-unlock-headless presets every key actually in use, so this should
+  # rarely fire at all now; when it does, nobody's reliably watching a
+  # terminal for it, so always GUI, and always with a notification since
+  # pinentry-mac's dialog gives no signal outside itself.
+  osascript -e 'display notification "GPG passphrase needed" with title "gpg-agent" sound name "Ping"' >/dev/null 2>&1 &
+  exec /opt/homebrew/bin/pinentry-mac "$@"
 else
   exec /usr/bin/pinentry-curses "$@"
 fi

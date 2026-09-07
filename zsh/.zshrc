@@ -11,13 +11,6 @@ export WGET_HSTS_FILE="${XDG_CONFIG_HOME}/.wget-hsts"
 export PYTHONHISTFILE="${XDG_CACHE_HOME}/.python_history"
 export LESSHISTFILE="${XDG_CACHE_HOME}/.lesshst"
 
-# auto-switch pinentry mode: curses over SSH, GUI locally
-if [ -n "$SSH_TTY" ]; then
-  pinentry-mode ssh >/dev/null 2>&1
-else
-  pinentry-mode gui >/dev/null 2>&1
-fi
-
 ## zsh setup
 
 [[ ! -d "${ZSH_CACHE_DIR}" ]] && mkdir "${ZSH_CACHE_DIR}"
