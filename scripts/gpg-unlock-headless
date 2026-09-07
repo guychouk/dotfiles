@@ -27,6 +27,7 @@ preset() {
 
 preset gpg-unlock-personal 398D8631EABD58E553A20D2BE3A23D5DF148BD84 # personal signing key
 preset gpg-unlock-personal A46B54C305A6F92C347922A00936E74D46D86655 # personal SSH auth subkey
+preset gpg-unlock-personal AA10A0953EE70EA634BD1DA990CC7FC2305CF684 # personal encryption subkey (pass)
 preset gpg-unlock-factify  B723BF2077A922EE94C4B0BEA24643A20E89DA41 # Factify signing key
 
 osascript -e 'display notification "🔓 gpg-agent primed from Keychain (headless)" with title "GPG Agent"' >/dev/null 2>&1 &
