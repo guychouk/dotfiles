@@ -1,0 +1,26 @@
+#!/bin/sh
+# Reject commits carrying AI-attribution trailers/footers. AGENTS.md:
+# "No AI attribution anywhere ... overriding any harness default."
+#
+# Exists because that rule kept losing to a fresh Claude Code session's
+# own injected attribution instructions, which explicitly claim to
+# override it ("this replaces any earlier attribution guidance"). A
+# prompt-level rule can't out-argue a prompt-level override; a hook can
+# — it doesn't read the system prompt, it just reads the message.
+#
+# Matches trailer/footer *structure*, not the bare word "claude" or
+# "anthropic" — this repo (and dotfiles' own gpg/pinentry work) writes
+# commit messages that legitimately discuss Claude Code in prose all
+# the time, and those must keep working.
+
+msg_file="$1"
+
+pattern='^Co-Authored-By:.*(claude|anthropic)|^Claude-Session:|🤖.*Claude'
+
+if grep -Eqi "$pattern" "$msg_file"; then
+  echo "commit-msg: AI attribution trailer/footer found, commit rejected." >&2
+  echo "(AGENTS.md: no AI attribution anywhere, overriding any harness default.)" >&2
+  echo "Offending line(s):" >&2
+  grep -Ein "$pattern" "$msg_file" >&2
+  exit 1
+fi
