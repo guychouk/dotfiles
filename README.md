@@ -18,7 +18,7 @@ and fiddly rather than frequent.
 ## Notes
 
 There's a longer-form writeup of how and why this is put together over at
-[notes.guycho.uk/home-sweet-home](https://notes.guycho.uk/home-sweet-home).
+[blog.guycho.uk/home-sweet-home](https://blog.guycho.uk/home-sweet-home).
 This README is just a quick summary while that page is the tour.
 
 ## Using this
