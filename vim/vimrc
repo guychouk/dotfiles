@@ -151,8 +151,8 @@ nnoremap <silent> <C-A-l>         :vertical resize +5<CR>
 nnoremap          <leader>b       :buffer<Space>
 nnoremap          <leader>f       :find<Space>
 nnoremap          <leader>t       :tag<Space>
-nnoremap <silent> <leader>o       :Surf<CR>
-nnoremap <silent> <leader>z       :SurfDir<CR>
+nnoremap <silent> <leader>o       :Navi<CR>
+nnoremap <silent> <leader>z       :NaviDir<CR>
 nnoremap <silent> <leader>e       :e $MYVIMRC<CR>
 nnoremap          <leader>r       :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap          <leader>;       :Compile<Space>
