@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock.cmd</string>
+	<string>com.guychouk.paddock-cmd</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -18,14 +18,24 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<true/>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>1366DCDA-0000-0000-0000-000000000001</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string>Open http://localhost:&lt;port&gt; in the browser</string>
+				<key>vitoclose</key>
+				<false/>
 			</dict>
 		</array>
 	</dict>
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>Toggle paddock command targets on/off</string>
+	<string>List paddock command targets, toggle start/stop, or open localhost port in browser</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -39,50 +49,37 @@
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>68</integer>
 				<key>keyword</key>
 				<string>cmd</string>
-				<key>queuedelay</key>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
 				<integer>0</integer>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>Loading commands...</string>
+				<string></string>
 				<key>script</key>
-				<string>/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-items = []
-for t in data['targets']:
-    if t['kind'] != 'command':
-        continue
-    running = t.get('running', False)
-    icon = '●' if running else '○'
-    label = 'Running' if running else 'Stopped'
-    ports = ', '.join(str(p) for p in t.get('ports', []))
-    sub = icon + ' ' + label
-    if ports:
-        sub += '  |  :' + ports
-    items.append({
-        'uid': t['name'],
-        'title': t['name'],
-        'subtitle': sub,
-        'arg': t['name'],
-    })
-print(json.dumps({'items': items}))
-"
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/list-cmds.sh</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Toggle command on/off</string>
+				<string></string>
 				<key>title</key>
-				<string>Paddock cmd</string>
+				<string>Toggle a paddock command -- Enter: start/stop, Cmd: open in browser</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -103,19 +100,8 @@ print(json.dumps({'items': items}))
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>NAME="{query}"
-STATUS=$(/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-t=[x for x in d['targets'] if x['name']=='$NAME']
-print('running' if t and t[0].get('running') else 'stopped')
-")
-if [ "$STATUS" = "running" ]; then
-    /Users/guychouk/.local/bin/paddock stop "$NAME"
-else
-    /Users/guychouk/.local/bin/paddock start "$NAME"
-fi
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/toggle.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -130,24 +116,55 @@ fi
 			<key>version</key>
 			<integer>2</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/open-url.sh "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>1366DCDA-0000-0000-0000-000000000001</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 	</array>
 	<key>readme</key>
-	<string>Keyword "cmd" lists all paddock command targets. Enter toggles start/stop. Subtitle shows port numbers when defined.</string>
+	<string>Type 'cmd', fuzzy-search paddock command targets by name. Enter starts or stops the command. Cmd+enter opens http://localhost:&lt;port&gt; in the browser; greyed out when not running or no port defined.</string>
 	<key>uidata</key>
 	<dict>
 		<key>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</key>
 		<dict>
 			<key>xpos</key>
-			<real>105.0</real>
+			<integer>110</integer>
 			<key>ypos</key>
-			<real>105.0</real>
+			<integer>180</integer>
 		</dict>
 		<key>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</key>
 		<dict>
 			<key>xpos</key>
-			<real>455.0</real>
+			<integer>415</integer>
 			<key>ypos</key>
-			<real>105.0</real>
+			<integer>90</integer>
+		</dict>
+		<key>1366DCDA-0000-0000-0000-000000000001</key>
+		<dict>
+			<key>xpos</key>
+			<integer>415</integer>
+			<key>ypos</key>
+			<integer>280</integer>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -157,6 +174,6 @@ fi
 	<key>version</key>
 	<string>1.0</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>guycho.uk</string>
 </dict>
 </plist>

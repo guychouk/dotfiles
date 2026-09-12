@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock.pf</string>
+	<string>com.guychouk.paddock-pf</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -18,14 +18,14 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<true/>
+				<false/>
 			</dict>
 		</array>
 	</dict>
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>Toggle paddock port-forward targets on/off</string>
+	<string>List paddock port-forward targets and toggle one on/off</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -39,53 +39,37 @@
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>68</integer>
 				<key>keyword</key>
 				<string>pf</string>
-				<key>queuedelay</key>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
 				<integer>0</integer>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>Loading port-forwards...</string>
+				<string></string>
 				<key>script</key>
-				<string>/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-items = []
-for t in data['targets']:
-    if t['kind'] != 'portforward':
-        continue
-    running = t.get('running', False)
-    icon = '●' if running else '○'
-    label = 'Running' if running else 'Stopped'
-    local = t.get('localPort', '')
-    remote = t.get('remotePort', '')
-    ns = t.get('namespace', '')
-    resource = t.get('resource', '')
-    sub = icon + ' ' + label + '  |  :' + str(local) + ' -> ' + resource + ' :' + str(remote)
-    if ns:
-        sub += '  (' + ns + ')'
-    items.append({
-        'uid': t['name'],
-        'title': t['name'],
-        'subtitle': sub,
-        'arg': t['name'],
-    })
-print(json.dumps({'items': items}))
-"
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/list-pf.sh</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Toggle port-forward on/off</string>
+				<string></string>
 				<key>title</key>
-				<string>Paddock pf</string>
+				<string>Toggle a paddock port-forward -- Enter: start/stop</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -106,19 +90,8 @@ print(json.dumps({'items': items}))
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>NAME="{query}"
-STATUS=$(/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-t=[x for x in d['targets'] if x['name']=='$NAME']
-print('running' if t and t[0].get('running') else 'stopped')
-")
-if [ "$STATUS" = "running" ]; then
-    /Users/guychouk/.local/bin/paddock stop "$NAME"
-else
-    /Users/guychouk/.local/bin/paddock start "$NAME"
-fi
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/toggle.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -135,22 +108,22 @@ fi
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Keyword "pf" lists all paddock portforward targets. Enter toggles start/stop. Subtitle shows local port, resource, remote port, and namespace.</string>
+	<string>Type 'pf', fuzzy-search paddock portforward targets by name. Enter starts or stops the port-forward. Subtitle shows local port, Kubernetes resource, remote port, and namespace.</string>
 	<key>uidata</key>
 	<dict>
 		<key>6933914A-AD66-4007-B67F-8E752D944B59</key>
 		<dict>
 			<key>xpos</key>
-			<real>105.0</real>
+			<integer>110</integer>
 			<key>ypos</key>
-			<real>105.0</real>
+			<integer>180</integer>
 		</dict>
 		<key>AA3FBF99-953F-4FDA-BE6F-1B295183C32A</key>
 		<dict>
 			<key>xpos</key>
-			<real>455.0</real>
+			<integer>415</integer>
 			<key>ypos</key>
-			<real>105.0</real>
+			<integer>180</integer>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -160,6 +133,6 @@ fi
 	<key>version</key>
 	<string>1.0</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>guycho.uk</string>
 </dict>
 </plist>

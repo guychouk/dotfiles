@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock.agent</string>
+	<string>com.guychouk.paddock-agent</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -18,7 +18,7 @@
 				<key>modifiersubtext</key>
 				<string></string>
 				<key>vitoclose</key>
-				<true/>
+				<false/>
 			</dict>
 			<dict>
 				<key>destinationuid</key>
@@ -26,16 +26,16 @@
 				<key>modifiers</key>
 				<integer>1048576</integer>
 				<key>modifiersubtext</key>
-				<string></string>
+				<string>Attach abduco session in kitty</string>
 				<key>vitoclose</key>
-				<true/>
+				<false/>
 			</dict>
 		</array>
 	</dict>
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>Toggle paddock agents; cmd+enter attaches abduco session in kitty</string>
+	<string>List paddock agent targets, toggle start/stop, or attach the abduco session in kitty</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -49,53 +49,37 @@
 				<true/>
 				<key>alfredfiltersresultsmatchmode</key>
 				<integer>0</integer>
+				<key>argumenttreatemptyqueryasnil</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
 				<key>argumenttype</key>
-				<integer>0</integer>
+				<integer>1</integer>
 				<key>escaping</key>
-				<integer>0</integer>
+				<integer>68</integer>
 				<key>keyword</key>
 				<string>agent</string>
-				<key>queuedelay</key>
+				<key>queuedelaycustom</key>
+				<integer>3</integer>
+				<key>queuedelayimmediatelyinitially</key>
+				<true/>
+				<key>queuedelaymode</key>
 				<integer>0</integer>
 				<key>queuemode</key>
 				<integer>1</integer>
 				<key>runningsubtext</key>
-				<string>Loading agents...</string>
+				<string></string>
 				<key>script</key>
-				<string>/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
-import json, sys
-data = json.load(sys.stdin)
-items = []
-for t in data['targets']:
-    if t['kind'] != 'agent':
-        continue
-    running = t.get('running', False)
-    icon = '●' if running else '○'
-    label = 'Running' if running else 'Stopped'
-    items.append({
-        'uid': t['name'],
-        'title': t['name'],
-        'subtitle': icon + ' ' + label + '  |  cmd: attach abduco session in kitty',
-        'arg': t['name'],
-        'mods': {
-            'cmd': {
-                'subtitle': 'Open kitty window and attach to abduco session',
-                'arg': t['name'],
-                'valid': True
-            }
-        }
-    })
-print(json.dumps({'items': items}))
-"
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/list-agents.sh</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
 				<string></string>
 				<key>subtext</key>
-				<string>Toggle agent on/off; cmd+enter attaches abduco session in kitty</string>
+				<string></string>
 				<key>title</key>
-				<string>Paddock agent</string>
+				<string>Toggle a paddock agent -- Enter: start/stop, Cmd: attach abduco in kitty</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -116,19 +100,8 @@ print(json.dumps({'items': items}))
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>NAME="{query}"
-STATUS=$(/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
-import json,sys
-d=json.load(sys.stdin)
-t=[x for x in d['targets'] if x['name']=='$NAME']
-print('running' if t and t[0].get('running') else 'stopped')
-")
-if [ "$STATUS" = "running" ]; then
-    /Users/guychouk/.local/bin/paddock stop "$NAME"
-else
-    /Users/guychouk/.local/bin/paddock start "$NAME"
-fi
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/toggle.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -151,8 +124,8 @@ fi
 				<key>escaping</key>
 				<integer>0</integer>
 				<key>script</key>
-				<string>/Applications/kitty.app/Contents/MacOS/kitty --single-instance -- /opt/homebrew/bin/fish -c "abduco -a '{query}'; read -P 'Press enter to close... ' _"
-</string>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/attach.sh "{query}"</string>
 				<key>scriptargtype</key>
 				<integer>0</integer>
 				<key>scriptfile</key>
@@ -169,29 +142,29 @@ fi
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Keyword "agent" lists all paddock agent targets. Enter toggles start/stop. Cmd+enter opens a kitty window and attaches to the agent's abduco session.</string>
+	<string>Type 'agent', fuzzy-search paddock agent targets by name. Enter starts or stops the agent. Cmd+enter opens a kitty window and attaches to the running abduco session; greyed out when agent is not running.</string>
 	<key>uidata</key>
 	<dict>
 		<key>A58A957E-9597-46DC-B013-B9C9053127F0</key>
 		<dict>
 			<key>xpos</key>
-			<real>105.0</real>
+			<integer>110</integer>
 			<key>ypos</key>
-			<real>105.0</real>
+			<integer>180</integer>
 		</dict>
 		<key>60597A84-1EC7-4992-BFC8-DEABD525493F</key>
 		<dict>
 			<key>xpos</key>
-			<real>455.0</real>
+			<integer>415</integer>
 			<key>ypos</key>
-			<real>60.0</real>
+			<integer>90</integer>
 		</dict>
 		<key>502D74F4-0526-4CC4-A3BE-398F8136FF7B</key>
 		<dict>
 			<key>xpos</key>
-			<real>455.0</real>
+			<integer>415</integer>
 			<key>ypos</key>
-			<real>160.0</real>
+			<integer>280</integer>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
@@ -201,6 +174,6 @@ fi
 	<key>version</key>
 	<string>1.0</string>
 	<key>webaddress</key>
-	<string></string>
+	<string>guycho.uk</string>
 </dict>
 </plist>
