@@ -5,7 +5,7 @@ paddock ls --json | jq '
   | sort_by(.name)
   | map({
       uid: .name,
-      title: .name,
+      title: (.name | ltrimstr("agent-")),
       subtitle: (
         (if .running then "● running" + (if .pid then " (pid \(.pid))" else "" end) else "○ stopped" end)
         + "   " + (.cwd // "")
