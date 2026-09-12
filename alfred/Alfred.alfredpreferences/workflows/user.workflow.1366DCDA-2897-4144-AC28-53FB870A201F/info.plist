@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.guychouk.paddock.pf</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>6933914A-AD66-4007-B67F-8E752D944B59</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>AA3FBF99-953F-4FDA-BE6F-1B295183C32A</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>guychouk</string>
+	<key>description</key>
+	<string>Toggle paddock port-forward targets on/off</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>paddock pf</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>pf</string>
+				<key>queuedelay</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Loading port-forwards...</string>
+				<key>script</key>
+				<string>/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+items = []
+for t in data['targets']:
+    if t['kind'] != 'portforward':
+        continue
+    running = t.get('running', False)
+    icon = '●' if running else '○'
+    label = 'Running' if running else 'Stopped'
+    local = t.get('localPort', '')
+    remote = t.get('remotePort', '')
+    ns = t.get('namespace', '')
+    resource = t.get('resource', '')
+    sub = icon + ' ' + label + '  |  :' + str(local) + ' -> ' + resource + ' :' + str(remote)
+    if ns:
+        sub += '  (' + ns + ')'
+    items.append({
+        'uid': t['name'],
+        'title': t['name'],
+        'subtitle': sub,
+        'arg': t['name'],
+    })
+print(json.dumps({'items': items}))
+"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Toggle port-forward on/off</string>
+				<key>title</key>
+				<string>Paddock pf</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>6933914A-AD66-4007-B67F-8E752D944B59</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>NAME="{query}"
+STATUS=$(/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+t=[x for x in d['targets'] if x['name']=='$NAME']
+print('running' if t and t[0].get('running') else 'stopped')
+")
+if [ "$STATUS" = "running" ]; then
+    /Users/guychouk/.local/bin/paddock stop "$NAME"
+else
+    /Users/guychouk/.local/bin/paddock start "$NAME"
+fi
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>AA3FBF99-953F-4FDA-BE6F-1B295183C32A</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Keyword "pf" lists all paddock portforward targets. Enter toggles start/stop. Subtitle shows local port, resource, remote port, and namespace.</string>
+	<key>uidata</key>
+	<dict>
+		<key>6933914A-AD66-4007-B67F-8E752D944B59</key>
+		<dict>
+			<key>xpos</key>
+			<real>105.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+		<key>AA3FBF99-953F-4FDA-BE6F-1B295183C32A</key>
+		<dict>
+			<key>xpos</key>
+			<real>455.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>

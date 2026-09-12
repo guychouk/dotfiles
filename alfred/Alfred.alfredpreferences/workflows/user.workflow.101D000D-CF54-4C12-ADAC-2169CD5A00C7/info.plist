@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.guychouk.paddock.cmd</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>guychouk</string>
+	<key>description</key>
+	<string>Toggle paddock command targets on/off</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>paddock cmd</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>cmd</string>
+				<key>queuedelay</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Loading commands...</string>
+				<key>script</key>
+				<string>/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+items = []
+for t in data['targets']:
+    if t['kind'] != 'command':
+        continue
+    running = t.get('running', False)
+    icon = '●' if running else '○'
+    label = 'Running' if running else 'Stopped'
+    ports = ', '.join(str(p) for p in t.get('ports', []))
+    sub = icon + ' ' + label
+    if ports:
+        sub += '  |  :' + ports
+    items.append({
+        'uid': t['name'],
+        'title': t['name'],
+        'subtitle': sub,
+        'arg': t['name'],
+    })
+print(json.dumps({'items': items}))
+"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Toggle command on/off</string>
+				<key>title</key>
+				<string>Paddock cmd</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>NAME="{query}"
+STATUS=$(/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+t=[x for x in d['targets'] if x['name']=='$NAME']
+print('running' if t and t[0].get('running') else 'stopped')
+")
+if [ "$STATUS" = "running" ]; then
+    /Users/guychouk/.local/bin/paddock stop "$NAME"
+else
+    /Users/guychouk/.local/bin/paddock start "$NAME"
+fi
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Keyword "cmd" lists all paddock command targets. Enter toggles start/stop. Subtitle shows port numbers when defined.</string>
+	<key>uidata</key>
+	<dict>
+		<key>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</key>
+		<dict>
+			<key>xpos</key>
+			<real>105.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+		<key>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</key>
+		<dict>
+			<key>xpos</key>
+			<real>455.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.guychouk.paddock.agent</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>A58A957E-9597-46DC-B013-B9C9053127F0</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>60597A84-1EC7-4992-BFC8-DEABD525493F</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>502D74F4-0526-4CC4-A3BE-398F8136FF7B</string>
+				<key>modifiers</key>
+				<integer>1048576</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<true/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>guychouk</string>
+	<key>description</key>
+	<string>Toggle paddock agents; cmd+enter attaches abduco session in kitty</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>paddock agent</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>alfredfiltersresults</key>
+				<true/>
+				<key>alfredfiltersresultsmatchmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>keyword</key>
+				<string>agent</string>
+				<key>queuedelay</key>
+				<integer>0</integer>
+				<key>queuemode</key>
+				<integer>1</integer>
+				<key>runningsubtext</key>
+				<string>Loading agents...</string>
+				<key>script</key>
+				<string>/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+items = []
+for t in data['targets']:
+    if t['kind'] != 'agent':
+        continue
+    running = t.get('running', False)
+    icon = '●' if running else '○'
+    label = 'Running' if running else 'Stopped'
+    items.append({
+        'uid': t['name'],
+        'title': t['name'],
+        'subtitle': icon + ' ' + label + '  |  cmd: attach abduco session in kitty',
+        'arg': t['name'],
+        'mods': {
+            'cmd': {
+                'subtitle': 'Open kitty window and attach to abduco session',
+                'arg': t['name'],
+                'valid': True
+            }
+        }
+    })
+print(json.dumps({'items': items}))
+"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>subtext</key>
+				<string>Toggle agent on/off; cmd+enter attaches abduco session in kitty</string>
+				<key>title</key>
+				<string>Paddock agent</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>A58A957E-9597-46DC-B013-B9C9053127F0</string>
+			<key>version</key>
+			<integer>3</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>NAME="{query}"
+STATUS=$(/Users/guychouk/.local/bin/paddock ls --json | /usr/bin/python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+t=[x for x in d['targets'] if x['name']=='$NAME']
+print('running' if t and t[0].get('running') else 'stopped')
+")
+if [ "$STATUS" = "running" ]; then
+    /Users/guychouk/.local/bin/paddock stop "$NAME"
+else
+    /Users/guychouk/.local/bin/paddock start "$NAME"
+fi
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>60597A84-1EC7-4992-BFC8-DEABD525493F</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>/Applications/kitty.app/Contents/MacOS/kitty --single-instance -- /opt/homebrew/bin/fish -c "abduco -a '{query}'; read -P 'Press enter to close... ' _"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>502D74F4-0526-4CC4-A3BE-398F8136FF7B</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Keyword "agent" lists all paddock agent targets. Enter toggles start/stop. Cmd+enter opens a kitty window and attaches to the agent's abduco session.</string>
+	<key>uidata</key>
+	<dict>
+		<key>A58A957E-9597-46DC-B013-B9C9053127F0</key>
+		<dict>
+			<key>xpos</key>
+			<real>105.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+		<key>60597A84-1EC7-4992-BFC8-DEABD525493F</key>
+		<dict>
+			<key>xpos</key>
+			<real>455.0</real>
+			<key>ypos</key>
+			<real>60.0</real>
+		</dict>
+		<key>502D74F4-0526-4CC4-A3BE-398F8136FF7B</key>
+		<dict>
+			<key>xpos</key>
+			<real>455.0</real>
+			<key>ypos</key>
+			<real>160.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
