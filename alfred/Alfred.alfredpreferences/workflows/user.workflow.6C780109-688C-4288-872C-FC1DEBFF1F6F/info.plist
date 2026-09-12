@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.guychouk.awssso</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>6C780109-688C-4288-872C-FC1DEBFF1F6F</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>C1052EFB-CD61-4F30-BB4E-64E338D9A52B</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>guychouk</string>
+	<key>description</key>
+	<string>Run aws sso login for all Factify profiles in a kitty window</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>aws sso login</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>2</integer>
+				<key>keyword</key>
+				<string>awslogin</string>
+				<key>subtext</key>
+				<string>Log in to all Factify AWS SSO profiles</string>
+				<key>title</key>
+				<string>AWS SSO Login (all profiles)</string>
+				<key>withspace</key>
+				<false/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.keyword</string>
+			<key>uid</key>
+			<string>6C780109-688C-4288-872C-FC1DEBFF1F6F</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>FISH=/opt/homebrew/bin/fish
+KITTY=/Applications/kitty.app/Contents/MacOS/kitty
+
+SCRIPT=$(cat &lt;&lt;'FISH_EOF'
+set profiles factify-dev factify-prod factify-staging factify-sandbox factify-root identity-terraform
+for profile in $profiles
+    echo "==> aws sso login --profile $profile"
+    /usr/local/bin/aws sso login --profile $profile
+end
+echo ""
+echo "All profiles done."
+read -P "Press Enter to close... " _
+FISH_EOF
+)
+
+"$KITTY" --single-instance -- "$FISH" -c "$SCRIPT"
+</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>C1052EFB-CD61-4F30-BB4E-64E338D9A52B</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string>Keyword "awslogin" opens a new kitty window and runs `aws sso login --profile` for each Factify profile sequentially: factify-dev, factify-prod, factify-staging, factify-sandbox, factify-root, identity-terraform. The first profile opens the browser for SSO authentication; subsequent ones auto-complete using the cached session token.</string>
+	<key>uidata</key>
+	<dict>
+		<key>6C780109-688C-4288-872C-FC1DEBFF1F6F</key>
+		<dict>
+			<key>xpos</key>
+			<real>105.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+		<key>C1052EFB-CD61-4F30-BB4E-64E338D9A52B</key>
+		<dict>
+			<key>xpos</key>
+			<real>455.0</real>
+			<key>ypos</key>
+			<real>105.0</real>
+		</dict>
+	</dict>
+	<key>userconfigurationconfig</key>
+	<array/>
+	<key>variablesdontexport</key>
+	<array/>
+	<key>version</key>
+	<string>1.0</string>
+	<key>webaddress</key>
+	<string></string>
+</dict>
+</plist>
