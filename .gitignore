@@ -1,4 +1,5 @@
 emacs/auto-save-list/
+fish/completions/
 .DS_Store
 CLAUDE.md
 tags
