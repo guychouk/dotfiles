@@ -40,6 +40,7 @@ const Link links[] = {
     {DOTSDIR "/scripts/pinentry",     "/usr/local/bin/pinentry"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},
+    {DOTSDIR "/macos/DefaultKeyBinding.dict", HOME "/Library/KeyBindings/DefaultKeyBinding.dict"},
 };
 
 // (Re)load a launchd service, replacing any running instance. bootout is
@@ -73,6 +74,10 @@ void reload_service(const char *domain, const char *label, const char *plist) {
 // root and littering $HOME with root-owned symlinks.
 void link_path(Cmd *cmd, const char *src, const char *dst) {
     if (strncmp(dst, HOME, strlen(HOME)) == 0) {
+        const char *slash = strrchr(dst, '/');
+        if (slash && slash != dst) {
+            nob_mkdir_if_not_exists(temp_sprintf("%.*s", (int)(slash - dst), dst));
+        }
         if (symlink(src, dst) < 0 && errno != EEXIST) perror(dst);
     } else {
         const char *slash = strrchr(dst, '/');
