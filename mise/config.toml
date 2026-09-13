@@ -2,4 +2,6 @@
 idiomatic_version_file = false
 
 [tools]
+"npm:glyphhanger" = "latest"
+node = "latest"
 resvg = "latest"
