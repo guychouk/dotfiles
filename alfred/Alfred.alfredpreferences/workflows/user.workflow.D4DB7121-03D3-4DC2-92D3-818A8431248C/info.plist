@@ -190,7 +190,7 @@ scripts/list-pass.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>List pass entries -- Enter: copy password, Cmd: copy username, Alt: edit in Vim</string>
+				<string>Pass</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>

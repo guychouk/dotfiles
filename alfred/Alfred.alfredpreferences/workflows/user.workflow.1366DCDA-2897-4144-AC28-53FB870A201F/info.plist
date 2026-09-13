@@ -29,7 +29,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>paddock pf</string>
+	<string>Port-Forwards</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -69,7 +69,7 @@ scripts/list-pf.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Toggle a paddock port-forward -- Enter: start/stop</string>
+				<string>Paddock Port-Forwards</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -114,16 +114,16 @@ scripts/toggle.sh "{query}"</string>
 		<key>6933914A-AD66-4007-B67F-8E752D944B59</key>
 		<dict>
 			<key>xpos</key>
-			<integer>110</integer>
+			<real>110</real>
 			<key>ypos</key>
-			<integer>180</integer>
+			<real>180</real>
 		</dict>
 		<key>AA3FBF99-953F-4FDA-BE6F-1B295183C32A</key>
 		<dict>
 			<key>xpos</key>
-			<integer>415</integer>
+			<real>415</real>
 			<key>ypos</key>
-			<integer>180</integer>
+			<real>180</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

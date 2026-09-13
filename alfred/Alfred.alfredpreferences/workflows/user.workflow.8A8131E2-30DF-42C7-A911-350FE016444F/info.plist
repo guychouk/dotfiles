@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock-agent</string>
+	<string>com.guychouk.paddock-agents</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -39,9 +39,33 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>paddock agent</string>
+	<string>Agents</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/toggle.sh "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>60597A84-1EC7-4992-BFC8-DEABD525493F</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -79,7 +103,7 @@ scripts/list-agents.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Toggle a paddock agent -- Enter: start/stop, Cmd: attach abduco in kitty</string>
+				<string>Paddock Agents</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -91,30 +115,6 @@ scripts/list-agents.sh</string>
 			<string>A58A957E-9597-46DC-B013-B9C9053127F0</string>
 			<key>version</key>
 			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-scripts/toggle.sh "{query}"</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>60597A84-1EC7-4992-BFC8-DEABD525493F</string>
-			<key>version</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -145,26 +145,26 @@ scripts/attach.sh "{query}"</string>
 	<string>Type 'agent', fuzzy-search paddock agent targets by name. Enter starts or stops the agent. Cmd+enter opens a kitty window and attaches to the running abduco session; greyed out when agent is not running.</string>
 	<key>uidata</key>
 	<dict>
-		<key>A58A957E-9597-46DC-B013-B9C9053127F0</key>
+		<key>502D74F4-0526-4CC4-A3BE-398F8136FF7B</key>
 		<dict>
 			<key>xpos</key>
-			<integer>110</integer>
+			<real>415</real>
 			<key>ypos</key>
-			<integer>180</integer>
+			<real>280</real>
 		</dict>
 		<key>60597A84-1EC7-4992-BFC8-DEABD525493F</key>
 		<dict>
 			<key>xpos</key>
-			<integer>415</integer>
+			<real>415</real>
 			<key>ypos</key>
-			<integer>90</integer>
+			<real>90</real>
 		</dict>
-		<key>502D74F4-0526-4CC4-A3BE-398F8136FF7B</key>
+		<key>A58A957E-9597-46DC-B013-B9C9053127F0</key>
 		<dict>
 			<key>xpos</key>
-			<integer>415</integer>
+			<real>110</real>
 			<key>ypos</key>
-			<integer>280</integer>
+			<real>180</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

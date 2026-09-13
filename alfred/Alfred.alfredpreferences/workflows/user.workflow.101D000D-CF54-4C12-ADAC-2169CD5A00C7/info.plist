@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock-cmd</string>
+	<string>com.guychouk.paddock-commands</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -39,9 +39,33 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>paddock cmd</string>
+	<string>Commands</string>
 	<key>objects</key>
 	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>0</integer>
+				<key>script</key>
+				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
+scripts/toggle.sh "{query}"</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
 		<dict>
 			<key>config</key>
 			<dict>
@@ -79,7 +103,7 @@ scripts/list-cmds.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Toggle a paddock command -- Enter: start/stop, Cmd: open in browser</string>
+				<string>Paddock Commands</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -91,30 +115,6 @@ scripts/list-cmds.sh</string>
 			<string>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</string>
 			<key>version</key>
 			<integer>3</integer>
-		</dict>
-		<dict>
-			<key>config</key>
-			<dict>
-				<key>concurrently</key>
-				<false/>
-				<key>escaping</key>
-				<integer>0</integer>
-				<key>script</key>
-				<string>PATH="/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-scripts/toggle.sh "{query}"</string>
-				<key>scriptargtype</key>
-				<integer>0</integer>
-				<key>scriptfile</key>
-				<string></string>
-				<key>type</key>
-				<integer>0</integer>
-			</dict>
-			<key>type</key>
-			<string>alfred.workflow.action.script</string>
-			<key>uid</key>
-			<string>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</string>
-			<key>version</key>
-			<integer>2</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -145,26 +145,26 @@ scripts/open-url.sh "{query}"</string>
 	<string>Type 'cmd', fuzzy-search paddock command targets by name. Enter starts or stops the command. Cmd+enter opens http://localhost:&lt;port&gt; in the browser; greyed out when not running or no port defined.</string>
 	<key>uidata</key>
 	<dict>
-		<key>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</key>
+		<key>1366DCDA-0000-0000-0000-000000000001</key>
 		<dict>
 			<key>xpos</key>
-			<integer>110</integer>
+			<real>415</real>
 			<key>ypos</key>
-			<integer>180</integer>
+			<real>280</real>
 		</dict>
 		<key>DB40DCA0-F5D1-4BB6-8A6B-F77BE01DE8C8</key>
 		<dict>
 			<key>xpos</key>
-			<integer>415</integer>
+			<real>415</real>
 			<key>ypos</key>
-			<integer>90</integer>
+			<real>90</real>
 		</dict>
-		<key>1366DCDA-0000-0000-0000-000000000001</key>
+		<key>E34B962F-A4D6-4E5A-A3E4-0265001FC4EB</key>
 		<dict>
 			<key>xpos</key>
-			<integer>415</integer>
+			<real>110</real>
 			<key>ypos</key>
-			<integer>280</integer>
+			<real>180</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>

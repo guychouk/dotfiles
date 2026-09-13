@@ -29,7 +29,7 @@
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
-	<string>aws sso login</string>
+	<string>Refresh AWS SSO</string>
 	<key>objects</key>
 	<array>
 		<dict>
@@ -38,11 +38,11 @@
 				<key>argumenttype</key>
 				<integer>2</integer>
 				<key>keyword</key>
-				<string>awslogin</string>
+				<string>awssso</string>
 				<key>subtext</key>
 				<string>Log in to all Factify AWS SSO profiles</string>
-				<key>title</key>
-				<string>AWS SSO Login (all profiles)</string>
+				<key>text</key>
+				<string>Refresh</string>
 				<key>withspace</key>
 				<false/>
 			</dict>
@@ -67,7 +67,7 @@ KITTY=/Applications/kitty.app/Contents/MacOS/kitty
 SCRIPT=$(cat &lt;&lt;'FISH_EOF'
 set profiles factify-dev factify-prod factify-staging factify-sandbox factify-root identity-terraform
 for profile in $profiles
-    echo "==> aws sso login --profile $profile"
+    echo "==&gt; aws sso login --profile $profile"
     /usr/local/bin/aws sso login --profile $profile
 end
 echo ""
@@ -100,16 +100,16 @@ FISH_EOF
 		<key>6C780109-688C-4288-872C-FC1DEBFF1F6F</key>
 		<dict>
 			<key>xpos</key>
-			<real>105.0</real>
+			<real>105</real>
 			<key>ypos</key>
-			<real>105.0</real>
+			<real>105</real>
 		</dict>
 		<key>C1052EFB-CD61-4F30-BB4E-64E338D9A52B</key>
 		<dict>
 			<key>xpos</key>
-			<real>455.0</real>
+			<real>455</real>
 			<key>ypos</key>
-			<real>105.0</real>
+			<real>105</real>
 		</dict>
 	</dict>
 	<key>userconfigurationconfig</key>
