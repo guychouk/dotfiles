@@ -1,4 +1,9 @@
 function fish_prompt --description "Set fish prompt"
+    if set -q CLAUDECODE
+        echo -n (prompt_pwd --dir-length=0)' $ '
+        return
+    end
+
     # Set cursor to blinking underline
     echo -ne '\e[3 q'
 

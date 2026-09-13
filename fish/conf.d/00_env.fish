@@ -30,3 +30,8 @@ set -gx LS_COLORS "di=34:ln=36:ex=01;32:or=91:mi=91:pi=93:so=35:bd=94:cd=93:su=3
 set -gx EZA_COLORS "ur=37:uw=37:ux=32:ue=32:gr=37:gw=37:gx=32:tr=37:tw=37:tx=32:xa=90:sn=37:sb=37:uu=37:un=37:gu=95:gn=95:da=37:im=37"
 
 fish_add_path -p "$HOME/.local/bin"
+
+if set -q CLAUDECODE
+  set -gx PAGER cat
+  set -gx GIT_PAGER cat
+end
