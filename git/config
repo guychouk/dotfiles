@@ -4,7 +4,7 @@
 [core]
 	pager = delta
 	quotepath = false
-	hooksPath = /Users/guychouk/dotfiles/git/hooks
+	hooksPath = ~/dotfiles/git/hooks
 
 [interactive]
 	diffFilter = delta --color-only
@@ -24,13 +24,13 @@
 [init]
 	defaultBranch = main
 
-[includeIf "gitdir:/Users/guychouk/.claude/"]
+[includeIf "gitdir:~/.claude/"]
 	path = ./git-user-personal
 
-[includeIf "gitdir:/Users/guychouk/src/"]
+[includeIf "gitdir:~/src/"]
 	path = ./git-user-personal
 
-[includeIf "gitdir:/Users/guychouk/src/factify/"]
+[includeIf "gitdir:~/src/factify/"]
 	path = ./git-user-factify
 
 [url "ssh://git@github.com/"]
