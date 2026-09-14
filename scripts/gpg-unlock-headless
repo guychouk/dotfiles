@@ -14,6 +14,12 @@
 #           Service collection only auto-unlocks via a real login-manager
 #           session, and an SSH/headless session hits a locked collection
 #           with no clean unattended unlock path (confirmed 2026-09-14).
+#           NB: 0600 alone is not encryption-at-rest — on a box without
+#           full-disk encryption this is a plaintext passphrase against
+#           root/physical/offline-disk access. Accepted risk on ark
+#           specifically (trusted root/physical access, no untrusted
+#           local users); see knowledge/gpg-headless-unlock.md in the
+#           diane repo before copying this pattern to a different box.
 # (type the value directly from your own terminal — never through an AI chat session)
 #
 # Run automatically at login (macOS: com.guychouk.gpg-unlock-headless.plist;
