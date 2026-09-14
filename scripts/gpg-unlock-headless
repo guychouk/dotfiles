@@ -1,16 +1,24 @@
 #!/bin/sh
 # Headless counterpart to gpg-unlock: primes gpg-agent's cache via
 # gpg-preset-passphrase (GnuPG's own mechanism for unattended machines,
-# see gpg-preset-passphrase(1)) instead of triggering a real pinentry-mac
-# prompt that requires someone physically at this Mac to answer it.
+# see gpg-preset-passphrase(1)) instead of triggering a real pinentry
+# prompt that requires someone physically at the machine to answer it.
 #
-# Passphrases live in Keychain, added once by hand:
-#   security add-generic-password -a "$USER" -s gpg-unlock-personal -w
-#   security add-generic-password -a "$USER" -s gpg-unlock-factify  -w
-# (type the value at the prompt or pass -w '<passphrase>' directly from
-# your own terminal — never through an AI chat session)
+# Passphrases live in the OS secret store, added once by hand:
+#   macOS:  security add-generic-password -a "$USER" -s gpg-unlock-personal -w
+#           security add-generic-password -a "$USER" -s gpg-unlock-factify  -w
+#   Linux:  install -m 600 /dev/null ~/.gnupg/.gpg-unlock-personal && cat > ~/.gnupg/.gpg-unlock-personal
+#           install -m 600 /dev/null ~/.gnupg/.gpg-unlock-factify  && cat > ~/.gnupg/.gpg-unlock-factify
+#           (type the passphrase, Ctrl+D to finish; no trailing newline needed)
+#           Chose a 0600 file over gnome-keyring/secret-tool: the Secret
+#           Service collection only auto-unlocks via a real login-manager
+#           session, and an SSH/headless session hits a locked collection
+#           with no clean unattended unlock path (confirmed 2026-09-14).
+# (type the value directly from your own terminal — never through an AI chat session)
 #
-# Run automatically at login by com.guychouk.gpg-unlock-headless.plist.
+# Run automatically at login (macOS: com.guychouk.gpg-unlock-headless.plist;
+# Linux: a gpg-agent.service systemd --user unit ExecStartPost, since the
+# agent runs --supervised via socket activation, not a login hook).
 # gpg-agent.conf needs allow-preset-passphrase and a max-cache-ttl longer
 # than 8h for this to actually stick.
 
@@ -19,15 +27,25 @@ PRESET="$(gpgconf --list-dirs libexecdir)/gpg-preset-passphrase"
 
 gpgconf --launch gpg-agent
 
-preset() {
-  # $1 = Keychain service name, $2 = keygrip
-  security find-generic-password -a "$USER" -s "$1" -w 2>/dev/null \
-    | "$PRESET" --preset "$2"
-}
+if [ "$(uname)" = "Darwin" ]; then
+  preset() {
+    # $1 = Keychain service name, $2 = keygrip
+    security find-generic-password -a "$USER" -s "$1" -w 2>/dev/null \
+      | "$PRESET" --preset "$2"
+  }
+  notify() { osascript -e "display notification \"$1\" with title \"GPG Agent\"" >/dev/null 2>&1 & }
+else
+  preset() {
+    # $1 = passphrase file name under ~/.gnupg (0600), $2 = keygrip
+    f="$HOME/.gnupg/.$1"
+    [ -r "$f" ] && "$PRESET" --preset "$2" < "$f"
+  }
+  notify() { notify-send "GPG Agent" "$1" >/dev/null 2>&1 & }
+fi
 
 preset gpg-unlock-personal 398D8631EABD58E553A20D2BE3A23D5DF148BD84 # personal signing key
 preset gpg-unlock-personal A46B54C305A6F92C347922A00936E74D46D86655 # personal SSH auth subkey
 preset gpg-unlock-personal AA10A0953EE70EA634BD1DA990CC7FC2305CF684 # personal encryption subkey (pass)
 preset gpg-unlock-factify  B723BF2077A922EE94C4B0BEA24643A20E89DA41 # Factify signing key
 
-osascript -e 'display notification "🔓 gpg-agent primed from Keychain (headless)" with title "GPG Agent"' >/dev/null 2>&1 &
+notify "🔓 gpg-agent primed from secret store (headless)"
