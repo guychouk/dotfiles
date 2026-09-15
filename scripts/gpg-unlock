@@ -15,4 +15,8 @@ for key in C5425A14CC652EC133130CE5A124EF3A92F2C7A4 FDE79464274DD21417E734C9465A
   echo | gpg --batch --yes --local-user "$key" --sign --armor --output /dev/null 2>/dev/null
 done
 
-osascript -e 'display notification "🔓 GPG + SSH unlocked for 8h" with title "GPG Agent"'
+if [ "$(uname)" = "Darwin" ]; then
+  osascript -e 'display notification "🔓 GPG + SSH unlocked for 8h" with title "GPG Agent"'
+else
+  notify-send "GPG Agent" "🔓 GPG + SSH unlocked for 8h" 2>/dev/null || true
+fi
