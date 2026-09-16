@@ -2,7 +2,21 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>applicationFuzzyType</key>
+	<integer>1</integer>
+	<key>fallbacks</key>
+	<array/>
+	<key>showArchives</key>
+	<true/>
 	<key>showContacts</key>
 	<false/>
+	<key>showDocuments</key>
+	<true/>
+	<key>showFolders</key>
+	<true/>
+	<key>showImages</key>
+	<true/>
+	<key>showTextFiles</key>
+	<true/>
 </dict>
 </plist>
