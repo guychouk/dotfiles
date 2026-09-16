@@ -1,0 +1,31 @@
+#!/bin/sh
+# Markdown formatting gate. Runs only when the repo being committed to opts in
+# via a .prettierrc at its root, so this global hook (wired through
+# core.hooksPath) doesn't surprise every other repo on the machine.
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+prettierrc=""
+for name in .prettierrc .prettierrc.json .prettierrc.yaml .prettierrc.yml .prettierrc.js; do
+  if [ -f "$repo_root/$name" ]; then
+    prettierrc="$repo_root/$name"
+    break
+  fi
+done
+[ -n "$prettierrc" ] || exit 0
+
+staged_md=$(git diff --cached --name-only --diff-filter=ACM -- '*.md')
+[ -n "$staged_md" ] || exit 0
+
+if ! command -v npx >/dev/null 2>&1; then
+  echo "pre-commit: npx not found, skipping markdown format check" >&2
+  exit 0
+fi
+
+if ! printf '%s\n' "$staged_md" | xargs npx --yes prettier@3 --check; then
+  echo "pre-commit: markdown formatting check failed. run:" >&2
+  echo "  npx prettier@3 --write $(printf '%s' "$staged_md" | tr '\n' ' ')" >&2
+  exit 1
+fi
+
+exit 0

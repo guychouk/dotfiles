@@ -1,0 +1,6 @@
+#!/bin/bash
+
+exec /Users/guychouk/.local/share/mise/shims/rclone sync \
+    /Users/guychouk/src/smith factify-gdrive:backups/smith \
+    --exclude .DS_Store --exclude /nob \
+    --log-file /Users/guychouk/.smith/smith-backup.log --log-level INFO
