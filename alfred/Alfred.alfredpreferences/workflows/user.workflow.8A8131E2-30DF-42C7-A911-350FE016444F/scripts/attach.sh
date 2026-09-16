@@ -13,8 +13,8 @@ for f in /tmp/kitty-*; do
 done
 
 if [ -n "$SOCK" ]; then
-	"$KITTY" @ --to "unix:$SOCK" launch --type=tab -- abduco -a "$NAME"
+	"$KITTY" @ --to "unix:$SOCK" launch --type=tab --cwd="$HOME" -- abduco -a "$NAME"
 else
-	nohup "$KITTY" -- abduco -a "$NAME" >/dev/null 2>&1 &
+	nohup "$KITTY" -d "$HOME" -- abduco -a "$NAME" >/dev/null 2>&1 &
 	disown
 fi
