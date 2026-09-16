@@ -155,6 +155,7 @@ nnoremap          <leader>f       :find<Space>
 nnoremap          <leader>t       :tag<Space>
 nnoremap <silent> <leader>o       :Navi<CR>
 nnoremap <silent> <leader>z       :NaviDir<CR>
+nnoremap <silent> <leader>.       :NaviProject<CR>
 nnoremap <silent> <leader>e       :e $MYVIMRC<CR>
 nnoremap          <leader>r       :so $MYVIMRC<Bar>echomsg "vimrc reloaded"<CR>
 nnoremap          <leader>;       :Compile<Space>
