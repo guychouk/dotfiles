@@ -1,0 +1,31 @@
+#!/bin/sh
+# Build/test gate before code leaves the machine. Runs only when the repo
+# being pushed from has a `test` (or, failing that, `build`) target in a
+# root Makefile, so this global hook (wired through core.hooksPath) doesn't
+# surprise every other repo on the machine — same opt-in-by-presence
+# pattern as pre-commit's markdown check.
+
+repo_root=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+
+makefile="$repo_root/Makefile"
+[ -f "$makefile" ] || exit 0
+
+target=""
+if grep -qE '^test:' "$makefile"; then
+  target="test"
+elif grep -qE '^build:' "$makefile"; then
+  target="build"
+fi
+[ -n "$target" ] || exit 0
+
+if ! command -v make >/dev/null 2>&1; then
+  echo "pre-push: make not found, skipping $target gate" >&2
+  exit 0
+fi
+
+if ! (cd "$repo_root" && make "$target"); then
+  echo "pre-push: 'make $target' failed, push rejected." >&2
+  exit 1
+fi
+
+exit 0
