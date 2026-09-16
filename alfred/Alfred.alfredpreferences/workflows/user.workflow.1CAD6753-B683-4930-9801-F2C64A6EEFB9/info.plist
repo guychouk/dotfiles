@@ -12,21 +12,21 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>90C7E0E9-6CCF-4CC2-8208-2196CBD32EFB</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
 				<string>E9F2FB38-F354-4384-8395-BE6366739445</string>
 				<key>modifiers</key>
 				<integer>1048576</integer>
 				<key>modifiersubtext</key>
 				<string>Copy link</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>90C7E0E9-6CCF-4CC2-8208-2196CBD32EFB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -35,21 +35,21 @@
 		<array>
 			<dict>
 				<key>destinationuid</key>
-				<string>90C7E0E9-6CCF-4CC2-8208-2196CBD32EFB</string>
-				<key>modifiers</key>
-				<integer>0</integer>
-				<key>modifiersubtext</key>
-				<string></string>
-				<key>vitoclose</key>
-				<false/>
-			</dict>
-			<dict>
-				<key>destinationuid</key>
 				<string>E9F2FB38-F354-4384-8395-BE6366739445</string>
 				<key>modifiers</key>
 				<integer>1048576</integer>
 				<key>modifiersubtext</key>
 				<string>Copy link</string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>90C7E0E9-6CCF-4CC2-8208-2196CBD32EFB</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
 				<key>vitoclose</key>
 				<false/>
 			</dict>
@@ -138,12 +138,14 @@
 			<dict>
 				<key>browser</key>
 				<string></string>
+				<key>skipqueryencode</key>
+				<false/>
+				<key>skipvarencode</key>
+				<false/>
 				<key>spaces</key>
 				<string></string>
 				<key>url</key>
 				<string>{query}</string>
-				<key>utf8</key>
-				<true/>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.action.openurl</string>
@@ -213,7 +215,7 @@
 			<key>xpos</key>
 			<real>620</real>
 			<key>ypos</key>
-			<real>275</real>
+			<real>470</real>
 		</dict>
 		<key>B3B2EE49-54F8-4E57-9E0F-8D768C6E875D</key>
 		<dict>
@@ -229,7 +231,7 @@
 			<key>xpos</key>
 			<real>620</real>
 			<key>ypos</key>
-			<real>75</real>
+			<real>175</real>
 		</dict>
 		<key>FCA02E14-E885-4F46-BAB5-E736F43EBD3C</key>
 		<dict>
