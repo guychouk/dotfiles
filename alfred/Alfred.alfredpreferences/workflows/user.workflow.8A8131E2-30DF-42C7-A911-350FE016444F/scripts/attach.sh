@@ -15,5 +15,6 @@ done
 if [ -n "$SOCK" ]; then
 	"$KITTY" @ --to "unix:$SOCK" launch --type=tab -- abduco -a "$NAME"
 else
-	"$KITTY" -- abduco -a "$NAME"
+	nohup "$KITTY" -- abduco -a "$NAME" >/dev/null 2>&1 &
+	disown
 fi
