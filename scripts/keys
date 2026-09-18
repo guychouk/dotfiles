@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Print a cheatsheet of my shortcuts, read live from Cinnamon and kitty.
+
+kb=org.cinnamon.desktop.keybindings
+fmt() {
+    sed -E "s/<(Primary|Control)>/ctrl+/g; s/<Shift>/shift+/g; s/<Alt>/alt+/g; s/<Super>/super+/g; s/', '/ \/ /g; s/[]['@]//g; s/^as //"
+}
+row() { printf '  %-30s %s\n' "$1" "$2"; }
+
+echo "Cinnamon: launcher, tiling"
+for id in $(gsettings get $kb custom-list | grep -o "'[^']*'" | tr -d "'"); do
+    path=$kb.custom-keybinding:/org/cinnamon/desktop/keybindings/custom-keybindings/$id/
+    row "$(gsettings get "$path" binding | fmt)" "$(gsettings get "$path" name | tr -d "'")"
+done
+
+echo
+echo "Cinnamon: system"
+row "$(gsettings get $kb.wm switch-windows | fmt)" "switch windows"
+row "$(gsettings get $kb.wm switch-windows-backward | fmt)" "switch windows backwards"
+row "$(gsettings get $kb.media-keys screenshot-clip | fmt)" "screenshot: screen to clipboard"
+row "$(gsettings get $kb.media-keys area-screenshot-clip | fmt)" "screenshot: area to clipboard"
+
+echo
+echo "kitty"
+awk '
+    /^# /   { sub(/^# /, ""); head = $0; shown = 0; next }
+    /^map / {
+        if (!shown) { printf "\n  [%s]\n", head; shown = 1 }
+        k = $2; $1 = $2 = ""; sub(/^ +/, "")
+        printf "    %-28s %s\n", k, substr($0, 1, 90)
+    }
+' "${XDG_CONFIG_HOME:-$HOME/.config}/kitty/kitty.conf"
