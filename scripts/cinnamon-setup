@@ -1,0 +1,16 @@
+#!/usr/bin/env sh
+
+# Free the Super chords kitty uses (super+1..9, super+l, super+o, super+s)
+# from Cinnamon. Idempotent; run it by hand after a fresh install.
+
+# Taskbar applet: disable Super+<number> switching/opening apps
+for f in "$HOME"/.config/cinnamon/spices/grouped-window-list@cinnamon.org/*.json; do
+    tmp=$(mktemp)
+    jq '."super-num-hotkeys".value = false' "$f" > "$tmp" && cat "$tmp" > "$f"
+    rm -f "$tmp"
+done
+
+# Looking Glass (super+l), video rotation lock (super+o), desklets (super+s)
+gsettings set org.cinnamon.desktop.keybindings looking-glass-keybinding "[]"
+gsettings set org.cinnamon.desktop.keybindings.media-keys video-rotation-lock "[]"
+gsettings set org.cinnamon.desktop.keybindings show-desklets "[]"
