@@ -1,6 +1,89 @@
 configuration {
-    modi:           "drun,window,run";
-    show-icons:     true;
-    matching:       "fuzzy";
-    sorting-method: "fzf";
+    modi:               "drun,window,run";
+    show-icons:         true;
+    matching:           "fuzzy";
+    sorting-method:     "fzf";
+    font:               "Iosevka Term 15";
+    drun-display-format: "{name}";
+    window-format:      "{c}  {t}";
+}
+
+* {
+    bg:      #151515f0;
+    fg:      #f5f1e3;
+    dim:     #808080;
+    sel:     #f5f1e31f;
+    accent:  #fbfa7a;
+
+    background-color: transparent;
+    text-color:       @fg;
+    margin:           0;
+    padding:          0;
+    spacing:          0;
+}
+
+window {
+    transparency:     "real";
+    location:         north;
+    anchor:           north;
+    y-offset:         18%;
+    width:            640px;
+    background-color: @bg;
+    border:           1px;
+    border-color:     #f5f1e31f;
+    border-radius:    14px;
+}
+
+mainbox {
+    padding:  12px;
+    spacing:  8px;
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    padding:  8px 12px;
+    children: [ entry ];
+}
+
+entry {
+    font:              "Iosevka Term 22";
+    placeholder:       "Search";
+    placeholder-color: @dim;
+    cursor-color:      @accent;
+}
+
+listview {
+    lines:        7;
+    columns:      1;
+    scrollbar:    false;
+    fixed-height: false;
+    border:       0;
+    spacing:      2px;
+}
+
+element {
+    padding:       8px 12px;
+    spacing:       12px;
+    border-radius: 8px;
+}
+
+element normal.normal, element alternate.normal,
+element normal.active, element alternate.active,
+element normal.urgent, element alternate.urgent {
+    background-color: transparent;
+    text-color:       @fg;
+}
+
+element selected.normal, element selected.active, element selected.urgent {
+    background-color: @sel;
+    text-color:       @fg;
+}
+
+element-icon {
+    size:           1.5em;
+    vertical-align: 0.5;
+}
+
+element-text {
+    vertical-align: 0.5;
 }
