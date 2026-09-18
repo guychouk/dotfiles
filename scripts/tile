@@ -4,7 +4,7 @@
 
 action=$1
 step=30
-pad=92# center fills this percent of the work area
+pad=89 # center fills this percent of the work area
 id=$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $NF}')
 [ "$id" = 0x0 ] && exit 0
 
