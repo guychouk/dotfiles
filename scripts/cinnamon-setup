@@ -15,16 +15,26 @@ gsettings set org.cinnamon.desktop.keybindings looking-glass-keybinding "[]"
 gsettings set org.cinnamon.desktop.keybindings.media-keys video-rotation-lock "[]"
 gsettings set org.cinnamon.desktop.keybindings show-desklets "[]"
 
-# rofi launcher on Ctrl+Space
-kb=/org/cinnamon/desktop/keybindings/custom-keybindings/rofi/
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb name "rofi"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb command "rofi -show drun"
-gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb binding "['<Primary>space']"
-list=$(gsettings get org.cinnamon.desktop.keybindings custom-list)
-case $list in
-    *"'rofi'"*) ;;
-    *) gsettings set org.cinnamon.desktop.keybindings custom-list "$(echo "$list" | sed "s/\]$/, 'rofi']/")" ;;
-esac
+# Custom keybinding: bind <id> <name> <command> <binding>
+# Cinnamon only re-reads a changed binding when custom-list changes, so a
+# binding that already exists is dropped from the list and re-added.
+bind() {
+    kb=/org/cinnamon/desktop/keybindings/custom-keybindings/$1/
+    gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb name "$2"
+    gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb command "$3"
+    gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb binding "['$4']"
+    list=$(gsettings get org.cinnamon.desktop.keybindings custom-list | sed "s/, '$1'//")
+    gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
+    sleep 1
+    gsettings set org.cinnamon.desktop.keybindings custom-list "$(echo "$list" | sed "s/\]$/, '$1']/")"
+}
+
+rofi_mode="rofi -no-show-icons -show %s -modes %s:$HOME/.config/rofi/scripts/%s"
+
+bind rofi "rofi" "rofi -show drun" "<Primary>space"
+bind rofi-pass "rofi pass" "$(printf "$rofi_mode" pass pass pass)" "<Primary><Alt>p"
+bind rofi-paddock "rofi paddock" "$(printf "$rofi_mode" paddock paddock paddock)" "<Primary><Alt>d"
+bind rofi-gpg "rofi gpg" "$(printf "$rofi_mode" gpg gpg gpg)" "<Primary><Alt>g"
 
 # Area screenshot to clipboard on Ctrl+Shift+4, like macOS
 gsettings set org.cinnamon.desktop.keybindings.media-keys area-screenshot-clip "['<Control><Shift>4', '<Control><Shift>Print']"
