@@ -1,0 +1,6 @@
+configuration {
+    modi:           "drun,window,run";
+    show-icons:     true;
+    matching:       "fuzzy";
+    sorting-method: "fzf";
+}

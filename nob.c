@@ -29,6 +29,7 @@ const Link links[] = {
     {DOTSDIR "/git",                  XDG_CONFIG "/git"},
     {DOTSDIR "/kitty",                XDG_CONFIG "/kitty"},
     {DOTSDIR "/yazi",                 XDG_CONFIG "/yazi"},
+    {DOTSDIR "/rofi",                 XDG_CONFIG "/rofi"},
     {DOTSDIR "/zsh",                  XDG_CONFIG "/zsh"},
     {DOTSDIR "/mise",                 XDG_CONFIG "/mise"},
     {DOTSDIR "/newsboat",             XDG_CONFIG "/newsboat"},
