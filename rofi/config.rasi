@@ -3,7 +3,7 @@ configuration {
     show-icons:         true;
     matching:           "fuzzy";
     sorting-method:     "fzf";
-    font:               "Iosevka Term 15";
+    font:               "Iosevka Term 13";
     drun-display-format: "{name}";
     window-format:      "{c}  {t}";
 }
@@ -24,9 +24,8 @@ configuration {
 
 window {
     transparency:     "real";
-    location:         north;
-    anchor:           north;
-    y-offset:         18%;
+    location:         center;
+    anchor:           center;
     width:            640px;
     background-color: @bg;
     border:           1px;
@@ -46,7 +45,7 @@ inputbar {
 }
 
 entry {
-    font:              "Iosevka Term 22";
+    font:              "Iosevka Term 18";
     placeholder:       "Search";
     placeholder-color: @dim;
     cursor-color:      @accent;
