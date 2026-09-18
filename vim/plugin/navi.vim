@@ -4,7 +4,9 @@
 " :NaviDir zaps into a directory as a new tcd'd tab.
 " :NaviProject opens a file within the current project (git root, or cwd if not in one)
 
-if !executable('fzf') || !executable('fd')
+let s:fd = executable('fd') ? 'fd' : 'fdfind'
+
+if !executable('fzf') || !executable(s:fd)
   finish
 endif
 
@@ -22,7 +24,7 @@ endfunction
 
 function! s:navi(fdtype, Sink) abort
   let l:roots = join(map(copy(g:navi_dirs), {_, v -> shellescape(expand(v))}), ' ')
-  let l:find = 'fd --type ' . a:fdtype . ' --hidden --exclude .git --exclude node_modules . ' . l:roots
+  let l:find = s:fd . ' --type ' . a:fdtype . ' --hidden --exclude .git --exclude node_modules . ' . l:roots
   let l:source = a:fdtype ==# 'd' ? 'printf ''%s/\n'' ' . l:roots . '; ' . l:find : l:find
   call fzf#run(fzf#wrap({
         \ 'source': l:source,
@@ -40,7 +42,7 @@ endfunction
 
 function! s:navi_project(Sink) abort
   let l:root = s:navi_project_root()
-  let l:find = 'fd --type f --hidden --exclude .git --exclude node_modules . ' . shellescape(l:root)
+  let l:find = s:fd . ' --type f --hidden --exclude .git --exclude node_modules . ' . shellescape(l:root)
   call fzf#run(fzf#wrap({
         \ 'source': l:find,
         \ 'sink': a:Sink,
