@@ -3,6 +3,9 @@
 # Free the Super chords kitty uses (super+1..9, super+l, super+o, super+s)
 # from Cinnamon. Idempotent; run it by hand after a fresh install.
 
+say() { printf "==> %s\n" "$1"; }
+
+say "Freeing Super+<number> from the taskbar"
 # Taskbar applet: disable Super+<number> switching/opening apps
 for f in "$HOME"/.config/cinnamon/spices/grouped-window-list@cinnamon.org/*.json; do
     tmp=$(mktemp)
@@ -10,6 +13,7 @@ for f in "$HOME"/.config/cinnamon/spices/grouped-window-list@cinnamon.org/*.json
     rm -f "$tmp"
 done
 
+say "Freeing Super+l, Super+o, Super+s"
 # Looking Glass (super+l), video rotation lock (super+o), desklets (super+s)
 gsettings set org.cinnamon.desktop.keybindings looking-glass-keybinding "[]"
 gsettings set org.cinnamon.desktop.keybindings.media-keys video-rotation-lock "[]"
@@ -38,6 +42,7 @@ bind() {
     gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
 }
 
+say "Binding rofi modes (drun, pass, paddock, gpg, clip)"
 # Diodon's Ctrl+Shift+P binding is replaced by the rofi clip mode below
 dconf reset -f /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/
 gsettings set org.cinnamon.desktop.keybindings custom-list "$(gsettings get org.cinnamon.desktop.keybindings custom-list | sed "s/'custom0', //; s/, 'custom0'//; s/'custom0'//")"
@@ -50,10 +55,12 @@ bind rofi-paddock "rofi paddock" "$(printf "$rofi_mode" paddock paddock paddock)
 bind rofi-gpg "rofi gpg" "$(printf "$rofi_mode" gpg gpg gpg)" "<Primary><Alt>g"
 bind rofi-clip "rofi clip" "$(printf "$rofi_mode" clip clip clip)" "<Primary><Shift>p"
 
+say "Setting up CopyQ autostart"
 # CopyQ records the clipboard history the clip mode reads
 mkdir -p "$HOME/.config/autostart"
 printf '[Desktop Entry]\nType=Application\nName=CopyQ\nExec=copyq\n' > "$HOME/.config/autostart/copyq.desktop"
 
+say "Binding window tiling (each binding takes a second)"
 # Window tiling with scripts/tile, on Rectangle's chords (cmd is Super here)
 tile_bind() { bind "tile-$1" "tile $1" "$HOME/.local/bin/tile $1" "$2"; }
 tile_bind left    "<Primary><Super>h"
@@ -69,16 +76,19 @@ tile_bind center  "<Primary><Super>c"
 tile_bind bigger  "<Primary><Super>equal"
 tile_bind smaller "<Primary><Super>minus"
 
+say "Binding screenshots"
 # Area screenshot to clipboard on Ctrl+Shift+4, like macOS
 gsettings set org.cinnamon.desktop.keybindings.media-keys area-screenshot-clip "['<Control><Shift>4', '<Control><Shift>Print']"
 
 # Full screenshot to clipboard on Ctrl+Shift+3, like macOS
 gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "['<Control><Shift>3', '<Control>Print']"
 
+say "Configuring the top panel"
 # Panel at the top, like the macOS menu bar
 gsettings set org.cinnamon panels-enabled "['1:0:top']"
 gsettings set org.cinnamon panels-height "['1:30']"
 
+say "Disabling bare Super menu"
 # Menu applet: stop bare Super opening the menu (rofi replaces it)
 for f in "$HOME"/.config/cinnamon/spices/menu@cinnamon.org/*.json; do
     tmp=$(mktemp)
@@ -86,6 +96,13 @@ for f in "$HOME"/.config/cinnamon/spices/menu@cinnamon.org/*.json; do
     rm -f "$tmp"
 done
 
+say "Binding Super+Tab window switcher"
 # Window switcher on Super+Tab as well as Alt+Tab
 gsettings set org.cinnamon.desktop.keybindings.wm switch-windows "['<Alt>Tab', '<Super>Tab']"
 gsettings set org.cinnamon.desktop.keybindings.wm switch-windows-backward "['<Shift><Alt>Tab', '<Shift><Super>Tab']"
+
+say "Setting 144 Hz autostart"
+# X11 picks the 60 Hz preferred mode on the external display; set 144 Hz at login
+printf '[Desktop Entry]\nType=Application\nName=Display refresh\nExec=xrandr --output HDMI-0 --mode 2560x1440 --rate 143.98\n' > "$HOME/.config/autostart/display-refresh.desktop"
+
+say "Done"
