@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Tile the active window on the work area, like Rectangle (X11, needs wmctrl).
+# usage: tile left|right|top|bottom|tl|tr|bl|br|max|center|bigger|smaller
+
+action=$1
+step=30
+id=$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $NF}')
+[ "$id" = 0x0 ] && exit 0
+
+read -r wx wy ww wh < <(xprop -root _NET_WORKAREA | sed 's/.*= //; s/,//g' | awk '{print $1, $2, $3, $4}')
+read -r fl fr ft fb < <(xprop -id "$id" _NET_FRAME_EXTENTS | sed 's/.*= //; s/,//g')
+fl=${fl:-0} fr=${fr:-0} ft=${ft:-0} fb=${fb:-0}
+
+# current frame (client plus decorations)
+read -r cx cy cw ch < <(xwininfo -id "$id" | awk '/Absolute upper-left X/ {x=$4} /Absolute upper-left Y/ {y=$4} /Width:/ {w=$2} /Height:/ {h=$2} END {print x, y, w, h}')
+fx=$((cx - fl)) fy=$((cy - ft)) fw=$((cw + fl + fr)) fh=$((ch + ft + fb))
+
+hw=$((ww / 2))
+hh=$((wh / 2))
+
+if [ "$action" = max ]; then
+    wmctrl -i -r "$id" -b add,maximized_vert,maximized_horz
+    exit 0
+fi
+
+case $action in
+    left)   x=$wx;          y=$wy;          w=$hw;          h=$wh ;;
+    right)  x=$((wx + hw)); y=$wy;          w=$((ww - hw)); h=$wh ;;
+    top)    x=$wx;          y=$wy;          w=$ww;          h=$hh ;;
+    bottom) x=$wx;          y=$((wy + hh)); w=$ww;          h=$((wh - hh)) ;;
+    tl)     x=$wx;          y=$wy;          w=$hw;          h=$hh ;;
+    tr)     x=$((wx + hw)); y=$wy;          w=$((ww - hw)); h=$hh ;;
+    bl)     x=$wx;          y=$((wy + hh)); w=$hw;          h=$((wh - hh)) ;;
+    br)     x=$((wx + hw)); y=$((wy + hh)); w=$((ww - hw)); h=$((wh - hh)) ;;
+    center) w=$fw; h=$fh; x=$((wx + (ww - w) / 2)); y=$((wy + (wh - h) / 2)) ;;
+    bigger | smaller)
+        d=$step
+        [ "$action" = smaller ] && d=$((-step))
+        w=$((fw + 2 * d)); h=$((fh + 2 * d))
+        [ "$w" -gt "$ww" ] && w=$ww
+        [ "$h" -gt "$wh" ] && h=$wh
+        [ "$w" -lt 200 ] && w=200
+        [ "$h" -lt 200 ] && h=200
+        x=$((fx - (w - fw) / 2)); y=$((fy - (h - fh) / 2))
+        [ "$x" -lt "$wx" ] && x=$wx
+        [ "$y" -lt "$wy" ] && y=$wy
+        [ $((x + w)) -gt $((wx + ww)) ] && x=$((wx + ww - w))
+        [ $((y + h)) -gt $((wy + wh)) ] && y=$((wy + wh - h))
+        ;;
+    *) echo "usage: tile left|right|top|bottom|tl|tr|bl|br|max|center|bigger|smaller" >&2; exit 1 ;;
+esac
+
+# -e sets the client area, so subtract the frame to fill the tile exactly
+wmctrl -i -r "$id" -b remove,maximized_vert,maximized_horz
+wmctrl -i -r "$id" -e "0,$x,$y,$((w - fl - fr)),$((h - ft - fb))"
