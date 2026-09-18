@@ -45,3 +45,10 @@ gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "['<Co
 # Panel at the top, like the macOS menu bar
 gsettings set org.cinnamon panels-enabled "['1:0:top']"
 gsettings set org.cinnamon panels-height "['1:30']"
+
+# Menu applet: stop bare Super opening the menu (rofi replaces it)
+for f in "$HOME"/.config/cinnamon/spices/menu@cinnamon.org/*.json; do
+    tmp=$(mktemp)
+    jq '."overlay-key".value = ""' "$f" > "$tmp" && cat "$tmp" > "$f"
+    rm -f "$tmp"
+done
