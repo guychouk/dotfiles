@@ -38,3 +38,6 @@ bind rofi-gpg "rofi gpg" "$(printf "$rofi_mode" gpg gpg gpg)" "<Primary><Alt>g"
 
 # Area screenshot to clipboard on Ctrl+Shift+4, like macOS
 gsettings set org.cinnamon.desktop.keybindings.media-keys area-screenshot-clip "['<Control><Shift>4', '<Control><Shift>Print']"
+
+# Full screenshot to clipboard on Ctrl+Shift+3, like macOS
+gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "['<Control><Shift>3', '<Control>Print']"
