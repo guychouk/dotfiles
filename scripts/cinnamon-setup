@@ -101,8 +101,12 @@ say "Binding Super+Tab window switcher"
 gsettings set org.cinnamon.desktop.keybindings.wm switch-windows "['<Alt>Tab', '<Super>Tab']"
 gsettings set org.cinnamon.desktop.keybindings.wm switch-windows-backward "['<Shift><Alt>Tab', '<Shift><Super>Tab']"
 
-say "Setting 144 Hz autostart"
-# X11 picks the 60 Hz preferred mode on the external display; set 144 Hz at login
-printf '[Desktop Entry]\nType=Application\nName=Display refresh\nExec=xrandr --output HDMI-0 --mode 2560x1440 --rate 143.98\n' > "$HOME/.config/autostart/display-refresh.desktop"
+say "Saving the 144 Hz display profile"
+# X11 picks the 60 Hz preferred mode on the external display, and switching
+# the monitor's input resets it. autorandr (apt install autorandr) reapplies
+# the saved profile at login and on hotplug.
+rm -f "$HOME/.config/autostart/display-refresh.desktop"
+xrandr --output HDMI-0 --mode 2560x1440 --rate 143.98
+autorandr --save default
 
 say "Done"
