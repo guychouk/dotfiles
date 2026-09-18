@@ -52,3 +52,7 @@ for f in "$HOME"/.config/cinnamon/spices/menu@cinnamon.org/*.json; do
     jq '."overlay-key".value = ""' "$f" > "$tmp" && cat "$tmp" > "$f"
     rm -f "$tmp"
 done
+
+# Window switcher on Super+Tab as well as Alt+Tab
+gsettings set org.cinnamon.desktop.keybindings.wm switch-windows "['<Alt>Tab', '<Super>Tab']"
+gsettings set org.cinnamon.desktop.keybindings.wm switch-windows-backward "['<Shift><Alt>Tab', '<Shift><Super>Tab']"
