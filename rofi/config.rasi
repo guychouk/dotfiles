@@ -46,6 +46,7 @@ inputbar {
 
 entry {
     font:              "Iosevka Term 18";
+    text-color:        @fg;
     placeholder:       "Search";
     placeholder-color: @dim;
     cursor-color:      @accent;
