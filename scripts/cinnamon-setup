@@ -41,3 +41,6 @@ gsettings set org.cinnamon.desktop.keybindings.media-keys area-screenshot-clip "
 
 # Full screenshot to clipboard on Ctrl+Shift+3, like macOS
 gsettings set org.cinnamon.desktop.keybindings.media-keys screenshot-clip "['<Control><Shift>3', '<Control>Print']"
+
+# Panel at the top, like the macOS menu bar
+gsettings set org.cinnamon panels-enabled "['1:0:top']"
