@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# rofi script mode: CopyQ clipboard history; the chosen item is pasted into the focused window.
+
+if [ "${ROFI_RETV:-0}" = 1 ]; then
+    setsid -f sh -c "sleep 0.3; copyq select $ROFI_INFO; sleep 0.2; copyq paste" >/dev/null 2>&1
+    exit 0
+fi
+
+printf '\0prompt\x1fclip\n'
+copyq eval -- '
+n = Math.min(size(), 200);
+for (i = 0; i < n; ++i) {
+    t = str(read(i)).replace(/\s+/g, " ").trim().substring(0, 120);
+    print(i + "\t" + (t || "[non-text]") + "\n");
+}
+' | while IFS=$'\t' read -r i text; do
+    printf '%s\0info\x1f%s\n' "$text" "$i"
+done

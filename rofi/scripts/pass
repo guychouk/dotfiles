@@ -17,7 +17,12 @@ case ${ROFI_RETV:-0} in
         else
             entry=$ROFI_DATA
             case $ROFI_INFO in
-                password) pass show -c "$entry" >/dev/null 2>&1 ;;
+                password)
+                    # keep the password out of CopyQ's history until pass clears the clipboard
+                    copyq disable >/dev/null 2>&1
+                    pass show -c "$entry" >/dev/null 2>&1
+                    setsid -f sh -c 'sleep 46; copyq enable' >/dev/null 2>&1
+                    ;;
                 username) pass show "$entry" | sed -n 2p | tr -d '\n' | xclip -selection clipboard >/dev/null 2>&1 ;;
                 edit) setsid -f kitty env EDITOR=vim pass edit "$entry" >/dev/null 2>&1 ;;
             esac
