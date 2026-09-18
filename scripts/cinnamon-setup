@@ -14,3 +14,15 @@ done
 gsettings set org.cinnamon.desktop.keybindings looking-glass-keybinding "[]"
 gsettings set org.cinnamon.desktop.keybindings.media-keys video-rotation-lock "[]"
 gsettings set org.cinnamon.desktop.keybindings show-desklets "[]"
+
+# rofi launcher on Alt+Space (frees the window menu binding it replaces)
+gsettings set org.cinnamon.desktop.keybindings.wm activate-window-menu "[]"
+kb=/org/cinnamon/desktop/keybindings/custom-keybindings/rofi/
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb name "rofi"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb command "rofi -show drun"
+gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb binding "['<Alt>space']"
+list=$(gsettings get org.cinnamon.desktop.keybindings custom-list)
+case $list in
+    *"'rofi'"*) ;;
+    *) gsettings set org.cinnamon.desktop.keybindings custom-list "$(echo "$list" | sed "s/\]$/, 'rofi']/")" ;;
+esac
