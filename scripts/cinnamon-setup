@@ -25,3 +25,6 @@ case $list in
     *"'rofi'"*) ;;
     *) gsettings set org.cinnamon.desktop.keybindings custom-list "$(echo "$list" | sed "s/\]$/, 'rofi']/")" ;;
 esac
+
+# Area screenshot to clipboard on Ctrl+Shift+4, like macOS
+gsettings set org.cinnamon.desktop.keybindings.media-keys area-screenshot-clip "['<Control><Shift>4', '<Control><Shift>Print']"
