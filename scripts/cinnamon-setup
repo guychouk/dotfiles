@@ -23,9 +23,14 @@ bind() {
     gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb name "$2"
     gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb command "$3"
     gsettings set org.cinnamon.desktop.keybindings.custom-keybinding:$kb binding "['$4']"
-    list=$(gsettings get org.cinnamon.desktop.keybindings custom-list | sed "s/, '$1'//")
-    gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
-    sleep 1
+    list=$(gsettings get org.cinnamon.desktop.keybindings custom-list)
+    case $list in
+        *"'$1'"*)
+            list=$(echo "$list" | sed "s/, '$1'//")
+            gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
+            sleep 1
+            ;;
+    esac
     gsettings set org.cinnamon.desktop.keybindings custom-list "$(echo "$list" | sed "s/\]$/, '$1']/")"
 }
 
@@ -35,6 +40,21 @@ bind rofi "rofi" "rofi -show drun" "<Primary>space"
 bind rofi-pass "rofi pass" "$(printf "$rofi_mode" pass pass pass)" "<Primary><Alt>p"
 bind rofi-paddock "rofi paddock" "$(printf "$rofi_mode" paddock paddock paddock)" "<Primary><Alt>d"
 bind rofi-gpg "rofi gpg" "$(printf "$rofi_mode" gpg gpg gpg)" "<Primary><Alt>g"
+
+# Window tiling with scripts/tile, on Rectangle's chords (cmd is Super here)
+tile_bind() { bind "tile-$1" "tile $1" "$HOME/.local/bin/tile $1" "$2"; }
+tile_bind left    "<Primary><Super>h"
+tile_bind right   "<Primary><Super>l"
+tile_bind top     "<Primary><Super>k"
+tile_bind bottom  "<Primary><Super>j"
+tile_bind tl      "<Primary><Shift><Super>h"
+tile_bind tr      "<Primary><Shift><Super>l"
+tile_bind bl      "<Primary><Shift><Super>j"
+tile_bind br      "<Primary><Shift><Super>k"
+tile_bind max     "<Primary><Super>z"
+tile_bind center  "<Primary><Super>c"
+tile_bind bigger  "<Primary><Super>equal"
+tile_bind smaller "<Primary><Super>minus"
 
 # Area screenshot to clipboard on Ctrl+Shift+4, like macOS
 gsettings set org.cinnamon.desktop.keybindings.media-keys area-screenshot-clip "['<Control><Shift>4', '<Control><Shift>Print']"
