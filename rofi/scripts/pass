@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# rofi script mode: pick a pass entry, then copy its password or username, or edit it.
+PATH="$HOME/.local/bin:$PATH"
+store=${PASSWORD_STORE_DIR:-$HOME/.password-store}
+
+case ${ROFI_RETV:-0} in
+    0)
+        printf '\0prompt\x1fpass\n'
+        find "$store" -name '*.gpg' -printf '%P\n' | sed 's/\.gpg$//' | sort
+        ;;
+    1)
+        if [ -z "${ROFI_DATA:-}" ]; then
+            printf '\0prompt\x1f%s\n\0data\x1f%s\n' "$1" "$1"
+            printf 'password\0info\x1fpassword\n'
+            printf 'username\0info\x1fusername\n'
+            printf 'edit\0info\x1fedit\n'
+        else
+            entry=$ROFI_DATA
+            case $ROFI_INFO in
+                password) pass show -c "$entry" >/dev/null 2>&1 ;;
+                username) pass show "$entry" | sed -n 2p | tr -d '\n' | xclip -selection clipboard >/dev/null 2>&1 ;;
+                edit) setsid -f kitty env EDITOR=vim pass edit "$entry" >/dev/null 2>&1 ;;
+            esac
+        fi
+        ;;
+esac

@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+# rofi script mode: one row per action on every paddock target.
+# Filter by name or by alias: cmd, pf, ts, agent.
+PATH="$HOME/.local/bin:$PATH"
+
+if [ "${ROFI_RETV:-0}" = 1 ]; then
+    IFS='|' read -r action name <<<"$ROFI_INFO"
+    case $action in
+        start | stop)
+            if out=$(paddock "$action" "$name" 2>&1); then
+                notify-send -a paddock "$name" "$out"
+            else
+                notify-send -a paddock "$name: error" "$out"
+            fi
+            ;;
+        open)
+            port=$(paddock ls --json | jq -r --arg n "$name" '.targets[] | select(.name == $n) | (.ports // [])[0] // empty')
+            setsid -f xdg-open "http://localhost:$port" >/dev/null 2>&1
+            ;;
+        attach)
+            title=${name#agent-}
+            sock=""
+            for f in /tmp/kitty-*; do
+                [ -S "$f" ] || continue
+                if kitty @ --to "unix:$f" ls >/dev/null 2>&1; then
+                    sock=$f
+                    break
+                fi
+            done
+            if [ -n "$sock" ]; then
+                kitty @ --to "unix:$sock" launch --type=tab --tab-title="$title" --cwd="$HOME" -- abduco -a "$name" >/dev/null 2>&1
+            else
+                setsid -f kitty -d "$HOME" -o "tab_title_template=$title" -- abduco -a "$name" >/dev/null 2>&1
+            fi
+            ;;
+    esac
+    exit 0
+fi
+
+printf '\0prompt\x1fpaddock\n'
+paddock ls --json | jq -j '
+  def alias: {command: "cmd", portforward: "pf", "tailscale-serve": "ts", agent: "agent"}[.] // .;
+  def row($action; $t): "\($action)  \(.name)  \(.kind | alias)\($t)\u0000info\u001f\($action)|\(.name)\u001fmeta\u001f\(.kind) \(.kind | alias)\n";
+  .targets | sort_by(.name)[]
+  | if .running then
+      row("stop"; "  ●"),
+      (if (.ports // []) != [] then row("open"; "  :\(.ports[0])") else empty end),
+      (if .kind == "agent" then row("attach"; "") else empty end)
+    else
+      row("start"; "  ○")
+    end
+'

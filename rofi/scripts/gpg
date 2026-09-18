@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# rofi script mode: lock or unlock gpg-agent.
+PATH="$HOME/.local/bin:$PATH"
+
+if [ "${ROFI_RETV:-0}" = 1 ]; then
+    case $1 in
+        lock) setsid -f gpg-lock >/dev/null 2>&1 ;;
+        unlock) setsid -f gpg-unlock-headless >/dev/null 2>&1 ;;
+    esac
+    exit 0
+fi
+
+printf '\0prompt\x1fgpg\n'
+printf 'lock\n'
+printf 'unlock\n'
