@@ -26,13 +26,21 @@ bind() {
     list=$(gsettings get org.cinnamon.desktop.keybindings custom-list)
     case $list in
         *"'$1'"*)
-            list=$(echo "$list" | sed "s/, '$1'//")
+            list=$(echo "$list" | sed "s/'$1', //; s/, '$1'//; s/'$1'//")
             gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
             sleep 1
             ;;
     esac
-    gsettings set org.cinnamon.desktop.keybindings custom-list "$(echo "$list" | sed "s/\]$/, '$1']/")"
+    case $list in
+        *"[]"*) list="['$1']" ;;
+        *) list=$(echo "$list" | sed "s/\]$/, '$1']/") ;;
+    esac
+    gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
 }
+
+# Diodon's Ctrl+Shift+P binding is replaced by the rofi clip mode below
+dconf reset -f /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/
+gsettings set org.cinnamon.desktop.keybindings custom-list "$(gsettings get org.cinnamon.desktop.keybindings custom-list | sed "s/'custom0', //; s/, 'custom0'//; s/'custom0'//")"
 
 rofi_mode="rofi -no-show-icons -show %s -modes %s:$HOME/.config/rofi/scripts/%s"
 
@@ -40,6 +48,11 @@ bind rofi "rofi" "rofi -show drun" "<Primary>space"
 bind rofi-pass "rofi pass" "$(printf "$rofi_mode" pass pass pass)" "<Primary><Alt>p"
 bind rofi-paddock "rofi paddock" "$(printf "$rofi_mode" paddock paddock paddock)" "<Primary><Alt>d"
 bind rofi-gpg "rofi gpg" "$(printf "$rofi_mode" gpg gpg gpg)" "<Primary><Alt>g"
+bind rofi-clip "rofi clip" "$(printf "$rofi_mode" clip clip clip)" "<Primary><Shift>p"
+
+# CopyQ records the clipboard history the clip mode reads
+mkdir -p "$HOME/.config/autostart"
+printf '[Desktop Entry]\nType=Application\nName=CopyQ\nExec=copyq\n' > "$HOME/.config/autostart/copyq.desktop"
 
 # Window tiling with scripts/tile, on Rectangle's chords (cmd is Super here)
 tile_bind() { bind "tile-$1" "tile $1" "$HOME/.local/bin/tile $1" "$2"; }
