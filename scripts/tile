@@ -8,8 +8,10 @@ id=$(xprop -root _NET_ACTIVE_WINDOW | awk '{print $NF}')
 [ "$id" = 0x0 ] && exit 0
 
 read -r wx wy ww wh < <(xprop -root _NET_WORKAREA | sed 's/.*= //; s/,//g' | awk '{print $1, $2, $3, $4}')
-read -r fl fr ft fb < <(xprop -id "$id" _NET_FRAME_EXTENTS | sed 's/.*= //; s/,//g')
-fl=${fl:-0} fr=${fr:-0} ft=${ft:-0} fb=${fb:-0}
+fl=0 fr=0 ft=0 fb=0
+ext=$(xprop -id "$id" _NET_FRAME_EXTENTS)
+# undecorated windows (kitty) have no extents: xprop prints "not found"
+case $ext in *=*) read -r fl fr ft fb <<<"${ext#*= }"; fl=${fl%,} fr=${fr%,} ft=${ft%,} ;; esac
 
 # current frame (client plus decorations)
 read -r cx cy cw ch < <(xwininfo -id "$id" | awk '/Absolute upper-left X/ {x=$4} /Absolute upper-left Y/ {y=$4} /Width:/ {w=$2} /Height:/ {h=$2} END {print x, y, w, h}')
@@ -52,4 +54,5 @@ esac
 
 # -e sets the client area, so subtract the frame to fill the tile exactly
 wmctrl -i -r "$id" -b remove,maximized_vert,maximized_horz
+sleep 0.1
 wmctrl -i -r "$id" -e "0,$x,$y,$((w - fl - fr)),$((h - ft - fb))"
