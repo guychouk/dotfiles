@@ -195,3 +195,6 @@ launchctl kickstart -k gui/$(id -u)/LABEL
 
 # validate a plist's syntax before installing it #launchctl
 plutil -lint /path/to/label.plist
+
+# create a new pass entry with a generated password (25 chars, no symbols with -n) #pass
+pass generate -n personal/site/name 25
