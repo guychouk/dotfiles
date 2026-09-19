@@ -198,3 +198,6 @@ plutil -lint /path/to/label.plist
 
 # create a new pass entry with a generated password (25 chars, no symbols with -n) #pass
 pass generate -n personal/site/name 25
+
+# add an otp uri from the clipboard to an existing pass entry (X11; pass otp append ignores paste at its prompt) #pass
+xclip -selection clipboard -o | pass otp append personal/site/name
