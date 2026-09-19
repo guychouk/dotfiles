@@ -94,11 +94,19 @@ if [ -n "$used_pct" ]; then
     token_part=$(printf '🧠 %s%.0f%%%s' "$(pct_color "$used_pct")" "$used_pct" "$RESET")
 fi
 
+# session cost in USD (subagents included under tape; API-equivalent under Claude Code)
+cost=$(echo "$input" | jq -r '.cost.total_cost_usd // empty')
+cost_part=""
+if [ -n "$cost" ]; then
+    cost_part=$(printf '💵 $%.3f' "$cost")
+fi
+
 line=""
 [ -n "$persona_part" ] && add_part "$persona_part"
 [ -n "$token_part" ] && add_part "$token_part"
 [ -n "$session_part" ] && add_part "$session_part"
 [ -n "$week_part" ] && add_part "$week_part"
+[ -n "$cost_part" ] && add_part "$cost_part"
 [ -n "$effort_part" ] && add_part "${effort_col}${effort_part}${RESET}"
 [ -n "$model" ] && add_part "${COL_MODEL}${model}${RESET}"
 [ -n "$dir_part" ] && add_part "${COL_DIR}${dir_part}${RESET}"
