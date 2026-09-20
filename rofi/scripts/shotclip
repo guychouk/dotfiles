@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# rofi script mode: screenshot the debug Chrome's first tab straight to the clipboard via cdp.
+PATH="$HOME/.local/bin:$PATH"
+
+if [ "${ROFI_RETV:-0}" = 1 ]; then
+    setsid -f sh -c '
+        cd "$HOME/src/cdp" || exit 1
+        if out=$(mise exec -- bun cli.ts shotclip 2>&1); then
+            notify-send -a shotclip "Copied to clipboard"
+        else
+            notify-send -a shotclip "shotclip failed" "$out"
+        fi
+    ' >/dev/null 2>&1
+    exit 0
+fi
+
+printf '\0prompt\x1fshotclip\n'
+printf 'shotclip\n'
