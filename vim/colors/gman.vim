@@ -20,6 +20,7 @@ let s:palette = {
       \ 'blue':          '#45566e',
       \ 'brightblue':    '#8295b1',
       \ 'magenta':       '#d97aad',
+      \ 'plum':          '#5a2b45',
       \ 'brightmagenta': '#fbe9f2',
       \ 'cyan':          '#e67eb3',
       \ 'brightcyan':    '#fbe9f2',
@@ -81,7 +82,7 @@ call s:hl('Pmenu',             'brightmagenta', 'pum',           '')
 call s:hl('PmenuSbar',         'brightmagenta', 'pum',           '')
 call s:hl('PmenuThumb',        'brightmagenta', 'brightmagenta', '')
 call s:hl('PmenuBorder',       'magenta',       'black',         '')
-call s:hl('QuickFixLine',      'ui',            'magenta',       '')
+call s:hl('QuickFixLine',      'brightmagenta', 'plum',          '')
 call s:hl('SignColumn',        'black',         '',              '')
 call s:hl('Title',             'white',         '',              'bold')
 call s:hl('VertSplit',         'ui',            'ui',            '')
