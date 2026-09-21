@@ -24,7 +24,7 @@ DANGEROUS_PATTERNS=(
 )
 
 for pattern in "${DANGEROUS_PATTERNS[@]}"; do
-  if echo "$COMMAND" | grep -qE "$pattern"; then
+  if [[ $COMMAND =~ $pattern ]]; then
     echo "BLOCKED: '$COMMAND' matches guarded pattern '$pattern'. This needs guychouk running it himself, not Claude." >&2
     exit 2
   fi
