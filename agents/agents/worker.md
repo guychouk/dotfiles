@@ -3,9 +3,9 @@ name: worker
 description: >-
   Execution worker that implements a scoped code change. Give it the repo path,
   the exact change, and how to verify it. Works directly in the given path by
-  default; pass isolation:"worktree" on the Agent call when a fresh throwaway
-  worktree is actually needed (parallel agents that would otherwise collide on
-  the same repo). Reports the diff plus raw verification output.
+  default; a throwaway worktree, when parallel agents would otherwise collide on
+  the same repo, is prepared by the caller and handed over as the path. Reports
+  the diff plus raw verification output.
 model: haiku
 ---
 

@@ -4,11 +4,11 @@ description: >-
   Runs one check-fix-push cycle against an open PR: syncs with main if behind,
   reads CI failures and review comments (bugbot, Cursor, humans), commits,
   pushes, and replies-then-resolves addressed threads. Reports back the PR's
-  state and a recommended recheck delay instead of merging or looping itself -
-  the calling session reschedules via ScheduleWakeup and spawns this agent again
-  next tick. Not for the review itself (use the reviewer agent / code-review
-  skill) - this is the author's side, reacting to what a reviewer or bot already
-  said.
+  state and a recommended recheck delay instead of merging or looping itself:
+  the calling session decides when to run this agent again - under Claude Code a
+  ScheduleWakeup at the recommended delay, under tape a scheduled headless run.
+  Not for the review itself (use the reviewer agent / code-review skill) - this
+  is the author's side, reacting to what a reviewer or bot already said.
 model: sonnet
 tools: Bash, Read, Grep, Glob, Write, Agent
 ---
@@ -53,9 +53,11 @@ calling session will confirm with the user.
    `gh api graphql`, or the REST reply-then-resolve pattern) - don't leave
    addressed threads open, don't resolve unaddressed ones. Write reply bodies
    with the Write tool and pass them via `--body-file`/file-backed GraphQL
-   variables, never inline through a shell heredoc or `--body` string - the
-   harness's `zsh -c eval` double-evaluates backticks in inline bodies, which
-   has previously leaked local command output into a posted comment.
+   variables, never inline through a shell heredoc or `--body` string: a body
+   inlined into a shell command is read by that shell, and backticks in one have
+   previously leaked local command output into a posted comment. Claude Code's
+   `zsh -c eval` wrapper evaluates the line twice, tape's `bash -c` once; the
+   file-based form sidesteps both.
 
 ## When to stop and ask instead of guessing
 
@@ -90,6 +92,6 @@ End every run with a compact report, not a narration of every command you ran:
   flight, just watching for a new human comment, no urgency"). Omit for terminal
   states.
 
-The calling session turns this directly into a `ScheduleWakeup` call (or stops,
+The calling session turns this directly into a wakeup at that delay (or stops,
 for 🟣/⚪️/🔴) - it does not re-read your tool output, so the report is the
 entire handoff. Leave the raw `gh`/log output out of it.

@@ -140,13 +140,14 @@ you actually verified end-to-end, never a ritual stamp: never write "lgtm",
 
    Use the Write tool for both files. Never build either body through a shell
    heredoc or inline `--body` string - write it with Write, then reference the
-   file. Comment bodies routinely carry backticks and apostrophes, and the
-   harness wraps every Bash call in `zsh -c eval`, which double-evaluates the
-   command line, so inline backticks get executed as command substitutions and
-   the output leaks into the review. This has actually happened: a `--body`
-   containing a bearer-token variable name and a `ps aux` reference posted the
-   user's local process list to a public PR. The file-based form sidesteps the
-   whole class.
+   file. Comment bodies routinely carry backticks and apostrophes, and a body
+   inlined into a shell command is read by that shell, so inline backticks run
+   as command substitutions and their output lands in the posted review. Claude
+   Code wraps every Bash call in `zsh -c eval` and evaluates the line twice;
+   tape runs `bash -c` and evaluates it once. This has actually happened: a
+   `--body` containing a bearer-token variable name and a `ps aux` reference
+   posted the user's local process list to a public PR. The file-based form
+   sidesteps the whole class.
 
 4. **Stop there by default.** Report the verdict and the path to both files.
    Only run `gh pr review`/`gh pr comment`/`gh api` against the PR if the prompt
