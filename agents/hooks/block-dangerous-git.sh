@@ -7,7 +7,20 @@
 # destructive/hard-to-reverse shapes stay blocked.
 
 INPUT=$(cat)
-COMMAND=$(echo "$INPUT" | jq -r '.tool_input.command // empty')
+
+# `.tool_input.command` by parameter expansion rather than a `jq -r` fork,
+# which is 3.8ms of this hook's 8.4ms. The value runs from `"command":"` to
+# the first quote not preceded by a backslash, so an escaped `\"` is swapped
+# for an escape byte (JSON can never carry one raw) before the cut and back to
+# a quote after it. Both harnesses put the command in that `tool_input` object.
+COMMAND=${INPUT#*'"command":"'}
+if [ "$COMMAND" = "$INPUT" ]; then
+  exit 0
+fi
+ESCAPED_QUOTE='\\"'
+COMMAND=${COMMAND//$ESCAPED_QUOTE/$'\001'}
+COMMAND=${COMMAND%%'"'*}
+COMMAND=${COMMAND//$'\001'/\"}
 
 if [ -z "$COMMAND" ]; then
   exit 0
