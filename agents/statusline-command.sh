@@ -101,6 +101,10 @@ if [ -n "$cost" ]; then
     cost_part=$(printf '💵 $%.3f' "$cost")
 fi
 
+# tape's session speed; the price default is not worth the space
+speed=$(echo "$input" | jq -r '.speed.name // empty')
+[ "$speed" = "price" ] && speed=""
+
 line=""
 [ -n "$persona_part" ] && add_part "$persona_part"
 [ -n "$token_part" ] && add_part "$token_part"
@@ -109,6 +113,7 @@ line=""
 [ -n "$cost_part" ] && add_part "$cost_part"
 [ -n "$effort_part" ] && add_part "${effort_col}${effort_part}${RESET}"
 [ -n "$model" ] && add_part "${COL_MODEL}${model}${RESET}"
+[ -n "$speed" ] && add_part "${COL_MODEL}⇡${speed}${RESET}"
 [ -n "$dir_part" ] && add_part "${COL_DIR}${dir_part}${RESET}"
 [ -n "$name_part" ] && add_part "${COL_NAME}${name_part}${RESET}"
 
