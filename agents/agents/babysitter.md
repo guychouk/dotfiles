@@ -6,7 +6,7 @@ description: >-
   pushes, and replies-then-resolves addressed threads. Reports back the PR's
   state and a recommended recheck delay instead of merging or looping itself:
   the calling session decides when to run this agent again - under Claude Code a
-  ScheduleWakeup at the recommended delay, under tape a scheduled headless run.
+  ScheduleWakeup at the recommended delay, under tape a `wakeup` at that delay.
   Not for the review itself (use the reviewer agent / code-review skill) - this
   is the author's side, reacting to what a reviewer or bot already said.
 model: sonnet
