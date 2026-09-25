@@ -259,6 +259,7 @@ let g:markdown_fenced_languages = [
       \'proto',
       \'yaml',
       \'go',
+      \'rust',
       \]
 " }}}
 " }}}
