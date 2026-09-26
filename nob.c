@@ -38,6 +38,7 @@ const Link links[] = {
     {DOTSDIR "/zsh/.zshrc",           HOME "/.zshrc"},
     {DOTSDIR "/zsh/.zshenv",          HOME "/.zshenv"},
     {DOTSDIR "/gnupg/gpg-agent.conf", HOME "/.gnupg/gpg-agent.conf"},
+    {DOTSDIR "/systemd/user/gpg-unlock-headless.service", XDG_CONFIG "/systemd/user/gpg-unlock-headless.service"},
     {DOTSDIR "/scripts/pinentry",     "/usr/local/bin/pinentry"},
     {DOTSDIR "/curl/curlrc",          HOME "/.curlrc"},
     {DOTSDIR "/emacs",                HOME "/.emacs.d"},

@@ -1,0 +1,11 @@
+[Unit]
+Description=Prime gpg-agent's passphrase cache from the headless secret store
+Documentation=file:/home/guychouk/dotfiles/scripts/gpg-unlock-headless
+After=gpg-agent.socket gpg-agent-ssh.socket
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/gpg-unlock-headless
+
+[Install]
+WantedBy=default.target
