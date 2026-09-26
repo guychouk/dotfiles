@@ -66,6 +66,13 @@ case "$CLAUDE_CONFIG_DIR" in
     */.smith) persona_part="😎" ;;
 esac
 
+# host indicator
+host_part=""
+case "$(hostname -s)" in
+    ark)    host_part="🚢" ;;
+    *mbp*)  host_part="💻" ;;
+esac
+
 # agent / remote-control indicator
 agent_name=$(echo "$input" | jq -r '.agent.name // empty')
 name_part=""
@@ -107,6 +114,7 @@ speed=$(echo "$input" | jq -r '.speed.name // empty')
 
 line=""
 [ -n "$persona_part" ] && add_part "$persona_part"
+[ -n "$host_part" ] && add_part "$host_part"
 [ -n "$token_part" ] && add_part "$token_part"
 [ -n "$session_part" ] && add_part "$session_part"
 [ -n "$week_part" ] && add_part "$week_part"
