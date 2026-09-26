@@ -1,0 +1,18 @@
+#!/bin/sh
+# Upload the macOS clipboard image to ark and bracket-paste its path into the
+# given kitty window, so Claude Code over ssh attaches it like a local paste.
+# usage (kitty.conf): launch --type=background --allow-remote-control paste-image-ark @active-kitty-window-id
+
+PATH="/Applications/kitty.app/Contents/MacOS:/usr/bin:/bin:$PATH"
+
+win=$1
+src="${TMPDIR:-/tmp}/clip-$$.png"
+remote=/tmp/clip-$(date +%s).png
+
+osascript \
+    -e "set f to open for access POSIX file \"$src\" with write permission" \
+    -e 'write (the clipboard as «class PNGf») to f' \
+    -e 'close access f' >/dev/null 2>&1 || { rm -f "$src"; exit 1; }
+
+scp -q "$src" "ark:$remote" && kitten @ send-text --match "id:$win" --bracketed-paste auto "$remote"
+rm -f "$src"
