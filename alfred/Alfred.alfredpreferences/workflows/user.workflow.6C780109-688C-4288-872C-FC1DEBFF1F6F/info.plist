@@ -68,7 +68,7 @@ SCRIPT=$(cat &lt;&lt;'FISH_EOF'
 set profiles factify-dev factify-prod factify-staging factify-sandbox factify-root identity-terraform
 for profile in $profiles
     echo "==&gt; aws sso login --profile $profile"
-    /usr/local/bin/aws sso login --profile $profile
+    /Users/guychouk/.local/share/mise/shims/aws sso login --profile $profile
 end
 echo ""
 echo "All profiles done."

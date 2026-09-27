@@ -7,3 +7,4 @@ fzf = "latest"
 node = "latest"
 resvg = "latest"
 rust = "latest"
+aws = { version = "latest", symlink_bins = "true" }
