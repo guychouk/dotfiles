@@ -1,0 +1,4 @@
+// template                output
+templates/vim.vim          ../vim/colors/guychouk.vim
+templates/kitty.conf       ../kitty/guychouk-theme.conf
+templates/emacs.el         ../emacs/themes/guychouk-theme.el

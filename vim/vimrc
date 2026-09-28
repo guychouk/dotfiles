@@ -113,7 +113,7 @@ if has('termguicolors') && $COLORTERM ==# 'truecolor'
   set termguicolors
 endif
 
-colorscheme gman
+colorscheme guychouk
 " }}}
 
 " Mappings {{{

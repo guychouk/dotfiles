@@ -1,23 +1,23 @@
-;;; gman color scheme -*- lexical-binding: t -*-
+;;; {{theme}} color scheme -*- lexical-binding: t -*-
 
-(deftheme gman "gman color scheme")
+(deftheme {{theme}} "{{theme}} color scheme")
 
-(let ((bg         "#151515")
-      (ui         "#2a2c2c")
-      (fg         "#f5f1e3")
-      (gray       "#808080")
-      (red        "#fb413a")
-      (green      "#86df8d")
-      (orange     "#ff8c00")
-      (yellow     "#fbfa7a")
-      (magenta    "#e67eb3")
-      (brightblue "#8295b1"))
+(let ((bg         "{{black}}")
+      (ui         "{{ui}}")
+      (fg         "{{white}}")
+      (gray       "{{gray}}")
+      (red        "{{red}}")
+      (green      "{{green}}")
+      (orange     "{{orange}}")
+      (yellow     "{{yellow}}")
+      (magenta    "{{magenta}}")
+      (brightblue "{{brightblue}}"))
   (custom-theme-set-faces
-   'gman
+   '{{theme}}
    `(default                      ((t (:foreground ,fg :background ,bg))))
    `(cursor                       ((t (:background ,yellow))))
    `(region                       ((t (:foreground ,yellow :background ,ui))))
-   `(hl-line                      ((t (:background ,ui))))
+   `(hl-line                      ((t (:background ,gray))))
    `(fringe                       ((t (:background ,bg))))
    `(minibuffer-prompt            ((t (:foreground ,magenta))))
    `(mode-line                    ((t (:foreground ,fg :background ,ui :box nil))))
@@ -32,7 +32,7 @@
    `(font-lock-type-face          ((t (:foreground ,magenta))))
    `(font-lock-constant-face      ((t (:foreground ,magenta))))
    `(font-lock-builtin-face       ((t (:foreground ,magenta))))
-   `(font-lock-preprocessor-face  ((t (:foreground ,yellow))))
+   `(font-lock-preprocessor-face  ((t (:foreground ,fg))))
    `(font-lock-warning-face       ((t (:foreground ,red))))
    `(error                        ((t (:foreground ,red))))
    `(warning                      ((t (:foreground ,orange))))
@@ -44,4 +44,4 @@
    `(show-paren-match             ((t (:foreground ,bg :background ,fg :weight bold))))
    `(header-line                  ((t (:foreground ,fg :background ,ui))))))
 
-(provide-theme 'gman)
+(provide-theme '{{theme}})

@@ -1,4 +1,4 @@
-include ./gman-theme
+include ./guychouk-theme
 browser "open %u"
 
 bind-key j down

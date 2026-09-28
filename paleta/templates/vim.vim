@@ -4,30 +4,30 @@ if exists("syntax_on")
   syntax reset
 endif
 
-let colors_name = "gman"
+let colors_name = "{{theme}}"
 
 let s:palette = {
-      \ 'ui':            '#2a2c2c',
-      \ 'pum':           '#434646',
-      \ 'black':         '#151515',
-      \ 'brightblack':   '#555555',
-      \ 'red':           '#fb413a',
-      \ 'brightred':     '#febab7',
-      \ 'green':         '#7ed68a',
-      \ 'brightgreen':   '#ebfaec',
-      \ 'orange':        '#e58a2b',
-      \ 'yellow':        '#d8b65a',
-      \ 'blue':          '#45566e',
-      \ 'brightblue':    '#8295b1',
-      \ 'magenta':       '#d97aad',
-      \ 'plum':          '#5a2b45',
-      \ 'brightmagenta': '#fbe9f2',
-      \ 'cyan':          '#e67eb3',
-      \ 'brightcyan':    '#fbe9f2',
-      \ 'gray':          '#808080',
-      \ 'white':         '#e8e1cf',
-      \ 'dimgray':       '#6b6b6b',
-      \ 'guide':         '#3a3a3a',
+      \ 'ui':            '{{ui}}',
+      \ 'pum':           '{{pum}}',
+      \ 'black':         '{{black}}',
+      \ 'brightblack':   '{{brightblack}}',
+      \ 'red':           '{{red}}',
+      \ 'brightred':     '{{brightred}}',
+      \ 'green':         '{{green}}',
+      \ 'brightgreen':   '{{brightgreen}}',
+      \ 'orange':        '{{orange}}',
+      \ 'yellow':        '{{yellow}}',
+      \ 'blue':          '{{blue}}',
+      \ 'brightblue':    '{{brightblue}}',
+      \ 'magenta':       '{{magenta}}',
+      \ 'plum':          '{{plum}}',
+      \ 'brightmagenta': '{{brightmagenta}}',
+      \ 'cyan':          '{{cyan}}',
+      \ 'brightcyan':    '{{brightcyan}}',
+      \ 'gray':          '{{gray}}',
+      \ 'white':         '{{white}}',
+      \ 'dimgray':       '{{dimgray}}',
+      \ 'guide':         '{{guide}}',
       \ }
 
 let g:terminal_ansi_colors = [

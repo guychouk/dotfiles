@@ -21,7 +21,7 @@
 
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes" user-emacs-directory))
-(load-theme 'gman t)
+(load-theme 'guychouk t)
 
 ;; C-SPC is bound to Alfred
 (global-set-key (kbd "C-c SPC") 'set-mark-command)

@@ -1,6 +1,6 @@
 # GMAN palette drift between vim, kitty and emacs
 
-- STATUS: OPEN
+- STATUS: CLOSED
 - PRIORITY: 60
 - TAGS: theme
 
