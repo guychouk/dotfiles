@@ -1,6 +1,6 @@
 #!/bin/bash
 PATH="$HOME/.local/bin:/opt/homebrew/bin:/usr/bin:/bin:$PATH"
-paddock ls --json | jq '
+coop ls --json | jq '
   [.targets[] | select(.kind == "command")]
   | sort_by(.name)
   | map({

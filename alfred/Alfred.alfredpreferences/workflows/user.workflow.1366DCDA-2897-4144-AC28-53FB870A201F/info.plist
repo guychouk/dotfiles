@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock-pf</string>
+	<string>com.guychouk.coop-pf</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -25,7 +25,7 @@
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>List paddock port-forward targets and toggle one on/off</string>
+	<string>List coop port-forward targets and toggle one on/off</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -69,7 +69,7 @@ scripts/list-pf.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Paddock Port-Forwards</string>
+				<string>Coop Port-Forwards</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -108,7 +108,7 @@ scripts/toggle.sh "{query}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Type 'pf', fuzzy-search paddock portforward targets by name. Enter starts or stops the port-forward. Subtitle shows local port, Kubernetes resource, remote port, and namespace.</string>
+	<string>Type 'pf', fuzzy-search coop portforward targets by name. Enter starts or stops the port-forward. Subtitle shows local port, Kubernetes resource, remote port, and namespace.</string>
 	<key>uidata</key>
 	<dict>
 		<key>6933914A-AD66-4007-B67F-8E752D944B59</key>

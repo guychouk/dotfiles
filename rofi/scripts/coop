@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# rofi script mode: one row per action on every paddock target.
+# rofi script mode: one row per action on every coop target.
 # Filter by name or by alias: cmd, pf, ts, agent.
 PATH="$HOME/.local/bin:$PATH"
 
@@ -7,14 +7,14 @@ if [ "${ROFI_RETV:-0}" = 1 ]; then
     IFS='|' read -r action name <<<"$ROFI_INFO"
     case $action in
         start | stop)
-            if out=$(paddock "$action" "$name" 2>&1); then
-                notify-send -a paddock "$name" "$out"
+            if out=$(coop "$action" "$name" 2>&1); then
+                notify-send -a coop "$name" "$out"
             else
-                notify-send -a paddock "$name: error" "$out"
+                notify-send -a coop "$name: error" "$out"
             fi
             ;;
         open)
-            port=$(paddock ls --json | jq -r --arg n "$name" '.targets[] | select(.name == $n) | (.ports // [])[0] // empty')
+            port=$(coop ls --json | jq -r --arg n "$name" '.targets[] | select(.name == $n) | (.ports // [])[0] // empty')
             setsid -f xdg-open "http://localhost:$port" >/dev/null 2>&1
             ;;
         attach)
@@ -37,8 +37,8 @@ if [ "${ROFI_RETV:-0}" = 1 ]; then
     exit 0
 fi
 
-printf '\0prompt\x1fpaddock\n'
-paddock ls --json | jq -j '
+printf '\0prompt\x1fcoop\n'
+coop ls --json | jq -j '
   def alias: {command: "cmd", portforward: "pf", "tailscale-serve": "ts", agent: "agent"}[.] // .;
   def row($action; $t): "\($action)  \(.name)  \(.kind | alias)\($t)\u0000info\u001f\($action)|\(.name)\u001fmeta\u001f\(.kind) \(.kind | alias)\n";
   .targets | sort_by(.name)[]

@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock-commands</string>
+	<string>com.guychouk.coop-commands</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -35,7 +35,7 @@
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>List paddock command targets, toggle start/stop, or open localhost port in browser</string>
+	<string>List coop command targets, toggle start/stop, or open localhost port in browser</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -103,7 +103,7 @@ scripts/list-cmds.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Paddock Commands</string>
+				<string>Coop Commands</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -142,7 +142,7 @@ scripts/open-url.sh "{query}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Type 'cmd', fuzzy-search paddock command targets by name. Enter starts or stops the command. Cmd+enter opens http://localhost:&lt;port&gt; in the browser; greyed out when not running or no port defined.</string>
+	<string>Type 'cmd', fuzzy-search coop command targets by name. Enter starts or stops the command. Cmd+enter opens http://localhost:&lt;port&gt; in the browser; greyed out when not running or no port defined.</string>
 	<key>uidata</key>
 	<dict>
 		<key>1366DCDA-0000-0000-0000-000000000001</key>

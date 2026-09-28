@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>bundleid</key>
-	<string>com.guychouk.paddock-agents</string>
+	<string>com.guychouk.coop-agents</string>
 	<key>category</key>
 	<string>Tools</string>
 	<key>connections</key>
@@ -35,7 +35,7 @@
 	<key>createdby</key>
 	<string>guychouk</string>
 	<key>description</key>
-	<string>List paddock agent targets, toggle start/stop, or attach the abduco session in kitty</string>
+	<string>List coop agent targets, toggle start/stop, or attach the abduco session in kitty</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -103,7 +103,7 @@ scripts/list-agents.sh</string>
 				<key>subtext</key>
 				<string></string>
 				<key>title</key>
-				<string>Paddock Agents</string>
+				<string>Coop Agents</string>
 				<key>type</key>
 				<integer>0</integer>
 				<key>withspace</key>
@@ -142,7 +142,7 @@ scripts/attach.sh "{query}"</string>
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Type 'agent', fuzzy-search paddock agent targets by name. Enter starts or stops the agent. Cmd+enter opens a kitty window and attaches to the running abduco session; greyed out when agent is not running.</string>
+	<string>Type 'agent', fuzzy-search coop agent targets by name. Enter starts or stops the agent. Cmd+enter opens a kitty window and attaches to the running abduco session; greyed out when agent is not running.</string>
 	<key>uidata</key>
 	<dict>
 		<key>502D74F4-0526-4CC4-A3BE-398F8136FF7B</key>

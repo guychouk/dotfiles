@@ -42,7 +42,7 @@ bind() {
     gsettings set org.cinnamon.desktop.keybindings custom-list "$list"
 }
 
-say "Binding rofi modes (drun, pass, paddock, gpg, clip, shotclip)"
+say "Binding rofi modes (drun, pass, coop, gpg, clip, shotclip)"
 # Diodon's Ctrl+Shift+P binding is replaced by the rofi clip mode below
 dconf reset -f /org/cinnamon/desktop/keybindings/custom-keybindings/custom0/
 gsettings set org.cinnamon.desktop.keybindings custom-list "$(gsettings get org.cinnamon.desktop.keybindings custom-list | sed "s/'custom0', //; s/, 'custom0'//; s/'custom0'//")"
@@ -51,7 +51,7 @@ rofi_mode="rofi -no-show-icons -show %s -modes %s:$HOME/.config/rofi/scripts/%s"
 
 bind rofi "rofi" "rofi -show drun" "<Primary>space"
 bind rofi-pass "rofi pass" "$(printf "$rofi_mode" pass pass pass)" "<Primary><Alt>p"
-bind rofi-paddock "rofi paddock" "$(printf "$rofi_mode" paddock paddock paddock)" "<Primary><Alt>d"
+bind rofi-coop "rofi coop" "$(printf "$rofi_mode" coop coop coop)" "<Primary><Alt>d"
 bind rofi-gpg "rofi gpg" "$(printf "$rofi_mode" gpg gpg gpg)" "<Primary><Alt>g"
 bind rofi-clip "rofi clip" "$(printf "$rofi_mode" clip clip clip)" "<Primary><Shift>p"
 bind rofi-shotclip "rofi shotclip" "$(printf "$rofi_mode" shotclip shotclip shotclip)" "<Primary><Alt>s"

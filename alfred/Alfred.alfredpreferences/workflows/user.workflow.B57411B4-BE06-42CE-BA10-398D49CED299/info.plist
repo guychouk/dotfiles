@@ -78,7 +78,7 @@
 		</dict>
 	</array>
 	<key>readme</key>
-	<string>Keyword "shotclip" (optionally followed by a space and a tab title/URL substring) runs cdp's `bun cli.ts shotclip [target]` against the debug Chrome (port 9222, paddock target "chrome-debug") and copies the resulting screenshot straight to the clipboard. With no argument, shotclip defaults to the first open tab. Success/failure is reported via a native notification from inside the script.</string>
+	<string>Keyword "shotclip" (optionally followed by a space and a tab title/URL substring) runs cdp's `bun cli.ts shotclip [target]` against the debug Chrome (port 9222, coop target "chrome-debug") and copies the resulting screenshot straight to the clipboard. With no argument, shotclip defaults to the first open tab. Success/failure is reported via a native notification from inside the script.</string>
 	<key>uidata</key>
 	<dict>
 		<key>E72FD90F-852E-4134-AC95-B7FE1535C32A</key>
